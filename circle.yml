@@ -125,7 +125,7 @@ workflows:
               only:
                 - main
                 - stage
-                - ANDROIDSDK-65
+                - develop
       - "Run_Lint":
           requires:
             *prepare_sources
@@ -143,7 +143,6 @@ workflows:
                 - main
                 - stage
                 - develop
-                - ANDROIDSDK-65
       - "Assemble_Debug_Build":
           requires:
             *all_test
