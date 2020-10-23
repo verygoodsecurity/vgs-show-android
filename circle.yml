@@ -115,7 +115,6 @@ jobs:
     steps: *deployToBintray
 
 
-
 workflows:
   version: 2.1
   main:
