@@ -15,6 +15,7 @@ gradlew.bat
 ## Directory-based project format:
 .idea/
 /.idea/caches
+/.idea/codeStyles
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
