@@ -12,6 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "VERSION_NAME", "\"1.0\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -34,7 +36,7 @@ dependencies {
     // Http
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

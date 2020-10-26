@@ -6,14 +6,14 @@ import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.exception.UrlNotValidException
 import com.verygoodsecurity.vgsshow.util.extension.*
 import okio.IOException
+import java.net.MalformedURLException
 
 internal class NetworkManager(vaultId: String, environment: String) : INetworkManager {
 
     private val client: IHttpClient by lazy {
-        with(buildBaseUrl(vaultId, environment) ?: DEFAULT_BASE_URL) {
+        with(buildBaseUrl(vaultId, environment)) {
             if (isLollipopOrGreater) OkHttpClient(this) else HttpUrlClient(this)
         }
     }
@@ -26,23 +26,23 @@ internal class NetworkManager(vaultId: String, environment: String) : INetworkMa
             } else {
                 VGSResponse.Error(response.code, response.message)
             }
-        } catch (e: UrlNotValidException) {
+        } catch (e: MalformedURLException) {
             VGSResponse.Error(-1, e.message)
-        }catch (e: IOException) {
+        } catch (e: IOException) {
             VGSResponse.Error(-1, e.message)
         } catch (e: Exception) {
             VGSResponse.Error(-1, e.message)
         }
     }
 
-    private fun buildBaseUrl(vaultId: String, environment: String): String? = when {
+    private fun buildBaseUrl(vaultId: String, environment: String): String = when {
         !vaultId.isValidTenantId() -> {
             logDebug("Vault id is not valid", VGSShow::class.simpleName)
-            null
+            DEFAULT_BASE_URL
         }
         !environment.isValidEnvironment() -> {
             logDebug("Environment is not valid", VGSShow::class.simpleName)
-            null
+            DEFAULT_BASE_URL
         }
         else -> StringBuilder(SCHEME)
             .append(vaultId).append(DIVIDER)

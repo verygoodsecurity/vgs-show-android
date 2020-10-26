@@ -5,8 +5,6 @@ import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
-import com.verygoodsecurity.vgsshow.exception.UrlNotValidException
-import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toHttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.with
@@ -15,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import java.net.URL
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
@@ -35,12 +34,8 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
 
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
-        val url = baseUrl with request.path
-        if (!url.isValidUrl()) {
-            throw UrlNotValidException()
-        }
         return Request.Builder()
-            .url(url)
+            .url(URL(baseUrl with request.path))
             .header(AGENT, TEMPORARY_STR_AGENT)
             .headers(request.headers)
             .method(request.method, request.data)

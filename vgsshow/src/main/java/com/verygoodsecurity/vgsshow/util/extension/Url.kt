@@ -9,7 +9,7 @@ internal infix fun String.with(path: String): String {
 }
 
 internal fun String.isValidUrl() = try {
-    URL(this).toURI()
+    URL(this)
     true
 } catch (e: Exception) {
     false

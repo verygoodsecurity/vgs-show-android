@@ -2,12 +2,31 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.util.extension.with
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
-internal class HttpUrlClient constructor(
-    private val baseUrl: String? = null
-) : IHttpClient {
+internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
 
     override fun call(request: HttpRequest): HttpResponse {
-        return HttpResponse(-1, false, "test", "test")
+        var connection: HttpURLConnection? = null
+        try {
+            connection = (baseUrl with request.path).openConnection()
+            return HttpResponse(-1, false, "test", "test")
+        } catch (e: Exception) {
+            throw e
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
+    private fun String.openConnection() = (URL(this).openConnection() as HttpURLConnection).apply {
+        (this as? HttpsURLConnection)?.sslSocketFactory = TLSSocketFactory()
+        connectTimeout = CONNECTION_TIME_OUT.toInt()
+        readTimeout = CONNECTION_TIME_OUT.toInt()
+        instanceFollowRedirects = false
+        allowUserInteraction = false
+        useCaches = false
     }
 }
