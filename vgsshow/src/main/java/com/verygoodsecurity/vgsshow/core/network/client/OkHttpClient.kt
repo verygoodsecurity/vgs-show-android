@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import okhttp3.internal.EMPTY_REQUEST
 import java.net.URL
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
@@ -36,32 +37,29 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
             .url(URL(baseUrl with request.path))
-            .header(AGENT, TEMPORARY_STR_AGENT)
-            .headers(request.headers)
-            .method(request.method, request.data)
+            .header(AGENT, TEMPORARY_STR_AGENT).also {
+                addHeaders(it, request.headers)
+                setMethod(it, request.method, request.data)
+            }
             .build()
     }
 
-    private fun Request.Builder.headers(headers: Map<String, String>?): Request.Builder {
+    private fun addHeaders(request: Request.Builder, headers: Map<String, String>?) {
         headers?.forEach {
-            this.addHeader(it.key, it.value)
+            request.addHeader(it.key, it.value)
         }
-        return this
     }
 
-    private fun Request.Builder.method(method: Method, data: String?): Request.Builder {
+    private fun setMethod(request: Request.Builder, method: Method, data: String?) {
         when (method) {
-            Method.GET -> this.method(method.value, null)
-            Method.POST -> this.method(
-                method.value,
-                data?.toRequestBody(MEDIA_TYPE)
-            )
+            Method.GET -> request.get()
+            Method.POST -> request.post(data?.toRequestBody(MEDIA_TYPE) ?: EMPTY_REQUEST)
         }
-        return this
     }
 
     companion object {
 
+        // TODO: Refactor, send media type as parameter to make this class reusable
         private val MEDIA_TYPE = APPLICATION_JSON.toMediaTypeOrNull()
     }
 

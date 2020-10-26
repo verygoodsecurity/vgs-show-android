@@ -1,21 +1,19 @@
 package com.verygoodsecurity.vgsshow.core.network
 
-import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.util.extension.*
+import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
+import com.verygoodsecurity.vgsshow.util.extension.toHttpRequest
 import okio.IOException
 import java.net.MalformedURLException
 
-internal class NetworkManager(vaultId: String, environment: String) : INetworkManager {
+internal class NetworkManager(baseUrl: String) : INetworkManager {
 
     private val client: IHttpClient by lazy {
-        with(buildBaseUrl(vaultId, environment)) {
-            if (isLollipopOrGreater) OkHttpClient(this) else HttpUrlClient(this)
-        }
+        if (isLollipopOrGreater) OkHttpClient(baseUrl) else HttpUrlClient(baseUrl)
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
@@ -33,30 +31,5 @@ internal class NetworkManager(vaultId: String, environment: String) : INetworkMa
         } catch (e: Exception) {
             VGSResponse.Error(-1, e.message)
         }
-    }
-
-    private fun buildBaseUrl(vaultId: String, environment: String): String = when {
-        !vaultId.isValidTenantId() -> {
-            logDebug("Vault id is not valid", VGSShow::class.simpleName)
-            DEFAULT_BASE_URL
-        }
-        !environment.isValidEnvironment() -> {
-            logDebug("Environment is not valid", VGSShow::class.simpleName)
-            DEFAULT_BASE_URL
-        }
-        else -> StringBuilder(SCHEME)
-            .append(vaultId).append(DIVIDER)
-            .append(environment).append(DIVIDER)
-            .append(DOMEN)
-            .toString()
-    }
-
-    companion object {
-
-        private const val DEFAULT_BASE_URL = ""
-
-        private const val SCHEME = "https://"
-        private const val DOMEN = "verygoodproxy.com"
-        private const val DIVIDER = "."
     }
 }

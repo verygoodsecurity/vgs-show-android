@@ -13,6 +13,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         var connection: HttpURLConnection? = null
         try {
             connection = (baseUrl with request.path).openConnection()
+            baseSetup(connection)
             return HttpResponse(-1, false, "test", "test")
         } catch (e: Exception) {
             throw e
@@ -21,12 +22,17 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         }
     }
 
-    private fun String.openConnection() = (URL(this).openConnection() as HttpURLConnection).apply {
-        (this as? HttpsURLConnection)?.sslSocketFactory = TLSSocketFactory()
-        connectTimeout = CONNECTION_TIME_OUT.toInt()
-        readTimeout = CONNECTION_TIME_OUT.toInt()
-        instanceFollowRedirects = false
-        allowUserInteraction = false
-        useCaches = false
+    @Throws(ClassCastException::class)
+    private fun String.openConnection() = (URL(this).openConnection() as HttpURLConnection)
+
+    private fun baseSetup(connection: HttpURLConnection) {
+        with(connection) {
+            (this as? HttpsURLConnection)?.sslSocketFactory = TLSSocketFactory()
+            connectTimeout = CONNECTION_TIME_OUT.toInt()
+            readTimeout = CONNECTION_TIME_OUT.toInt()
+            instanceFollowRedirects = false
+            allowUserInteraction = false
+            useCaches = false
+        }
     }
 }
