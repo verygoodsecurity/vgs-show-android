@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -150,7 +151,7 @@ class VGSTextView @JvmOverloads constructor(
         if (isAttachPermitted) {
             super.onAttachedToWindow()
             setAddStatesFromChildren(true)
-            fieldState?.attach(this)
+            fieldState?.attachTo(this)
             isAttachPermitted = false
         }
     }
@@ -175,6 +176,15 @@ class VGSTextView @JvmOverloads constructor(
         fieldState?.right = right
         fieldState?.bottom = bottom
         super.setPadding(0, 0, 0, 0)
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return fieldState?.saveInstanceState(super.onSaveInstanceState())
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        fieldState?.onRestoreInstanceState(state)
+        super.onRestoreInstanceState(state)
     }
 
 }

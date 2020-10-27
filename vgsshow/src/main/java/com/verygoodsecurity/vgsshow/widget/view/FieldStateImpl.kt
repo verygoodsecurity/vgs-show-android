@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.widget.view
 
+import android.os.Parcelable
 import android.widget.TextView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
@@ -85,6 +86,14 @@ internal class FieldStateImpl(
     fun attachTo(inputFieldView: VGSTextView) {
         inputFieldView.addView(field)
         field.setPadding(left, top, right, bottom)
+    }
+
+    fun saveInstanceState(state: Parcelable?): Parcelable? {
+        return field.getSaveState(state)
+    }
+
+    fun onRestoreInstanceState(state: Parcelable?) {
+        field.setRestoreState(state)
     }
 
     val isViewReady:Boolean
