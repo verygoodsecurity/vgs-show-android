@@ -1,17 +1,17 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
-import com.verygoodsecurity.vgsshow.core.network.client.Method
+import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 
 class VGSRequest private constructor(
     val path: String,
-    val method: Method,
+    val method: HttpMethod,
     var headers: Map<String, String>? = null,
     var data: Map<String, Any>? = null,
 ) {
 
     data class Builder(
         private val path: String,
-        private val method: Method,
+        private val method: HttpMethod,
         private var headers: Map<String, String>? = null,
         private var data: Map<String, Any>? = null
     ) {

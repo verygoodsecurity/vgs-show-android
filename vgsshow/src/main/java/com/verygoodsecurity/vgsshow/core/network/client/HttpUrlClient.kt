@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
+import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.with
+import com.verygoodsecurity.vgsshow.util.extension.*
+import java.io.IOException
 import java.net.HttpURLConnection
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
+import java.net.HttpURLConnection.HTTP_OK
 
 internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
 
@@ -13,8 +14,23 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         var connection: HttpURLConnection? = null
         try {
             connection = (baseUrl with request.path).openConnection()
-            baseSetup(connection)
-            return HttpResponse(-1, false, "test", "test")
+                .setSSLSocketFactory(TLSSocketFactory())
+                .callTimeout(CONNECTION_TIME_OUT)
+                .readTimeout(CONNECTION_TIME_OUT)
+                .setInstanceFollowRedirectEnabled(false)
+                .setIsUserInteractionEnabled(false)
+                .setCacheEnabled(false)
+                .addHeaders(request.headers)
+                .setMethod(request.method)
+
+            logDebug("Request{method=${connection.requestMethod}}", VGSShow::class.simpleName)
+            writeData(connection, request.data)
+
+            logDebug(
+                "Response{code=${connection.responseCode}, message=${connection.responseMessage}}",
+                VGSShow::class.simpleName
+            )
+            return readResponse(connection)
         } catch (e: Exception) {
             throw e
         } finally {
@@ -22,17 +38,24 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         }
     }
 
-    @Throws(ClassCastException::class)
-    private fun String.openConnection() = (URL(this).openConnection() as HttpURLConnection)
+    @Throws(IOException::class)
+    private fun writeData(connection: HttpURLConnection, data: String?) {
+        data?.toByteArray(Charsets.UTF_8).let {
+            connection.outputStream.use { os ->
+                os.write(it)
+            }
+        }
+    }
 
-    private fun baseSetup(connection: HttpURLConnection) {
-        with(connection) {
-            (this as? HttpsURLConnection)?.sslSocketFactory = TLSSocketFactory()
-            connectTimeout = CONNECTION_TIME_OUT.toInt()
-            readTimeout = CONNECTION_TIME_OUT.toInt()
-            instanceFollowRedirects = false
-            allowUserInteraction = false
-            useCaches = false
+    @Throws(IOException::class)
+    private fun readResponse(connection: HttpURLConnection): HttpResponse {
+        return when (val responseCode = connection.responseCode) {
+            HTTP_OK -> connection.inputStream.bufferedReader().use {
+                HttpResponse(responseCode, true, responseBody = it.readText())
+            }
+            else -> connection.errorStream.bufferedReader().use {
+                HttpResponse(responseCode, false, message = it.readText())
+            }
         }
     }
 }

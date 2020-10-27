@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.Environment
 import com.verygoodsecurity.vgsshow.core.network.NetworkManager
-import com.verygoodsecurity.vgsshow.core.network.client.Method
+import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.extension.isValidEnvironment
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
@@ -23,7 +23,7 @@ class VGSShow {
     fun request(fieldName: String, alias: String) {
         logDebug("show{fieldName=$fieldName, alias=$alias}")
         val response = networkManager.execute(
-            VGSRequest.Builder("post", Method.POST)
+            VGSRequest.Builder("post", HttpMethod.POST)
                 .body(mapOf(fieldName to alias))
                 .build()
         )
