@@ -10,7 +10,7 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow("tntaq8uft80", Environment.SANDBOX)
+        VGSShow(this, "tntaq8uft80", Environment.SANDBOX)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

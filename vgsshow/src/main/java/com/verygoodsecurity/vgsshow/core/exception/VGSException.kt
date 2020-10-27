@@ -30,7 +30,7 @@ sealed class VGSException : Exception() {
         override val errorMessage: String? = "Permission denied (missing INTERNET permission?)"
     }
 
-    class NoNetworkConnection : VGSException() {
+    class NoInternetConnection : VGSException() {
 
         override val code: Int
             get() = 1482

@@ -1,3 +1,6 @@
-<manifest package="com.verygoodsecurity.vgsshow">
+<manifest package="com.verygoodsecurity.vgsshow"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
