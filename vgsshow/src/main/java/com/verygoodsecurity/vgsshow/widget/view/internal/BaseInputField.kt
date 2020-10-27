@@ -7,4 +7,7 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
 
     var fieldName: String? = null
 
+    override fun getText(): CharSequence? {
+        return String()
+    }
 }

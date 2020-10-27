@@ -82,7 +82,7 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.setPadding(left, top, right, value)
         }
 
-    fun attach(inputFieldView: VGSTextView) {
+    fun attachTo(inputFieldView: VGSTextView) {
         inputFieldView.addView(field)
         field.setPadding(left, top, right, bottom)
     }
