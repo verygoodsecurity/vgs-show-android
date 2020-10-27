@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Text to display. -->
+    <attr name="text" format="string" localization="suggested" />
+
+    <!--    Sets the text to be used for data transfer to VGS proxy.
+         Usually, it is similar to field-name in JSON path in your inbound route filters.
+         It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
+    <attr name="fieldName" format="string" localization="suggested" />
+
+    <declare-styleable name="VGSTextView">
+
+        <attr name="text" />
+
+        <attr name="fieldName" />
+
+    </declare-styleable>
+
+</resources>
