@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
+import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import okhttp3.Response
 
 internal fun VGSRequest.toHttpRequest() = HttpRequest(
@@ -18,3 +20,5 @@ internal fun Response.toHttpResponse() = HttpResponse(
     this.message,
     this.body?.string()
 )
+
+internal fun VGSException.toVGSResponse() = VGSResponse.Error(this)

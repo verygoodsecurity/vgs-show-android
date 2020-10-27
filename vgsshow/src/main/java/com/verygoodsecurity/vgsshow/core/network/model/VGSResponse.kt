@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
+
 sealed class VGSResponse {
 
     abstract val code: Int
@@ -13,11 +15,10 @@ sealed class VGSResponse {
         override fun toString() = "Code: $code \n $raw"
     }
 
-    data class Error constructor(
-        override val code: Int,
-        val message: String?
-    ) : VGSResponse() {
+    data class Error constructor(val exception: VGSException) : VGSResponse() {
 
-        override fun toString() = "Code: $code \n $message"
+        override val code: Int = exception.code
+
+        override fun toString() = "Code: $code \n ${exception.message}"
     }
 }

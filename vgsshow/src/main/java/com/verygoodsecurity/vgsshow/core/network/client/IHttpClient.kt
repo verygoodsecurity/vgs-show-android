@@ -1,15 +1,14 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
 import androidx.annotation.WorkerThread
-import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 
+// TODO: refactor, send content type as parameter to make this class reusable
+internal const val CONTENT_TYPE = "Content-type"
 internal const val APPLICATION_JSON = "application/json"
-internal const val CONNECTION_TIME_OUT = 60000L
 
-internal const val AGENT = "VGS-CLIENT"
-internal const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-show&content=${BuildConfig.VERSION_NAME}"
+internal const val CONNECTION_TIME_OUT = 60000L
 
 internal interface IHttpClient {
 
