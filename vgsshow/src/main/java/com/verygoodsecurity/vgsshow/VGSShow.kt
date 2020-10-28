@@ -17,7 +17,6 @@ import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlin.concurrent.thread
 
 class VGSShow {
 
@@ -40,13 +39,6 @@ class VGSShow {
             UrlHelper.buildProxyUrl(vaultId, environment),
             ConnectionHelper(context)
         )
-        thread(start = true) {
-            while (true) {
-                listeners.forEach {
-
-                }
-            }
-        }
     }
 
     @WorkerThread
@@ -57,19 +49,22 @@ class VGSShow {
                 .body(mapOf(fieldName to token))
                 .build()
         )
-        notifyResponse(fieldName, response)
+        mainHandler.post {
+            notifyResponseListeners(response)
+            notifyViews(fieldName, response)
+        }
     }
 
     fun addResponseListener(listener: VGSResponseListener) {
-        this.listeners.add(listener)
+        listeners.add(listener)
     }
 
     fun removeResponseListener(listener: VGSResponseListener) {
-        this.listeners.remove(listener)
+        listeners.remove(listener)
     }
 
     fun clearResponseListeners() {
-        this.listeners.clear()
+        listeners.clear()
     }
 
     fun bindView(view: VGSTextView) {
@@ -85,20 +80,18 @@ class VGSShow {
     internal fun getResponseListeners() = listeners
     //endregion
 
-    private fun notifyResponse(fieldName: String, response: VGSResponse) {
-        when (response) {
-            is VGSResponse.Success -> {
-                mainHandler.post { updateViews(fieldName, response) }
-                // TODO Notify listeners(and probably move check logic to another place)
-            }
-            is VGSResponse.Error -> {
-                // TODO Notify listeners(and probably move check logic to another place)
-            }
+    @MainThread
+    private fun notifyResponseListeners(response: VGSResponse) {
+        listeners.forEach {
+            it.onResponse(response)
         }
     }
 
     @MainThread
-    private fun updateViews(fieldName: String, response: VGSResponse.Success) {
+    private fun notifyViews(fieldName: String, response: VGSResponse) {
+        if (response !is VGSResponse.Success) {
+            return
+        }
         // TODO: implement view update correct(Current implementation is just for testing)
         ((response.data?.get("response") as? Map<*, *>)?.get("data") as? String)?.let {
             viewStore.find { view -> view.getFieldName() == fieldName }?.setText(it)
