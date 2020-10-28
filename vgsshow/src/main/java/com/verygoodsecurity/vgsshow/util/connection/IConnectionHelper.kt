@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.util.connection
 
-interface IConnectionHelper {
+internal interface IConnectionHelper {
 
     fun isConnectionAvailable(): Boolean
 }

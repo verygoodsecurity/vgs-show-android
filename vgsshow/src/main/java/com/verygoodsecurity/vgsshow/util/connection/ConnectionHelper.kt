@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import java.lang.ref.WeakReference
 
-class ConnectionHelper(context: Context) : IConnectionHelper {
+internal class ConnectionHelper(context: Context) : IConnectionHelper {
 
     private val context: WeakReference<Context> = WeakReference(context)
 
