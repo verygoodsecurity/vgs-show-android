@@ -17,18 +17,17 @@ import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import kotlin.concurrent.thread
 
 class VGSShow {
 
     private val listeners: MutableSet<VGSResponseListener> by lazy { mutableSetOf() }
 
-    private val proxyNetworkManager: IHttpRequestManager
-
-    private val viewStore = mutableListOf<VGSTextView>()
+    private val viewStore: MutableSet<VGSTextView> by lazy { mutableSetOf() }
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
+
+    private val proxyNetworkManager: IHttpRequestManager
 
     constructor(
         context: Context,
@@ -61,14 +60,6 @@ class VGSShow {
         notifyResponse(fieldName, response)
     }
 
-    fun bind(view: VGSTextView) {
-        viewStore.add(view)
-    }
-
-    fun unbind(view: VGSTextView) {
-        viewStore.remove(view)
-    }
-
     fun addResponseListener(listener: VGSResponseListener) {
         this.listeners.add(listener)
     }
@@ -79,6 +70,14 @@ class VGSShow {
 
     fun clearResponseListeners() {
         this.listeners.clear()
+    }
+
+    fun bindView(view: VGSTextView) {
+        viewStore.add(view)
+    }
+
+    fun unbindView(view: VGSTextView) {
+        viewStore.remove(view)
     }
 
     //region Helper methods for testing

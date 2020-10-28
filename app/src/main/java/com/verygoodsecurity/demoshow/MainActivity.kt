@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showVgs.bind(vgsSecureView)
+        showVgs.bindView(vgsSecureView)
 
         requestButton?.setOnClickListener {
             thread(start = true) {
