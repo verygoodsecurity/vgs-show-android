@@ -103,6 +103,6 @@ internal class TLSSocketFactory : SSLSocketFactory() {
     fun mergeProtocols(protocols: Array<String>?): Array<String> {
         return protocols?.run {
             setOf(*this, TLS_V11, TLS_V12).toTypedArray()
-        }?:arrayOf(TLS_V11, TLS_V12)
+        } ?: arrayOf(TLS_V11, TLS_V12)
     }
 }
