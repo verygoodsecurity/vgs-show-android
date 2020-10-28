@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity() {
 
         showVgs.bind(vgsSecureView)
 
-        btn?.setOnClickListener {
+        requestButton?.setOnClickListener {
             thread(start = true) {
-                showVgs.request("card_number_3", "tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE")
+                showVgs.request("card_number", "tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE")
             }
         }
     }

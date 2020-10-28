@@ -1,12 +1,16 @@
 package com.verygoodsecurity.vgsshow
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.Environment
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
+import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
@@ -16,7 +20,9 @@ class VGSShow {
 
     private val proxyNetworkManager: IHttpRequestManager
 
-    private val store = mutableListOf<VGSTextView>()
+    private val viewStore = mutableListOf<VGSTextView>()
+
+    private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     constructor(
         context: Context,
@@ -39,14 +45,34 @@ class VGSShow {
                 .body(mapOf(fieldName to token))
                 .build()
         )
-        logDebug(response.toString())
+        notifyResponse(fieldName, response)
     }
 
     fun bind(view: VGSTextView) {
-        store.add(view)
+        viewStore.add(view)
     }
 
     fun unbind(view: VGSTextView) {
-        store.remove(view)
+        viewStore.remove(view)
+    }
+
+    private fun notifyResponse(fieldName: String, response: VGSResponse) {
+        when (response) {
+            is VGSResponse.Success -> {
+                mainHandler.post { updateViews(fieldName, response) }
+                // TODO Notify listeners(and probably move check logic to another place)
+            }
+            is VGSResponse.Error -> {
+                // TODO Notify listeners(and probably move check logic to another place)
+            }
+        }
+    }
+
+    @MainThread
+    private fun updateViews(fieldName: String, response: VGSResponse.Success) {
+        // TODO: implement view update correct(Current implementation is just for testing)
+        ((response.data?.get("response") as? Map<*, *>)?.get("data") as? String)?.let {
+            viewStore.find { view -> view.getFieldName() == fieldName }?.setText(it)
+        }
     }
 }
