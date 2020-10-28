@@ -1,7 +1,6 @@
 package com.verygoodsecurity.demoshow
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.Environment
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showVgs.bindView(vgsSecureView)
+        showVgs.bind(vgsSecureView)
 
         btn?.setOnClickListener {
             thread(start = true) {

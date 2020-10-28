@@ -7,13 +7,16 @@ import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
-import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.url.UrlHelper
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
 class VGSShow {
 
     private val proxyNetworkManager: IHttpRequestManager
+
+    private val store = mutableListOf<VGSTextView>()
 
     constructor(
         context: Context,
@@ -37,5 +40,13 @@ class VGSShow {
                 .build()
         )
         logDebug(response.toString())
+    }
+
+    fun bind(view: VGSTextView) {
+        store.add(view)
+    }
+
+    fun unbind(view: VGSTextView) {
+        store.remove(view)
     }
 }
