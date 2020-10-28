@@ -1,6 +1,10 @@
 package com.verygoodsecurity.vgsshow.widget.view
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Parcelable
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.TextView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
@@ -81,6 +85,44 @@ internal class FieldStateImpl(
             val top = top
             val right = right
             this@FieldStateImpl.field.setPadding(left, top, right, value)
+        }
+
+    internal var enabled: Boolean = true
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.isEnabled = value
+        }
+
+    internal var textColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setTextColor(value)
+        }
+
+    internal var textSize: Float = -1f
+        set(value) {
+            if(value != -1f) {
+                field = value
+                this@FieldStateImpl.field.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
+            }
+        }
+
+    internal var isSingleLine: Boolean = true
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.isSingleLine = value
+        }
+
+    internal var gravity: Int = Gravity.START or Gravity.CENTER_VERTICAL
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.gravity = value
+        }
+
+    internal var typeface: Typeface? = this@FieldStateImpl.field.typeface
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.typeface = value
         }
 
     fun attachTo(inputFieldView: VGSTextView) {
