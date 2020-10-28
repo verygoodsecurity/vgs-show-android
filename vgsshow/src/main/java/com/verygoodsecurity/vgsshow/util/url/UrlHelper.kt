@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.core.network.url
+package com.verygoodsecurity.vgsshow.util.url
 
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.util.extension.isValidEnvironment

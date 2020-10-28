@@ -8,9 +8,9 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
-import com.verygoodsecurity.vgsshow.util.extension.toHttpRequest
+import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.util.extension.toMap
-import com.verygoodsecurity.vgsshow.util.extension.toVGSResponse
+import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException

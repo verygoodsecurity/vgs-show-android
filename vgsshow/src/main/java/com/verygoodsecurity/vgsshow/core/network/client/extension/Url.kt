@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.util.extension
+package com.verygoodsecurity.vgsshow.core.network.client.extension
 
 private const val URL_SEPARATOR = "/"
 

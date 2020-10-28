@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.util.extension
+package com.verygoodsecurity.vgsshow.core.network.client.extension
 
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import java.net.HttpURLConnection
@@ -53,6 +53,6 @@ internal fun HttpURLConnection.addHeaders(headers: Map<String, String>?): HttpUR
 }
 
 internal fun HttpURLConnection.setMethod(method: HttpMethod): HttpURLConnection {
-    requestMethod = method.value
+    requestMethod = method.name
     return this
 }

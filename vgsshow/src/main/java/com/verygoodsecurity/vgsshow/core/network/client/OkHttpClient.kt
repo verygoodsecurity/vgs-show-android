@@ -3,8 +3,12 @@ package com.verygoodsecurity.vgsshow.core.network.client
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
+import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
+import com.verygoodsecurity.vgsshow.core.network.client.extension.with
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.*
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

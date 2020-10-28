@@ -1,6 +1,11 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
 import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.network.client.extension.*
+import com.verygoodsecurity.vgsshow.core.network.client.extension.callTimeout
+import com.verygoodsecurity.vgsshow.core.network.client.extension.openConnection
+import com.verygoodsecurity.vgsshow.core.network.client.extension.readTimeout
+import com.verygoodsecurity.vgsshow.core.network.client.extension.setSSLSocketFactory
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.*

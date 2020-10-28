@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.util.extension
+package com.verygoodsecurity.vgsshow.core.network.client.extension
 
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import okhttp3.MediaType

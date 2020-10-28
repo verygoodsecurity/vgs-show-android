@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.util.extension
+package com.verygoodsecurity.vgsshow.core.network.client.extension
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
