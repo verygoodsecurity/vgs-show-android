@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.toHttpRequest
+import com.verygoodsecurity.vgsshow.util.extension.toMap
 import com.verygoodsecurity.vgsshow.util.extension.toVGSResponse
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
@@ -29,8 +30,13 @@ internal class HttpRequestManager(
         }
         return try {
             val response = client.call(request.toHttpRequest())
+            // TODO: Create extension in Mapper.kt to map HttpResponse to VGSResponse
             if (response.isSuccessful) {
-                VGSResponse.Success(response.code, mapOf(), response.responseBody)
+                VGSResponse.Success(
+                    response.code,
+                    response.responseBody?.toMap(),
+                    response.responseBody
+                )
             } else {
                 VGSResponse.Error(VGSException.Exception(response.code, response.message))
             }

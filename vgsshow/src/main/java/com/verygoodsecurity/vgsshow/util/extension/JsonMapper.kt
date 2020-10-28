@@ -1,9 +1,10 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
-internal fun Map<*, *>.mapToJSON(): JSONObject {
+internal fun Map<*, *>.toJSON(): JSONObject {
     val jObjectData = JSONObject()
     this.forEach { entry ->
         val key: String = entry.key.toString()
@@ -15,7 +16,7 @@ internal fun Map<*, *>.mapToJSON(): JSONObject {
             is Float -> jObjectData.put(key, entry.value)
             is Double -> jObjectData.put(key, entry.value as Double)
             is Map<*, *> -> {
-                val j = (entry.value as Map<*, *>).mapToJSON()
+                val j = (entry.value as Map<*, *>).toJSON()
                 jObjectData.put(key, j)
             }
             is Array<*> -> {
@@ -42,7 +43,7 @@ private fun Collection<*>.mapCollectionToJSON(): JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapToJSON()
+                val obj = entry.toJSON()
                 array.put(obj)
             }
             is Array<*> -> {
@@ -69,7 +70,7 @@ private fun Array<*>.mapArrToJSON(): JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapToJSON()
+                val obj = entry.toJSON()
                 array.put(obj)
             }
             is Array<*> -> {
@@ -83,4 +84,77 @@ private fun Array<*>.mapArrToJSON(): JSONArray {
         }
     }
     return array
+}
+
+@Throws(JSONException::class)
+internal fun String.toMap(): Map<String, Any> {
+    val resultMap = HashMap<String, Any>()
+    when {
+        isJSONObjectValid(this) -> {
+            val json = JSONObject(this)
+            resultMap["response"] = json.toMap()
+        }
+        isJSONArrayValid(this) -> {
+            val json = JSONArray(this)
+            resultMap["response"] = json.toList()
+        }
+    }
+
+    return resultMap
+}
+
+private fun isJSONObjectValid(str: String?): Boolean {
+    var isObject = false
+    try {
+        JSONObject(str)
+        isObject = true
+    } catch (ex: JSONException) {
+    } finally {
+        return isObject
+    }
+}
+
+
+private fun isJSONArrayValid(str: String?): Boolean {
+    var isObject = false
+    try {
+        JSONArray(str)
+        isObject = true
+    } catch (ex: JSONException) {
+    } finally {
+        return isObject
+    }
+}
+
+@Throws(JSONException::class)
+private fun JSONObject.toMap(): Map<String, Any> {
+    val map: MutableMap<String, Any> =
+        HashMap()
+    val keysItr = this.keys()
+    while (keysItr.hasNext()) {
+        val key = keysItr.next()
+        var value = this[key]
+        if (value is JSONArray) {
+            value = value.toList()
+        } else if (value is JSONObject) {
+            value = value.toMap()
+        }
+        map[key] = value
+    }
+    return map
+}
+
+@Throws(JSONException::class)
+private fun JSONArray.toList(): List<Any> {
+    val list: MutableList<Any> = ArrayList()
+    for (i in 0 until this.length()) {
+        var value = this[i]
+        if (value is JSONArray) {
+            value = value.toList()
+        } else if (value is JSONObject) {
+            value = value.toMap()
+        }
+        list.add(value)
+    }
+    return list
 }
