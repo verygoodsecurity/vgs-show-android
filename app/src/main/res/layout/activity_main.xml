@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentV"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,26 +11,16 @@
         android:id="@+id/vgsSecureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fieldName="someName"
-        android:padding="@dimen/default_margin"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/default_margin"
-        app:text="123" />
+        app:fieldName="card_number"
+        app:text="tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE" />
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/requestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:text="request" />
-
-    <Button
-        android:id="@+id/Testbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="Test" />
-
 </LinearLayout>

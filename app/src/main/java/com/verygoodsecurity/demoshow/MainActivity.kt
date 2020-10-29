@@ -1,60 +1,27 @@
 package com.verygoodsecurity.demoshow
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
-import com.verygoodsecurity.vgsshow.core.VGSShow
+import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.Environment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    private val show = VGSShow()
+    private val showVgs: VGSShow by lazy {
+        VGSShow(this, "tntaq8uft80", Environment.SANDBOX)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupTextView()
+        showVgs.bind(vgsSecureView)
 
-        btn?.setOnClickListener {
-            revealData()
-        }
-        Testbtn?.setOnClickListener {
-            testfunc()
-        }
-    }
-
-    private fun setupTextView() {
-        show.bindView(vgsSecureView)
-
-        vgsSecureView.setOnClickListener {
-            Log.e("test", "CLICK $it")
-        }
-    }
-
-    private fun revealData() {
-        parentV.requestLayout()
-        vgsSecureView.requestLayout()
-        vgsSecureView.invalidate()
-
-        show.request("fieldName", "123")
-        show.request("fieldName_2", "123")
-        show.request("someName", "123")
-    }
-
-    fun testfunc() {
-        vgsSecureView?.requestFocus()
-        for(ch in 0..vgsSecureView.childCount) {
-            val child = vgsSecureView.getChildAt(ch)
-
-            if(child is TextView) {
-                Log.e("test", "getText() = ${child.text}")
-                Log.e("test", "getEditableText() = ${child.editableText}")
-                child.addTextChangedListener {
-                    Log.e("test", "TEXT_WATHCER $it")
-                }
+        requestButton?.setOnClickListener {
+            thread(start = true) {
+                showVgs.request("card_number", "tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE")
             }
         }
     }

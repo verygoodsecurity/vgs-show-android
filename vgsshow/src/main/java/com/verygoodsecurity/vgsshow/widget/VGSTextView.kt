@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
@@ -9,12 +10,13 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 
 class VGSTextView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var isAttachPermitted = true
@@ -29,22 +31,14 @@ class VGSTextView @JvmOverloads constructor(
         fieldState = FieldStateImpl(field)
 
 
-        context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.VGSTextView,
-                0, 0
-        ).apply {
-            try {
-                val text = getString(R.styleable.VGSTextView_text)
-                val fieldName = getString(R.styleable.VGSTextView_fieldName)
+        context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
+            val text = getString(R.styleable.VGSTextView_text)
+            val fieldName = getString(R.styleable.VGSTextView_fieldName)
 
-                setText(text)
-                setFieldName(fieldName)
+            setText(text)
+            setFieldName(fieldName)
 
-                setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-            } finally {
-                recycle()
-            }
+            setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         }
     }
 
@@ -186,5 +180,11 @@ class VGSTextView @JvmOverloads constructor(
         fieldState?.onRestoreInstanceState(state)
         super.onRestoreInstanceState(state)
     }
-
 }
+
+private fun Context.getStyledAttributes(
+    attributeSet: AttributeSet?,
+    styleArray: IntArray, block: TypedArray.() -> Unit
+) = this
+    .obtainStyledAttributes(attributeSet, styleArray, 0, 0)
+    .use(block)
