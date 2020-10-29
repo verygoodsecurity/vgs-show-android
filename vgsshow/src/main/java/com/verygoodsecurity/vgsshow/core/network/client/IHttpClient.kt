@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
+import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
@@ -15,4 +16,7 @@ internal interface IHttpClient {
     @WorkerThread
     @Throws(Exception::class)
     fun call(request: HttpRequest): HttpResponse
+
+    @AnyThread
+    fun enqueue(request: HttpRequest)
 }

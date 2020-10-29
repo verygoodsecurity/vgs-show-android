@@ -33,6 +33,10 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     override fun call(request: HttpRequest): HttpResponse =
         client.newCall(buildOkHttpRequest(request)).execute().toHttpResponse()
 
+    override fun enqueue(request: HttpRequest) {
+        // TODO: implement
+    }
+
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()

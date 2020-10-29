@@ -2,18 +2,20 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.*
-import com.verygoodsecurity.vgsshow.core.network.client.extension.callTimeout
-import com.verygoodsecurity.vgsshow.core.network.client.extension.openConnection
-import com.verygoodsecurity.vgsshow.core.network.client.extension.readTimeout
-import com.verygoodsecurity.vgsshow.core.network.client.extension.setSSLSocketFactory
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.*
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.HttpURLConnection.HTTP_OK
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
+
+    private val executor: Executor by lazy {
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    }
 
     override fun call(request: HttpRequest): HttpResponse {
         var connection: HttpURLConnection? = null
@@ -41,6 +43,12 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
             throw e
         } finally {
             connection?.disconnect()
+        }
+    }
+
+    override fun enqueue(request: HttpRequest) {
+        executor.execute {
+            // TODO: implement
         }
     }
 
