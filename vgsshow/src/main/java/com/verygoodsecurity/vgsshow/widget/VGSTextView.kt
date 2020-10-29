@@ -129,7 +129,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return The text used by the field.
      */
-    fun getFieldName(): String? = fieldState?.fieldName
+    fun getFieldName(): String = fieldState?.fieldName?:""
 
 
     override fun onDetachedFromWindow() {
