@@ -46,7 +46,6 @@
                 android:layout_margin="@dimen/default_margin"
                 android:padding="4dp"
                 app:textSize="12dp"
-                app:text="4111111111111111"
                 app:fieldName="cardNumber"
                 app:numberDivider=" "
                 app:imeOptions="actionNext"
@@ -137,7 +136,7 @@
             app:textStyle="italic"
             app:textColor="@android:color/holo_red_dark"
             android:layout_marginTop="15dp"
-            app:fieldName="response.json.number"
+            app:fieldName="json.number"
             app:text="no data" />
 
         <com.verygoodsecurity.vgsshow.widget.VGSTextView
@@ -150,7 +149,7 @@
             app:textColor="@android:color/holo_red_dark"
             android:layout_marginTop="47dp"
             android:layout_marginBottom="30dp"
-            app:fieldName="response.json.expiration"
+            app:fieldName="json.expiration"
             app:text="no data" />
 
         <Button
