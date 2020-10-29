@@ -12,9 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fieldName="someName"
+        app:gravity="center"
+        app:textColor="#8900f088"
+        app:textSize="33sp"
+        app:textStyle="italic"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/default_margin"
-        app:text="123" />
+        app:text="test" />
 
     <Button
         android:id="@+id/btn"
