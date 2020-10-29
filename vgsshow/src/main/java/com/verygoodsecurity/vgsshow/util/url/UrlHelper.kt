@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgsshow.util.extension.isValidEnvironment
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 
-object UrlHelper {
+internal object UrlHelper {
 
     private const val HTTPS_SCHEME = "https://"
 

@@ -8,11 +8,13 @@ sealed class VGSResponse {
 
     data class Success constructor(
         override val code: Int,
-        val data: Map<String, Any>?,
-        val raw: String?
+        internal val data: Map<String, Any>?,
+        internal val raw: String?
     ) : VGSResponse() {
 
-        override fun toString() = "Code: $code \n $raw"
+        override fun toString() = "Code: $code"
+
+        internal fun toStringRaw() = "Code: $code \n $raw"
     }
 
     data class Error constructor(val exception: VGSException) : VGSResponse() {
