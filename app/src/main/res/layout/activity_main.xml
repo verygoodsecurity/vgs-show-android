@@ -1,26 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <com.verygoodsecurity.vgsshow.widget.VGSTextView
-        android:id="@+id/vgsSecureView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/default_margin"
-        app:fieldName="card_number"
-        app:text="tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#11ff0000"
+        android:padding="4dp">
 
-    <Button
-        android:id="@+id/requestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="request" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Collect SDK"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/submitProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            android:background="#00000000"
+            android:progressTint="@color/colorPrimary"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:boxCornerRadius="4dp"
+            app:hint="Card Number"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorPrimary">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:id="@+id/cardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="4dp"
+                app:textSize="12dp"
+                app:text="4111111111111111"
+                app:fieldName="cardNumber"
+                app:numberDivider=" "
+                app:imeOptions="actionNext"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <TextView
+            android:id="@+id/tokenView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="token:"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:boxCornerRadius="4dp"
+            app:hint="Expiration Date"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorPrimary">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/expDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:textSize="12dp"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="4dp"
+                app:fieldName="expDate"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <TextView
+            android:id="@+id/tokenView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="token:"/>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:layout_margin="16dp"
+            android:text="Submit" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#88000000"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#1100ff00"
+        android:orientation="vertical"
+        android:paddingStart="8dp"
+        android:padding="4dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Show SDK"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progressReveal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            android:background="#00000000"
+            android:progressTint="@color/colorPrimary"/>
+
+
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+            android:id="@+id/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:textSize="14dp"
+            app:textStyle="italic"
+            app:textColor="@android:color/holo_red_dark"
+            android:layout_marginTop="15dp"
+            app:fieldName="response.json.number"
+            app:text="no data" />
+
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+            android:id="@+id/expiration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:textSize="14dp"
+            app:textStyle="italic"
+            app:textColor="@android:color/holo_red_dark"
+            android:layout_marginTop="47dp"
+            android:layout_marginBottom="30dp"
+            app:fieldName="response.json.expiration"
+            app:text="no data" />
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:textAllCaps="false"
+            android:text="Reveal" />
+    </LinearLayout>
+
 </LinearLayout>
