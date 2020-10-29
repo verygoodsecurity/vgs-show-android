@@ -59,12 +59,16 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
     private fun setupCollect() {
         submitButton?.setOnClickListener {
             submitProgress?.visibility = View.VISIBLE
+            cardNumber?.isEnabled = false
+            expDate?.isEnabled = false
             vgsForm.asyncSubmit("/post", HTTPMethod.POST)
         }
 
         vgsForm.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
                 submitProgress?.visibility = View.INVISIBLE
+                cardNumber?.isEnabled = true
+                expDate?.isEnabled = true
 
                 try {
                 val json = when(response) {
