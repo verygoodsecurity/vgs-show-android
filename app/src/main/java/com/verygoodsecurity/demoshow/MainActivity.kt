@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         VGSShow(this, "tntpszqgikn", Environment.SANDBOX)
     }
 
-    private val vgsForm:VGSCollect by lazy {
+    private val vgsForm: VGSCollect by lazy {
         VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         Log.d(MainActivity::class.simpleName, response.toString())
     }
 
-    private var revealtoken:String = ""
-    private var revealtoken2:String = ""
+    private var revealtoken: String = ""
+    private var revealtoken2: String = ""
 
     private fun setupCollect() {
         submitButton?.setOnClickListener {
@@ -71,15 +71,16 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
                 expDate?.isEnabled = true
 
                 try {
-                val json = when(response) {
-                    is CollectSuccessResponse -> JSONObject(response?.rawResponse)
-                    else -> null
+                    val json = when (response) {
+                        is CollectSuccessResponse -> JSONObject(response?.rawResponse)
+                        else -> null
+                    }
+
+
+                    parseNumberToken(json)
+                    parseDateToken(json)
+                } catch (e: JSONException) {
                 }
-
-
-                parseNumberToken(json)
-                parseDateToken(json)
-                } catch (e: JSONException) { }
             }
         })
         vgsForm.bindView(cardNumber)
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
 
     private fun parseDateToken(json: JSONObject?) {
         json?.let {
-            if(it.has("json") && it.getJSONObject("json").has("expDate")) {
+            if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate")?.let {
                     tokenView2?.text = "token: $it"
                     revealtoken2 = it
@@ -99,7 +100,7 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
 
     private fun parseNumberToken(json: JSONObject?) {
         json?.let {
-            if(it.has("json") && it.getJSONObject("json").has("cardNumber")) {
+            if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let {
                     tokenView1?.text = "token: $it"
                     revealtoken = it

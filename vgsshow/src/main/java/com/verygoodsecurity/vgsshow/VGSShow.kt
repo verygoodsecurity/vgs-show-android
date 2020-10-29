@@ -99,13 +99,13 @@ class VGSShow {
         }
 
         try {
-            viewStore.forEach { view->
+            viewStore.forEach { view ->
                 var jsonObj = JSONObject(response.raw)
 
                 view.getFieldName().split(".").forEach {
-                    if(jsonObj.has(it)) {
+                    if (jsonObj.has(it)) {
                         val instance = jsonObj.get(it)
-                        when(instance) {
+                        when (instance) {
                             is JSONObject -> jsonObj = instance
                             is JSONArray -> {  }
                             else -> view.setText(instance.toString())
