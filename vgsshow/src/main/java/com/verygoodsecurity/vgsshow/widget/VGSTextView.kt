@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
@@ -128,7 +129,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return The text used by the field.
      */
-    open fun getFieldName(): String? = fieldState?.fieldName
+    fun getFieldName(): String? = fieldState?.fieldName
 
 
     override fun onDetachedFromWindow() {
@@ -197,11 +198,73 @@ class VGSTextView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        fieldState?.left = left
-        fieldState?.top = top
-        fieldState?.right = right
-        fieldState?.bottom = bottom
+        fieldState?.paddingLeft = left
+        fieldState?.paddingTop = top
+        fieldState?.paddingRight = right
+        fieldState?.paddingBottom = bottom
         super.setPadding(0, 0, 0, 0)
+    }
+
+
+    /**
+     * Returns the bottom padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the bottom padding in pixels
+     */
+    override fun getPaddingBottom(): Int {
+        return fieldState?.paddingBottom?:super.getPaddingBottom()
+    }
+
+    /**
+     * Returns the end padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the end padding in pixels
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingEnd(): Int {
+        return fieldState?.paddingEnd?:super.getPaddingEnd()
+    }
+
+    /**
+     * Returns the left padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the left padding in pixels
+     */
+    override fun getPaddingLeft(): Int {
+        return fieldState?.paddingLeft?:super.getPaddingLeft()
+    }
+
+    /**
+     * Returns the right padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the right padding in pixels
+     */
+    override fun getPaddingRight(): Int {
+        return fieldState?.paddingRight?:super.getPaddingRight()
+    }
+
+    /**
+     * Returns the start padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the start padding in pixels
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingStart(): Int {
+        return fieldState?.paddingStart?:super.getPaddingStart()
+    }
+
+    /**
+     * Returns the top padding of this view.
+     *
+     * @return the top padding in pixels
+     */
+    override fun getPaddingTop(): Int {
+        return fieldState?.paddingTop?:super.getPaddingTop()
     }
 
     override fun onSaveInstanceState(): Parcelable? {

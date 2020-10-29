@@ -33,57 +33,57 @@ internal class FieldStateImpl(
         return !name.isNullOrEmpty()    //TODO improve validation
     }
 
-    var left: Int = 0
+    var paddingLeft: Int = 0
         set(value) {
             field = value
-            val top = top
-            val right = right
-            val bottom = bottom
+            val top = paddingTop
+            val right = paddingRight
+            val bottom = paddingBottom
             this@FieldStateImpl.field.setPadding(value, top, right, bottom)
         }
 
-    var start: Int = 0
+    var paddingStart: Int = 0
         set(value) {
             field = value
-            val top = top
-            val right = right
-            val bottom = bottom
+            val top = paddingTop
+            val right = paddingRight
+            val bottom = paddingBottom
             this@FieldStateImpl.field.setPadding(value, top, right, bottom)
         }
 
-    var top: Int = 0
+    var paddingTop: Int = 0
         set(value) {
             field = value
-            val left = left
-            val right = right
-            val bottom = bottom
+            val left = paddingLeft
+            val right = paddingRight
+            val bottom = paddingBottom
             this@FieldStateImpl.field.setPadding(left, value, right, bottom)
         }
 
-    var right: Int = 0
+    var paddingRight: Int = 0
         set(value) {
             field = value
-            val left = left
-            val top = top
-            val bottom = bottom
+            val left = paddingLeft
+            val top = paddingTop
+            val bottom = paddingBottom
             this@FieldStateImpl.field.setPadding(left, top, value, bottom)
         }
 
-    var end: Int = 0
+    var paddingEnd: Int = 0
         set(value) {
             field = value
-            val left = left
-            val top = top
-            val bottom = bottom
+            val left = paddingLeft
+            val top = paddingTop
+            val bottom = paddingBottom
             this@FieldStateImpl.field.setPadding(left, top, value, bottom)
         }
 
-    var bottom: Int = 0
+    var paddingBottom: Int = 0
         set(value) {
             field = value
-            val left = left
-            val top = top
-            val right = right
+            val left = paddingLeft
+            val top = paddingTop
+            val right = paddingRight
             this@FieldStateImpl.field.setPadding(left, top, right, value)
         }
 
@@ -127,7 +127,7 @@ internal class FieldStateImpl(
 
     fun attachTo(inputFieldView: VGSTextView) {
         inputFieldView.addView(field)
-        field.setPadding(left, top, right, bottom)
+        field.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
     fun saveInstanceState(state: Parcelable?): Parcelable? {
