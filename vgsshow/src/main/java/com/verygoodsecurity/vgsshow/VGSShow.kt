@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
@@ -14,7 +15,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
@@ -42,16 +42,25 @@ class VGSShow {
     }
 
     @WorkerThread
-    fun request(fieldName: String, token: String) {
-        logDebug("Request{fieldName=$fieldName, token=$token}")
-        val response = proxyNetworkManager.execute(
+    fun request(fieldName: String, token: String): VGSResponse {
+        return proxyNetworkManager.execute(
             VGSRequest.Builder("post", HttpMethod.POST)
                 .body(mapOf(fieldName to token))
                 .build()
         )
-        mainHandler.post {
-            notifyResponseListeners(response)
-            notifyViews(fieldName, response)
+    }
+
+    @AnyThread
+    fun requestAsync(fieldName: String, token: String) {
+        proxyNetworkManager.enqueue(
+            VGSRequest.Builder("post", HttpMethod.POST)
+                .body(mapOf(fieldName to token))
+                .build()
+        ) {
+            mainHandler.post {
+                notifyResponseListeners(it)
+                notifyViews(fieldName, it)
+            }
         }
     }
 
@@ -73,6 +82,10 @@ class VGSShow {
 
     fun unbindView(view: VGSTextView) {
         viewStore.remove(view)
+    }
+
+    fun cancel() {
+        proxyNetworkManager.cancelAll()
     }
 
     //region Helper methods for testing

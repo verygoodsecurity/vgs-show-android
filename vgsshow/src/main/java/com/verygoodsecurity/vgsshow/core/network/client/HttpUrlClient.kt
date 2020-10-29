@@ -3,21 +3,25 @@ package com.verygoodsecurity.vgsshow.core.network.client
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.*
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
+import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.HttpURLConnection.HTTP_OK
-import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
 
-    private val executor: Executor by lazy {
+    private val submittedTasks = mutableListOf<Future<*>>()
+
+    private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
     }
 
-    override fun call(request: HttpRequest): HttpResponse {
+    override fun execute(request: HttpRequest): HttpResponse {
         var connection: HttpURLConnection? = null
         try {
             connection = (baseUrl with request.path).openConnection()
@@ -27,7 +31,10 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON) // TODO: Refactor, send content type as parameter to make this class reusable
+                .addHeader(
+                    CONTENT_TYPE,
+                    APPLICATION_JSON
+                ) // TODO: Refactor, send content type as parameter to make this class reusable
                 .addHeaders(request.headers)
                 .setMethod(request.method)
 
@@ -46,10 +53,24 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         }
     }
 
-    override fun enqueue(request: HttpRequest) {
-        executor.execute {
-            // TODO: implement
+    override fun enqueue(request: HttpRequest, callback: HttpRequestCallback) {
+        var task: Future<*>? = null
+        task = executor.submit {
+            try {
+                callback.onResponse(this@HttpUrlClient.execute(request))
+                submittedTasks.remove(task)
+            } catch (e: Exception) {
+                callback.onFailure(e)
+            }
         }
+        submittedTasks.add(task)
+    }
+
+    override fun cancelAll() {
+        submittedTasks.forEach {
+            it.cancel(true)
+        }
+        submittedTasks.clear()
     }
 
     @Throws(IOException::class)
