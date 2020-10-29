@@ -7,16 +7,21 @@ import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.Environment
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
+import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 class VGSShow {
 
@@ -42,16 +47,16 @@ class VGSShow {
     }
 
     @WorkerThread
-    fun request(fieldName: String, token: String) {
-        logDebug("Request{fieldName=$fieldName, token=$token}")
+    fun request(payload: JSONObject) {
+        logDebug("Request{payload=$payload}")
         val response = proxyNetworkManager.execute(
             VGSRequest.Builder("post", HttpMethod.POST)
-                .body(mapOf(fieldName to token))
+                .body(payload)
                 .build()
         )
         mainHandler.post {
             notifyResponseListeners(response)
-            notifyViews(fieldName, response)
+            notifyViews(response)
         }
     }
 
@@ -88,13 +93,28 @@ class VGSShow {
     }
 
     @MainThread
-    private fun notifyViews(fieldName: String, response: VGSResponse) {
+    private fun notifyViews(response: VGSResponse) {
         if (response !is VGSResponse.Success) {
             return
         }
-        // TODO: implement view update correct(Current implementation is just for testing)
-        ((response.data?.get("response") as? Map<*, *>)?.get("data") as? String)?.let {
-            viewStore.find { view -> view.getFieldName() == fieldName }?.setText(it)
+
+        try {
+            viewStore.forEach { view ->
+                var jsonObj = JSONObject(response.raw)
+
+                view.getFieldName().split(".").forEach {
+                    if (jsonObj.has(it)) {
+                        val instance = jsonObj.get(it)
+                        when (instance) {
+                            is JSONObject -> jsonObj = instance
+                            is JSONArray -> {  }
+                            else -> view.setText(instance.toString())
+                        }
+                    }
+                }
+            }
+        } catch (t: JSONException) {
+            notifyResponseListeners(VGSException.JSONException().toVGSResponse())
         }
     }
 }

@@ -45,4 +45,12 @@ sealed class VGSException : Exception() {
 
         override val errorMessage: String? = "TimeoutException"
     }
+
+    class JSONException : VGSException() {
+
+        override val code: Int
+            get() = 1401
+
+        override val errorMessage: String? = "Unexpected Response Data Format"
+    }
 }
