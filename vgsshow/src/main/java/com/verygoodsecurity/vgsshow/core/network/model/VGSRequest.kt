@@ -14,7 +14,7 @@ class VGSRequest private constructor(
         private val path: String,
         private val method: HttpMethod,
         private var headers: Map<String, String>? = null,
-        private var payload:JSONObject? = null
+        private var payload: JSONObject? = null
     ) {
 
         fun headers(headers: Map<String, String>?) = apply { this.headers = headers }
