@@ -11,17 +11,16 @@
         android:id="@+id/vgsSecureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fieldName="someName"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/default_margin"
-        app:text="123" />
+        app:fieldName="card_number"
+        app:text="tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE" />
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/requestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:text="request" />
-
 </LinearLayout>

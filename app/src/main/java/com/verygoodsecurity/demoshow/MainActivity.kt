@@ -1,29 +1,28 @@
 package com.verygoodsecurity.demoshow
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.verygoodsecurity.vgsshow.core.VGSShow
+import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.Environment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    private val show = VGSShow()
+    private val showVgs: VGSShow by lazy {
+        VGSShow(this, "tntaq8uft80", Environment.SANDBOX)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        show.bindView(vgsSecureView)
+        showVgs.bind(vgsSecureView)
 
-        btn?.setOnClickListener {
-            revealData()
+        requestButton?.setOnClickListener {
+            thread(start = true) {
+                showVgs.request("card_number", "tok_sandbox_nj9DWPJMFaP8U3HqXQ2DE")
+            }
         }
     }
-
-    private fun revealData() {
-        show.request("fieldName", "123")
-        show.request("fieldName_2", "123")
-        show.request("someName", "123")
-    }
-
 }
