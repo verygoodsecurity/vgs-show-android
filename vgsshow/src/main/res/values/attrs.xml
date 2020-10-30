@@ -89,6 +89,13 @@
         <flag name="italic" value="2" />
     </attr>
 
+
+    <!-- Indicates that the content of a non-editable TextView can be selected.
+     Default value is false. -->
+    <attr name="textIsSelectable" format="boolean" />
+
+    <attr name="enabled" format="boolean" />
+
     <declare-styleable name="VGSTextView">
 
         <attr name="text" />
@@ -97,9 +104,11 @@
         <attr name="gravity" />
         <attr name="singleLine"  />
         <attr name="textSize"/>
+        <attr name="enabled"/>
         <attr name="textColor" />
         <attr name="textStyle" />
         <attr name="fontFamily" />
+        <attr name="textIsSelectable" />
 
     </declare-styleable>
 
