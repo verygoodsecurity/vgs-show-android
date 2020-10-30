@@ -1,7 +1,8 @@
 package com.verygoodsecurity.vgsshow.util.url
 
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.util.extension.isValidEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.isValid
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 
@@ -13,12 +14,12 @@ internal object UrlHelper {
     private const val PROXY_URL_DIVIDER = "."
     private const val PROXY_URL_DEFAULT = ""
 
-    fun buildProxyUrl(vaultId: String, environment: String): String = when {
+    fun buildProxyUrl(vaultId: String, environment: VGSEnvironment): String = when {
         !vaultId.isValidTenantId() -> {
             logDebug("Vault id is not valid", VGSShow::class.simpleName)
             PROXY_URL_DEFAULT
         }
-        !environment.isValidEnvironment() -> {
+        !environment.isValid() -> { // TODO: Fix hardcoded VGSEnvironment
             logDebug("Environment is not valid", VGSShow::class.simpleName)
             PROXY_URL_DEFAULT
         }

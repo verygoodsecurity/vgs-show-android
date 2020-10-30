@@ -7,7 +7,8 @@ import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
-import com.verygoodsecurity.vgsshow.core.Environment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toEnvironment
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
@@ -36,10 +37,10 @@ class VGSShow {
     constructor(
         context: Context,
         vaultId: String,
-        environment: Environment
-    ) : this(context, vaultId, environment.rawValue)
+        environment: String
+    ) : this(context, vaultId, environment.toEnvironment())
 
-    constructor(context: Context, vaultId: String, environment: String) {
+    constructor(context: Context, vaultId: String, environment: VGSEnvironment) {
         this.proxyNetworkManager = HttpRequestManager(
             UrlHelper.buildProxyUrl(vaultId, environment),
             ConnectionHelper(context)
