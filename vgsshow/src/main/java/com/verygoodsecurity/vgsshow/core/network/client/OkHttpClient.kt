@@ -7,13 +7,13 @@ import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
 import com.verygoodsecurity.vgsshow.core.network.client.extension.with
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
+import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.*
-import okhttp3.Interceptor
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.Request
-import okhttp3.Response
+import java.io.IOException
 import java.net.URL
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
@@ -30,8 +30,26 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
             .build()
     }
 
-    override fun call(request: HttpRequest): HttpResponse =
-        client.newCall(buildOkHttpRequest(request)).execute().toHttpResponse()
+    override fun execute(request: HttpRequest): HttpResponse {
+        return client.newCall(buildOkHttpRequest(request)).execute().toHttpResponse()
+    }
+
+    override fun enqueue(request: HttpRequest, callback: HttpRequestCallback) {
+        client.newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                callback.onFailure(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                callback.onResponse(response.toHttpResponse())
+            }
+        })
+    }
+
+    override fun cancelAll() {
+        client.dispatcher.cancelAll()
+    }
 
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {

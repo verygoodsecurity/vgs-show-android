@@ -2,20 +2,26 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.*
-import com.verygoodsecurity.vgsshow.core.network.client.extension.callTimeout
-import com.verygoodsecurity.vgsshow.core.network.client.extension.openConnection
-import com.verygoodsecurity.vgsshow.core.network.client.extension.readTimeout
-import com.verygoodsecurity.vgsshow.core.network.client.extension.setSSLSocketFactory
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
+import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.*
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.HttpURLConnection.HTTP_OK
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
 
-    override fun call(request: HttpRequest): HttpResponse {
+    private val submittedTasks = mutableListOf<Future<*>>()
+
+    private val executor: ExecutorService by lazy {
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    }
+
+    override fun execute(request: HttpRequest): HttpResponse {
         var connection: HttpURLConnection? = null
         try {
             connection = (baseUrl with request.path).openConnection()
@@ -42,6 +48,26 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         } finally {
             connection?.disconnect()
         }
+    }
+
+    override fun enqueue(request: HttpRequest, callback: HttpRequestCallback) {
+        var task: Future<*>? = null
+        task = executor.submit {
+            try {
+                callback.onResponse(this@HttpUrlClient.execute(request))
+                submittedTasks.remove(task)
+            } catch (e: Exception) {
+                callback.onFailure(e)
+            }
+        }
+        submittedTasks.add(task)
+    }
+
+    override fun cancelAll() {
+        submittedTasks.forEach {
+            it.cancel(true)
+        }
+        submittedTasks.clear()
     }
 
     @Throws(IOException::class)

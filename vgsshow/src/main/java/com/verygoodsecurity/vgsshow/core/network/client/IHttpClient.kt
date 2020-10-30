@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
+import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 
 // TODO: refactor, send content type as parameter to make this class reusable
@@ -14,5 +15,9 @@ internal interface IHttpClient {
 
     @WorkerThread
     @Throws(Exception::class)
-    fun call(request: HttpRequest): HttpResponse
+    fun execute(request: HttpRequest): HttpResponse
+
+    fun enqueue(request: HttpRequest, callback: HttpRequestCallback)
+
+    fun cancelAll()
 }
