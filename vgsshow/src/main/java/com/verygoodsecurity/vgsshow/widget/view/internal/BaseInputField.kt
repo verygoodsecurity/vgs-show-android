@@ -5,6 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import androidx.appcompat.widget.AppCompatTextView
 
 class BaseInputField(context: Context) : AppCompatTextView(context) {
@@ -76,5 +77,12 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
             TextUtils.writeToParcel(text, out, flags)
         }
     }
+
+
+    override fun setFocusable(focusable: Boolean) {
+        super.setFocusable(false)
+    }
+
+    override fun addTextChangedListener(watcher: TextWatcher?) {}
 
 }

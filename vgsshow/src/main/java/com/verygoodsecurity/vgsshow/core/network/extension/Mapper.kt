@@ -13,7 +13,7 @@ internal fun VGSRequest.toHttpRequest() = HttpRequest(
     this.path,
     this.method,
     this.headers,
-    this.data?.toJSON()?.toString()
+    this.payload.toString()
 )
 
 internal fun Response.toHttpResponse() = HttpResponse(

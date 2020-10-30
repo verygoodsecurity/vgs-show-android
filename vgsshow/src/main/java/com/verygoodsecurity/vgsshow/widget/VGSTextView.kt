@@ -2,12 +2,18 @@ package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.graphics.Color
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
@@ -32,13 +38,40 @@ class VGSTextView @JvmOverloads constructor(
 
 
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
-            val text = getString(R.styleable.VGSTextView_text)
-            val fieldName = getString(R.styleable.VGSTextView_fieldName)
-
-            setText(text)
-            setFieldName(fieldName)
+            for(i in 0 until indexCount) {
+                val attr = getIndex(i);
+                when(attr) {
+                    R.styleable.VGSTextView_gravity -> setGravity(getInt(R.styleable.VGSTextView_gravity, Gravity.START or Gravity.CENTER_VERTICAL))
+                    R.styleable.VGSTextView_singleLine -> setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
+                    R.styleable.VGSTextView_textSize -> setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
+                    R.styleable.VGSTextView_textStyle -> setupTypeface(this)
+                    R.styleable.VGSTextView_fontFamily -> setupFont(this)
+                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
+                    R.styleable.VGSTextView_text -> setText(getString(R.styleable.VGSTextView_text))
+                    R.styleable.VGSTextView_fieldName -> setFieldName(getString(R.styleable.VGSTextView_fieldName))
+                }
+            }
 
             setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+        }
+    }
+
+    private fun setupTypeface(typedArray: TypedArray) {
+        getTypeface()?.let {
+            setTypeface(it, typedArray.getInt(R.styleable.VGSTextView_textStyle, Typeface.NORMAL))
+        }
+    }
+
+    private fun setupFont(attrs: TypedArray) {
+        val fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            attrs.getFont(R.styleable.VGSTextView_fontFamily)
+        } else {
+            attrs.getString(R.styleable.VGSTextView_fontFamily)?.run {
+                Typeface.create(this, Typeface.NORMAL)
+            }
+        }
+        fontFamily?.let {
+            setTypeface(it)
         }
     }
 
@@ -96,7 +129,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return The text used by the field.
      */
-    open fun getFieldName(): String? = fieldState?.fieldName
+    fun getFieldName(): String = fieldState?.fieldName?:""
 
 
     override fun onDetachedFromWindow() {
@@ -165,11 +198,73 @@ class VGSTextView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        fieldState?.left = left
-        fieldState?.top = top
-        fieldState?.right = right
-        fieldState?.bottom = bottom
+        fieldState?.paddingLeft = left
+        fieldState?.paddingTop = top
+        fieldState?.paddingRight = right
+        fieldState?.paddingBottom = bottom
         super.setPadding(0, 0, 0, 0)
+    }
+
+
+    /**
+     * Returns the bottom padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the bottom padding in pixels
+     */
+    override fun getPaddingBottom(): Int {
+        return fieldState?.paddingBottom?:super.getPaddingBottom()
+    }
+
+    /**
+     * Returns the end padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the end padding in pixels
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingEnd(): Int {
+        return fieldState?.paddingEnd?:super.getPaddingEnd()
+    }
+
+    /**
+     * Returns the left padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the left padding in pixels
+     */
+    override fun getPaddingLeft(): Int {
+        return fieldState?.paddingLeft?:super.getPaddingLeft()
+    }
+
+    /**
+     * Returns the right padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the right padding in pixels
+     */
+    override fun getPaddingRight(): Int {
+        return fieldState?.paddingRight?:super.getPaddingRight()
+    }
+
+    /**
+     * Returns the start padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the start padding in pixels
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingStart(): Int {
+        return fieldState?.paddingStart?:super.getPaddingStart()
+    }
+
+    /**
+     * Returns the top padding of this view.
+     *
+     * @return the top padding in pixels
+     */
+    override fun getPaddingTop(): Int {
+        return fieldState?.paddingTop?:super.getPaddingTop()
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -179,6 +274,98 @@ class VGSTextView @JvmOverloads constructor(
     override fun onRestoreInstanceState(state: Parcelable?) {
         fieldState?.onRestoreInstanceState(state)
         super.onRestoreInstanceState(state)
+    }
+
+    /**
+     * Sets the horizontal alignment of the text and the vertical gravity that will be used when
+     * there is extra space in the TextView beyond what is required for the text itself.
+     *
+     * @param gravity
+     */
+    fun setGravity(gravity:Int) {
+        fieldState?.gravity = gravity
+    }
+
+    /**
+     * If true, sets the properties of this field
+     * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
+     *
+     * @param singleLine
+     */
+    fun setSingleLine(singleLine:Boolean) {
+        fieldState?.isSingleLine = singleLine
+    }
+
+    /**
+     * Set the default text size to the given value, interpreted as "scaled pixel" units.
+     * This size is adjusted based on the current density and user font size preference.
+     *
+     * @param size The scaled pixel size.
+     */
+    fun setTextSize( size:Float ) {
+        fieldState?.textSize = size
+    }
+
+    /**
+     * Set the default text size to a given unit and value.
+     * See TypedValue for the possible dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param size The desired size in the given units.
+     */
+    fun setTextSize( unit:Int, size:Float) {
+        fieldState?.textSize = TypedValue.applyDimension(
+            unit, size, resources.displayMetrics
+        )
+    }
+
+    /**
+     * Sets the text color for all the states (normal, selected, focused) to be this color.
+     *
+     * @param color A color value that will be applied
+     */
+    fun setTextColor(color:Int) {
+        fieldState?.textColor = color
+    }
+
+
+    /**
+     * Gets the current Typeface that is used to style the text.
+     *
+     * @return The current Typeface.
+     */
+    fun getTypeface(): Typeface? = fieldState?.typeface
+
+    /**
+     * Sets the typeface and style in which the text should be displayed.
+     *
+     * @param typeface This value may be null.
+     */
+    fun setTypeface(typeface: Typeface) {
+        fieldState?.typeface = typeface
+    }
+
+    /**
+     * Sets the typeface and style in which the text should be displayed,
+     * and turns on the fake bold and italic bits in the Paint if the Typeface
+     * that you provided does not have all the bits in the style that you specified.
+     *
+     * @param tf This value may be null.
+     * @param style Value is Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, or Typeface.BOLD_ITALIC
+     */
+    fun setTypeface(tf: Typeface?, style:Int) {
+        when(style) {
+            Typeface.NORMAL -> fieldState?.typeface = Typeface.create(tf, style)
+            1 -> fieldState?.typeface = Typeface.create(tf, Typeface.BOLD)
+            2 -> fieldState?.typeface = Typeface.create(tf, Typeface.ITALIC)
+            else -> fieldState?.typeface = Typeface.DEFAULT_BOLD
+        }
+    }
+
+    override fun isEnabled(): Boolean = fieldState?.enabled?:false
+
+    override fun setEnabled(enabled: Boolean) {
+        fieldState?.enabled = enabled
     }
 }
 

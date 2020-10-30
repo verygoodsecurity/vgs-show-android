@@ -9,11 +9,97 @@
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="fieldName" format="string" localization="suggested" />
 
+    <!-- Font family (named by string or as a font resource reference) for the text. -->
+    <attr name="fontFamily" format="string"/>
+
+    <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
+         Supported values include the following:<p/>
+    <ul>
+        <li><b>px</b> Pixels</li>
+        <li><b>sp</b> Scaled pixels (scaled to relative pixel size on screen). See {@link android.util.DisplayMetrics} for more information.</li>
+        <li><b>pt</b> Points</li>
+        <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
+    </ul>
+        -->
+    <attr name="textSize" format="dimension"/>
+
+    <!-- Color of text (usually same as colorForeground). -->
+    <attr name="textColor" format="color"/>
+
+
+    <!-- Constrains the text to a single horizontally scrolling line
+         instead of letting it wrap onto multiple lines, and advances
+         focus instead of inserting a newline when you press the
+         enter key.
+
+         The default value is false (multi-line wrapped text mode) for non-editable text, but if
+         you specify any value for inputType, the default is true (single-line input field mode).
+
+         {@deprecated This attribute is deprecated. Use <code>maxLines</code> instead to change
+         the layout of a static text, and use the <code>textMultiLine</code> flag in the
+         inputType attribute instead for editable text views (if both singleLine and inputType
+         are supplied, the inputType flags will override the value of singleLine). } -->
+    <attr name="singleLine" format="boolean" />
+
+
+    <!-- Specifies how an object should position its content, on both the X and Y axes,
+         within its own bounds.  -->
+    <attr name="gravity">
+        <!-- Push object to the top of its container, not changing its size. -->
+        <flag name="top" value="0x30" />
+        <!-- Push object to the bottom of its container, not changing its size. -->
+        <flag name="bottom" value="0x50" />
+        <!-- Push object to the left of its container, not changing its size. -->
+        <flag name="left" value="0x03" />
+        <!-- Push object to the right of its container, not changing its size. -->
+        <flag name="right" value="0x05" />
+        <!-- Place object in the vertical center of its container, not changing its size. -->
+        <flag name="center_vertical" value="0x10" />
+        <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+        <flag name="fill_vertical" value="0x70" />
+        <!-- Place object in the horizontal center of its container, not changing its size. -->
+        <flag name="center_horizontal" value="0x01" />
+        <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+        <flag name="fill_horizontal" value="0x07" />
+        <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+        <flag name="center" value="0x11" />
+        <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+        <flag name="fill" value="0x77" />
+        <!-- Additional option that can be set to have the top and/or bottom edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the vertical gravity: a top gravity will clip the bottom
+             edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+        <flag name="clip_vertical" value="0x80" />
+        <!-- Additional option that can be set to have the left and/or right edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the horizontal gravity: a left gravity will clip the right
+             edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+        <flag name="clip_horizontal" value="0x08" />
+        <!-- Push object to the beginning of its container, not changing its size. -->
+        <flag name="start" value="0x00800003" />
+        <!-- Push object to the end of its container, not changing its size. -->
+        <flag name="end" value="0x00800005" />
+    </attr>
+
+
+    <!-- Default text typeface style. -->
+    <attr name="textStyle">
+        <flag name="normal" value="0" />
+        <flag name="bold" value="1" />
+        <flag name="italic" value="2" />
+    </attr>
+
     <declare-styleable name="VGSTextView">
 
         <attr name="text" />
 
         <attr name="fieldName" />
+        <attr name="gravity" />
+        <attr name="singleLine"  />
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="textStyle" />
+        <attr name="fontFamily" />
 
     </declare-styleable>
 
