@@ -31,10 +31,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
-                .addHeader(
-                    CONTENT_TYPE,
-                    APPLICATION_JSON
-                ) // TODO: Refactor, send content type as parameter to make this class reusable
+                .addHeader(CONTENT_TYPE, APPLICATION_JSON) // TODO: Refactor, send content type as parameter to make this class reusable
                 .addHeaders(request.headers)
                 .setMethod(request.method)
 
