@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.core.Environment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +19,7 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity(), VGSResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", Environment.SANDBOX)
+        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
     }
 
     private val vgsForm: VGSCollect by lazy {
