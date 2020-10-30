@@ -25,52 +25,6 @@ class ValidatorKtTest {
     }
 
     @Test
-    fun isValidEnvironment_correctParams_trueReturned() {
-        //Assert
-        assertTrue("live".isValidEnvironment())
-        assertTrue("live-eu".isValidEnvironment())
-        assertTrue("live-eu-3".isValidEnvironment())
-        assertTrue("live-eu-3-stage".isValidEnvironment())
-
-        assertTrue("LIVE".isValidEnvironment())
-        assertTrue("LIVE-EU".isValidEnvironment())
-        assertTrue("LIVE-eu".isValidEnvironment())
-        assertTrue("LIVE-EU-3".isValidEnvironment())
-        assertTrue("LIVE-eu-3".isValidEnvironment())
-
-        assertTrue("sandbox".isValidEnvironment())
-        assertTrue("sandbox-eu".isValidEnvironment())
-        assertTrue("sandbox-eu-3".isValidEnvironment())
-        assertTrue("sandbox-eu-3-stage".isValidEnvironment())
-
-        assertTrue("SANDBOX".isValidEnvironment())
-        assertTrue("SANDBOX-EU".isValidEnvironment())
-        assertTrue("SANDBOX-eu".isValidEnvironment())
-        assertTrue("SANDBOX-EU-3".isValidEnvironment())
-        assertTrue("SANDBOX-eu-3".isValidEnvironment())
-    }
-
-    @Test
-    fun isValidEnvironment_incorrectParams_falseReturned() {
-        //Assert
-        assertFalse("live-".isValidEnvironment())
-        assertFalse("-live-eu".isValidEnvironment())
-        assertFalse("-live-eu-".isValidEnvironment())
-
-        assertFalse("LIVE-".isValidEnvironment())
-        assertFalse("-LIVE-EU".isValidEnvironment())
-        assertFalse("-LIVE-eu-".isValidEnvironment())
-
-        assertFalse("sandbox-".isValidEnvironment())
-        assertFalse("-sandbox-eu".isValidEnvironment())
-        assertFalse("-sandbox-eu-".isValidEnvironment())
-
-        assertFalse("SANDBOX-".isValidEnvironment())
-        assertFalse("-SANDBOX-EU".isValidEnvironment())
-        assertFalse("-SANDBOX-eu-".isValidEnvironment())
-    }
-
-    @Test
     fun isUrlValid_correctParams_trueReturned() {
         //Assert
         assertTrue("http://www.exa".isValidUrl())

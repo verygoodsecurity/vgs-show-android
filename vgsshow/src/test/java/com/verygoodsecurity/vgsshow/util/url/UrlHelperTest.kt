@@ -1,7 +1,8 @@
 package com.verygoodsecurity.vgsshow.util.url
 
 import android.util.Log
-import com.verygoodsecurity.vgsshow.core.Environment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toEnvironment
 import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -21,9 +22,9 @@ class UrlHelperTest {
     fun buildProxyUrl_correctParams_validUrlReturned() {
         // Arrange
         val tenantId = "tntqq8uft90"
-        val environment = Environment.SANDBOX
+        val environment = VGSEnvironment.Sandbox()
         // Act
-        val result = UrlHelper.buildProxyUrl(tenantId, environment.rawValue)
+        val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
         assertTrue(result.isValidUrl())
     }
@@ -32,9 +33,9 @@ class UrlHelperTest {
     fun buildProxyUrl_incorrectTenant_invalidUrlReturned() {
         // Arrange
         val tenantId = "-4555i88374"
-        val environment = Environment.SANDBOX
+        val environment = VGSEnvironment.Sandbox()
         // Act
-        val result = UrlHelper.buildProxyUrl(tenantId, environment.rawValue)
+        val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
         assertFalse(result.isValidUrl())
     }
@@ -43,9 +44,9 @@ class UrlHelperTest {
     fun buildProxyUrl_emptyTenant_invalidUrlReturned() {
         // Arrange
         val tenantId = ""
-        val environment = Environment.SANDBOX
+        val environment = VGSEnvironment.Sandbox()
         // Act
-        val result = UrlHelper.buildProxyUrl(tenantId, environment.rawValue)
+        val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
         assertFalse(result.isValidUrl())
     }
@@ -54,7 +55,7 @@ class UrlHelperTest {
     fun buildProxyUrl_incorrectEnvironment_invalidUrlReturned() {
         // Arrange
         val tenantId = "tntqq8uft90"
-        val environment = "sandbox-eu-"
+        val environment = "sandbox-eu-".toEnvironment()
         // Act
         val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
@@ -65,7 +66,7 @@ class UrlHelperTest {
     fun buildProxyUrl_emptyEnvironment_invalidUrlReturned() {
         // Arrange
         val tenantId = "tntqq8uft90"
-        val environment = ""
+        val environment = VGSEnvironment.Empty
         // Act
         val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
