@@ -91,6 +91,9 @@ class VGSShow {
     //region Helper methods for testing
     @VisibleForTesting
     internal fun getResponseListeners() = listeners
+
+    @VisibleForTesting
+    internal fun getViewsStore() = viewStore
     //endregion
 
     @MainThread
