@@ -17,7 +17,6 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import org.json.JSONArray
@@ -48,16 +47,23 @@ class VGSShow {
     }
 
     @WorkerThread
-    fun request(payload: JSONObject) {
-        logDebug("Request{payload=$payload}")
-        val response = proxyNetworkManager.execute(
+    fun request(payload: JSONObject): VGSResponse = proxyNetworkManager.execute(
+        VGSRequest.Builder("post", HttpMethod.POST)
+            .body(payload)
+            .build()
+    ).also { mainHandler.post { notifyViews(it) } }
+
+    @AnyThread
+    fun requestAsync(payload: JSONObject) {
+        proxyNetworkManager.enqueue(
             VGSRequest.Builder("post", HttpMethod.POST)
                 .body(payload)
                 .build()
-        )
-        mainHandler.post {
-            notifyResponseListeners(response)
-            notifyViews(response)
+        ) {
+            mainHandler.post {
+                notifyViews(it)
+                notifyResponseListeners(it)
+            }
         }
     }
 
@@ -93,22 +99,22 @@ class VGSShow {
         }
     }
 
+    // TODO Refactor this method(Single responsibility)
     @MainThread
     private fun notifyViews(response: VGSResponse) {
         if (response !is VGSResponse.Success) {
             return
         }
-
         try {
             viewStore.forEach { view ->
                 var jsonObj = JSONObject(response.raw)
 
                 view.getFieldName().split(".").forEach {
                     if (jsonObj.has(it)) {
-                        val instance = jsonObj.get(it)
-                        when (instance) {
+                        when (val instance = jsonObj.get(it)) {
                             is JSONObject -> jsonObj = instance
-                            is JSONArray -> {  }
+                            is JSONArray -> {
+                            }
                             else -> view.setText(instance.toString())
                         }
                     }
