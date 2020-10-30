@@ -13,6 +13,7 @@ class VGSEnvironmentTest {
     fun isValid_correctParams_trueReturned() {
         //Assert
         assertTrue(VGSEnvironment.Live().isValid())
+        assertTrue(VGSEnvironment.Live("eu").isValid())
         assertTrue(VGSEnvironment.Live("-eu").isValid())
         assertTrue(VGSEnvironment.Live("-eu-3").isValid())
         assertTrue(VGSEnvironment.Live("-eu-3-stage").isValid())

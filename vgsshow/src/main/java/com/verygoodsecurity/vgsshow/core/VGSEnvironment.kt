@@ -12,6 +12,12 @@ sealed class VGSEnvironment {
 
     abstract val value: String
 
+    internal fun generateSuffix(suffix: String): String = if (suffix.isNotEmpty()) {
+        if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
+    } else {
+        ""
+    }
+
     /**
      *  Live Environment using Live Vault
      *  @param suffix ex. "eu", "-eu-2", value will be "live-eu" or "live-eu-3" respectively
@@ -19,7 +25,7 @@ sealed class VGSEnvironment {
     data class Live(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
+            get() = DEFAULT_VALUE + generateSuffix(suffix)
 
         companion object {
 
@@ -34,7 +40,7 @@ sealed class VGSEnvironment {
     data class Sandbox(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
+            get() = DEFAULT_VALUE + generateSuffix(suffix)
 
         companion object {
 
