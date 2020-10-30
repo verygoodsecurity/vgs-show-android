@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.core
 
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.isValid
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.isValidEnvironment
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -84,7 +84,7 @@ class VGSEnvironmentTest {
         // Arrange
         val environment = "sandbox"
         // Act
-        val result = environment.toEnvironment()
+        val result = environment.toVGSEnvironment()
         //Assert
         assertTrue(result is VGSEnvironment.Sandbox)
     }
@@ -94,7 +94,7 @@ class VGSEnvironmentTest {
         // Arrange
         val environment = "sandbox-eu"
         // Act
-        val result = environment.toEnvironment()
+        val result = environment.toVGSEnvironment()
         //Assert
         assertTrue(result.value.contains("-eu"))
     }
@@ -104,7 +104,7 @@ class VGSEnvironmentTest {
         // Arrange
         val environment = "live"
         // Act
-        val result = environment.toEnvironment()
+        val result = environment.toVGSEnvironment()
         //Assert
         assertTrue(result is VGSEnvironment.Live)
     }
@@ -114,7 +114,7 @@ class VGSEnvironmentTest {
         // Arrange
         val environment = "live-eu"
         // Act
-        val result = environment.toEnvironment()
+        val result = environment.toVGSEnvironment()
         //Assert
         assertTrue(result.value.contains("-eu"))
     }
@@ -124,7 +124,7 @@ class VGSEnvironmentTest {
         // Arrange
         val environment = "live- eu"
         // Act
-        val result = environment.toEnvironment()
+        val result = environment.toVGSEnvironment()
         //Assert
         assertTrue(result is VGSEnvironment.Empty)
     }

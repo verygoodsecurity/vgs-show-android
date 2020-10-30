@@ -14,12 +14,12 @@ sealed class VGSEnvironment {
 
     /**
      *  Live Environment using Live Vault
-     *  @param suffix ex. "-eu", "-eu-2", value will be "live-eu" or "live-eu-3" respectively
+     *  @param suffix ex. "eu", "-eu-2", value will be "live-eu" or "live-eu-3" respectively
      */
     data class Live(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + suffix
+            get() = DEFAULT_VALUE + if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
 
         companion object {
 
@@ -29,12 +29,12 @@ sealed class VGSEnvironment {
 
     /**
      *  Sandbox Environment using sandbox Test Vault
-     *  @param suffix ex. "-eu", "-eu-2", value will be "sandbox-eu" or "sandbox-eu-3" respectively
+     *  @param suffix ex. "eu", "-eu-2", value will be "sandbox-eu" or "sandbox-eu-3" respectively
      */
     data class Sandbox(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + suffix
+            get() = DEFAULT_VALUE + if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
 
         companion object {
 
@@ -52,13 +52,15 @@ sealed class VGSEnvironment {
 
     companion object {
 
+        private const val DASH_PREFIX = "-"
+
         private const val ENV_REGEX = "^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$"
 
         fun VGSEnvironment.isValid() = ENV_REGEX.toPattern().matcher(this.value).matches()
 
         fun String.isValidEnvironment() = ENV_REGEX.toPattern().matcher(this).matches()
 
-        fun String.toEnvironment(): VGSEnvironment = if (isValidEnvironment()) when {
+        fun String.toVGSEnvironment(): VGSEnvironment = if (isValidEnvironment()) when {
             contains(Live.DEFAULT_VALUE, true) -> {
                 Live(this.substring(Live.DEFAULT_VALUE.length, this.length))
             }

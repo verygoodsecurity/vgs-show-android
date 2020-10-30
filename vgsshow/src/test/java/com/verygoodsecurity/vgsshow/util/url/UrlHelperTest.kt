@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.util.url
 
 import android.util.Log
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toEnvironment
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -55,7 +55,7 @@ class UrlHelperTest {
     fun buildProxyUrl_incorrectEnvironment_invalidUrlReturned() {
         // Arrange
         val tenantId = "tntqq8uft90"
-        val environment = "sandbox-eu-".toEnvironment()
+        val environment = "sandbox-eu-".toVGSEnvironment()
         // Act
         val result = UrlHelper.buildProxyUrl(tenantId, environment)
         // Assert
