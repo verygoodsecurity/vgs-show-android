@@ -22,6 +22,7 @@ class VGSEnvironmentTest {
         assertTrue(VGSEnvironment.Live("-Eu").isValid())
 
         assertTrue(VGSEnvironment.Sandbox().isValid())
+        assertTrue(VGSEnvironment.Sandbox("eu").isValid())
         assertTrue(VGSEnvironment.Sandbox("-eu").isValid())
         assertTrue(VGSEnvironment.Sandbox("-eu-3").isValid())
         assertTrue(VGSEnvironment.Sandbox("-eu-3-stage").isValid())
@@ -34,12 +35,10 @@ class VGSEnvironmentTest {
     fun isValid_incorrectParams_falseReturned() {
         //Assert
         assertFalse(VGSEnvironment.Live("-").isValid())
-        assertFalse(VGSEnvironment.Live("eu").isValid())
         assertFalse(VGSEnvironment.Live("-eu-").isValid())
         assertFalse(VGSEnvironment.Live("-eu- 3").isValid())
 
         assertFalse(VGSEnvironment.Sandbox("-").isValid())
-        assertFalse(VGSEnvironment.Sandbox("eu").isValid())
         assertFalse(VGSEnvironment.Sandbox("-eu-").isValid())
         assertFalse(VGSEnvironment.Sandbox("-eu- 3").isValid())
     }
