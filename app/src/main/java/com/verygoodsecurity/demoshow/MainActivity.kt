@@ -9,13 +9,13 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), VGSResponseListener {
+class MainActivity : AppCompatActivity(), VGSShowResponseListener {
 
     private val showVgs: VGSShow by lazy {
         VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())

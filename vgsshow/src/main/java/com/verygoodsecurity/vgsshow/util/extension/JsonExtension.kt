@@ -27,7 +27,7 @@ internal fun JSONObject.getValue(path: String): String {
                     null
                 }
             }
-        }
+        }?:""
     }
 
     return value.toString()
