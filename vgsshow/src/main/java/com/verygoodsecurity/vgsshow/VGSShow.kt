@@ -18,9 +18,9 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.getValue
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -111,17 +111,8 @@ class VGSShow {
         }
         try {
             viewStore.forEach { view ->
-                var jsonObj = JSONObject(response.raw)
-
-                view.getFieldName().split(".").forEach {
-                    if (jsonObj.has(it)) {
-                        when (val instance = jsonObj.get(it)) {
-                            is JSONObject -> jsonObj = instance
-                            is JSONArray -> {
-                            }
-                            else -> view.setText(instance.toString())
-                        }
-                    }
+                JSONObject(response.raw).getValue(view.getFieldName()).let {
+                    view.setText(it)
                 }
             }
         } catch (t: JSONException) {
