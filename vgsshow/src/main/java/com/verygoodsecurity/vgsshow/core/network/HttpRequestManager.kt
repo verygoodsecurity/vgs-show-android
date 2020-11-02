@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.core.network
 
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.cache.IHttpRequestCacheHelper
+import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
-    private val cacheHelper: IHttpRequestCacheHelper,
+    private val headersStore: IVGSCustomHeaderStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
@@ -34,12 +34,7 @@ internal class HttpRequestManager(
             return VGSException.NoInternetConnection().toVGSResponse()
         }
         return try {
-            client.execute(
-                request.toHttpRequest(
-                    cacheHelper.getHeaders(),
-                    cacheHelper.getData()
-                )
-            ).toVGSResponse()
+            client.execute(request.toHttpRequest(headersStore.getHeaders())).toVGSResponse()
         } catch (e: Exception) {
             parseException(e)
         }
@@ -50,7 +45,7 @@ internal class HttpRequestManager(
             callback.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
-        with(request.toHttpRequest(cacheHelper.getHeaders(), cacheHelper.getData())) {
+        with(request.toHttpRequest(headersStore.getHeaders())) {
             logDebug(this.toString(), VGSShow::class.simpleName)
             client.enqueue(this, object : HttpRequestCallback {
 

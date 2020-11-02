@@ -4,6 +4,28 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
+///**
+// * Merge "source" into "target". If fields have equal name, merge them recursively.
+// * @return the merged object (target).
+// */
+//@Throws(JSONException::class)
+//fun JSONObject.deepMerge(source: JSONObject): JSONObject {
+//    for (key in JSONObject.getNames(source)) {
+//        val value = source[key]
+//        if (!has(key)) {
+//            put(key, value)
+//        } else {
+//            // existing value for "key" - recursively deep merge:
+//            if (value is JSONObject) {
+//                getJSONObject(key).deepMerge(value)
+//            } else {
+//                put(key, value)
+//            }
+//        }
+//    }
+//    return this
+//}
+
 internal fun Map<*, *>.toJSON(): JSONObject {
     val jObjectData = JSONObject()
     this.forEach { entry ->

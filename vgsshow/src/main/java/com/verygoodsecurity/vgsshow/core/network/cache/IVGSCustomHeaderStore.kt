@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
-interface IHttpRequestCacheHelper {
+interface IVGSCustomHeaderStore {
 
     fun addHeader(key: String, value: String)
 
@@ -9,14 +9,4 @@ interface IHttpRequestCacheHelper {
     fun getHeaders(): Map<String, String>
 
     fun clearHeaders()
-
-    fun addData(key: String, value: Any)
-
-    fun removeData(key: String)
-
-    fun getData(): Map<String, Any>
-
-    fun clearData()
-
-    fun clearAll()
 }

@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
+    class User {
+        val name: String = "Dima"
+        val age: Int = 27
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,8 +40,7 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         showVgs.addResponseListener(this)
         showVgs.bindView(number)
         showVgs.bindView(expiration)
-        showVgs.getExtraDataHolder().addHeader("Test-key", "test_value")
-        showVgs.getExtraDataHolder().addData("test_key", "test_value")
+        showVgs.getCustomHeadersStore().addHeader("Test-key", "test_value")
 
         requestButton?.setOnClickListener {
             revealData()
@@ -44,7 +49,7 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
 
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
-        showVgs.requestAsync(makeJsonObject())
+        showVgs.requestAsync("post", VGSHttpMethod.POST, makeJsonObject())
     }
 
     override fun onResponse(response: VGSResponse) {

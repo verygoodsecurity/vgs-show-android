@@ -8,20 +8,12 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.extension.plus
 import com.verygoodsecurity.vgsshow.util.extension.toMap
 import okhttp3.Response
-import org.json.JSONObject
 
-internal fun VGSRequest.toHttpRequest(
-    extraHeaders: Map<String, String>,
-    extraData: Map<String, Any>
-) = HttpRequest(
+internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>) = HttpRequest(
     this.path,
     this.method,
-    extraHeaders + this.headers,
-    (this.payload ?: if (extraData.isEmpty()) null else JSONObject())?.apply {
-        extraData.forEach { (k, v) ->
-            this.putOpt(k, v)
-        }
-    }?.toString()
+    extraHeaders + this.headers, // TODO: Maybe it's better to generate VGSRequest already with all headers?
+    this.payload?.toString()
 )
 
 internal fun Response.toHttpResponse() = HttpResponse(
