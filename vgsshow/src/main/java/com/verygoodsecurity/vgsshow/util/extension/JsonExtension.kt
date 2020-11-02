@@ -17,17 +17,11 @@ internal fun JSONObject.getValue(path: String): String {
         }?.get(key)?.run {
             when (this) {
                 is JSONObject -> this
-                is JSONArray -> {
-                    this
-                }
-                is Any -> {
-                    this
-                }
-                else -> {
-                    null
-                }
+                is JSONArray -> this
+                is Any -> this
+                else -> null
             }
-        }?:""
+        } ?: ""
     }
 
     return value.toString()
