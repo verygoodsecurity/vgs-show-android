@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client.extension
 
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UrlKtTest {
@@ -13,7 +13,7 @@ class UrlKtTest {
         // Act
         val result = url with path
         // Assert
-        assertTrue(result.count { it.toString() == "/" } == 3)
+        assertEquals(result.count { it.toString() == "/" }, 3)
     }
 
     @Test
@@ -24,6 +24,6 @@ class UrlKtTest {
         // Act
         val result = url with path
         // Assert
-        assertTrue(result.count { it.toString() == "/" } == 3)
+        assertEquals(result.count { it.toString() == "/" }, 3)
     }
 }

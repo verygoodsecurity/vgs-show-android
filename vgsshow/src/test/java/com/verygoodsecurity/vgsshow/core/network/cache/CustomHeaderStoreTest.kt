@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.Assert.*
 
 class CustomHeaderStoreTest {
 
@@ -19,7 +20,7 @@ class CustomHeaderStoreTest {
         sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         //Assert
         assertTrue(sut.getHeaders().contains(TEST_HEADER_NAME))
-        assertTrue(sut.getHeaders()[TEST_HEADER_NAME] == TEST_HEADER_VALUE)
+        assertEquals(sut.getHeaders()[TEST_HEADER_NAME], TEST_HEADER_VALUE)
     }
 
     @Test
@@ -30,7 +31,7 @@ class CustomHeaderStoreTest {
         sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         sut.addHeader(TEST_HEADER_NAME, testValue)
         //Assert
-        assertTrue(sut.getHeaders().size == 1)
+        assertEquals(sut.getHeaders().size, 1)
     }
 
     @Test
@@ -41,7 +42,7 @@ class CustomHeaderStoreTest {
         sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         sut.addHeader(TEST_HEADER_NAME, testValue)
         //Assert
-        assertTrue(sut.getHeaders()[TEST_HEADER_NAME] == testValue)
+        assertEquals(sut.getHeaders()[TEST_HEADER_NAME], testValue)
     }
 
     @Test
