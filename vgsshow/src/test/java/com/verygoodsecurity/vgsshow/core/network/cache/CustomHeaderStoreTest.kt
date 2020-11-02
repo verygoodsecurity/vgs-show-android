@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -51,7 +50,7 @@ class CustomHeaderStoreTest {
         sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         sut.removeHeader(TEST_HEADER_NAME)
         //Assert
-        assertTrue(!sut.getHeaders().contains(TEST_HEADER_NAME))
+        assertFalse(sut.getHeaders().contains(TEST_HEADER_NAME))
     }
 
     @Test
