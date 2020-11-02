@@ -25,7 +25,7 @@ internal object UrlHelper {
         }
         else -> StringBuilder(HTTPS_SCHEME)
             .append(vaultId).append(PROXY_URL_DIVIDER)
-            .append(environment).append(PROXY_URL_DIVIDER)
+            .append(environment.value).append(PROXY_URL_DIVIDER)
             .append(PROXY_URL_DOMEN)
             .toString()
     }

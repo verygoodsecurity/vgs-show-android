@@ -13,7 +13,9 @@ import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.listener.VGSShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
+import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
+import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -32,6 +34,8 @@ class VGSShow {
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
+    private val customHeadersStore: IVGSCustomHeaderStore
+
     private val proxyNetworkManager: IHttpRequestManager
 
     constructor(
@@ -41,26 +45,23 @@ class VGSShow {
     ) : this(context, vaultId, environment.toVGSEnvironment())
 
     constructor(context: Context, vaultId: String, environment: VGSEnvironment) {
-        this.proxyNetworkManager = HttpRequestManager(
+        customHeadersStore = CustomHeaderStore()
+        proxyNetworkManager = HttpRequestManager(
             UrlHelper.buildProxyUrl(vaultId, environment),
+            customHeadersStore,
             ConnectionHelper(context)
         )
     }
 
     @WorkerThread
-    fun request(payload: JSONObject): VGSResponse = proxyNetworkManager.execute(
-        VGSRequest.Builder("post", HttpMethod.POST)
-            .body(payload)
-            .build()
-    ).also { mainHandler.post { notifyViews(it) } }
+    fun request(path: String, method: VGSHttpMethod, payload: JSONObject): VGSResponse =
+        proxyNetworkManager.execute(VGSRequest.Builder(path, method).body(payload).build()).also {
+            mainHandler.post { notifyViews(it) }
+        }
 
     @AnyThread
-    fun requestAsync(payload: JSONObject) {
-        proxyNetworkManager.enqueue(
-            VGSRequest.Builder("post", HttpMethod.POST)
-                .body(payload)
-                .build()
-        ) {
+    fun requestAsync(path: String, method: VGSHttpMethod, payload: JSONObject) {
+        proxyNetworkManager.enqueue(VGSRequest.Builder(path, method).body(payload).build()) {
             mainHandler.post {
                 notifyViews(it)
                 notifyResponseListeners(it)
@@ -87,6 +88,12 @@ class VGSShow {
     fun unbindView(view: VGSTextView) {
         viewStore.remove(view)
     }
+
+    /**
+     * Used to edit custom request headers
+     * @return Custom headers store
+     */
+    fun getCustomHeadersStore() = customHeadersStore
 
     //region Helper methods for testing
     @VisibleForTesting

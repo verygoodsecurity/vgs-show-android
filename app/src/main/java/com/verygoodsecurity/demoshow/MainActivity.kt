@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSShowResponseListener
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), VGSShowResponseListener {
 
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
-        showVgs.requestAsync(makeJsonObject())
+        showVgs.requestAsync("post", VGSHttpMethod.POST, makeJsonObject())
     }
 
     override fun onResponse(response: VGSResponse) {
