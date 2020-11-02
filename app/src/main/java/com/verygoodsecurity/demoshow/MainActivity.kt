@@ -26,11 +26,6 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
-    class User {
-        val name: String = "Dima"
-        val age: Int = 27
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,7 +35,6 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         showVgs.addResponseListener(this)
         showVgs.bindView(number)
         showVgs.bindView(expiration)
-        showVgs.getCustomHeadersStore().addHeader("Test-key", "test_value")
 
         requestButton?.setOnClickListener {
             revealData()
