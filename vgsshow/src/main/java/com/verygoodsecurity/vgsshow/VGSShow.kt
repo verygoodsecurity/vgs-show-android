@@ -10,7 +10,7 @@ import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.listener.VGSShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
@@ -28,7 +28,7 @@ import org.json.JSONObject
 
 class VGSShow {
 
-    private val listeners: MutableSet<VGSShowResponseListener> by lazy { mutableSetOf() }
+    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
 
     private val viewStore: MutableSet<VGSTextView> by lazy { mutableSetOf() }
 
@@ -69,11 +69,11 @@ class VGSShow {
         }
     }
 
-    fun addResponseListener(listener: VGSShowResponseListener) {
+    fun addResponseListener(listener: VgsShowResponseListener) {
         listeners.add(listener)
     }
 
-    fun removeResponseListener(listener: VGSShowResponseListener) {
+    fun removeResponseListener(listener: VgsShowResponseListener) {
         listeners.remove(listener)
     }
 

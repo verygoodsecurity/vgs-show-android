@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow
 import android.content.Context
 import android.os.Looper
 import android.util.Log
-import com.verygoodsecurity.vgsshow.core.listener.VGSShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
@@ -19,8 +19,8 @@ class VGSShowTest {
 
     private val context = mockk<Context>(relaxed = true)
     private val looper = mockk<Looper>(relaxed = true)
-    private val testListenerOne = mockk<VGSShowResponseListener>(relaxed = true)
-    private val testListenerTwo = mockk<VGSShowResponseListener>(relaxed = true)
+    private val testListenerOne = mockk<VgsShowResponseListener>(relaxed = true)
+    private val testListenerTwo = mockk<VgsShowResponseListener>(relaxed = true)
     private val testView = mockk<VGSTextView>(relaxed = true)
 
     @Before
