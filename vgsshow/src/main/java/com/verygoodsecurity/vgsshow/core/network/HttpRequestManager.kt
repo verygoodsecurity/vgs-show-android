@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgsshow.core.network
 
+import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
+import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
@@ -12,12 +14,14 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
+    private val headersStore: IVGSCustomHeaderStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
@@ -30,23 +34,30 @@ internal class HttpRequestManager(
             return VGSException.NoInternetConnection().toVGSResponse()
         }
         return try {
-            client.execute(request.toHttpRequest()).toVGSResponse()
+            client.execute(request.toHttpRequest(headersStore.getHeaders())).toVGSResponse()
         } catch (e: Exception) {
             parseException(e)
         }
     }
 
     override fun enqueue(request: VGSRequest, callback: (VGSResponse) -> Unit) {
-        client.enqueue(request.toHttpRequest(), object : HttpRequestCallback {
+        if (!connectionHelper.isConnectionAvailable()) {
+            callback.invoke(VGSException.NoInternetConnection().toVGSResponse())
+            return
+        }
+        with(request.toHttpRequest(headersStore.getHeaders())) {
+            logDebug(this.toString(), VGSShow::class.simpleName)
+            client.enqueue(this, object : HttpRequestCallback {
 
-            override fun onResponse(response: HttpResponse) {
-                callback.invoke(response.toVGSResponse())
-            }
+                override fun onResponse(response: HttpResponse) {
+                    callback.invoke(response.toVGSResponse())
+                }
 
-            override fun onFailure(e: Exception) {
-                callback.invoke(parseException(e))
-            }
-        })
+                override fun onFailure(e: Exception) {
+                    callback.invoke(parseException(e))
+                }
+            })
+        }
     }
 
     override fun cancelAll() {
