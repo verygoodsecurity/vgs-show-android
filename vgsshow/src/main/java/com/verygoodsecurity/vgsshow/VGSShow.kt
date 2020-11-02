@@ -13,6 +13,8 @@ import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.cache.HttpRequestCacheHelper
+import com.verygoodsecurity.vgsshow.core.network.cache.IHttpRequestCacheHelper
 import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
@@ -32,6 +34,8 @@ class VGSShow {
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
+    private val httpRequestCacheHelper: IHttpRequestCacheHelper
+
     private val proxyNetworkManager: IHttpRequestManager
 
     constructor(
@@ -41,8 +45,10 @@ class VGSShow {
     ) : this(context, vaultId, environment.toVGSEnvironment())
 
     constructor(context: Context, vaultId: String, environment: VGSEnvironment) {
-        this.proxyNetworkManager = HttpRequestManager(
+        httpRequestCacheHelper = HttpRequestCacheHelper()
+        proxyNetworkManager = HttpRequestManager(
             UrlHelper.buildProxyUrl(vaultId, environment),
+            httpRequestCacheHelper,
             ConnectionHelper(context)
         )
     }
@@ -87,6 +93,12 @@ class VGSShow {
     fun unbindView(view: VGSTextView) {
         viewStore.remove(view)
     }
+
+    /**
+     * Headers & data that will be send with all requests
+     * @return Extra data & headers store helper
+     */
+    fun getExtraDataHolder() = httpRequestCacheHelper
 
     //region Helper methods for testing
     @VisibleForTesting

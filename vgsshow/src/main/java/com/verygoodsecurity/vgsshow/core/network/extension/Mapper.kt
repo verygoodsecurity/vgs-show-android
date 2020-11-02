@@ -5,15 +5,23 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.util.extension.toJSON
+import com.verygoodsecurity.vgsshow.util.extension.plus
 import com.verygoodsecurity.vgsshow.util.extension.toMap
 import okhttp3.Response
+import org.json.JSONObject
 
-internal fun VGSRequest.toHttpRequest() = HttpRequest(
+internal fun VGSRequest.toHttpRequest(
+    extraHeaders: Map<String, String>,
+    extraData: Map<String, Any>
+) = HttpRequest(
     this.path,
     this.method,
-    this.headers,
-    this.payload.toString()
+    extraHeaders + this.headers,
+    (this.payload ?: if (extraData.isEmpty()) null else JSONObject())?.apply {
+        extraData.forEach { (k, v) ->
+            this.putOpt(k, v)
+        }
+    }?.toString()
 )
 
 internal fun Response.toHttpResponse() = HttpResponse(

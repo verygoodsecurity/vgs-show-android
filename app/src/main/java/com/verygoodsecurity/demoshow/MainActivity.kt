@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), VGSResponseListener {
         showVgs.addResponseListener(this)
         showVgs.bindView(number)
         showVgs.bindView(expiration)
+        showVgs.getExtraDataHolder().addHeader("Test-key", "test_value")
+        showVgs.getExtraDataHolder().addData("test_key", "test_value")
 
         requestButton?.setOnClickListener {
             revealData()
