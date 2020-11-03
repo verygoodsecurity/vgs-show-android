@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgsshow.core
 
+import com.verygoodsecurity.vgsshow.util.extension.concatWithDash
+
 /**
  *
  * Define type of Vault for VGSShow to communicate with.
@@ -12,12 +14,6 @@ sealed class VGSEnvironment {
 
     abstract val value: String
 
-    internal fun generateSuffix(suffix: String): String = if (suffix.isNotEmpty()) {
-        if (suffix.startsWith(DASH_PREFIX)) suffix else DASH_PREFIX + suffix
-    } else {
-        ""
-    }
-
     /**
      *  Live Environment using Live Vault
      *  @param suffix ex. "eu", "-eu-2", value will be "live-eu" or "live-eu-3" respectively
@@ -25,7 +21,7 @@ sealed class VGSEnvironment {
     data class Live(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + generateSuffix(suffix)
+            get() = DEFAULT_VALUE concatWithDash suffix
 
         override fun toString(): String {
             return value
@@ -43,7 +39,7 @@ sealed class VGSEnvironment {
     data class Sandbox(val suffix: String = "") : VGSEnvironment() {
 
         override val value: String
-            get() = DEFAULT_VALUE + generateSuffix(suffix)
+            get() = DEFAULT_VALUE concatWithDash suffix
 
         override fun toString(): String {
             return value
@@ -63,8 +59,6 @@ sealed class VGSEnvironment {
     }
 
     companion object {
-
-        private const val DASH_PREFIX = "-"
 
         private const val ENV_REGEX = "^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$"
 

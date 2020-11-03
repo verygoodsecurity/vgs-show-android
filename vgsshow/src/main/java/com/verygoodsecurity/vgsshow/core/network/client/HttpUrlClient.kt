@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.extension.*
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -24,7 +25,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
     override fun execute(request: HttpRequest): HttpResponse {
         var connection: HttpURLConnection? = null
         try {
-            connection = (baseUrl with request.path).openConnection()
+            connection = (baseUrl concatWithSlash request.path).openConnection()
                 .setSSLSocketFactory(TLSSocketFactory())
                 .callTimeout(CONNECTION_TIME_OUT)
                 .readTimeout(CONNECTION_TIME_OUT)
