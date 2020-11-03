@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
 import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
@@ -27,6 +28,11 @@ internal class ViewsStore {
             updateViews(response.data)
         }
     }
+
+    //region Helper methods for testing
+    @VisibleForTesting
+    fun getView() = views
+    //endregion
 
     private fun updateViews(data: IResponseData) {
         views.forEach {
