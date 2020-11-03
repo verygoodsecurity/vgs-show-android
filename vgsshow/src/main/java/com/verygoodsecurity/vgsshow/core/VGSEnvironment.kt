@@ -27,9 +27,12 @@ sealed class VGSEnvironment {
         override val value: String
             get() = DEFAULT_VALUE + generateSuffix(suffix)
 
-        companion object {
+        override fun toString(): String {
+            return value
+        }
 
-            const val DEFAULT_VALUE = "live"
+        companion object {
+            internal const val DEFAULT_VALUE = "live"
         }
     }
 
@@ -42,9 +45,12 @@ sealed class VGSEnvironment {
         override val value: String
             get() = DEFAULT_VALUE + generateSuffix(suffix)
 
-        companion object {
+        override fun toString(): String {
+            return value
+        }
 
-            const val DEFAULT_VALUE = "sandbox"
+        companion object {
+            internal const val DEFAULT_VALUE = "sandbox"
         }
     }
 

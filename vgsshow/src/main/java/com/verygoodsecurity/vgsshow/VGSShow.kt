@@ -10,7 +10,7 @@ import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
@@ -20,15 +20,15 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.getValue
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 class VGSShow {
 
-    private val listeners: MutableSet<VGSResponseListener> by lazy { mutableSetOf() }
+    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
 
     private val viewStore: MutableSet<VGSTextView> by lazy { mutableSetOf() }
 
@@ -69,11 +69,11 @@ class VGSShow {
         }
     }
 
-    fun addResponseListener(listener: VGSResponseListener) {
+    fun addResponseListener(listener: VgsShowResponseListener) {
         listeners.add(listener)
     }
 
-    fun removeResponseListener(listener: VGSResponseListener) {
+    fun removeResponseListener(listener: VgsShowResponseListener) {
         listeners.remove(listener)
     }
 
@@ -118,17 +118,8 @@ class VGSShow {
         }
         try {
             viewStore.forEach { view ->
-                var jsonObj = JSONObject(response.raw)
-
-                view.getFieldName().split(".").forEach {
-                    if (jsonObj.has(it)) {
-                        when (val instance = jsonObj.get(it)) {
-                            is JSONObject -> jsonObj = instance
-                            is JSONArray -> {
-                            }
-                            else -> view.setText(instance.toString())
-                        }
-                    }
+                JSONObject(response.raw).getValue(view.getFieldName()).let {
+                    view.setText(it)
                 }
             }
         } catch (t: JSONException) {
