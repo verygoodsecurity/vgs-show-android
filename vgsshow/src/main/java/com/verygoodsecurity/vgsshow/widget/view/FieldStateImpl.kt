@@ -13,6 +13,10 @@ internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
 
+    fun setDefaultText(text: CharSequence?) {
+        field.defaultText = text
+    }
+
     fun setText(text: CharSequence?) {
         field.text = text
     }
@@ -141,4 +145,8 @@ internal class FieldStateImpl(
     val isViewReady:Boolean
         get() = this@FieldStateImpl.field.parent != null &&
                 this@FieldStateImpl.field.parent is VGSTextView
+
+    fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
+        field.setOnTextChangeListener(listener)
+    }
 }
