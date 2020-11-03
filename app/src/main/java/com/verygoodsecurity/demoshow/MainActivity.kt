@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
