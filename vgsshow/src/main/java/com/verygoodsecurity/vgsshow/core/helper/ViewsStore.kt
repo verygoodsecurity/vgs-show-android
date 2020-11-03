@@ -31,7 +31,7 @@ internal class ViewsStore {
 
     //region Helper methods for testing
     @VisibleForTesting
-    fun getView() = views
+    fun getViews() = views
     //endregion
 
     private fun updateViews(data: IResponseData) {

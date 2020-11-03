@@ -83,7 +83,7 @@ class VGSShowTest {
         // Act
         sut.bindView(testView)
         // Assert
-        assertThat(sut.getViewsStore().getView(), hasItem(testView))
+        assertThat(sut.getViewsStore().getViews(), hasItem(testView))
     }
 
     @Test
@@ -92,7 +92,7 @@ class VGSShowTest {
         sut.bindView(testView)
         sut.bindView(testView)
         // Assert
-        assertTrue(sut.getViewsStore().getView().size == 1)
+        assertTrue(sut.getViewsStore().getViews().size == 1)
     }
 
     @Test
@@ -101,7 +101,7 @@ class VGSShowTest {
         sut.bindView(testView)
         sut.unbindView(testView)
         // Assert
-        assertTrue(sut.getViewsStore().getView().isEmpty())
+        assertTrue(sut.getViewsStore().getViews().isEmpty())
     }
 
     companion object {
