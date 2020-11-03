@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client.extension
 
-import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -14,13 +14,12 @@ internal fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.
 }
 
 internal fun Request.Builder.setMethod(
-    method: HttpMethod,
+    method: VGSHttpMethod,
     data: String?,
     mediaType: MediaType?
 ): Request.Builder {
     when (method) {
-        HttpMethod.GET -> get()
-        HttpMethod.POST -> post(data?.toRequestBody(mediaType) ?: EMPTY_REQUEST)
+        VGSHttpMethod.POST -> post(data?.toRequestBody(mediaType) ?: EMPTY_REQUEST)
     }
     return this
 }

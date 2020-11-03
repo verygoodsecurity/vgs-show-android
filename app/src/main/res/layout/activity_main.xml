@@ -47,9 +47,9 @@
                 android:layout_margin="@dimen/default_margin"
                 android:padding="4dp"
                 app:cardBrandIconGravity="end"
-                app:text="4111111111111111"
                 app:fieldName="cardNumber"
                 app:imeOptions="actionNext"
+                app:text="4111111111111111"
                 app:numberDivider=" "
                 app:textSize="12dp" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -76,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/default_margin"
                 android:padding="4dp"
-                app:text="12/2025"
+                app:text="12/2024"
                 app:fieldName="expDate"
                 app:textSize="12dp" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -152,7 +152,6 @@
             android:layout_marginBottom="30dp"
             app:fieldName="json.expiration"
             app:text="no data"
-            app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
             app:textStyle="italic" />

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client.extension
 
-import com.verygoodsecurity.vgsshow.core.network.client.HttpMethod
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -52,7 +52,7 @@ internal fun HttpURLConnection.addHeaders(headers: Map<String, String>?): HttpUR
     return this
 }
 
-internal fun HttpURLConnection.setMethod(method: HttpMethod): HttpURLConnection {
+internal fun HttpURLConnection.setMethod(method: VGSHttpMethod): HttpURLConnection {
     requestMethod = method.name
     return this
 }

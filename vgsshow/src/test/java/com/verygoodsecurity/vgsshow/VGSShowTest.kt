@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgsshow
 
 import android.content.Context
+import android.os.Looper
 import android.util.Log
-import com.verygoodsecurity.vgsshow.core.listener.VGSResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -16,13 +18,17 @@ class VGSShowTest {
     lateinit var sut: VGSShow
 
     private val context = mockk<Context>(relaxed = true)
-    private val testListenerOne = mockk<VGSResponseListener>(relaxed = true)
-    private val testListenerTwo = mockk<VGSResponseListener>(relaxed = true)
+    private val looper = mockk<Looper>(relaxed = true)
+    private val testListenerOne = mockk<VgsShowResponseListener>(relaxed = true)
+    private val testListenerTwo = mockk<VgsShowResponseListener>(relaxed = true)
+    private val testView = mockk<VGSTextView>(relaxed = true)
 
     @Before
     fun setUp() {
         mockkStatic(Log::class)
+        mockkStatic(Looper::class)
         every { Log.d(any(), any()) } returns 0
+        every { Looper.getMainLooper() } returns looper
         sut = VGSShow(context, DEFAULT_TENANT_ID, DEFAULT_ENVIRONMENT)
     }
 
@@ -70,6 +76,32 @@ class VGSShowTest {
         sut.clearResponseListeners()
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
+    }
+
+    @Test
+    fun bindView_viewAdded() {
+        // Act
+        sut.bindView(testView)
+        // Assert
+        assertThat(sut.getViewsStore(), hasItem(testView))
+    }
+
+    @Test
+    fun bindView_duplicateViews_oneViewAdded() {
+        // Act
+        sut.bindView(testView)
+        sut.bindView(testView)
+        // Assert
+        assertTrue(sut.getViewsStore().size == 1)
+    }
+
+    @Test
+    fun bindView_viewRemoved() {
+        // Act
+        sut.bindView(testView)
+        sut.unbindView(testView)
+        // Assert
+        assertTrue(sut.getViewsStore().isEmpty())
     }
 
     companion object {
