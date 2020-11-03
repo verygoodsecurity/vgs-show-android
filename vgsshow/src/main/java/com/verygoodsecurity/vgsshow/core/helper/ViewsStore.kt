@@ -24,7 +24,7 @@ internal class ViewsStore {
 
     @MainThread
     fun update(response: VGSResponse) {
-        if (response is VGSResponse.Success<*> && response.data != null) {
+        if (response is VGSResponse.Success<*>) {
             updateViews(response.data)
         }
     }
