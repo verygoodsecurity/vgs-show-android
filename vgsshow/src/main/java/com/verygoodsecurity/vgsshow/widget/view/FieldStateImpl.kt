@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 
@@ -20,6 +21,9 @@ internal class FieldStateImpl(
     fun setText(text: CharSequence?) {
         field.text = text
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getText() = field.text
 
     fun setText(text: CharSequence?, type: TextView.BufferType) {
         field.setText(text, type)

@@ -75,7 +75,8 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    private fun setDefaultText(text: CharSequence?) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun setDefaultText(text: CharSequence?) {
         fieldState?.setDefaultText(text)
     }
 
