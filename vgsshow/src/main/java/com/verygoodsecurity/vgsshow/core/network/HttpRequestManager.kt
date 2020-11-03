@@ -55,7 +55,11 @@ internal class HttpRequestManager(
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {
-                    callback.invoke(parseResponse(response, request.format))
+                    try {
+                        callback.invoke(parseResponse(response, request.format))
+                    } catch (e: Exception) {
+                        callback.invoke(parseException(e))
+                    }
                 }
 
                 override fun onFailure(e: Exception) {
@@ -75,13 +79,13 @@ internal class HttpRequestManager(
             if (!isSuccessful) {
                 VGSResponse.Error(VGSException.Exception(code, message))
             }
-            VGSResponse.Success(code, parseResponseData(responseBody, format), responseBody)
+            VGSResponse.Success(code, parseResponseData(responseBody ?: "", format), responseBody)
         }
     }
 
     // TODO: Add new types of format and handle it here
     @Throws(Exception::class)
-    private fun parseResponseData(data: String?, format: VGSHttpFormat): IResponseData {
+    private fun parseResponseData(data: String, format: VGSHttpFormat): IResponseData {
         return when (format) {
             VGSHttpFormat.JSON -> JsonResponseData(JSONObject(data))
         }
