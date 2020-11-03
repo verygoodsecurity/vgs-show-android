@@ -7,9 +7,9 @@ sealed class VGSResponse {
 
     abstract val code: Int
 
-    data class Success<T : IResponseData> constructor(
+    data class Success constructor(
         override val code: Int,
-        internal val data: T,
+        internal val data: IResponseData,
         internal val raw: String?
     ) : VGSResponse() {
 
