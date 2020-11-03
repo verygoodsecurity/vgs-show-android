@@ -23,7 +23,7 @@ class VGSRequest private constructor(
         fun headers(headers: Map<String, String>) = apply { this.headers = headers }
 
         // TODO: Currently it always JSONObject but in future it will change to support xml
-        fun body(payload: JSONObject?, format: VGSHttpFormat = VGSHttpFormat.JSON): Builder {
+        fun body(payload: JSONObject, format: VGSHttpFormat = VGSHttpFormat.JSON): Builder {
             return apply {
                 this.payload = payload
                 this.format = format
