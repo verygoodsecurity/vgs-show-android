@@ -1,20 +1,24 @@
 package com.verygoodsecurity.vgsshow.core.network
 
-import com.verygoodsecurity.vgsshow.VGSShow
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
@@ -34,7 +38,10 @@ internal class HttpRequestManager(
             return VGSException.NoInternetConnection().toVGSResponse()
         }
         return try {
-            client.execute(request.toHttpRequest(headersStore.getHeaders())).toVGSResponse()
+            parseResponse(
+                client.execute(request.toHttpRequest(headersStore.getHeaders())),
+                request.format
+            )
         } catch (e: Exception) {
             parseException(e)
         }
@@ -46,11 +53,14 @@ internal class HttpRequestManager(
             return
         }
         with(request.toHttpRequest(headersStore.getHeaders())) {
-            logDebug(this.toString(), VGSShow::class.simpleName)
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {
-                    callback.invoke(response.toVGSResponse())
+                    try {
+                        callback.invoke(parseResponse(response, request.format))
+                    } catch (e: Exception) {
+                        callback.invoke(parseException(e))
+                    }
                 }
 
                 override fun onFailure(e: Exception) {
@@ -64,9 +74,31 @@ internal class HttpRequestManager(
         client.cancelAll()
     }
 
-    private fun parseException(e: Exception): VGSResponse = (when (e) {
+    @VisibleForTesting
+    @Throws(Exception::class)
+    internal fun parseResponse(response: HttpResponse, format: VGSHttpBodyFormat): VGSResponse {
+        return with(response) {
+            if (!isSuccessful) {
+                return@with VGSResponse.Error(VGSException.Exception(code, message))
+            }
+            VGSResponse.Success(code, parseResponseData(responseBody ?: "", format), responseBody)
+        }
+    }
+
+    // TODO: Add new types of format and handle it here
+    @VisibleForTesting
+    @Throws(Exception::class)
+    internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {
+        return when (format) {
+            VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
+        }
+    }
+
+    @VisibleForTesting
+    internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
+        is JSONException -> VGSException.JSONException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
 }
