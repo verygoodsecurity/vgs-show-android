@@ -8,6 +8,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -150,7 +151,7 @@ class VGSTextViewTest {
     }
 
     @Test
-    fun test_enabsled() {
+    fun testTextStyles() {
         view.onAttachedToWindow()
 
         val state = view.getState()
@@ -161,5 +162,35 @@ class VGSTextViewTest {
 
         view.setTypeface(Typeface.DEFAULT)
         assertEquals(state.typeface, Typeface.DEFAULT)
+    }
+
+    @Test
+    fun setDefaultText() {
+        val defaultText = "def text"
+        val value = "77"
+
+        view.setDefaultText(defaultText)
+        assertEquals(defaultText, view.getState()?.getText().toString())
+
+        view.setText(value)
+        assertEquals(value, view.getState()?.getText().toString())
+
+        view.setText("")
+        assertEquals(defaultText, view.getState()?.getText().toString())
+    }
+
+    @Test
+    fun setOnTextChangeListener() {
+        val listener = mock(VGSTextView.OnTextChangedListener::class.java)
+        view.setOnTextChangeListener(listener)
+
+        view.setText("123")
+        verify(listener).onTextChange(false)
+
+        view.setText("")
+        verify(listener).onTextChange(true)
+
+        view.setText("test")
+        verify(listener, times(2)).onTextChange(false)
     }
 }
