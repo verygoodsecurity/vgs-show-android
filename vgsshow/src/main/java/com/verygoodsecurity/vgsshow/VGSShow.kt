@@ -66,6 +66,16 @@ class VGSShow {
         }
     }
 
+    @AnyThread
+    fun requestAsync(request: VGSRequest) {
+        proxyNetworkManager.enqueue(request) {
+            mainHandler.post {
+                viewsStore.update(it)
+                notifyResponseListeners(it)
+            }
+        }
+    }
+
     fun addResponseListener(listener: VgsShowResponseListener) {
         listeners.add(listener)
     }
