@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client.model
 
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpFormat
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 
 internal data class HttpRequest(
@@ -8,5 +8,5 @@ internal data class HttpRequest(
     val method: VGSHttpMethod,
     var headers: Map<String, String>? = null,
     var data: String? = null,
-    val format: VGSHttpFormat
+    val format: VGSHttpBodyFormat
 )

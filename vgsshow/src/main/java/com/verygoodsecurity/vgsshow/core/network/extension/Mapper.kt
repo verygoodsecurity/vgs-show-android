@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.network.extension
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpFormat
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
@@ -19,8 +19,8 @@ internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>) = HttpR
 
 private const val APPLICATION_JSON = "application/json"
 
-internal fun VGSHttpFormat.toContentType() = when(this) {
-    VGSHttpFormat.JSON -> APPLICATION_JSON
+internal fun VGSHttpBodyFormat.toContentType() = when(this) {
+    VGSHttpBodyFormat.JSON -> APPLICATION_JSON
 }
 
 internal fun Response.toHttpResponse() = HttpResponse(

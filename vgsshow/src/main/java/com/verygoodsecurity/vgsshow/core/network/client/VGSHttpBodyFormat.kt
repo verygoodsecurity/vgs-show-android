@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
-enum class VGSHttpFormat {
+enum class VGSHttpBodyFormat {
 
     JSON
 }
