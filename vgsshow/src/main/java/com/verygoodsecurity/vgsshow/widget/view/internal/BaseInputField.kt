@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.widget.view.internal
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import androidx.appcompat.widget.AppCompatTextView
@@ -14,9 +13,7 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
 
     fun getSaveState(state: Parcelable?): BaseSavedState {
         return with(InnerState(state)) {
-            setEditPermission(true)
             this.text = this@BaseInputField.text.toString()
-            setEditPermission(false)
             this
         }
     }
@@ -26,29 +23,6 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
             setText(state.text)
         }
     }
-
-    private var editPermission = false
-
-    private fun setEditPermission(isPermitted: Boolean) {
-        editPermission = isPermitted
-    }
-
-    override fun getText(): CharSequence? {
-        return if (editPermission) {
-            super.getText()
-        } else {
-            String()
-        }
-    }
-
-    override fun getEditableText(): Editable? {
-        return if (editPermission) {
-            super.getEditableText()
-        } else {
-            Editable.Factory.getInstance().newEditable("")
-        }
-    }
-
 
     protected class InnerState : BaseSavedState {
         var text: CharSequence? = null

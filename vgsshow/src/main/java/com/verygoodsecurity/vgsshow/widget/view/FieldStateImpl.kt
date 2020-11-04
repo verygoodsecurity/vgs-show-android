@@ -93,6 +93,12 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.isEnabled = value
         }
 
+    internal var isSelectable: Boolean = false
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setTextIsSelectable(value)
+        }
+
     internal var textColor: Int = Color.BLACK
         set(value) {
             field = value
