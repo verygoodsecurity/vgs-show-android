@@ -40,7 +40,7 @@ internal class HttpRequestManager(
         return try {
             parseResponse(
                 client.execute(request.toHttpRequest(headersStore.getHeaders())),
-                request.format
+                request.responseFormat
             )
         } catch (e: Exception) {
             parseException(e)
@@ -57,7 +57,7 @@ internal class HttpRequestManager(
 
                 override fun onResponse(response: HttpResponse) {
                     try {
-                        callback.invoke(parseResponse(response, request.format))
+                        callback.invoke(parseResponse(response, request.responseFormat))
                     } catch (e: Exception) {
                         callback.invoke(parseException(e))
                     }

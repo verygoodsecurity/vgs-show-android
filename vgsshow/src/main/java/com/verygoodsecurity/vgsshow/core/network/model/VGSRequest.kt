@@ -7,9 +7,10 @@ import org.json.JSONObject
 class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
-    var headers: Map<String, String>? = null,
-    var payload: JSONObject? = null,
-    var format: VGSHttpBodyFormat
+    val headers: Map<String, String>? = null,
+    val payload: JSONObject? = null,
+    val requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
+    val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 ) {
 
     data class Builder(
@@ -17,7 +18,8 @@ class VGSRequest private constructor(
         private val method: VGSHttpMethod,
         private var headers: Map<String, String>? = null,
         private var payload: JSONObject? = null,
-        private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
+        private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
     ) {
 
         fun headers(headers: Map<String, String>) = apply { this.headers = headers }
@@ -26,10 +28,12 @@ class VGSRequest private constructor(
         fun body(payload: JSONObject, format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON): Builder {
             return apply {
                 this.payload = payload
-                this.format = format
+                this.requestFormat = format
             }
         }
 
-        fun build() = VGSRequest(path, method, headers, payload, format)
+        fun responseFormat(format: VGSHttpBodyFormat) = apply { this.responseFormat = format }
+
+        fun build() = VGSRequest(path, method, headers, payload, requestFormat, responseFormat)
     }
 }

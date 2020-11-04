@@ -14,7 +14,7 @@ internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>) = HttpR
     this.method,
     extraHeaders + this.headers, // TODO: Maybe it's better to generate VGSRequest already with all headers?
     this.payload?.toString(),
-    this.format
+    this.requestFormat
 )
 
 private const val APPLICATION_JSON = "application/json"
