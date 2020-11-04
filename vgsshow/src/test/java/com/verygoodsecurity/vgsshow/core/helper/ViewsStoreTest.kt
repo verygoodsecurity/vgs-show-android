@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgsshow.core.helper
 
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.mockk
+import io.mockk.verify
 import org.hamcrest.CoreMatchers
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,6 +18,18 @@ class ViewsStoreTest {
     @Before
     fun setUp() {
         sut = ViewsStore()
+    }
+
+    @Test
+    fun update_setTextCalled() {
+        // Arrange
+        sut.add(testView)
+        sut.add(testView2)
+        // Act
+        sut.update(null)
+        // Assert
+        verify { testView.setText(null) }
+        verify { testView2.setText(null) }
     }
 
     @Test
