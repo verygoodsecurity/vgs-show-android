@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgsshow.core.helper
 
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
@@ -23,9 +22,10 @@ internal class ViewsStore {
     }
 
     @MainThread
-    fun update(response: VGSResponse) {
-        if (response is VGSResponse.Success) {
-            updateViews(response.data)
+    fun update(data: IResponseData?) {
+        views.forEach {
+            // TODO: Check if ignore view(ex. view.isIgnore)
+            it.setText(data?.getValue(it.getFieldName()))
         }
     }
 
@@ -33,11 +33,4 @@ internal class ViewsStore {
     @VisibleForTesting
     fun getViews() = views
     //endregion
-
-    private fun updateViews(data: IResponseData) {
-        views.forEach {
-            // TODO: Check if ignore view(ex. view.isIgnore)
-            it.setText(data.getValue(it.getFieldName()))
-        }
-    }
 }
