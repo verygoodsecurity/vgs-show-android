@@ -92,7 +92,7 @@ class VGSShowTest {
         sut.bindView(testView)
         sut.bindView(testView)
         // Assert
-        assertTrue(sut.getViewsStore().getViews().size == 1)
+        assertEquals(sut.getViewsStore().getViews().size, 1)
     }
 
     @Test
