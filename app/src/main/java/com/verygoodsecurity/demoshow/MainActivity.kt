@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -35,6 +36,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
         showVgs.addResponseListener(this)
         showVgs.bindView(number)
+
+        number?.setOnTextChangeListener(object :VGSTextView.OnTextChangedListener {
+            override fun onTextChange(isEmpty: Boolean) {
+                Log.e("test", "state text: $isEmpty")
+            }
+        })
         showVgs.bindView(expiration)
 
         requestButton?.setOnClickListener {

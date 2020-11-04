@@ -152,6 +152,7 @@
             android:layout_marginBottom="30dp"
             app:fieldName="json.expiration"
             app:text="no data"
+            app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
             app:textStyle="italic" />

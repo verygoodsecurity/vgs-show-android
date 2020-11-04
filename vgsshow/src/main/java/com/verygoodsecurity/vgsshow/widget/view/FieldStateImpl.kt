@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 
@@ -13,9 +14,16 @@ internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
 
+    fun setDefaultText(text: CharSequence?) {
+        field.defaultText = text
+    }
+
     fun setText(text: CharSequence?) {
         field.text = text
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getText() = field.text
 
     fun setText(text: CharSequence?, type: TextView.BufferType) {
         field.setText(text, type)
@@ -93,6 +101,12 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.isEnabled = value
         }
 
+    internal var isSelectable: Boolean = false
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setTextIsSelectable(value)
+        }
+
     internal var textColor: Int = Color.BLACK
         set(value) {
             field = value
@@ -141,4 +155,8 @@ internal class FieldStateImpl(
     val isViewReady:Boolean
         get() = this@FieldStateImpl.field.parent != null &&
                 this@FieldStateImpl.field.parent is VGSTextView
+
+    fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
+        field.setOnTextChangeListener(listener)
+    }
 }
