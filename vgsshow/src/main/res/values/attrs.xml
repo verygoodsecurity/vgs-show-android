@@ -97,6 +97,42 @@
     <!-- Set the enabled state of this view. -->
     <attr name="enabled" format="boolean" />
 
+    <!-- The type of data being placed in a text field, used to help an
+         input method decide how to let the user enter text.  The constants
+         here correspond to those defined by
+         InputType.  Generally you can select
+         a single value, though some can be combined together as
+         indicated.  Setting this attribute to anything besides
+         <var>none</var> also implies that the text is editable. -->
+    <attr name="inputType">
+        <!-- There is no content type.  The text is not editable. -->
+        <enum name="none" value="0" />
+        <!-- Just plain old text.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
+        <enum name="text" value="1" />
+
+        <!-- Text that is a password.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
+        <enum name="textPassword" value="129" />
+
+        <!-- A numeric only field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
+        <enum name="number" value="2" />
+
+        <!-- A numeric password field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_PASSWORD}. -->
+        <enum name="numberPassword" value="18" />
+
+        <!-- For entering a date.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_DATETIME} |
+             {@link android.text.InputType#TYPE_DATETIME_VARIATION_DATE}. -->
+        <enum name="date" value="4" />
+    </attr>
+
     <declare-styleable name="VGSTextView">
 
         <attr name="text" />
@@ -110,6 +146,7 @@
         <attr name="textStyle" />
         <attr name="fontFamily" />
         <attr name="textIsSelectable" />
+        <attr name="inputType" />
 
     </declare-styleable>
 

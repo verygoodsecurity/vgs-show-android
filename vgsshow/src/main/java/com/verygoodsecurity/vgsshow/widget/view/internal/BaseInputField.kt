@@ -4,12 +4,14 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
+import android.text.InputType
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
-class BaseInputField(context: Context) : AppCompatTextView(context) {
+internal class BaseInputField(context: Context) : AppCompatTextView(context) {
 
     var defaultText: CharSequence? = ""
         set(value) {
@@ -24,6 +26,22 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
         setEditPermission(true)
         addTextChangedListener(InnerTextWatcher())
         setEditPermission(false)
+        setOnClickListener {
+            handlePasswordState()
+            (parent as? View)?.callOnClick()
+        }
+
+        setOnLongClickListener {
+            (parent as? View)?.performLongClick()
+            false
+        }
+    }
+
+    private fun handlePasswordState() {
+        if (isPasswordViewType()) {
+            transformationMethod = null
+//            setTransformationMethod(PasswordTransformationMethod.getInstance())   //todo reuse in case when we have to hide content on second click
+        }
     }
 
 
@@ -37,7 +55,7 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
     fun setRestoreState(state: Parcelable?) {
         if (state is InnerState) {
             text = if (state.text.isNullOrEmpty()) {
-                defaultText?:""
+                defaultText ?: ""
             } else {
                 state.text
             }
@@ -46,7 +64,7 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
 
     override fun setText(text: CharSequence?, type: BufferType?) {
         val str = if (text.isNullOrEmpty()) {
-            defaultText?:""
+            defaultText ?: ""
         } else {
             text
         }
@@ -110,5 +128,22 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
                 p0.isNullOrEmpty() || p0.toString() == defaultText
             )
         }
+    }
+
+    override fun setTextIsSelectable(selectable: Boolean) {
+        super.setTextIsSelectable(selectable && !isPasswordViewType())
+    }
+
+    private fun isPasswordViewType(): Boolean {
+        return when (inputType) {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> true
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> true
+            else -> false
+        }
+    }
+
+    override fun setInputType(type: Int) {
+        super.setInputType(type)
+        setTextIsSelectable(isTextSelectable && !isPasswordViewType())
     }
 }
