@@ -52,25 +52,23 @@ class VGSShow {
 
     @WorkerThread
     fun request(path: String, method: VGSHttpMethod, payload: JSONObject): VGSResponse =
-        proxyNetworkManager.execute(VGSRequest.Builder(path, method).body(payload).build()).also {
-            mainHandler.post { viewsStore.update((it as? VGSResponse.Success)?.data) }
-        }
+        request(VGSRequest.Builder(path, method).body(payload).build())
+
+    @WorkerThread
+    fun request(request: VGSRequest): VGSResponse = proxyNetworkManager.execute(request).also {
+        mainHandler.post { viewsStore.update((it as? VGSResponse.Success)?.data) }
+    }
 
     @AnyThread
     fun requestAsync(path: String, method: VGSHttpMethod, payload: JSONObject) {
-        proxyNetworkManager.enqueue(VGSRequest.Builder(path, method).body(payload).build()) {
-            mainHandler.post {
-                viewsStore.update((it as? VGSResponse.Success)?.data)
-                notifyResponseListeners(it)
-            }
-        }
+        requestAsync(VGSRequest.Builder(path, method).body(payload).build())
     }
 
     @AnyThread
     fun requestAsync(request: VGSRequest) {
         proxyNetworkManager.enqueue(request) {
             mainHandler.post {
-                viewsStore.update(it)
+                viewsStore.update((it as? VGSResponse.Success)?.data)
                 notifyResponseListeners(it)
             }
         }
