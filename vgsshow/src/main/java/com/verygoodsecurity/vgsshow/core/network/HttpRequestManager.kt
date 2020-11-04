@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgsshow.core.network
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpFormat
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
@@ -73,25 +74,28 @@ internal class HttpRequestManager(
         client.cancelAll()
     }
 
+    @VisibleForTesting
     @Throws(Exception::class)
-    private fun parseResponse(response: HttpResponse, format: VGSHttpFormat): VGSResponse {
+    internal fun parseResponse(response: HttpResponse, format: VGSHttpBodyFormat): VGSResponse {
         return with(response) {
             if (!isSuccessful) {
-                VGSResponse.Error(VGSException.Exception(code, message))
+                return@with VGSResponse.Error(VGSException.Exception(code, message))
             }
             VGSResponse.Success(code, parseResponseData(responseBody ?: "", format), responseBody)
         }
     }
 
     // TODO: Add new types of format and handle it here
+    @VisibleForTesting
     @Throws(Exception::class)
-    private fun parseResponseData(data: String, format: VGSHttpFormat): IResponseData {
+    internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {
         return when (format) {
-            VGSHttpFormat.JSON -> JsonResponseData(JSONObject(data))
+            VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
         }
     }
 
-    private fun parseException(e: Exception): VGSResponse = (when (e) {
+    @VisibleForTesting
+    internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
         is JSONException -> VGSException.JSONException()
