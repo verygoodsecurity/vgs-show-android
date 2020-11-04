@@ -5,12 +5,12 @@ import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
-import com.verygoodsecurity.vgsshow.core.network.client.extension.with
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
+import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -55,7 +55,7 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
-            .url(URL(baseUrl with request.path))
+            .url(URL(baseUrl concatWithSlash request.path))
             .addHeaders(request.headers)
             .setMethod(
                 request.method,
