@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
+import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -32,7 +33,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON) // TODO: Refactor, send content type as parameter to make this class reusable
+                .addHeader(CONTENT_TYPE, request.format.toContentType())
                 .addHeaders(request.headers)
                 .setMethod(request.method)
 

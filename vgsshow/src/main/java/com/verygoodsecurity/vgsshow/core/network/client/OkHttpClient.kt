@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
@@ -56,14 +57,12 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
         return Request.Builder()
             .url(URL(baseUrl concatWithSlash request.path))
             .addHeaders(request.headers)
-            .setMethod(request.method, request.data, MEDIA_TYPE)
+            .setMethod(
+                request.method,
+                request.data,
+                request.format.toContentType().toMediaTypeOrNull()
+            )
             .build()
-    }
-
-    companion object {
-
-        // TODO: Refactor, send media type as parameter to make this class reusable
-        private val MEDIA_TYPE = APPLICATION_JSON.toMediaTypeOrNull()
     }
 
     internal class LoggingInterceptor : Interceptor {

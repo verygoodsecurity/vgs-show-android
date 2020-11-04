@@ -1,20 +1,27 @@
 package com.verygoodsecurity.vgsshow.core.network.extension
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.extension.plus
-import com.verygoodsecurity.vgsshow.util.extension.toMap
 import okhttp3.Response
 
 internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>) = HttpRequest(
     this.path,
     this.method,
     extraHeaders + this.headers, // TODO: Maybe it's better to generate VGSRequest already with all headers?
-    this.payload?.toString()
+    this.payload?.toString(),
+    this.requestFormat
 )
+
+private const val APPLICATION_JSON = "application/json"
+
+internal fun VGSHttpBodyFormat.toContentType() = when(this) {
+    VGSHttpBodyFormat.JSON -> APPLICATION_JSON
+}
 
 internal fun Response.toHttpResponse() = HttpResponse(
     this.code,
@@ -22,11 +29,5 @@ internal fun Response.toHttpResponse() = HttpResponse(
     this.message,
     this.body?.string()
 )
-
-internal fun HttpResponse.toVGSResponse() = if (isSuccessful) {
-    VGSResponse.Success(code, responseBody?.toMap(), responseBody)
-} else {
-    VGSResponse.Error(VGSException.Exception(code, message))
-}
 
 internal fun VGSException.toVGSResponse() = VGSResponse.Error(this)

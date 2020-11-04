@@ -11,7 +11,9 @@ import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
+import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -34,6 +36,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
         showVgs.addResponseListener(this)
         showVgs.bindView(number)
+
+        number?.setOnTextChangeListener(object :VGSTextView.OnTextChangedListener {
+            override fun onTextChange(isEmpty: Boolean) {
+                Log.e("test", "state text: $isEmpty")
+            }
+        })
         showVgs.bindView(expiration)
 
         requestButton?.setOnClickListener {
@@ -43,7 +51,9 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
-        showVgs.requestAsync("post", VGSHttpMethod.POST, makeJsonObject())
+        showVgs.requestAsync(
+            VGSRequest.Builder("post", VGSHttpMethod.POST).body(makeJsonObject()).build()
+        )
     }
 
     override fun onResponse(response: VGSResponse) {

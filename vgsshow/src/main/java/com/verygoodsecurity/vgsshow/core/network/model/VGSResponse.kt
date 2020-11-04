@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
+import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
 
 sealed class VGSResponse {
 
@@ -8,13 +9,11 @@ sealed class VGSResponse {
 
     data class Success constructor(
         override val code: Int,
-        internal val data: Map<String, Any>?,
+        internal val data: IResponseData,
         internal val raw: String?
     ) : VGSResponse() {
 
         override fun toString() = "Code: $code"
-
-        internal fun toStringRaw() = "Code: $code \n $raw"
     }
 
     data class Error constructor(val exception: VGSException) : VGSResponse() {

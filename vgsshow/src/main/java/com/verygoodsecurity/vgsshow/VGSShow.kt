@@ -9,28 +9,25 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
-import com.verygoodsecurity.vgsshow.core.exception.VGSException
+import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.getValue
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import org.json.JSONException
 import org.json.JSONObject
 
 class VGSShow {
 
     private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
 
-    private val viewStore: MutableSet<VGSTextView> by lazy { mutableSetOf() }
+    private val viewsStore = ViewsStore()
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -55,15 +52,23 @@ class VGSShow {
 
     @WorkerThread
     fun request(path: String, method: VGSHttpMethod, payload: JSONObject): VGSResponse =
-        proxyNetworkManager.execute(VGSRequest.Builder(path, method).body(payload).build()).also {
-            mainHandler.post { notifyViews(it) }
-        }
+        request(VGSRequest.Builder(path, method).body(payload).build())
+
+    @WorkerThread
+    fun request(request: VGSRequest): VGSResponse = proxyNetworkManager.execute(request).also {
+        mainHandler.post { viewsStore.update((it as? VGSResponse.Success)?.data) }
+    }
 
     @AnyThread
     fun requestAsync(path: String, method: VGSHttpMethod, payload: JSONObject) {
-        proxyNetworkManager.enqueue(VGSRequest.Builder(path, method).body(payload).build()) {
+        requestAsync(VGSRequest.Builder(path, method).body(payload).build())
+    }
+
+    @AnyThread
+    fun requestAsync(request: VGSRequest) {
+        proxyNetworkManager.enqueue(request) {
             mainHandler.post {
-                notifyViews(it)
+                viewsStore.update((it as? VGSResponse.Success)?.data)
                 notifyResponseListeners(it)
             }
         }
@@ -82,11 +87,11 @@ class VGSShow {
     }
 
     fun bindView(view: VGSTextView) {
-        viewStore.add(view)
+        viewsStore.add(view)
     }
 
     fun unbindView(view: VGSTextView) {
-        viewStore.remove(view)
+        viewsStore.remove(view)
     }
 
     /**
@@ -100,30 +105,13 @@ class VGSShow {
     internal fun getResponseListeners() = listeners
 
     @VisibleForTesting
-    internal fun getViewsStore() = viewStore
+    internal fun getViewsStore() = viewsStore
     //endregion
 
     @MainThread
     private fun notifyResponseListeners(response: VGSResponse) {
         listeners.forEach {
             it.onResponse(response)
-        }
-    }
-
-    // TODO Refactor this method(Single responsibility)
-    @MainThread
-    private fun notifyViews(response: VGSResponse) {
-        if (response !is VGSResponse.Success) {
-            return
-        }
-        try {
-            viewStore.forEach { view ->
-                JSONObject(response.raw).getValue(view.getFieldName()).let {
-                    view.setText(it)
-                }
-            }
-        } catch (t: JSONException) {
-            notifyResponseListeners(VGSException.JSONException().toVGSResponse())
         }
     }
 }
