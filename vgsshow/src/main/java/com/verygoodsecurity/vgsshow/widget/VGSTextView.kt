@@ -38,17 +38,31 @@ class VGSTextView @JvmOverloads constructor(
 
 
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
-            for (i in 0 until indexCount) {
+            for(i in 0 until indexCount) {
                 val attr = getIndex(i);
                 when(attr) {
-                    R.styleable.VGSTextView_gravity -> setGravity(getInt(R.styleable.VGSTextView_gravity, Gravity.START or Gravity.CENTER_VERTICAL))
-                    R.styleable.VGSTextView_singleLine -> setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
-                    R.styleable.VGSTextView_textSize -> setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
+                    R.styleable.VGSTextView_gravity -> setGravity(
+                        getInt(R.styleable.VGSTextView_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                    )
+                    R.styleable.VGSTextView_singleLine -> setSingleLine(
+                        getBoolean(R.styleable.VGSTextView_singleLine, false)
+                    )
+                    R.styleable.VGSTextView_textSize -> setTextSize(
+                        getDimension(R.styleable.VGSTextView_textSize, -1f)
+                    )
                     R.styleable.VGSTextView_textStyle -> setupTypeface(this)
                     R.styleable.VGSTextView_fontFamily -> setupFont(this)
-                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
-                    R.styleable.VGSTextView_text -> setDefaultText(getString(R.styleable.VGSTextView_text))
-                    R.styleable.VGSTextView_fieldName -> setFieldName(getString(R.styleable.VGSTextView_fieldName))
+                    R.styleable.VGSTextView_textColor -> setTextColor(
+                        getColor(R.styleable.VGSTextView_textColor, Color.BLACK)
+                    )
+                    R.styleable.VGSTextView_text -> setText(getString(R.styleable.VGSTextView_text))
+                    R.styleable.VGSTextView_fieldName -> setFieldName(
+                        getString(R.styleable.VGSTextView_fieldName)
+                    )
+                    R.styleable.VGSTextView_textIsSelectable -> setTextIsSelectable(
+                        getBoolean(R.styleable.VGSTextView_textIsSelectable, false)
+                    )
+                    R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(R.styleable.VGSTextView_enabled, false)
                 }
             }
 
@@ -371,6 +385,17 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun setEnabled(enabled: Boolean) {
         fieldState?.enabled = enabled
+    }
+
+    /**
+     * Sets whether or not (default) the content of this view is selectable by the user.
+     *
+     * Indicates that the content of a non-editable TextView can be selected. Default value is false.
+     *
+     * @param isSelectable
+     */
+    fun setTextIsSelectable(isSelectable: Boolean) {
+        fieldState?.isSelectable = isSelectable
     }
 
     fun setOnTextChangeListener(listener: OnTextChangedListener?) {

@@ -29,9 +29,7 @@ class BaseInputField(context: Context) : AppCompatTextView(context) {
 
     fun getSaveState(state: Parcelable?): BaseSavedState {
         return with(InnerState(state)) {
-            setEditPermission(true)
             this.text = this@BaseInputField.text.toString()
-            setEditPermission(false)
             this
         }
     }
