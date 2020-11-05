@@ -415,7 +415,8 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @param inputType
      */
-    private fun setInputType(inputType: Int) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun setInputType(inputType: Int) {
         fieldState?.inputType = inputType
     }
 }
