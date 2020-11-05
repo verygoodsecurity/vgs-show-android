@@ -11,6 +11,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -59,10 +60,13 @@ class VGSTextView @JvmOverloads constructor(
                     R.styleable.VGSTextView_fieldName -> setFieldName(
                         getString(R.styleable.VGSTextView_fieldName)
                     )
+                    R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(R.styleable.VGSTextView_enabled, false)
+                    R.styleable.VGSTextView_inputType -> setInputType(
+                        getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL)
+                    )
                     R.styleable.VGSTextView_textIsSelectable -> setTextIsSelectable(
                         getBoolean(R.styleable.VGSTextView_textIsSelectable, false)
                     )
-                    R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(R.styleable.VGSTextView_enabled, false)
                 }
             }
 
@@ -404,6 +408,16 @@ class VGSTextView @JvmOverloads constructor(
 
     interface OnTextChangedListener {
         fun onTextChange(isEmpty: Boolean)
+    }
+
+    /**
+     * Set the type of the content with a constant as defined for input field.
+     *
+     * @param inputType
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun setInputType(inputType: Int) {
+        fieldState?.inputType = inputType
     }
 }
 
