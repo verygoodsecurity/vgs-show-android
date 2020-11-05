@@ -9,17 +9,17 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.extension.plus
 import okhttp3.Response
 
-internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>) = HttpRequest(
+internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
     this.path,
     this.method,
-    extraHeaders + this.headers, // TODO: Maybe it's better to generate VGSRequest already with all headers?
+    this.headers + extraHeaders,
     this.payload?.toString(),
     this.requestFormat
 )
 
 private const val APPLICATION_JSON = "application/json"
 
-internal fun VGSHttpBodyFormat.toContentType() = when(this) {
+internal fun VGSHttpBodyFormat.toContentType() = when (this) {
     VGSHttpBodyFormat.JSON -> APPLICATION_JSON
 }
 

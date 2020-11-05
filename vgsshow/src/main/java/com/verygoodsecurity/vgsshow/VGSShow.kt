@@ -9,6 +9,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
+import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
+import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
@@ -35,6 +37,8 @@ class VGSShow {
 
     private val proxyNetworkManager: IHttpRequestManager
 
+    private val analyticsManager: IAnalyticsManager
+
     constructor(
         context: Context,
         vaultId: String,
@@ -43,11 +47,14 @@ class VGSShow {
 
     constructor(context: Context, vaultId: String, environment: VGSEnvironment) {
         customHeadersStore = CustomHeaderStore()
-        proxyNetworkManager = HttpRequestManager(
-            UrlHelper.buildProxyUrl(vaultId, environment),
-            customHeadersStore,
-            ConnectionHelper(context)
-        )
+        with(ConnectionHelper(context)) {
+            proxyNetworkManager = HttpRequestManager(
+                UrlHelper.buildProxyUrl(vaultId, environment),
+                customHeadersStore,
+                this,
+            )
+            analyticsManager = AnalyticsManager(environment, this)
+        }
     }
 
     @WorkerThread

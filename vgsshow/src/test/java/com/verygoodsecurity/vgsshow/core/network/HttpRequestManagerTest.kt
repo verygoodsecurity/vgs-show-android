@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -20,12 +19,11 @@ class HttpRequestManagerTest {
 
     private lateinit var sut: HttpRequestManager
 
-    private val headersStore = mockk<CustomHeaderStore>(relaxed = true)
     private val connectionHelper = mockk<ConnectionHelper>(relaxed = true)
 
     @Before
     fun setUp() {
-        sut = HttpRequestManager("", headersStore, connectionHelper)
+        sut = HttpRequestManager("", null, connectionHelper)
     }
 
     @Test

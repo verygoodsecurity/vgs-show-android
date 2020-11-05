@@ -25,7 +25,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
-    private val headersStore: IVGSCustomHeaderStore,
+    private val headersStore: IVGSCustomHeaderStore?,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
@@ -39,7 +39,7 @@ internal class HttpRequestManager(
         }
         return try {
             parseResponse(
-                client.execute(request.toHttpRequest(headersStore.getHeaders())),
+                client.execute(request.toHttpRequest(headersStore?.getHeaders())),
                 request.responseFormat
             )
         } catch (e: Exception) {
@@ -47,24 +47,24 @@ internal class HttpRequestManager(
         }
     }
 
-    override fun enqueue(request: VGSRequest, callback: (VGSResponse) -> Unit) {
+    override fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?) {
         if (!connectionHelper.isConnectionAvailable()) {
-            callback.invoke(VGSException.NoInternetConnection().toVGSResponse())
+            callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
-        with(request.toHttpRequest(headersStore.getHeaders())) {
+        with(request.toHttpRequest(headersStore?.getHeaders())) {
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {
                     try {
-                        callback.invoke(parseResponse(response, request.responseFormat))
+                        callback?.invoke(parseResponse(response, request.responseFormat))
                     } catch (e: Exception) {
-                        callback.invoke(parseException(e))
+                        callback?.invoke(parseException(e))
                     }
                 }
 
                 override fun onFailure(e: Exception) {
-                    callback.invoke(parseException(e))
+                    callback?.invoke(parseException(e))
                 }
             })
         }
