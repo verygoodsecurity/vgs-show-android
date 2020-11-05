@@ -13,18 +13,32 @@ class VGSRequest private constructor(
     val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 ) {
 
-    data class Builder(
-        private val path: String,
-        private val method: VGSHttpMethod,
-        private var headers: Map<String, String>? = null,
-        private var payload: JSONObject? = null,
-        private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
-        private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
-    ) {
+    /**
+     * VGSRequest builder helper.
+     *
+     * @param path path for a request.
+     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     */
+    data class Builder(private val path: String, private val method: VGSHttpMethod) {
 
+        private var headers: Map<String, String>? = null
+        private var payload: JSONObject? = null
+        private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+
+        /**
+         * List of headers that will be added to this request.
+         *
+         * @param headers key-value headers store, where key - header name and value - header value.
+         * (ex. key = "Authorization", value = "authorization_token")
+         */
         fun headers(headers: Map<String, String>) = apply { this.headers = headers }
 
-        // TODO: Currently it always JSONObject but in future it will change to support xml
+        /**
+         * Body that will send with this request.
+         *
+         * TODO: implement payload as raw string or sealed class and add comment
+         */
         fun body(payload: JSONObject, format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON): Builder {
             return apply {
                 this.payload = payload
@@ -32,8 +46,18 @@ class VGSRequest private constructor(
             }
         }
 
+        /**
+         * Specifies expected response body format.
+         *
+         * @param format @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat]
+         */
         fun responseFormat(format: VGSHttpBodyFormat) = apply { this.responseFormat = format }
 
+        /**
+         * Build VGSRequest object.
+         *
+         * @return configured VGSRequest.
+         */
         fun build() = VGSRequest(path, method, headers, payload, requestFormat, responseFormat)
     }
 }
