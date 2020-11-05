@@ -53,7 +53,7 @@ class VGSShow {
                 customHeadersStore,
                 this,
             )
-            analyticsManager = AnalyticsManager(environment, this)
+            analyticsManager = AnalyticsManager(vaultId, environment, this)
         }
     }
 
