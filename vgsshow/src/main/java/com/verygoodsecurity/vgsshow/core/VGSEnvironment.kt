@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgsshow.util.extension.concatWithDash
  *
  * @property value Unique identifier.
  *
- * @version 1.0
+ * @since 1.0.0
  */
 sealed class VGSEnvironment {
 
@@ -62,10 +62,19 @@ sealed class VGSEnvironment {
 
         private const val ENV_REGEX = "^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$"
 
+        /**
+         * Extension function to check if VGSEnvironment is configured valid
+         */
         fun VGSEnvironment.isValid() = ENV_REGEX.toPattern().matcher(this.value).matches()
 
+        /**
+         * Extension function to check if string value is valid VGSEnvironment
+         */
         fun String.isValidEnvironment() = ENV_REGEX.toPattern().matcher(this).matches()
 
+        /**
+         * Extension function to generate VGSEnvironment based on string, ex. "live-eu-3"
+         */
         fun String.toVGSEnvironment(): VGSEnvironment = if (isValidEnvironment()) when {
             contains(Live.DEFAULT_VALUE, true) -> {
                 Live(this.substring(Live.DEFAULT_VALUE.length, this.length))

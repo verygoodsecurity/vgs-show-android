@@ -4,17 +4,17 @@ internal class CustomHeaderStore : IVGSCustomHeaderStore {
 
     private val cachedHeaders: MutableMap<String, String> = HashMap()
 
-    override fun addHeader(key: String, value: String) {
+    override fun add(key: String, value: String) {
         cachedHeaders[key] = value
     }
 
-    override fun removeHeader(key: String) {
+    override fun remove(key: String) {
         cachedHeaders.remove(key)
     }
 
-    override fun getHeaders(): Map<String, String> = cachedHeaders
+    override fun getAll(): Map<String, String> = cachedHeaders
 
-    override fun clearHeaders() {
+    override fun clear() {
         cachedHeaders.clear()
     }
 }
