@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget.view
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Parcelable
+import android.text.InputType
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
@@ -13,6 +14,12 @@ import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
+
+    internal var inputType: Int = InputType.TYPE_NULL
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.inputType = value
+        }
 
     fun setDefaultText(text: CharSequence?) {
         field.defaultText = text

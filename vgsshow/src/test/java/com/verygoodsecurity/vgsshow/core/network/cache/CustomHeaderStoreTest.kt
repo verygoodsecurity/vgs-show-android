@@ -16,10 +16,10 @@ class CustomHeaderStoreTest {
     @Test
     fun addHeader_oneHeaderAdded_successHeaderAdded() {
         // Act
-        sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         //Assert
-        assertTrue(sut.getHeaders().contains(TEST_HEADER_NAME))
-        assertEquals(sut.getHeaders()[TEST_HEADER_NAME], TEST_HEADER_VALUE)
+        assertTrue(sut.getAll().contains(TEST_HEADER_NAME))
+        assertEquals(sut.getAll()[TEST_HEADER_NAME], TEST_HEADER_VALUE)
     }
 
     @Test
@@ -27,10 +27,10 @@ class CustomHeaderStoreTest {
         // Arrange
         val testValue = TEST_HEADER_VALUE + 2
         // Act
-        sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
-        sut.addHeader(TEST_HEADER_NAME, testValue)
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        sut.add(TEST_HEADER_NAME, testValue)
         //Assert
-        assertEquals(sut.getHeaders().size, 1)
+        assertEquals(sut.getAll().size, 1)
     }
 
     @Test
@@ -38,34 +38,34 @@ class CustomHeaderStoreTest {
         // Arrange
         val testValue = TEST_HEADER_VALUE + 2
         // Act
-        sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
-        sut.addHeader(TEST_HEADER_NAME, testValue)
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        sut.add(TEST_HEADER_NAME, testValue)
         //Assert
-        assertEquals(sut.getHeaders()[TEST_HEADER_NAME], testValue)
+        assertEquals(sut.getAll()[TEST_HEADER_NAME], testValue)
     }
 
     @Test
     fun removeHeader_oneHeaderRemoved_successHeaderRemoved() {
         // Act
-        sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
-        sut.removeHeader(TEST_HEADER_NAME)
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        sut.remove(TEST_HEADER_NAME)
         //Assert
-        assertFalse(sut.getHeaders().contains(TEST_HEADER_NAME))
+        assertFalse(sut.getAll().contains(TEST_HEADER_NAME))
     }
 
     @Test
     fun getHeader_successEmptyMapReturned() {
         //Assert
-        assertTrue(sut.getHeaders().isEmpty())
+        assertTrue(sut.getAll().isEmpty())
     }
 
     @Test
     fun clearHeaders() {
         // Act
-        sut.addHeader(TEST_HEADER_NAME, TEST_HEADER_VALUE)
-        sut.clearHeaders()
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        sut.clear()
         //Assert
-        assertTrue(sut.getHeaders().isEmpty())
+        assertTrue(sut.getAll().isEmpty())
     }
 
     companion object {

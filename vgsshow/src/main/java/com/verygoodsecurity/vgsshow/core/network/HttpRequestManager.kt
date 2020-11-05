@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network
 
+import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
@@ -39,9 +40,11 @@ internal class HttpRequestManager(
         }
         return try {
             parseResponse(
-                client.execute(request.toHttpRequest(headersStore?.getHeaders())),
+                client.execute(request.toHttpRequest(headersStore?.getAll())),
                 request.responseFormat
             )
+        } catch (e: NetworkOnMainThreadException) {
+            throw e
         } catch (e: Exception) {
             parseException(e)
         }
@@ -52,7 +55,7 @@ internal class HttpRequestManager(
             callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
-        with(request.toHttpRequest(headersStore?.getHeaders())) {
+        with(request.toHttpRequest(headersStore?.getAll())) {
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {

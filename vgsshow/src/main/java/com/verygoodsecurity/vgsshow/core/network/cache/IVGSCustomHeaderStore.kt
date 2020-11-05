@@ -1,12 +1,34 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
+/**
+ * Interface for custom header store that will be added to all requests.
+ *
+ * @since 1.0.0
+ */
 interface IVGSCustomHeaderStore {
 
-    fun addHeader(key: String, value: String)
+    /**
+     * Add custom header. Does not allow duplication.
+     *
+     * @param key http request header name, ex. "Authorization".
+     * @param value http request header name, ex. "authorization_token".
+     */
+    fun add(key: String, value: String)
 
-    fun removeHeader(key: String)
+    /**
+     * Remove custom header.
+     *
+     * @param key http request header name, ex. "Authorization".
+     */
+    fun remove(key: String)
 
-    fun getHeaders(): Map<String, String>
+    /**
+     * @return all custom headers.
+     */
+    fun getAll(): Map<String, String>
 
-    fun clearHeaders()
+    /**
+     * Clear all headers.
+     */
+    fun clear()
 }

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.InputType
 import android.view.Gravity
 import org.junit.Assert.*
 import org.junit.Before
@@ -192,5 +193,13 @@ class VGSTextViewTest {
 
         view.setText("test")
         verify(listener, times(2)).onTextChange(false)
+    }
+
+    @Test
+    fun setInputType() {
+        val inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(inputType)
+
+        assertEquals(inputType, view.getState()?.inputType)
     }
 }
