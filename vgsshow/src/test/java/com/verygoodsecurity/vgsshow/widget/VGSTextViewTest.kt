@@ -166,18 +166,18 @@ class VGSTextViewTest {
     }
 
     @Test
-    fun setDefaultText() {
-        val defaultText = "def text"
+    fun setHint() {
+        val hint = "def text"
         val value = "77"
 
-        view.setDefaultText(defaultText)
-        assertEquals(defaultText, view.getState()?.getText().toString())
+        view.setHint(hint)
+        assertEquals(hint, view.getState()?.hint)
 
         view.setText(value)
-        assertEquals(value, view.getState()?.getText().toString())
+        assertEquals(hint, view.getState()?.hint)
 
         view.setText("")
-        assertEquals(defaultText, view.getState()?.getText().toString())
+        assertEquals(hint, view.getState()?.hint)
     }
 
     @Test
