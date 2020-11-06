@@ -80,7 +80,7 @@ internal class AnalyticsManager constructor(
         private const val KEY_SESSION_ID = "vgsCollectSessionId"
         private const val KEY_FORM_ID = "formId"
         private const val KEY_SOURCE = "source"
-        private const val KEY_TENANT_ID = "TNT"
+        private const val KEY_TENANT_ID = "tnt"
         private const val KEY_ENVIRONMENT = "env"
         private const val KEY_VERSION = "version"
         private const val KEY_STATUS = "status"
