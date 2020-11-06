@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
-internal class CustomHeaderStore : IVGSCustomHeaderStore {
+internal class StaticHeadersStore : IVGSStaticHeadersStore {
 
     private val cachedHeaders: MutableMap<String, String> = HashMap()
 

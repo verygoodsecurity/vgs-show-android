@@ -1,11 +1,11 @@
 package com.verygoodsecurity.vgsshow.core.network.cache
 
 /**
- * Interface for custom header store that will be added to all requests.
+ * Interface for static headers store that will be added to all requests.
  *
  * @since 1.0.0
  */
-interface IVGSCustomHeaderStore {
+interface IVGSStaticHeadersStore {
 
     /**
      * Add custom header. Does not allow duplication.

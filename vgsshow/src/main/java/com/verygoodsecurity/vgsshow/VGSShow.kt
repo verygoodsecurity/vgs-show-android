@@ -10,12 +10,16 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
+import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
+import com.verygoodsecurity.vgsshow.core.analytics.event.Event
+import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
+import com.verygoodsecurity.vgsshow.core.analytics.event.InitEvent
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.cache.CustomHeaderStore
-import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
+import com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.cache.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -43,17 +47,21 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
-    private val customHeadersStore: IVGSCustomHeaderStore
+    private val headersStore: IVGSStaticHeadersStore
 
-    private val proxyNetworkManager: IHttpRequestManager
+    private val proxyRequestManager: IHttpRequestManager
+
+    private val analyticsManager: IAnalyticsManager
 
     init {
-        customHeadersStore = CustomHeaderStore()
-        proxyNetworkManager = HttpRequestManager(
+        headersStore = StaticHeadersStore()
+        val connectionHelper = ConnectionHelper(context)
+        proxyRequestManager = HttpRequestManager(
             UrlHelper.buildProxyUrl(vaultId, environment),
-            customHeadersStore,
-            ConnectionHelper(context)
+            headersStore,
+            connectionHelper
         )
+        analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
     }
 
     /**
@@ -90,7 +98,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      */
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
-    fun request(request: VGSRequest): VGSResponse = proxyNetworkManager.execute(request).also {
+    fun request(request: VGSRequest): VGSResponse = proxyRequestManager.execute(request).also {
         mainHandler.post { viewsStore.update((it as? VGSResponse.Success)?.data) }
     }
 
@@ -113,7 +121,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
-        proxyNetworkManager.enqueue(request) {
+        proxyRequestManager.enqueue(request) {
             mainHandler.post {
                 viewsStore.update((it as? VGSResponse.Success)?.data)
                 notifyResponseListeners(it)
@@ -152,6 +160,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
     fun bindView(view: VGSTextView) {
+        analyticsManager.log(InitEvent("text")) // TODO: Fix field type
         viewsStore.add(view)
     }
 
@@ -165,11 +174,11 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     }
 
     /**
-     * Used to edit custom request headers that will be added to all requests of this VGSShow instance.
+     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
      *
-     * @return Custom headers store. @see [com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore]
+     * @return Static headers store. @see [com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore]
      */
-    fun getCustomHeadersStore(): IVGSCustomHeaderStore = customHeadersStore
+    fun getStaticHeadersStore(): IVGSStaticHeadersStore = headersStore
 
     //region Helper methods for testing
     @VisibleForTesting

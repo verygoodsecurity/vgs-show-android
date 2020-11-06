@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
+import com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
-    private val headersStore: IVGSCustomHeaderStore?,
+    private val headersStore: IVGSStaticHeadersStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
@@ -40,7 +40,7 @@ internal class HttpRequestManager(
         }
         return try {
             parseResponse(
-                client.execute(request.toHttpRequest(headersStore?.getAll())),
+                client.execute(request.toHttpRequest(headersStore.getAll())),
                 request.responseFormat
             )
         } catch (e: NetworkOnMainThreadException) {
@@ -55,7 +55,7 @@ internal class HttpRequestManager(
             callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
-        with(request.toHttpRequest(headersStore?.getAll())) {
+        with(request.toHttpRequest(headersStore.getAll())) {
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {

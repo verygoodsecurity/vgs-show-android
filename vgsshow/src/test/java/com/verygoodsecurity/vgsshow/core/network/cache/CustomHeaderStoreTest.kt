@@ -6,11 +6,11 @@ import org.junit.Test
 
 class CustomHeaderStoreTest {
 
-    private lateinit var sut: CustomHeaderStore
+    private lateinit var sut: StaticHeadersStore
 
     @Before
     fun setUp() {
-        sut = CustomHeaderStore()
+        sut = StaticHeadersStore()
     }
 
     @Test
