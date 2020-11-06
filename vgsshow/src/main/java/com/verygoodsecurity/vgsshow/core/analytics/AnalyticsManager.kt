@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.analytics.event.Event
+import com.verygoodsecurity.vgsshow.core.analytics.event.Status
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.cache.StaticHeadersStore
@@ -33,7 +34,7 @@ internal class AnalyticsManager constructor(
         KEY_TENANT_ID to tenantId,
         KEY_ENVIRONMENT to environment.value,
         KEY_VERSION to BuildConfig.VERSION_NAME,
-        KEY_STATUS to OK,
+        KEY_STATUS to Status.OK.value,
         KEY_USER_AGENT to mapOf(
             KEY_PLATFORM to ANDROID,
             KEY_DEVICE to Build.BRAND,
@@ -87,6 +88,5 @@ internal class AnalyticsManager constructor(
 
         private const val ANDROID = "android"
         private const val ANDROID_SDK = "androidSDK"
-        private const val OK = "Ok"
     }
 }

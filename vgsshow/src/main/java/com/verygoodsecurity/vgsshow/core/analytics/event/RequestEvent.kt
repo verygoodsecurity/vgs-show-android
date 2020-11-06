@@ -14,7 +14,7 @@ internal data class RequestEvent(
     override val customEventAttributes: Map<String, Any>
         get() = mutableMapOf(
             KEY_STATUS_CODE to code,
-            KEY_STATUS to status,
+            KEY_STATUS to status.value,
             KEY_CHECK_SUM to checkSum,
             KEY_CONTENT to mutableListOf<String>().apply {
                 if (hasFields) add(HAS_FIELDS)

@@ -13,7 +13,7 @@ internal data class ResponseEvent(
     override val customEventAttributes: Map<String, Any>
         get() = mutableMapOf(
             KEY_STATUS_CODE to code,
-            KEY_STATUS to status,
+            KEY_STATUS to status.value,
             KEY_CHECK_SUM to checkSum
         ).apply {
             errorMessage?.let {
