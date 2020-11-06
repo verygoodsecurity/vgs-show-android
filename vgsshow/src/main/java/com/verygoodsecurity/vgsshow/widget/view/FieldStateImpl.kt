@@ -131,6 +131,12 @@ internal class FieldStateImpl(
             }
         }
 
+    internal var ignoreField: Boolean = false
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.ignoreField = value
+        }
+
     internal var isSingleLine: Boolean = true
         set(value) {
             field = value

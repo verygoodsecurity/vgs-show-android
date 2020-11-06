@@ -24,8 +24,7 @@ internal class ViewsStore {
     @MainThread
     fun update(data: IResponseData?) {
         views.forEach {
-            // TODO: Check if ignore view(ex. view.isIgnore)
-            it.setText(data?.getValue(it.getFieldName()))
+            if (!it.isIgnored()) it.setText(data?.getValue(it.getFieldName()))
         }
     }
 

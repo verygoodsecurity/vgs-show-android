@@ -452,6 +452,12 @@ class VGSTextView @JvmOverloads constructor(
     internal fun setInputType(inputType: Int) {
         fieldState?.inputType = inputType
     }
+
+    fun setIgnore(ignoreField: Boolean) {
+        fieldState?.ignoreField = ignoreField
+    }
+
+    fun isIgnored(): Boolean = fieldState?.ignoreField ?: false
 }
 
 private fun Context.getStyledAttributes(
