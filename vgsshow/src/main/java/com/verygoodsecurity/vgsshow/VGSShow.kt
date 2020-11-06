@@ -151,7 +151,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun bindView(view: VGSTextView) {
+    fun subscribeView(view: VGSTextView) {
         viewsStore.add(view)
     }
 
@@ -160,7 +160,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun unbindView(view: VGSTextView) {
+    fun unsubscribeView(view: VGSTextView) {
         viewsStore.remove(view)
     }
 
