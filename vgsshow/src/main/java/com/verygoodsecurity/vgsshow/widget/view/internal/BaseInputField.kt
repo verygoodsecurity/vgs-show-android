@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.view.internal.text.method.RangePasswordTransformationMethod
 
 internal class BaseInputField(context: Context) : AppCompatTextView(context) {
 
@@ -40,10 +41,14 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
     private fun handlePasswordState() {
         if (isPasswordViewType()) {
             transformationMethod = null
-//            setTransformationMethod(PasswordTransformationMethod.getInstance())   //todo reuse in case when we have to hide content on second click
         }
     }
 
+    internal fun setPasswordRange(start: Int, end: Int) {
+        if (isPasswordViewType()) {
+            transformationMethod = RangePasswordTransformationMethod(start, end)
+        }
+    }
 
     fun getSaveState(state: Parcelable?): BaseSavedState {
         return with(InnerState(state)) {
