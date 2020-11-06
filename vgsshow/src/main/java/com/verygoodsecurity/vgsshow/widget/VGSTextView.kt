@@ -50,7 +50,7 @@ class VGSTextView @JvmOverloads constructor(
                     R.styleable.VGSTextView_textStyle -> setupTypeface(this)
                     R.styleable.VGSTextView_fontFamily -> setupFont(this)
                     R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLACK))
-                    R.styleable.VGSTextView_text -> setText(getString(attr))
+                    R.styleable.VGSTextView_hint -> setHint(getString(attr))
                     R.styleable.VGSTextView_fieldName -> setFieldName(getString(attr))
                     R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(attr, false)
                     R.styleable.VGSTextView_inputType -> setInputType(getInt(attr, EditorInfo.TYPE_NULL))
@@ -96,9 +96,11 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun setDefaultText(text: CharSequence?) {
-        fieldState?.setDefaultText(text)
+    /**
+     * Hint text to display when the text is empty.
+     */
+    fun setHint(text: CharSequence?) {
+        fieldState?.hint = text
     }
 
     /**
@@ -388,8 +390,18 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the enabled status for this view. The interpretation of the enabled state varies by subclass.
+     *
+     * @return True if this view is enabled, false otherwise.
+     */
     override fun isEnabled(): Boolean = fieldState?.enabled ?: false
 
+    /**
+     * Set the enabled state of this view. The interpretation of the enabled state varies by subclass.
+     *
+     * @param enabled True if this view is enabled, false otherwise.
+     */
     override fun setEnabled(enabled: Boolean) {
         fieldState?.enabled = enabled
     }
@@ -405,11 +417,30 @@ class VGSTextView @JvmOverloads constructor(
         fieldState?.isSelectable = isSelectable
     }
 
+    /**
+     * When an object of this type is attached to an field, its methods will be called when the input is changed.
+     */
     fun setOnTextChangeListener(listener: OnTextChangedListener?) {
         fieldState?.setOnTextChangeListener(listener)
     }
 
+    /**
+     * Replaces all occurrences of this regular expression in the revealed string with specified [replacement] expression.
+     *
+     * @param regex Regular expression for transformation revealed data.
+     * @param replacement A replacement expression that can include substitutions.
+     */
+    fun setTransitionRegex(regex:String, replacement:String) {
+        fieldState?.setTransitionRegex(regex, replacement)
+    }
+
     interface OnTextChangedListener {
+
+        /**
+         * This method is called to notify you that the text has been changed.
+         *
+         * @param isEmpty If true, then field is have no revealed data.
+         */
         fun onTextChange(isEmpty: Boolean)
     }
 

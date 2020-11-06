@@ -9,17 +9,16 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.text.method.RangePasswordTransformationMethod
 
 internal class BaseInputField(context: Context) : AppCompatTextView(context) {
 
-    var defaultText: CharSequence? = ""
-        set(value) {
-            field = value
-            text = value
-        }
-    var fieldName: String? = null
+    internal var fieldName: String? = null
+
+    private var transformationRegex: String? = null
+    private var replacement: String = ""
 
     private var textChangeListener: VGSTextView.OnTextChangedListener? = null
 
@@ -50,29 +49,21 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
         }
     }
 
-    fun getSaveState(state: Parcelable?): BaseSavedState {
+    internal fun getSaveState(state: Parcelable?): BaseSavedState {
         return with(InnerState(state)) {
             this.text = this@BaseInputField.text.toString()
             this
         }
     }
 
-    fun setRestoreState(state: Parcelable?) {
+    internal fun setRestoreState(state: Parcelable?) {
         if (state is InnerState) {
-            text = if (state.text.isNullOrEmpty()) {
-                defaultText ?: ""
-            } else {
-                state.text
-            }
+            state.text
         }
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        val str = if (text.isNullOrEmpty()) {
-            defaultText ?: ""
-        } else {
-            text
-        }
+        val str = transformationRegex?.transformWithRegex(text.toString(), replacement) ?: text
         super.setText(str, type)
     }
 
@@ -121,7 +112,7 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
         if (editPermission) super.addTextChangedListener(watcher)
     }
 
-    fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
+    internal fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
         textChangeListener = listener
     }
 
@@ -129,9 +120,7 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun afterTextChanged(p0: Editable?) {
-            textChangeListener?.onTextChange(
-                p0.isNullOrEmpty() || p0.toString() == defaultText
-            )
+            textChangeListener?.onTextChange(p0.isNullOrEmpty())
         }
     }
 
@@ -151,4 +140,10 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
         super.setInputType(type)
         setTextIsSelectable(isTextSelectable && !isPasswordViewType())
     }
+
+    internal fun setTransitionRegex(regex: String, text: String?) {
+        this.transformationRegex = regex
+        replacement = text ?: ""
+    }
+
 }

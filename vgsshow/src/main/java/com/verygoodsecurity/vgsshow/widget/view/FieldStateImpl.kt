@@ -33,9 +33,12 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.inputType = value
         }
 
-    fun setDefaultText(text: CharSequence?) {
-        field.defaultText = text
-    }
+    internal var hint: CharSequence? = null
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.hint = value
+        }
+
 
     fun setText(text: CharSequence?) {
         field.text = text
@@ -177,5 +180,9 @@ internal class FieldStateImpl(
 
     fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
         field.setOnTextChangeListener(listener)
+    }
+
+    fun setTransitionRegex(regex: String, textToReplace: String) {
+        field.setTransitionRegex(regex, textToReplace)
     }
 }

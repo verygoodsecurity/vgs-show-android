@@ -113,7 +113,6 @@
         android:padding="4dp"
         android:paddingStart="8dp">
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,7 +129,6 @@
             android:progressTint="@color/colorPrimary"
             android:visibility="invisible" />
 
-
         <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:id="@+id/number"
             android:layout_width="match_parent"
@@ -138,7 +136,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             app:fieldName="json.number"
-            app:text="no data"
+            app:hint="no Data"
+            app:inputType="textPassword"
+            app:passwordStart="6"
+            app:passwordEnd="12"
             app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
@@ -152,8 +153,7 @@
             android:layout_marginTop="47dp"
             android:layout_marginBottom="30dp"
             app:fieldName="json.expiration"
-            app:text="no data"
-            app:inputType="textPassword"
+            app:hint="no Data"
             app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
