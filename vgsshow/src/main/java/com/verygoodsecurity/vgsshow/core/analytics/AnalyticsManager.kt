@@ -42,13 +42,7 @@ internal class AnalyticsManager constructor(
         )
     )
 
-    init {
-
-        logDebug("session id = ${Session.id}")
-    }
-
     override fun log(event: Event) {
-        logDebug((defaultInfo + event.attributes).toString())
         requestManager.enqueue(buildRequest(event)) {
             logDebug(it.toString())
         }
