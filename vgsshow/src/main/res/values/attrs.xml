@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Text to display. -->
-    <attr name="text" format="string" localization="suggested" />
+    <!-- Hint text to display when the text is empty. -->
+    <attr name="hint" format="string" localization="suggested" />
 
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
@@ -135,7 +135,7 @@
 
     <declare-styleable name="VGSTextView">
 
-        <attr name="text" />
+        <attr name="hint" />
 
         <attr name="fieldName" />
         <attr name="gravity" />
