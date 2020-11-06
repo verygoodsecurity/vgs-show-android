@@ -79,27 +79,27 @@ class VGSShowTest {
     }
 
     @Test
-    fun bindView_viewAdded() {
+    fun subscribeView_viewAdded() {
         // Act
-        sut.bindView(testView)
+        sut.subscribeView(testView)
         // Assert
         assertThat(sut.getViewsStore().getViews(), hasItem(testView))
     }
 
     @Test
-    fun bindView_duplicateViews_oneViewAdded() {
+    fun subscribeView_duplicateViews_oneViewAdded() {
         // Act
-        sut.bindView(testView)
-        sut.bindView(testView)
+        sut.subscribeView(testView)
+        sut.subscribeView(testView)
         // Assert
         assertEquals(sut.getViewsStore().getViews().size, 1)
     }
 
     @Test
-    fun bindView_viewRemoved() {
+    fun subscribeView_viewRemoved() {
         // Act
-        sut.bindView(testView)
-        sut.unbindView(testView)
+        sut.subscribeView(testView)
+        sut.unsubscribeView(testView)
         // Assert
         assertTrue(sut.getViewsStore().getViews().isEmpty())
     }
