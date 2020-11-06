@@ -36,16 +36,20 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     }
 
     override fun enqueue(request: HttpRequest, callback: HttpRequestCallback) {
-        client.newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
+        try {
+            client.newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
 
-            override fun onFailure(call: Call, e: IOException) {
-                callback.onFailure(e)
-            }
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onFailure(e)
+                }
 
-            override fun onResponse(call: Call, response: Response) {
-                callback.onResponse(response.toHttpResponse())
-            }
-        })
+                override fun onResponse(call: Call, response: Response) {
+                    callback.onResponse(response.toHttpResponse())
+                }
+            })
+        } catch (e: Exception) {
+            callback.onFailure(e)
+        }
     }
 
     override fun cancelAll() {
