@@ -15,6 +15,18 @@ internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
 
+    internal var passwordStart: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(value, passwordEnd)
+        }
+
+    internal var passwordEnd: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(passwordStart, value)
+        }
+
     internal var inputType: Int = InputType.TYPE_NULL
         set(value) {
             field = value
@@ -122,7 +134,7 @@ internal class FieldStateImpl(
 
     internal var textSize: Float = -1f
         set(value) {
-            if(value != -1f) {
+            if (value != -1f) {
                 field = value
                 this@FieldStateImpl.field.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
             }
@@ -159,7 +171,7 @@ internal class FieldStateImpl(
         field.setRestoreState(state)
     }
 
-    val isViewReady:Boolean
+    val isViewReady: Boolean
         get() = this@FieldStateImpl.field.parent != null &&
                 this@FieldStateImpl.field.parent is VGSTextView
 
