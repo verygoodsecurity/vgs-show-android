@@ -21,9 +21,12 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.inputType = value
         }
 
-    fun setDefaultText(text: CharSequence?) {
-        field.defaultText = text
-    }
+    internal var hint: CharSequence? = null
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.hint = value
+        }
+
 
     fun setText(text: CharSequence?) {
         field.text = text
@@ -122,7 +125,7 @@ internal class FieldStateImpl(
 
     internal var textSize: Float = -1f
         set(value) {
-            if(value != -1f) {
+            if (value != -1f) {
                 field = value
                 this@FieldStateImpl.field.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
             }
@@ -159,11 +162,15 @@ internal class FieldStateImpl(
         field.setRestoreState(state)
     }
 
-    val isViewReady:Boolean
+    val isViewReady: Boolean
         get() = this@FieldStateImpl.field.parent != null &&
                 this@FieldStateImpl.field.parent is VGSTextView
 
     fun setOnTextChangeListener(listener: VGSTextView.OnTextChangedListener?) {
         field.setOnTextChangeListener(listener)
+    }
+
+    fun setTransitionRegex(regex: String, textToReplace: String) {
+        field.setTransitionRegex(regex, textToReplace)
     }
 }
