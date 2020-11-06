@@ -11,12 +11,15 @@ import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
-import com.verygoodsecurity.vgsshow.core.analytics.event.Event
 import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.InitEvent
+import com.verygoodsecurity.vgsshow.core.analytics.event.RequestEvent
+import com.verygoodsecurity.vgsshow.core.analytics.event.ResponseEvent
+import com.verygoodsecurity.vgsshow.core.analytics.event.Status
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.cache.StaticHeadersStore
@@ -24,6 +27,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.toMD5
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import org.json.JSONObject
@@ -98,8 +102,14 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      */
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
-    fun request(request: VGSRequest): VGSResponse = proxyRequestManager.execute(request).also {
-        mainHandler.post { viewsStore.update((it as? VGSResponse.Success)?.data) }
+    fun request(request: VGSRequest): VGSResponse {
+        val response = proxyRequestManager.execute(request)
+        with(request.payload.toString().toMD5()) {
+            logRequestEvent(response, this)
+            logResponseEvent(response, this)
+        }
+        mainHandler.post { viewsStore.update((response as? VGSResponse.Success)?.data) }
+        return response
     }
 
     /**
@@ -122,6 +132,10 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     @AnyThread
     fun requestAsync(request: VGSRequest) {
         proxyRequestManager.enqueue(request) {
+            with(request.payload.toString().toMD5()) {
+                logRequestEvent(it, this)
+                logResponseEvent(it, this)
+            }
             mainHandler.post {
                 viewsStore.update((it as? VGSResponse.Success)?.data)
                 notifyResponseListeners(it)
@@ -193,5 +207,46 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
         listeners.forEach {
             it.onResponse(response)
         }
+    }
+
+    private fun logRequestEvent(response: VGSResponse, checksum: String) {
+        analyticsManager.log(
+            when (response.code) {
+                in NETWORK_RESPONSE_CODES -> RequestEvent(
+                    Status.OK,
+                    checksum,
+                    !viewsStore.isEmpty(),
+                    headersStore.getAll().isNotEmpty()
+                )
+                else -> RequestEvent(
+                    Status.FAILED,
+                    checksum,
+                    !viewsStore.isEmpty(),
+                    headersStore.getAll().isNotEmpty(),
+                    response.code.toString()
+                )
+            }
+        )
+    }
+
+    private fun logResponseEvent(response: VGSResponse, checksum: String) {
+        if (response.code !in NETWORK_RESPONSE_CODES) {
+            return
+        }
+        analyticsManager.log(
+            when (response) {
+                is VGSResponse.Success -> ResponseEvent(
+                    response.code.toString(),
+                    Status.OK,
+                    checksum
+                )
+                is VGSResponse.Error -> ResponseEvent(
+                    response.code.toString(),
+                    Status.FAILED,
+                    checksum,
+                    response.exception.message
+                )
+            }
+        )
     }
 }

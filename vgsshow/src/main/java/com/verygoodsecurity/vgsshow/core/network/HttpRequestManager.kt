@@ -104,4 +104,9 @@ internal class HttpRequestManager(
         is JSONException -> VGSException.JSONException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
+
+    companion object {
+
+        val NETWORK_RESPONSE_CODES = 200..999
+    }
 }

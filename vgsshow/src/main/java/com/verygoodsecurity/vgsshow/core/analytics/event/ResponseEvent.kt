@@ -2,9 +2,9 @@ package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class ResponseEvent(
     val code: String,
-    val status: String,
+    val status: Status,
     val checkSum: String,
-    val errorMessage: String?
+    val errorMessage: String? = null
 ) : Event() {
 
     override val type: String
