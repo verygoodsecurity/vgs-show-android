@@ -1,10 +1,15 @@
 package com.verygoodsecurity.vgsshow.core.network.headers
 
+import com.verygoodsecurity.vgsshow.BuildConfig
+import com.verygoodsecurity.vgsshow.core.Session
+
 internal class ProxyStaticHeadersStore : IVGSStaticHeadersStore {
 
     private val staticHeaders: MutableMap<String, String> = HashMap()
 
-    private val defaultStaticHeaders: Map<String, String> = mapOf()
+    private val defaultStaticHeaders: Map<String, String> = mapOf(
+        AGENT_HEADER to "source=show-androidSdk&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}&vgsCollectSessionId=${Session.id}"
+    )
 
     override fun add(key: String, value: String) {
         staticHeaders[key] = value
@@ -20,5 +25,10 @@ internal class ProxyStaticHeadersStore : IVGSStaticHeadersStore {
 
     override fun clear() {
         staticHeaders.clear()
+    }
+
+    companion object {
+
+        private const val AGENT_HEADER = "vgs-client"
     }
 }
