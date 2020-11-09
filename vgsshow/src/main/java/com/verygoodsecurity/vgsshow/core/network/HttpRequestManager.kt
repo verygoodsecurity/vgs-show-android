@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient

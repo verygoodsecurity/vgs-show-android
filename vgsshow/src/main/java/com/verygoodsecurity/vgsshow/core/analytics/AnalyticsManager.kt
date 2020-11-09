@@ -8,11 +8,12 @@ import com.verygoodsecurity.vgsshow.core.analytics.event.Event
 import com.verygoodsecurity.vgsshow.core.analytics.event.Status
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.cache.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
+import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toJSON
 import java.util.*
 
@@ -43,7 +44,10 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        requestManager.enqueue(buildRequest(event), null)
+        logDebug(event.toString())
+        requestManager.enqueue(buildRequest(event)) {
+            logDebug(it.toString())
+        }
     }
 
     override fun cancelAll() {
@@ -55,7 +59,7 @@ internal class AnalyticsManager constructor(
         else -> SANDBOX_BASE_URL
     }
 
-    private fun getHeadersStore() = StaticHeadersStore()
+    private fun getHeadersStore() = AnalyticsStaticHeadersStore()
 
     private fun buildRequest(event: Event): VGSRequest =
         VGSRequest.Builder(PATH, VGSHttpMethod.POST)
