@@ -14,6 +14,8 @@ internal class StaticHeadersStore : IVGSStaticHeadersStore {
 
     override fun getAll(): Map<String, String> = cachedHeaders
 
+    override fun containsUserHeaders(): Boolean  = cachedHeaders.isNotEmpty()
+
     override fun clear() {
         cachedHeaders.clear()
     }

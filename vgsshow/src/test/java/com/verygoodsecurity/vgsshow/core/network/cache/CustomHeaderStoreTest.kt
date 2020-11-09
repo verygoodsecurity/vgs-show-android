@@ -60,6 +60,14 @@ class CustomHeaderStoreTest {
     }
 
     @Test
+    fun containsUserHeaders_headerAdd_trueReturned() {
+        // Act
+        sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
+        //Assert
+        assertTrue(sut.containsUserHeaders())
+    }
+
+    @Test
     fun clearHeaders() {
         // Act
         sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)

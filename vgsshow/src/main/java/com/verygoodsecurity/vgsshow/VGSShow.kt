@@ -105,7 +105,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     fun request(request: VGSRequest): VGSResponse {
         val response = proxyRequestManager.execute(request)
         with(request.payload.toString().toMD5()) {
-            logRequestEvent(response, this)
+            logRequestEvent(request, response, this)
             logResponseEvent(response, this)
         }
         mainHandler.post { viewsStore.update((response as? VGSResponse.Success)?.data) }
@@ -133,7 +133,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     fun requestAsync(request: VGSRequest) {
         proxyRequestManager.enqueue(request) {
             with(request.payload.toString().toMD5()) {
-                logRequestEvent(it, this)
+                logRequestEvent(request, it, this)
                 logResponseEvent(it, this)
             }
             mainHandler.post {
@@ -209,20 +209,20 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
         }
     }
 
-    private fun logRequestEvent(response: VGSResponse, checksum: String) {
+    private fun logRequestEvent(request: VGSRequest, response: VGSResponse, checksum: String) {
         analyticsManager.log(
             when (response.code) {
                 in NETWORK_RESPONSE_CODES -> RequestEvent(
                     Status.OK,
                     checksum,
                     !viewsStore.isEmpty(),
-                    headersStore.getAll().isNotEmpty()
+                    (request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders())
                 )
                 else -> RequestEvent(
                     Status.FAILED,
                     checksum,
                     !viewsStore.isEmpty(),
-                    headersStore.getAll().isNotEmpty(),
+                    (request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()),
                     response.code.toString()
                 )
             }
