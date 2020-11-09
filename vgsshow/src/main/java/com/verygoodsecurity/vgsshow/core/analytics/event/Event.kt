@@ -6,7 +6,7 @@ internal abstract class Event {
 
     abstract val type: String
 
-    abstract val customEventAttributes: Map<String, Any>
+    protected abstract val customEventAttributes: Map<String, Any>
 
     val attributes: Map<String, Any> by lazy {
         HashMap(customEventAttributes).apply {
