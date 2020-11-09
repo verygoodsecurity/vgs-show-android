@@ -15,6 +15,8 @@ class AnalyticsStaticHeadersStore : IVGSStaticHeadersStore {
 
     override fun getAll(): Map<String, String> = emptyMap()
 
+    override fun containsUserHeaders(): Boolean  = false
+
     override fun clear() {
         // unused
     }

@@ -21,6 +21,8 @@ internal class ProxyStaticHeadersStore : IVGSStaticHeadersStore {
 
     override fun getAll(): Map<String, String> = staticHeaders + defaultStaticHeaders
 
+    override fun containsUserHeaders(): Boolean = staticHeaders.isNotEmpty()
+
     override fun clear() {
         staticHeaders.clear()
     }
