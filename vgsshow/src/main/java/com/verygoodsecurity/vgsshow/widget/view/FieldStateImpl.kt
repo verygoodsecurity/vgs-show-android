@@ -15,6 +15,18 @@ internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
 
+    internal var passwordStart: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(value, passwordEnd)
+        }
+
+    internal var passwordEnd: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(passwordStart, value)
+        }
+
     internal var inputType: Int = InputType.TYPE_NULL
         set(value) {
             field = value
