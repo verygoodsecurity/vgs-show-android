@@ -7,6 +7,7 @@ import org.hamcrest.CoreMatchers
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.*
 
 class ViewsStoreTest {
 
@@ -76,5 +77,23 @@ class ViewsStoreTest {
         sut.clear()
         // Assert
         assertTrue(sut.getViews().isEmpty())
+    }
+
+    @Test
+    fun update_setTextCalled_ignoreField() {
+        // Arrange
+        val ignoredField = mock(VGSTextView::class.java)
+        sut.add(ignoredField)
+        // Act
+        sut.update(null)
+        // Assert
+        verify(ignoredField, times(1)).setText(null)
+
+        // Act
+        doReturn(true).`when`(ignoredField).isIgnored()
+        ignoredField.setIgnore(true)
+
+        // Assert
+        verify(ignoredField, times(1)).setText(null)
     }
 }

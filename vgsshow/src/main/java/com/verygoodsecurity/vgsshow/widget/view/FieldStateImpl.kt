@@ -15,6 +15,18 @@ internal class FieldStateImpl(
     private val field: BaseInputField
 ) {
 
+    internal var passwordStart: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(value, passwordEnd)
+        }
+
+    internal var passwordEnd: Int = -1
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setPasswordRange(passwordStart, value)
+        }
+
     internal var inputType: Int = InputType.TYPE_NULL
         set(value) {
             field = value
@@ -129,6 +141,12 @@ internal class FieldStateImpl(
                 field = value
                 this@FieldStateImpl.field.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
             }
+        }
+
+    internal var ignoreField: Boolean = false
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.ignoreField = value
         }
 
     internal var isSingleLine: Boolean = true

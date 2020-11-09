@@ -11,9 +11,11 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.view.internal.text.method.RangePasswordTransformationMethod
 
 internal class BaseInputField(context: Context) : AppCompatTextView(context) {
 
+    internal var ignoreField: Boolean = false
     internal var fieldName: String? = null
 
     private var transformationRegex: String? = null
@@ -39,10 +41,14 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
     private fun handlePasswordState() {
         if (isPasswordViewType()) {
             transformationMethod = null
-//            setTransformationMethod(PasswordTransformationMethod.getInstance())   //todo reuse in case when we have to hide content on second click
         }
     }
 
+    internal fun setPasswordRange(start: Int, end: Int) {
+        if (isPasswordViewType()) {
+            transformationMethod = RangePasswordTransformationMethod(start, end)
+        }
+    }
 
     internal fun getSaveState(state: Parcelable?): BaseSavedState {
         return with(InnerState(state)) {

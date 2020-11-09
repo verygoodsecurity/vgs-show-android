@@ -35,6 +35,16 @@ class RegexTest {
         assertEquals(TEXT, transformedText)
     }
 
+    @Test
+    fun failedTransformation_errorRegex_indexOfBounds() {
+        val transformedText = "(\\d{5})(\\d{6})".transformWithRegex(
+            TEXT,
+            "$1 $2 $3"
+        )
+
+        assertEquals(TEXT, transformedText)
+    }
+
     companion object {
         private const val TEXT = "4111111111111111"
         private const val TRANSFORMED_EXAMPLE = "4111 1111 1111 1111"
