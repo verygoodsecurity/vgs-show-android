@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
 internal class BaseInputField(context: Context) : AppCompatTextView(context) {
 
+    internal var ignoreField: Boolean = false
     internal var fieldName: String? = null
 
     private var transformationRegex: String? = null

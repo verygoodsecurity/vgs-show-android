@@ -202,4 +202,13 @@ class VGSTextViewTest {
 
         assertEquals(inputType, view.getState()?.inputType)
     }
+
+    @Test
+    fun setIgnoreView() {
+        view.setIgnore(true)
+        assertTrue(view.getState()?.ignoreField?:false)
+
+        view.setIgnore(false)
+        assertFalse(view.getState()?.ignoreField?:true)
+    }
 }
