@@ -1,11 +1,11 @@
-package com.verygoodsecurity.vgsshow.core.network.cache
+package com.verygoodsecurity.vgsshow.core.network.headers
 
 /**
- * Interface for custom header store that will be added to all requests.
+ * Interface for static headers store that will be added to all requests.
  *
  * @since 1.0.0
  */
-interface IVGSCustomHeaderStore {
+interface IVGSStaticHeadersStore {
 
     /**
      * Add custom header. Does not allow duplication.
@@ -26,6 +26,11 @@ interface IVGSCustomHeaderStore {
      * @return all custom headers.
      */
     fun getAll(): Map<String, String>
+
+    /**
+     * @return true if user add any header
+     */
+    fun containsUserHeaders(): Boolean
 
     /**
      * Clear all headers.

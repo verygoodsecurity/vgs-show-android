@@ -12,7 +12,7 @@ internal interface IHttpRequestManager {
     @Throws(NetworkOnMainThreadException::class)
     fun execute(request: VGSRequest): VGSResponse
 
-    fun enqueue(request: VGSRequest, callback: (VGSResponse) -> Unit)
+    fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?)
 
     fun cancelAll()
 }

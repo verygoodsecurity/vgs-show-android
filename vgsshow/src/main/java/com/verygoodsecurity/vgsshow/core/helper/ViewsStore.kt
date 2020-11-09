@@ -29,6 +29,8 @@ internal class ViewsStore {
         }
     }
 
+    fun isEmpty() = views.isEmpty()
+
     //region Helper methods for testing
     @VisibleForTesting
     fun getViews() = views

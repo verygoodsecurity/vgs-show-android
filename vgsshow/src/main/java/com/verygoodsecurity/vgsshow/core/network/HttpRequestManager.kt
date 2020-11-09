@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.cache.IVGSCustomHeaderStore
+import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
-    private val headersStore: IVGSCustomHeaderStore,
+    private val headersStore: IVGSStaticHeadersStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
@@ -50,9 +50,9 @@ internal class HttpRequestManager(
         }
     }
 
-    override fun enqueue(request: VGSRequest, callback: (VGSResponse) -> Unit) {
+    override fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?) {
         if (!connectionHelper.isConnectionAvailable()) {
-            callback.invoke(VGSException.NoInternetConnection().toVGSResponse())
+            callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
         with(request.toHttpRequest(headersStore.getAll())) {
@@ -60,14 +60,14 @@ internal class HttpRequestManager(
 
                 override fun onResponse(response: HttpResponse) {
                     try {
-                        callback.invoke(parseResponse(response, request.responseFormat))
+                        callback?.invoke(parseResponse(response, request.responseFormat))
                     } catch (e: Exception) {
-                        callback.invoke(parseException(e))
+                        callback?.invoke(parseException(e))
                     }
                 }
 
                 override fun onFailure(e: Exception) {
-                    callback.invoke(parseException(e))
+                    callback?.invoke(parseException(e))
                 }
             })
         }
@@ -104,4 +104,9 @@ internal class HttpRequestManager(
         is JSONException -> VGSException.JSONException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
+
+    companion object {
+
+        val NETWORK_RESPONSE_CODES = 200..999
+    }
 }
