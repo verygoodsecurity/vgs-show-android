@@ -28,6 +28,11 @@ interface IVGSStaticHeadersStore {
     fun getAll(): Map<String, String>
 
     /**
+     * @return true if user add any header
+     */
+    fun containsUserHeaders(): Boolean
+
+    /**
      * Clear all headers.
      */
     fun clear()

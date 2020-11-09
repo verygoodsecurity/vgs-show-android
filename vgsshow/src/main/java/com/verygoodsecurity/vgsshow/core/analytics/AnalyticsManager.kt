@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toJSON
 import java.util.*
 
@@ -43,7 +44,10 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        requestManager.enqueue(buildRequest(event), null)
+        logDebug(event.toString())
+        requestManager.enqueue(buildRequest(event)) {
+            logDebug(it.toString())
+        }
     }
 
     override fun cancelAll() {

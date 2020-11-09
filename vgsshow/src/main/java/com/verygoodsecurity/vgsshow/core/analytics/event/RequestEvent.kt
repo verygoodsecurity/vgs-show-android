@@ -4,7 +4,7 @@ internal data class RequestEvent(
     val status: Status,
     val checkSum: String,
     val hasFields: Boolean,
-    val hasStaticHeaders: Boolean,
+    val hasHeaders: Boolean,
     val code: String = DEFAULT_CODE
 ) : Event() {
 
@@ -18,7 +18,7 @@ internal data class RequestEvent(
             KEY_CHECK_SUM to checkSum,
             KEY_CONTENT to mutableListOf<String>().apply {
                 if (hasFields) add(HAS_FIELDS)
-                if (hasStaticHeaders) add(HAS_STATIC_HEADERS)
+                if (hasHeaders) add(HAS_HEADERS)
             }
         )
 
@@ -34,6 +34,6 @@ internal data class RequestEvent(
         private const val KEY_CONTENT = "content"
 
         private const val HAS_FIELDS = "fields"
-        private const val HAS_STATIC_HEADERS = "customHeaders"
+        private const val HAS_HEADERS = "customHeaders"
     }
 }

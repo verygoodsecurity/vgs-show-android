@@ -35,14 +35,14 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         setupCollect()
 
         showVgs.addResponseListener(this)
-        showVgs.bindView(number)
+        showVgs.subscribeView(number)
 
         number?.setOnTextChangeListener(object :VGSTextView.OnTextChangedListener {
             override fun onTextChange(isEmpty: Boolean) {
                 Log.e("test", "state text: $isEmpty")
             }
         })
-        showVgs.bindView(expiration)
+        showVgs.subscribeView(expiration)
 
         requestButton?.setOnClickListener {
             revealData()
@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                         is CollectSuccessResponse -> JSONObject(response?.rawResponse)
                         else -> null
                     }
-
 
                     parseNumberToken(json)
                     parseDateToken(json)
