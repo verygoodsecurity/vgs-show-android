@@ -22,6 +22,8 @@ import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 
+private const val ANALYTICS_TAG = "text"
+
 class VGSTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -63,6 +65,9 @@ class VGSTextView @JvmOverloads constructor(
             setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         }
     }
+
+    // TODO: move this function to future abstract base class
+    internal fun getAnalyticsTag() = ANALYTICS_TAG
 
     private fun setPasswordStart(start: Int) {
         fieldState?.passwordStart = start
