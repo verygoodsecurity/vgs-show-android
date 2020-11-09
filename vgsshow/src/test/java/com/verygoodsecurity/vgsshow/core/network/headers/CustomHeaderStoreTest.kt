@@ -1,16 +1,16 @@
-package com.verygoodsecurity.vgsshow.core.network.cache
+package com.verygoodsecurity.vgsshow.core.network.headers
 
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class CustomHeaderStoreTest {
+class ProxyStaticHeadersStoreTest {
 
-    private lateinit var sut: StaticHeadersStore
+    private lateinit var sut: ProxyStaticHeadersStore
 
     @Before
     fun setUp() {
-        sut = StaticHeadersStore()
+        sut = ProxyStaticHeadersStore()
     }
 
     @Test
@@ -30,7 +30,7 @@ class CustomHeaderStoreTest {
         sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         sut.add(TEST_HEADER_NAME, testValue)
         //Assert
-        assertEquals(sut.getAll().size, 1)
+        assertEquals(sut.getAll().size, 2)
     }
 
     @Test
@@ -54,9 +54,9 @@ class CustomHeaderStoreTest {
     }
 
     @Test
-    fun getHeader_successEmptyMapReturned() {
+    fun getHeader_staticHeadersNotAdded_onlyDefaultHeaderReturned() {
         //Assert
-        assertTrue(sut.getAll().isEmpty())
+        assertEquals(sut.getAll().size, 1)
     }
 
     @Test
@@ -65,7 +65,13 @@ class CustomHeaderStoreTest {
         sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         sut.clear()
         //Assert
-        assertTrue(sut.getAll().isEmpty())
+        assertEquals(sut.getAll().size, 1)
+    }
+
+    @Test
+    fun getAll_successDefaultHeadersContains() {
+        // Assert
+        assertTrue(sut.getAll().containsKey("vgs-client"))
     }
 
     companion object {

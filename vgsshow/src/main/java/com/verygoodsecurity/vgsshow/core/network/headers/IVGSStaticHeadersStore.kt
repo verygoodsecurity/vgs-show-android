@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.core.network.cache
+package com.verygoodsecurity.vgsshow.core.network.headers
 
 /**
  * Interface for static headers store that will be added to all requests.

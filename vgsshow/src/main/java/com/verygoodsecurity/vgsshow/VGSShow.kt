@@ -21,8 +21,8 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore
-import com.verygoodsecurity.vgsshow.core.network.cache.StaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -58,7 +58,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     private val analyticsManager: IAnalyticsManager
 
     init {
-        headersStore = StaticHeadersStore()
+        headersStore = ProxyStaticHeadersStore()
         val connectionHelper = ConnectionHelper(context)
         proxyRequestManager = HttpRequestManager(
             UrlHelper.buildProxyUrl(vaultId, environment),
@@ -190,7 +190,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     /**
      * Used to edit static request headers that will be added to all requests of this VGSShow instance.
      *
-     * @return Static headers store. @see [com.verygoodsecurity.vgsshow.core.network.cache.IVGSStaticHeadersStore]
+     * @return Static headers store. @see [com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore]
      */
     fun getStaticHeadersStore(): IVGSStaticHeadersStore = headersStore
 
