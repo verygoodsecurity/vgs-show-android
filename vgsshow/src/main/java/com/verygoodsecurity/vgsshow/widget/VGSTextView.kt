@@ -20,9 +20,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
+import com.verygoodsecurity.vgsshow.widget.view.ViewType
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
-
-private const val ANALYTICS_TAG = "text"
 
 class VGSTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -67,7 +66,7 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     // TODO: move this function to future abstract base class
-    internal fun getAnalyticsTag() = ANALYTICS_TAG
+    fun getViewType() = ViewType.TEXT
 
     private fun setPasswordStart(start: Int) {
         fieldState?.passwordStart = start
