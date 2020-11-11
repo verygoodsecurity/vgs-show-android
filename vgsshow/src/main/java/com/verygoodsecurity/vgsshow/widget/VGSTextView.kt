@@ -66,7 +66,7 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     // TODO: move this function to future abstract base class
-    fun getViewType() = ViewType.TEXT
+    fun getViewType() = ViewType.INFO
 
     private fun setPasswordStart(start: Int) {
         fieldState?.passwordStart = start

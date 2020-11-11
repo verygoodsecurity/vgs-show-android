@@ -7,5 +7,5 @@ package com.verygoodsecurity.vgsshow.widget.view
  */
 enum class ViewType {
 
-    TEXT
+    INFO
 }
