@@ -188,7 +188,7 @@ internal class FieldStateImpl(
         field.setOnTextChangeListener(listener)
     }
 
-    fun setTransitionRegex(regex: String, textToReplace: String) {
-        field.setTransitionRegex(regex, textToReplace)
+    fun setTransformationRegex(regex: String, textToReplace: String) {
+        field.setTransformationRegex(regex, textToReplace)
     }
 }
