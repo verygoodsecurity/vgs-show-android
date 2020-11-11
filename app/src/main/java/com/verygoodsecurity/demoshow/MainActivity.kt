@@ -49,6 +49,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        vgsForm.onDestroy()
+        showVgs.onDestroy()
+    }
+
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
