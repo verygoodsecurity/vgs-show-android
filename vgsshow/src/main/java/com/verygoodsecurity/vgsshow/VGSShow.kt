@@ -257,7 +257,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
                     response.code.toString(),
                     Status.FAILED,
                     checksum,
-                    response.exception.message
+                    response.message
                 )
             }
         )

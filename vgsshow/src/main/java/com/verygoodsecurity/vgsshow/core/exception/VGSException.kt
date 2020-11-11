@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.exception
 
-sealed class VGSException : Exception() {
+internal sealed class VGSException : Exception() {
 
     abstract val code: Int
 
