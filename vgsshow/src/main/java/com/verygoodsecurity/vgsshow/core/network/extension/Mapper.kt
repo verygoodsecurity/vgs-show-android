@@ -30,4 +30,4 @@ internal fun Response.toHttpResponse() = HttpResponse(
     this.body?.string()
 )
 
-internal fun VGSException.toVGSResponse() = VGSResponse.Error(this)
+internal fun VGSException.toVGSResponse() = VGSResponse.Error.create(this)

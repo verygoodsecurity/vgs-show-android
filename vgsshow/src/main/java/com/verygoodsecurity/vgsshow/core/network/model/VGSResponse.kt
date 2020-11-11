@@ -17,13 +17,18 @@ sealed class VGSResponse {
     /**
      * The class definition for a success response state.
      */
-    data class Success constructor(
+    class Success private constructor(
         override val code: Int,
         internal val data: IResponseData,
         internal val raw: String?
     ) : VGSResponse() {
 
         override fun toString() = "Code: $code"
+
+        internal companion object {
+
+            fun create(code: Int, data: IResponseData, raw: String?) = Success(code, data, raw)
+        }
     }
 
     /**
@@ -31,10 +36,17 @@ sealed class VGSResponse {
 
      * @param exception exception which cause unsuccessful response. @see [com.verygoodsecurity.vgsshow.core.exception.VGSException]
      */
-    data class Error constructor(val exception: VGSException) : VGSResponse() {
+    class Error private constructor(internal val exception: VGSException) : VGSResponse() {
 
         override val code: Int = exception.code
 
-        override fun toString() = "Code: $code \n ${exception.message}"
+        val message: String? = exception.message
+
+        override fun toString() = "Code: $code \n $message"
+
+        internal companion object {
+
+            fun create(exception: VGSException) = Error(exception)
+        }
     }
 }

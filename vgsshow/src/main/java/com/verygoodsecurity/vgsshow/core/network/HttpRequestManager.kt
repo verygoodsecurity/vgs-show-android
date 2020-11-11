@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.core.network
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
@@ -12,6 +11,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallbac
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
+import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
@@ -82,9 +82,13 @@ internal class HttpRequestManager(
     internal fun parseResponse(response: HttpResponse, format: VGSHttpBodyFormat): VGSResponse {
         return with(response) {
             if (!isSuccessful) {
-                return@with VGSResponse.Error(VGSException.Exception(code, message))
+                return@with VGSResponse.Error.create(VGSException.Exception(code, message))
             }
-            VGSResponse.Success(code, parseResponseData(responseBody ?: "", format), responseBody)
+            VGSResponse.Success.create(
+                code,
+                parseResponseData(responseBody ?: "", format),
+                responseBody
+            )
         }
     }
 
