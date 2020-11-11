@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgsshow.core.analytics.event.InitEvent
 import com.verygoodsecurity.vgsshow.core.analytics.event.RequestEvent
 import com.verygoodsecurity.vgsshow.core.analytics.event.ResponseEvent
 import com.verygoodsecurity.vgsshow.core.analytics.event.Status
+import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
@@ -174,7 +175,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
     fun subscribeView(view: VGSTextView) {
-        analyticsManager.log(InitEvent("text")) // TODO: Fix field type
+        analyticsManager.log(InitEvent(view.getViewType().toAnalyticTag()))
         viewsStore.add(view)
     }
 

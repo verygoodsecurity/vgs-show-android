@@ -20,6 +20,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
+import com.verygoodsecurity.vgsshow.widget.view.ViewType
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
 
 class VGSTextView @JvmOverloads constructor(
@@ -63,6 +64,9 @@ class VGSTextView @JvmOverloads constructor(
             setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         }
     }
+
+    // TODO: move this function to future abstract base class
+    fun getViewType() = ViewType.INFO
 
     private fun setPasswordStart(start: Int) {
         fieldState?.passwordStart = start
