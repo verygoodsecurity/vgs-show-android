@@ -430,8 +430,8 @@ class VGSTextView @JvmOverloads constructor(
      * @param regex Regular expression for transformation revealed data.
      * @param replacement A replacement expression that can include substitutions.
      */
-    fun setTransitionRegex(regex:String, replacement:String) {
-        fieldState?.setTransitionRegex(regex, replacement)
+    fun setTransformationRegex(regex:String, replacement:String) {
+        fieldState?.setTransformationRegex(regex, replacement)
     }
 
     interface OnTextChangedListener {

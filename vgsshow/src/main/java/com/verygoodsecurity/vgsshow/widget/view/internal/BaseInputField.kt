@@ -142,7 +142,7 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
         setTextIsSelectable(isTextSelectable && !isPasswordViewType())
     }
 
-    internal fun setTransitionRegex(regex: String, text: String?) {
+    internal fun setTransformationRegex(regex: String, text: String?) {
         this.transformationRegex = regex
         replacement = text ?: ""
     }
