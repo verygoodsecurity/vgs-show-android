@@ -104,6 +104,20 @@ class VGSShowTest {
         assertTrue(sut.getViewsStore().getViews().isEmpty())
     }
 
+    @Test
+    fun onDestroy_allSourcesCleared() {
+        // Arrange
+        sut.subscribeView(testView)
+        sut.addResponseListener(testListenerOne)
+        sut.getStaticHeadersStore().add("test", "test")
+        // Act
+        sut.onDestroy()
+        // Assert
+        assertTrue(sut.getResponseListeners().isEmpty())
+        assertTrue(sut.getViewsStore().isEmpty())
+        assertFalse(sut.getStaticHeadersStore().containsUserHeaders())
+    }
+
     companion object {
 
         private const val DEFAULT_TENANT_ID = ""

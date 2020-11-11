@@ -195,6 +195,18 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      */
     fun getStaticHeadersStore(): IVGSStaticHeadersStore = headersStore
 
+    /**
+     * Clear all information collected before by VGSShow, cancel all network requests.
+     * Preferably call it inside onDestroy system's callback.
+     */
+    fun onDestroy() {
+        proxyRequestManager.cancelAll()
+        analyticsManager.cancelAll()
+        listeners.clear()
+        viewsStore.clear()
+        headersStore.clear()
+    }
+
     //region Helper methods for testing
     @VisibleForTesting
     internal fun getResponseListeners() = listeners
