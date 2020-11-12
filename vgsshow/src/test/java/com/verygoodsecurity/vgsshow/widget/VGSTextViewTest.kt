@@ -64,7 +64,7 @@ class VGSTextViewTest {
     fun test_paddings() {
         view.onAttachedToWindow()
 
-        view.setPadding(30,20,10,0)
+        view.setPadding(30, 20, 10, 0)
 
         assertEquals(view.paddingLeft, 30)
         assertEquals(view.paddingTop, 20)
@@ -207,10 +207,19 @@ class VGSTextViewTest {
     @Test
     fun setIgnoreView() {
         view.setIgnore(true)
-        assertTrue(view.getState()?.ignoreField?:false)
+        assertTrue(view.getState()?.ignoreField ?: false)
 
         view.setIgnore(false)
-        assertFalse(view.getState()?.ignoreField?:true)
+        assertFalse(view.getState()?.ignoreField ?: true)
+    }
+
+    @Test
+    fun setLetterSpacing() {
+        view.setLetterSpacing(0.8f)
+        assertEquals(view.getState()?.letterSpacing, 0.8f)
+
+        view.setLetterSpacing(0.4f)
+        assertEquals(view.getState()?.letterSpacing, 0.4f)
     }
 
     @Test

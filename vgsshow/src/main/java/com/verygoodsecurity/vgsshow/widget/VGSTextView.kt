@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
+import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
 import com.verygoodsecurity.vgsshow.widget.view.ViewType
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
@@ -62,6 +63,9 @@ class VGSTextView @JvmOverloads constructor(
                     )
                     R.styleable.VGSTextView_passwordStart -> setPasswordStart(getInt(attr, -1))
                     R.styleable.VGSTextView_passwordEnd -> setPasswordEnd(getInt(attr, -1))
+                    R.styleable.VGSTextView_letterSpacing -> if (isLollipopOrGreater) {
+                        setLetterSpacing(getFloat(attr, 0f))
+                    }
                 }
             }
 
@@ -177,6 +181,15 @@ class VGSTextView @JvmOverloads constructor(
      * @return The text used by the field.
      */
     fun getFieldName(): String = fieldState?.fieldName ?: ""
+
+    /**
+     * Sets text letter-spacing in em units.  Typical values
+     * for slight expansion will be around 0.05.  Negative values tighten text.
+     */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setLetterSpacing(spacing: Float) {
+        fieldState?.letterSpacing = spacing
+    }
 
 
     override fun onDetachedFromWindow() {

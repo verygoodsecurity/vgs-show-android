@@ -92,6 +92,7 @@
         <flag name="italic" value="2" />
     </attr>
 
+    <attr name="letterSpacing" format="float"/>
 
     <!-- Indicates that the content of a non-editable TextView can be selected.
      Default value is false. -->
@@ -155,6 +156,7 @@
         <attr name="textColor" />
         <attr name="textStyle" />
         <attr name="fontFamily" />
+        <attr name="letterSpacing"/>
         <attr name="textIsSelectable" />
         <attr name="inputType" />
         <attr name="textAppearance"/>

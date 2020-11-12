@@ -1,13 +1,16 @@
 package com.verygoodsecurity.vgsshow.widget.view
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Parcelable
 import android.text.InputType
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.BaseInputField
@@ -181,6 +184,14 @@ internal class FieldStateImpl(
         set(value) {
             field = value
             this@FieldStateImpl.field.typeface = value
+        }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    internal var letterSpacing: Float = 0f
+        @SuppressLint("NewApi")
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.letterSpacing = value
         }
 
     fun attachTo(inputFieldView: VGSTextView) {
