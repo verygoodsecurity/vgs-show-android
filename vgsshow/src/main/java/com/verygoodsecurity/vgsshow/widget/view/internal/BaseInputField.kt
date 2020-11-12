@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.internal.text.method.RangePasswordTransformationMethod
@@ -66,6 +67,14 @@ internal class BaseInputField(context: Context) : AppCompatTextView(context) {
     override fun setText(text: CharSequence?, type: BufferType?) {
         val str = transformationRegex?.transformWithRegex(text.toString(), replacement) ?: text
         super.setText(str, type)
+    }
+
+    override fun setTextAppearance(resId: Int) {
+        if (isMarshmallowOrGreater) {
+            super.setTextAppearance(resId)
+        } else {
+            super.setTextAppearance(context, resId)
+        }
     }
 
     private var editPermission = false

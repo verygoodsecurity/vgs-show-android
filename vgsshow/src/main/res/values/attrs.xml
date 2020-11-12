@@ -136,9 +136,16 @@
     <attr name="passwordStart" format="integer" />
     <attr name="passwordEnd" format="integer" />
 
+    <!-- Sets the text color, size, style etc.-->
+    <attr name="textAppearance" format="reference"/>
+
+    <!-- Sets the hint text color, size, style etc.-->
+    <attr name="hintTextAppearance" format="reference"/>
+
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
+        <attr name="hintTextAppearance"/>
 
         <attr name="fieldName" />
         <attr name="gravity" />
@@ -150,10 +157,10 @@
         <attr name="fontFamily" />
         <attr name="textIsSelectable" />
         <attr name="inputType" />
+        <attr name="textAppearance"/>
 
         <attr name="passwordStart" />
         <attr name="passwordEnd" />
-
     </declare-styleable>
 
 </resources>

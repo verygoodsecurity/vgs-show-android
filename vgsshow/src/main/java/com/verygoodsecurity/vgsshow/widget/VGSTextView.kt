@@ -16,6 +16,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
@@ -38,11 +39,12 @@ class VGSTextView @JvmOverloads constructor(
 
         fieldState = FieldStateImpl(field)
 
-
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
-            for(i in 0 until indexCount) {
-                val attr = getIndex(i)
-                when(attr) {
+            for (i in 0 until indexCount) {
+                when (val attr = getIndex(i)) {
+                    R.styleable.VGSTextView_textAppearance -> setTextAppearance(
+                        getResourceId(attr, 0)
+                    )
                     R.styleable.VGSTextView_gravity -> setGravity(
                         getInt(attr, Gravity.START or Gravity.CENTER_VERTICAL)
                     )
@@ -50,12 +52,16 @@ class VGSTextView @JvmOverloads constructor(
                     R.styleable.VGSTextView_textSize -> setTextSize(getDimension(attr, -1f))
                     R.styleable.VGSTextView_textStyle -> setupTypeface(this)
                     R.styleable.VGSTextView_fontFamily -> setupFont(this)
-                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLACK))
+                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLUE))
                     R.styleable.VGSTextView_hint -> setHint(getString(attr))
                     R.styleable.VGSTextView_fieldName -> setFieldName(getString(attr))
                     R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(attr, false)
-                    R.styleable.VGSTextView_inputType -> setInputType(getInt(attr, EditorInfo.TYPE_NULL))
-                    R.styleable.VGSTextView_textIsSelectable -> setTextIsSelectable(getBoolean(attr, false))
+                    R.styleable.VGSTextView_inputType -> setInputType(
+                        getInt(attr, EditorInfo.TYPE_NULL)
+                    )
+                    R.styleable.VGSTextView_textIsSelectable -> setTextIsSelectable(
+                        getBoolean(attr, false)
+                    )
                     R.styleable.VGSTextView_passwordStart -> setPasswordStart(getInt(attr, -1))
                     R.styleable.VGSTextView_passwordEnd -> setPasswordEnd(getInt(attr, -1))
                 }
@@ -67,6 +73,10 @@ class VGSTextView @JvmOverloads constructor(
 
     // TODO: move this function to future abstract base class
     fun getViewType() = ViewType.INFO
+
+    fun setTextAppearance(@StyleRes styleId: Int) {
+        fieldState?.textAppearance = styleId
+    }
 
     private fun setPasswordStart(start: Int) {
         fieldState?.passwordStart = start
@@ -434,7 +444,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param regex Regular expression for transformation revealed data.
      * @param replacement A replacement expression that can include substitutions.
      */
-    fun setTransformationRegex(regex:String, replacement:String) {
+    fun setTransformationRegex(regex: String, replacement: String) {
         fieldState?.setTransformationRegex(regex, replacement)
     }
 

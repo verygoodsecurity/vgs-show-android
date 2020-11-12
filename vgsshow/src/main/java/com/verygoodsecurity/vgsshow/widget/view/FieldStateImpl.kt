@@ -129,6 +129,12 @@ internal class FieldStateImpl(
             this@FieldStateImpl.field.setTextIsSelectable(value)
         }
 
+    internal var textAppearance: Int = 0
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setTextAppearance(value)
+        }
+
     internal var textColor: Int = Color.BLACK
         set(value) {
             field = value
