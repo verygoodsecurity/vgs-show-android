@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgsshow.core.network
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
@@ -87,7 +87,7 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).exception is VGSException.UrlNotValid)
+        assertTrue((result as VGSResponse.Error).code == VGSException.UrlNotValid().code)
     }
 
     @Test
@@ -97,7 +97,7 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).exception is VGSException.RequestTimeout)
+        assertTrue((result as VGSResponse.Error).code == VGSException.RequestTimeout().code)
     }
 
     @Test
@@ -107,7 +107,7 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).exception is VGSException.RequestTimeout)
+        assertTrue((result as VGSResponse.Error).code == VGSException.RequestTimeout().code)
     }
 
     @Test
@@ -117,6 +117,6 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).exception is VGSException.JSONException)
+        assertTrue((result as VGSResponse.Error).code == VGSException.JSONException().code)
     }
 }

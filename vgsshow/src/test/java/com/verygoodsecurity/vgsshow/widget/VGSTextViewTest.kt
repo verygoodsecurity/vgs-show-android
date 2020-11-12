@@ -211,4 +211,13 @@ class VGSTextViewTest {
         view.setIgnore(false)
         assertFalse(view.getState()?.ignoreField?:true)
     }
+
+    @Test
+    fun setLetterSpacing() {
+        view.setLetterSpacing(0.8f)
+        assertTrue(view.getState()?.letterSpacing == 0.8f)
+
+        view.setLetterSpacing(0.4f)
+        assertTrue(view.getState()?.letterSpacing == 0.4f)
+    }
 }
