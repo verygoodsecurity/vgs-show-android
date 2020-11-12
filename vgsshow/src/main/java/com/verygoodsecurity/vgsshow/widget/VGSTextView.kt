@@ -50,7 +50,7 @@ class VGSTextView @JvmOverloads constructor(
                     R.styleable.VGSTextView_textSize -> setTextSize(getDimension(attr, -1f))
                     R.styleable.VGSTextView_textStyle -> setupTypeface(this)
                     R.styleable.VGSTextView_fontFamily -> setupFont(this)
-                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLUE))
+                    R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLACK))
                     R.styleable.VGSTextView_hint -> setHint(getString(attr))
                     R.styleable.VGSTextView_hintTextColor -> setHintTextColor(getColor(attr, -1))
                     R.styleable.VGSTextView_fieldName -> setFieldName(getString(attr))
