@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import com.verygoodsecurity.vgsshow.R
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -210,5 +211,14 @@ class VGSTextViewTest {
 
         view.setIgnore(false)
         assertFalse(view.getState()?.ignoreField?:true)
+    }
+
+    @Test
+    fun setAppearance() {
+        val textAppearanceStyleId = android.R.style.TextAppearance
+
+        view.setTextAppearance(textAppearanceStyleId)
+
+        assertEquals(view.getState()?.textAppearance, textAppearanceStyleId)
     }
 }
