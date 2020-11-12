@@ -14,10 +14,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
-import androidx.annotation.StyleRes
-import androidx.annotation.VisibleForTesting
+import androidx.annotation.*
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.view.FieldStateImpl
@@ -54,6 +51,7 @@ class VGSTextView @JvmOverloads constructor(
                     R.styleable.VGSTextView_fontFamily -> setupFont(this)
                     R.styleable.VGSTextView_textColor -> setTextColor(getColor(attr, Color.BLUE))
                     R.styleable.VGSTextView_hint -> setHint(getString(attr))
+                    R.styleable.VGSTextView_hintTextColor -> setHintTextColor(getColor(attr, -1))
                     R.styleable.VGSTextView_fieldName -> setFieldName(getString(attr))
                     R.styleable.VGSTextView_enabled -> isEnabled = getBoolean(attr, false)
                     R.styleable.VGSTextView_inputType -> setInputType(
@@ -115,6 +113,13 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setHint(text: CharSequence?) {
         fieldState?.hint = text
+    }
+
+    /**
+     * Set hint text color.
+     */
+    fun setHintTextColor(@ColorInt color: Int) {
+        fieldState?.hintTextColor = color
     }
 
     /**

@@ -4,6 +4,9 @@
     <!-- Hint text to display when the text is empty. -->
     <attr name="hint" format="string" localization="suggested" />
 
+    <!-- Hint text color. -->
+    <attr name="hintTextColor" format="color"/>
+
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
@@ -139,13 +142,10 @@
     <!-- Sets the text color, size, style etc.-->
     <attr name="textAppearance" format="reference"/>
 
-    <!-- Sets the hint text color, size, style etc.-->
-    <attr name="hintTextAppearance" format="reference"/>
-
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
-        <attr name="hintTextAppearance"/>
+        <attr name="hintTextColor" />
 
         <attr name="fieldName" />
         <attr name="gravity" />

@@ -214,11 +214,18 @@ class VGSTextViewTest {
     }
 
     @Test
-    fun setAppearance() {
+    fun setTextAppearance() {
         val textAppearanceStyleId = android.R.style.TextAppearance
 
         view.setTextAppearance(textAppearanceStyleId)
 
         assertEquals(view.getState()?.textAppearance, textAppearanceStyleId)
+    }
+
+    @Test
+    fun setHintTextColor() {
+        view.setHintTextColor(Color.CYAN)
+
+        assertEquals(view.getState()?.hintTextColor, Color.CYAN)
     }
 }
