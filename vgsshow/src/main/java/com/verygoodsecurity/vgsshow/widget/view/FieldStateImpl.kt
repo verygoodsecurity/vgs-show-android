@@ -9,6 +9,7 @@ import android.text.InputType
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
@@ -40,6 +41,15 @@ internal class FieldStateImpl(
         set(value) {
             field = value
             this@FieldStateImpl.field.hint = value
+        }
+
+    @ColorInt
+    internal var hintTextColor: Int = -1
+        set(value) {
+            if (value != -1) {
+                field = value
+                this@FieldStateImpl.field.setHintTextColor(hintTextColor)
+            }
         }
 
 
@@ -130,6 +140,12 @@ internal class FieldStateImpl(
         set(value) {
             field = value
             this@FieldStateImpl.field.setTextIsSelectable(value)
+        }
+
+    internal var textAppearance: Int = 0
+        set(value) {
+            field = value
+            this@FieldStateImpl.field.setTextAppearance(value)
         }
 
     internal var textColor: Int = Color.BLACK

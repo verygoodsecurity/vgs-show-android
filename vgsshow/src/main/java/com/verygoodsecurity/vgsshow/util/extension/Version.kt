@@ -4,3 +4,6 @@ import android.os.Build
 
 internal val isLollipopOrGreater
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+
+internal val isMarshmallowOrGreater
+    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M

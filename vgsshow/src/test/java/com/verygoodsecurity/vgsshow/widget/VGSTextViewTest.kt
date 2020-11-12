@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import com.verygoodsecurity.vgsshow.R
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -219,5 +220,21 @@ class VGSTextViewTest {
 
         view.setLetterSpacing(0.4f)
         assertEquals(view.getState()?.letterSpacing, 0.4f)
+    }
+
+    @Test
+    fun setTextAppearance() {
+        val textAppearanceStyleId = android.R.style.TextAppearance
+
+        view.setTextAppearance(textAppearanceStyleId)
+
+        assertEquals(view.getState()?.textAppearance, textAppearanceStyleId)
+    }
+
+    @Test
+    fun setHintTextColor() {
+        view.setHintTextColor(Color.CYAN)
+
+        assertEquals(view.getState()?.hintTextColor, Color.CYAN)
     }
 }
