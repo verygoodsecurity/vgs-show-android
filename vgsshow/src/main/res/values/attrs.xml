@@ -9,6 +9,8 @@
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="fieldName" format="string" localization="suggested" />
 
+    <attr name="ignoreField" format="boolean" />
+
     <!-- Font family (named by string or as a font resource reference) for the text. -->
     <attr name="fontFamily" format="string" />
 
@@ -89,7 +91,7 @@
         <flag name="italic" value="2" />
     </attr>
 
-    <attr name="letterSpacing" format="float"/>
+    <attr name="letterSpacing" format="float" />
 
     <!-- Indicates that the content of a non-editable TextView can be selected.
      Default value is false. -->
@@ -137,6 +139,12 @@
     <attr name="passwordStart" format="integer" />
     <attr name="passwordEnd" format="integer" />
 
+    <declare-styleable name="VGSView">
+
+        <attr name="fieldName" />
+        <attr name="ignoreField" />
+    </declare-styleable>
+
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
@@ -149,7 +157,7 @@
         <attr name="textColor" />
         <attr name="textStyle" />
         <attr name="fontFamily" />
-        <attr name="letterSpacing"/>
+        <attr name="letterSpacing" />
         <attr name="textIsSelectable" />
         <attr name="inputType" />
 
