@@ -4,8 +4,10 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -24,7 +26,6 @@ import com.verygoodsecurity.vgsshow.widget.ViewType
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.extension.getTypefaceOrNull
-import com.verygoodsecurity.vgsshow.widget.textview.state.TextViewState
 import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads internal constructor(
@@ -71,12 +72,12 @@ class VGSTextView @JvmOverloads internal constructor(
 
     override fun createChildView() = AppCompatTextView(context)
 
-    override fun saveState(state: Parcelable?): Parcelable? = TextViewState(state).apply {
+    override fun saveState(state: Parcelable?): Parcelable? = State(state).apply {
         text = view.text
     }
 
     override fun restoreState(state: Parcelable?) {
-        (state as? TextViewState)?.let {
+        (state as? State)?.let {
             view.text = it.text
         }
     }
@@ -368,6 +369,40 @@ class VGSTextView @JvmOverloads internal constructor(
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> true
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> true
             else -> false
+        }
+    }
+
+    internal class State : BaseSavedState {
+
+        var text: CharSequence? = null
+
+        var defaultText: CharSequence? = null
+
+        companion object {
+
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<State> {
+                override fun createFromParcel(source: Parcel): State {
+                    return State(source)
+                }
+
+                override fun newArray(size: Int): Array<State?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(`in`: Parcel) : super(`in`) {
+            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
+            defaultText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            TextUtils.writeToParcel(text, out, flags)
+            TextUtils.writeToParcel(defaultText, out, flags)
         }
     }
 
