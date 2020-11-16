@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers
@@ -90,8 +90,8 @@ class ViewsStoreTest {
         verify(ignoredField, times(1)).setText(null)
 
         // Act
-        doReturn(true).`when`(ignoredField).isIgnored()
-        ignoredField.setIgnore(true)
+        doReturn(true).`when`(ignoredField).ignoreField
+        ignoredField.ignoreField = true
 
         // Assert
         verify(ignoredField, times(1)).setText(null)

@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -37,11 +37,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.addResponseListener(this)
         showVgs.subscribeView(number)
 
-        number?.setOnTextChangeListener(object :VGSTextView.OnTextChangedListener {
+        number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(isEmpty: Boolean) {
                 Log.e("test", "state text: $isEmpty")
             }
         })
+        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
         showVgs.subscribeView(expiration)
 
         requestButton?.setOnClickListener {

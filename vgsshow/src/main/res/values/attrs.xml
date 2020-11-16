@@ -148,7 +148,6 @@
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
-
         <attr name="fieldName" />
         <attr name="gravity" />
         <attr name="singleLine" />
@@ -163,7 +162,5 @@
 
         <attr name="passwordStart" />
         <attr name="passwordEnd" />
-
     </declare-styleable>
-
 </resources>

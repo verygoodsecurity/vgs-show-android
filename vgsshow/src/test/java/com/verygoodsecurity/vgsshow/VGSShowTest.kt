@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Looper
 import android.util.Log
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

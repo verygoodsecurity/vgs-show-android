@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.view.internal.text.method
+package com.verygoodsecurity.vgsshow.widget.textview.method
 
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -7,6 +7,7 @@ internal class RangePasswordTransformationMethod(
     private val start: Int = -1,
     private val end: Int = -1
 ) : PasswordTransformationMethod() {
+
     override fun getTransformation(source: CharSequence?, view: View?): CharSequence {
         val passRange = calculateRange(source)
 
@@ -26,7 +27,7 @@ internal class RangePasswordTransformationMethod(
         )
     }
 
-    private fun begin(start:Int, end: Int, source: CharSequence?): Int {
+    private fun begin(start: Int, end: Int, source: CharSequence?): Int {
         return when {
             start >= source?.length ?: 0 -> 0
             start > end -> 0
@@ -34,7 +35,7 @@ internal class RangePasswordTransformationMethod(
         }
     }
 
-    private fun end(start:Int, end: Int, source: CharSequence?): Int {
+    private fun end(start: Int, end: Int, source: CharSequence?): Int {
         return (source?.length ?: 0).run {
             when {
                 end < start -> this
@@ -43,5 +44,4 @@ internal class RangePasswordTransformationMethod(
             }
         }
     }
-
 }

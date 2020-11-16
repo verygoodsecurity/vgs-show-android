@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="@dimen/default_margin">
 
-        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin"
@@ -19,7 +19,7 @@
             app:fieldName="card_data.cardNumber"
             app:text="all wrap_content" />
 
-        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin"
@@ -27,7 +27,7 @@
             app:fieldName="card_data.cardNumber"
             app:text="width specific" />
 
-        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:layout_marginBottom="@dimen/default_margin"
@@ -35,7 +35,7 @@
             app:fieldName="card_data.cardNumber"
             app:text="height specific" />
 
-        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginBottom="@dimen/default_margin"
@@ -43,7 +43,7 @@
             app:fieldName="card_data.cardNumber"
             app:text="all specific" />
 
-        <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin"
@@ -56,7 +56,7 @@
             android:layout_height="200dp"
             android:padding="2dp"
             android:background="#2200ff00">
-            <com.verygoodsecurity.vgsshow.widget.VGSTextView
+            <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/test_color"

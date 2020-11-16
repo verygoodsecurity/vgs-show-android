@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.analytics.extension
 
-import com.verygoodsecurity.vgsshow.widget.view.ViewType
+import com.verygoodsecurity.vgsshow.widget.ViewType
 
 private const val ANALYTIC_TAG_TEXT = "text"
 

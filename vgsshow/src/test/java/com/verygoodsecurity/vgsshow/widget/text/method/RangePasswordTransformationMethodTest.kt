@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.widget.text.method
 
-import com.verygoodsecurity.vgsshow.widget.view.internal.text.method.RangePasswordTransformationMethod
+import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

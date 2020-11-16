@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.view
+package com.verygoodsecurity.vgsshow.widget
 
 /**
  * The enum class represents all available type of VGS views.

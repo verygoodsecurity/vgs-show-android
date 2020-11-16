@@ -1,9 +1,11 @@
-package com.verygoodsecurity.vgsshow.widgetnew
+package com.verygoodsecurity.vgsshow.widget.imageview
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.widget.VGSView
+import com.verygoodsecurity.vgsshow.widget.ViewType
 
 class VGSImageView @JvmOverloads constructor(
     context: Context,
@@ -15,13 +17,15 @@ class VGSImageView @JvmOverloads constructor(
         // TODO: read all attributes atc.
     }
 
-    override fun createChildView() = AppCompatImageView(context)
-
-    override fun saveState() {
-        // TODO: save
+    override fun getViewType(): ViewType {
+        TODO("Not yet implemented")
     }
 
-    override fun restoreState() {
+    override fun createChildView() = AppCompatImageView(context)
+
+    override fun saveState(state: Parcelable?): Parcelable? = null
+
+    override fun restoreState(state: Parcelable?) {
         // TODO: restore
     }
 }
