@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.extension.getTypefaceOrNull
 import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 
-class VGSTextView @JvmOverloads internal constructor(
+class VGSTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
