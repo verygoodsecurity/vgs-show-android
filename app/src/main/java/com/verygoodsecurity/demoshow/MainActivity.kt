@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
         setupCollect()
 
+//        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
+
         showVgs.addResponseListener(this)
         showVgs.subscribeView(number)
 
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                 Log.e("test", "state text: $isEmpty")
             }
         })
-        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
         showVgs.subscribeView(expiration)
 
         requestButton?.setOnClickListener {
