@@ -43,7 +43,7 @@ class VGSTextView @JvmOverloads constructor(
             setGravity(getInt(R.styleable.VGSTextView_gravity, DEFAULT_GRAVITY))
 
             setHint(getString(R.styleable.VGSTextView_hint))
-            setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, Color.BLACK))
+            setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, -1))
 
             if (isMarshmallowOrGreater) {
                 setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
