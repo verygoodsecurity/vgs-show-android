@@ -14,14 +14,12 @@ import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
+import androidx.annotation.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
+import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSView
 import com.verygoodsecurity.vgsshow.widget.ViewType
@@ -43,8 +41,14 @@ class VGSTextView @JvmOverloads constructor(
 
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
             setGravity(getInt(R.styleable.VGSTextView_gravity, DEFAULT_GRAVITY))
+
             setHint(getString(R.styleable.VGSTextView_hint))
             setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, Color.BLACK))
+
+            if (isMarshmallowOrGreater) {
+                setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
+            }
+
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
             setTextIsSelectable(getBoolean(R.styleable.VGSTextView_textIsSelectable, false))
@@ -210,6 +214,11 @@ class VGSTextView @JvmOverloads constructor(
             view.typeface = this
         }
         setTextIsSelectable(view.isTextSelectable && !isPasswordViewType())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setTextAppearance(@StyleRes styleId: Int) {
+        view.setTextAppearance(styleId)
     }
 
     /**
