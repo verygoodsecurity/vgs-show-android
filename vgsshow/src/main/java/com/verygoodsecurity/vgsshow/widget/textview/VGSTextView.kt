@@ -44,6 +44,7 @@ class VGSTextView @JvmOverloads constructor(
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
             setGravity(getInt(R.styleable.VGSTextView_gravity, DEFAULT_GRAVITY))
             setHint(getString(R.styleable.VGSTextView_hint))
+            setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, Color.BLACK))
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
             setTextIsSelectable(getBoolean(R.styleable.VGSTextView_textIsSelectable, false))
@@ -192,6 +193,15 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
+     * Sets the hint text color.
+     *
+     * @param color A color value that will be applied
+     */
+    fun setHintTextColor(@ColorInt color: Int) {
+        view.setHintTextColor(color)
+    }
+
+    /**
      * Set the type of the content with a constant as defined for input field.
      */
     fun setInputType(inputType: Int) {
@@ -209,7 +219,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param size The scaled pixel size.
      */
     fun setTextSize(size: Float) {
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     /**
