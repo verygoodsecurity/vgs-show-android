@@ -70,6 +70,7 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
         return super.getChildAt(index)
     }
 
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAddStatesFromChildren(true)
