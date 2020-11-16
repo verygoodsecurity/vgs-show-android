@@ -4,6 +4,9 @@
     <!-- Hint text to display when the text is empty. -->
     <attr name="hint" format="string" localization="suggested" />
 
+    <!-- Hint text color. -->
+    <attr name="hintTextColor" format="color"/>
+
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
@@ -139,6 +142,9 @@
     <attr name="passwordStart" format="integer" />
     <attr name="passwordEnd" format="integer" />
 
+    <!-- Sets the text color, size, style etc.-->
+    <attr name="textAppearance" format="reference"/>
+
     <declare-styleable name="VGSView">
 
         <attr name="fieldName" />
@@ -148,6 +154,7 @@
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
+        <attr name="hintTextColor" />
         <attr name="fieldName" />
         <attr name="gravity" />
         <attr name="singleLine" />
@@ -159,6 +166,7 @@
         <attr name="letterSpacing" />
         <attr name="textIsSelectable" />
         <attr name="inputType" />
+        <attr name="textAppearance"/>
 
         <attr name="passwordStart" />
         <attr name="passwordEnd" />

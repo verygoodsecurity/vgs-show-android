@@ -7,3 +7,6 @@ internal val isLollipopOrGreater
 
 internal val isOreoOrGreater
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+internal val isMarshmallowOrGreater
+    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
