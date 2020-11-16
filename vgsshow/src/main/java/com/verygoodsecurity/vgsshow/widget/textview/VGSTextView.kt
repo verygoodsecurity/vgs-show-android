@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
@@ -146,7 +147,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the left padding in pixels
      */
-    override fun getPaddingLeft() = view.paddingEnd
+    override fun getPaddingLeft() = view.paddingLeft
 
     /**
      * Returns the right padding of this view.
@@ -363,6 +364,9 @@ class VGSTextView @JvmOverloads constructor(
             view.setText(this, type)
         }
     }
+
+    @VisibleForTesting
+    internal fun getChildView() = view
 
     private fun isPasswordViewType(): Boolean {
         return when (view.inputType) {

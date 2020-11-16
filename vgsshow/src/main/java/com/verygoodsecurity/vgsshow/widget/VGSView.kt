@@ -70,12 +70,12 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
         return super.getChildAt(index)
     }
 
-    override fun onAttachedToWindow() {
+    public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAddStatesFromChildren(true)
         super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        view.setOnClickListener(this::onChildClick)
-        view.setOnLongClickListener(this::onChildLongClick)
+        view.setOnClickListener { onChildClick(it) }
+        view.setOnLongClickListener { onChildLongClick(it) }
     }
 
     override fun onSaveInstanceState(): Parcelable? {
