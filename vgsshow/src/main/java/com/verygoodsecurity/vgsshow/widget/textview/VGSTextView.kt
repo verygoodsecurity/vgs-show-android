@@ -26,7 +26,7 @@ import com.verygoodsecurity.vgsshow.widget.VGSView
 import com.verygoodsecurity.vgsshow.widget.ViewType
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
-import com.verygoodsecurity.vgsshow.widget.extension.getTypefaceOrNull
+import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
@@ -48,7 +48,7 @@ class VGSTextView @JvmOverloads constructor(
             setTextIsSelectable(getBoolean(R.styleable.VGSTextView_textIsSelectable, false))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
 
-            getTypefaceOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
+            getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, Typeface.NORMAL))
 
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
