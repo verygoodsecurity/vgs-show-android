@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget.textview
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.Typeface.*
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -25,8 +26,8 @@ import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSView
 import com.verygoodsecurity.vgsshow.widget.ViewType
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
-import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
+import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
@@ -49,7 +50,7 @@ class VGSTextView @JvmOverloads constructor(
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
 
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
-            setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, Typeface.NORMAL))
+            setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
 
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
 
@@ -194,7 +195,10 @@ class VGSTextView @JvmOverloads constructor(
      * Set the type of the content with a constant as defined for input field.
      */
     fun setInputType(inputType: Int) {
-        view.inputType = inputType
+        with(view.typeface) {
+            view.inputType = inputType
+            view.typeface = this
+        }
         setTextIsSelectable(view.isTextSelectable && !isPasswordViewType())
     }
 
@@ -205,7 +209,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param size The scaled pixel size.
      */
     fun setTextSize(size: Float) {
-        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
 
     /**
@@ -275,10 +279,8 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setTypeface(tf: Typeface?, style: Int) {
         when (style) {
-            Typeface.NORMAL -> view.typeface = Typeface.create(tf, style)
-            1 -> view.typeface = Typeface.create(tf, Typeface.BOLD)
-            2 -> view.typeface = Typeface.create(tf, Typeface.ITALIC)
-            else -> view.typeface = Typeface.DEFAULT_BOLD
+            NORMAL, BOLD, ITALIC -> setTypeface(create(tf, style))
+            else -> setTypeface(DEFAULT_BOLD)
         }
     }
 
