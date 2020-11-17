@@ -57,7 +57,7 @@ class VGSTextView @JvmOverloads constructor(
 
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
 
-            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, false)
+            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
             setPasswordRange(
                 getInt(R.styleable.VGSTextView_passwordStart, -1),
