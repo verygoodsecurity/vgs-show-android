@@ -3,6 +3,7 @@ package com.verygoodsecurity.demoshow
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -40,10 +41,23 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.subscribeView(number)
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
-            override fun onTextChange(isEmpty: Boolean) {
+            override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.e("test", "state text: $isEmpty")
             }
         })
+        number?.setOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+
+            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+                Toast.makeText(
+                    applicationContext,
+                    "Number text copied! format: $format",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+        number?.setOnClickListener {
+            number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        }
         showVgs.subscribeView(expiration)
 
         requestButton?.setOnClickListener {

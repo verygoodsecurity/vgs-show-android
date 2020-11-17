@@ -23,9 +23,12 @@ import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSView
 import com.verygoodsecurity.vgsshow.widget.ViewType
+import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
+import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView.CopyTextFormat.FORMATTED
+import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
@@ -34,8 +37,13 @@ class VGSTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : VGSView<AppCompatTextView>(context, attrs, defStyleAttr) {
 
+    private var rawText: String? = null
+
     private var transformationRegex: String? = null
+
     private var replacement: String = ""
+
+    private var copyListener: OnTextCopyListener? = null
 
     init {
 
@@ -317,7 +325,7 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setOnTextChangeListener(listener: OnTextChangedListener?) {
         view.doOnTextChanged { text, _, _, _ ->
-            listener?.onTextChange(text.isNullOrEmpty())
+            listener?.onTextChange(this, text.isNullOrEmpty())
         }
     }
 
@@ -342,6 +350,20 @@ class VGSTextView @JvmOverloads constructor(
         if (isPasswordViewType()) {
             view.transformationMethod = RangePasswordTransformationMethod(start, end)
         }
+    }
+
+    fun setOnCopyTextListener(listener: OnTextCopyListener?) {
+        this.copyListener = listener
+    }
+
+    fun copyToClipboard(format: CopyTextFormat = RAW) {
+        context.copyToClipboard(
+            when (format) {
+                RAW -> rawText
+                FORMATTED -> view.text?.toString()
+            }
+        )
+        copyListener?.onTextCopied(this, format)
     }
 
     /**
@@ -381,6 +403,7 @@ class VGSTextView @JvmOverloads constructor(
      * styleable/spannable text, or editable text
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
+        this.rawText = text?.toString()
         with(transformationRegex?.transformWithRegex(text.toString(), replacement) ?: text) {
             view.setText(this, type)
         }
@@ -431,13 +454,38 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Text format to copy.
+     *
+     * @property RAW Raw revealed text.
+     * @property FORMATTED Formatted text.
+     */
+    enum class CopyTextFormat {
+
+
+        RAW,
+        FORMATTED
+    }
+
     interface OnTextChangedListener {
 
         /**
          * This method is called to notify you that the text has been changed.
          *
+         * @param view The view that was clicked.
          * @param isEmpty If true, then field is have no revealed data.
          */
-        fun onTextChange(isEmpty: Boolean)
+        fun onTextChange(view: VGSTextView, isEmpty: Boolean)
+    }
+
+    interface OnTextCopyListener {
+
+        /**
+         * This method is called after [copyToClipboard] executed.
+         *
+         * @param view The view that was clicked.
+         * @param format Format in which text was copied.
+         */
+        fun onTextCopied(view: VGSTextView, format: CopyTextFormat)
     }
 }
