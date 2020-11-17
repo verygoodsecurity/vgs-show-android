@@ -53,9 +53,7 @@ class VGSTextView @JvmOverloads constructor(
             setHint(getString(R.styleable.VGSTextView_hint))
             setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, -1))
 
-            if (isMarshmallowOrGreater) {
-                setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
-            }
+            setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
 
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
@@ -67,7 +65,7 @@ class VGSTextView @JvmOverloads constructor(
 
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
 
-            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, false)
+            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
             setPasswordRange(
                 getInt(R.styleable.VGSTextView_passwordStart, -1),
@@ -224,9 +222,13 @@ class VGSTextView @JvmOverloads constructor(
         setTextIsSelectable(view.isTextSelectable && !isPasswordViewType())
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @Suppress("DEPRECATION")
     fun setTextAppearance(@StyleRes styleId: Int) {
-        view.setTextAppearance(styleId)
+        if (isMarshmallowOrGreater) {
+            view.setTextAppearance(styleId)
+        } else {
+            view.setTextAppearance(context, styleId)
+        }
     }
 
     /**
