@@ -44,43 +44,31 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?) {
-        if (child == view) {
-            super.addView(child)
-        }
+        if (child == view) super.addView(child)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, index: Int) {
-        if (child == view) {
-            super.addView(child, index)
-        }
+        if (child == view) super.addView(child, index)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, width: Int, height: Int) {
-        if (child == view) {
-            super.addView(child, width, height)
-        }
+        if (child == view) super.addView(child, width, height)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
-        if (child == view) {
-            super.addView(child, params)
-        }
+        if (child == view) super.addView(child, params)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if (child == view) {
-            super.addView(child, index, params)
-        }
+        if (child == view) super.addView(child, index, params)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    override fun getChildAt(index: Int): View? {
-        return super.getChildAt(index)
-    }
+    override fun getChildAt(index: Int): View? = super.getChildAt(index)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     public override fun onAttachedToWindow() {
