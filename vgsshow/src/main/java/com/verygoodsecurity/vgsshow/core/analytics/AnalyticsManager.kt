@@ -23,7 +23,7 @@ internal class AnalyticsManager constructor(
 ) : IAnalyticsManager {
 
     private val requestManager: IHttpRequestManager by lazy {
-        HttpRequestManager(getBaseUrl(environment), getHeadersStore(), connectionHelper)
+        HttpRequestManager(BASE_URL, getHeadersStore(), connectionHelper)
     }
 
     private val defaultInfo: Map<String, Any> = mapOf(
@@ -50,11 +50,6 @@ internal class AnalyticsManager constructor(
         requestManager.cancelAll()
     }
 
-    private fun getBaseUrl(environment: VGSEnvironment) = when (environment) {
-        is VGSEnvironment.Live -> LIVE_BASE_URL
-        else -> SANDBOX_BASE_URL
-    }
-
     private fun getHeadersStore() = AnalyticsStaticHeadersStore()
 
     private fun buildRequest(event: Event): VGSRequest =
@@ -66,8 +61,7 @@ internal class AnalyticsManager constructor(
 
         private const val PATH = "/vgs"
 
-        private const val LIVE_BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
-        private const val SANDBOX_BASE_URL = "https://vgs-collect-keeper.verygoodsecurity.io"
+        private const val BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
 
         private const val KEY_SESSION_ID = "vgsShowSessionId"
         private const val KEY_FORM_ID = "formId"
