@@ -27,7 +27,7 @@ internal class ViewsStore {
         views.forEach {
             when (it) {
                 is VGSTextView -> it.setText(data?.getValue(it.getFieldName()))
-                else -> TODO("Implement other types")
+                else -> throw IllegalArgumentException("Not implemented yet!")
             }
         }
     }
