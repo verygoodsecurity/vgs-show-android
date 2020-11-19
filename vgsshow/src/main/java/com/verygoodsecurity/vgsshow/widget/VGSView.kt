@@ -24,18 +24,17 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     protected abstract fun createChildView(): T
 
-    protected abstract fun saveState(state: Parcelable?): Parcelable?
+    protected abstract fun saveState(state: Parcelable?): State
 
-    protected abstract fun restoreState(state: Parcelable?)
+    protected abstract fun restoreState(state: State)
 
-    protected val view: T = createChildView().apply { this.id = this@VGSView.id }
+    protected val view: T = createChildView().apply { this.id = View.generateViewId() }
 
     private var fieldName: String? = null
 
     var ignoreField: Boolean = false
 
     init {
-
         context.obtainStyledAttributes(attrs, R.styleable.VGSView).use {
             fieldName = it.getString(R.styleable.VGSView_fieldName)
             ignoreField = it.getBoolean(R.styleable.VGSView_ignoreField, false)
@@ -84,8 +83,10 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        super.onRestoreInstanceState(state)
-        restoreState(state)
+        (state as? State).run {
+            super.onRestoreInstanceState(this?.state)
+            this?.let { restoreState(it) }
+        }
     }
 
     open fun onChildClick(v: View?) {
@@ -129,4 +130,6 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
         internal const val DEFAULT_GRAVITY = Gravity.START or Gravity.CENTER_VERTICAL
     }
+
+    abstract class State constructor(val state: Parcelable?) : BaseSavedState(state)
 }

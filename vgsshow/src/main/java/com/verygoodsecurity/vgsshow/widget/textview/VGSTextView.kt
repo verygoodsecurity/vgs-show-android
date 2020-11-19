@@ -5,10 +5,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.Typeface.*
 import android.os.Build
-import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -72,14 +70,10 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun createChildView() = AppCompatTextView(context)
 
-    override fun saveState(state: Parcelable?): Parcelable? = State(state).apply {
-        text = view.text
-    }
+    override fun saveState(state: Parcelable?) = VGSTextViewState(state, view.text?.toString())
 
-    override fun restoreState(state: Parcelable?) {
-        (state as? State)?.let {
-            view.text = it.text
-        }
+    override fun restoreState(state: State) {
+        (state as? VGSTextViewState)?.let { view.text = state.text }
     }
 
     override fun onChildClick(v: View?) {
@@ -382,39 +376,7 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    internal class State : BaseSavedState {
-
-        var text: CharSequence? = null
-
-        var defaultText: CharSequence? = null
-
-        companion object {
-
-            @JvmField
-            val CREATOR = object : Parcelable.Creator<State> {
-                override fun createFromParcel(source: Parcel): State {
-                    return State(source)
-                }
-
-                override fun newArray(size: Int): Array<State?> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
-
-        constructor(superState: Parcelable?) : super(superState)
-
-        constructor(`in`: Parcel) : super(`in`) {
-            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
-            defaultText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
-        }
-
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            TextUtils.writeToParcel(text, out, flags)
-            TextUtils.writeToParcel(defaultText, out, flags)
-        }
-    }
+    class VGSTextViewState(state: Parcelable?, val text: String? = null) : State(state)
 
     interface OnTextChangedListener {
 
