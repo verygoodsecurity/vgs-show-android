@@ -176,7 +176,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
     fun subscribeView(view: VGSView<View>) {
-        analyticsManager.log(InitEvent(view.getViewType().toAnalyticTag()))
+        analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
         viewsStore.add(view)
     }
 

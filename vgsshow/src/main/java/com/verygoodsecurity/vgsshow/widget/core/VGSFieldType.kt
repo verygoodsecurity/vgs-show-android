@@ -5,7 +5,7 @@ package com.verygoodsecurity.vgsshow.widget.core
  *
  * @since 1.0.0
  */
-enum class VGSViewType {
+enum class VGSFieldType {
 
     INFO
 }

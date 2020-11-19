@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.core.VGSViewType
+import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 
 class VGSImageView @JvmOverloads constructor(
     context: Context,
@@ -17,7 +17,7 @@ class VGSImageView @JvmOverloads constructor(
         // TODO: read all attributes atc.
     }
 
-    override fun getViewType(): VGSViewType {
+    override fun getFieldType(): VGSFieldType {
         TODO("Not yet implemented")
     }
 

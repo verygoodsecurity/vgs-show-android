@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgsshow.core.analytics.extension
 
-import com.verygoodsecurity.vgsshow.widget.core.VGSViewType
+import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 
 private const val ANALYTIC_TAG_TEXT = "text"
 
-internal fun VGSViewType.toAnalyticTag() = when (this) {
-    VGSViewType.INFO -> ANALYTIC_TAG_TEXT
+internal fun VGSFieldType.toAnalyticTag() = when (this) {
+    VGSFieldType.INFO -> ANALYTIC_TAG_TEXT
 }

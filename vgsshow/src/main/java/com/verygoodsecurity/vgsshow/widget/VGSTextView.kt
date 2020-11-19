@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.core.VGSViewType
+import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
@@ -76,7 +76,7 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
-    override fun getViewType() = VGSViewType.INFO
+    override fun getFieldType() = VGSFieldType.INFO
 
     override fun createChildView() = AppCompatTextView(context)
 
