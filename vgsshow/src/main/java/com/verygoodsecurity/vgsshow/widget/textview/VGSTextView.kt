@@ -49,7 +49,6 @@ class VGSTextView @JvmOverloads constructor(
 
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
-            setTextIsSelectable(getBoolean(R.styleable.VGSTextView_textIsSelectable, false))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
 
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
@@ -211,7 +210,6 @@ class VGSTextView @JvmOverloads constructor(
             view.inputType = inputType
             view.typeface = this
         }
-        setTextIsSelectable(view.isTextSelectable && !isPasswordViewType())
     }
 
     @Suppress("DEPRECATION")
@@ -251,17 +249,6 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setTextColor(@ColorInt color: Int) {
         view.setTextColor(color)
-    }
-
-    /**
-     * Sets whether or not (default) the content of this view is selectable by the user.
-     *
-     * Indicates that the content of a non-editable TextView can be selected. Default value is false.
-     *
-     * @param isSelectable
-     */
-    fun setTextIsSelectable(isSelectable: Boolean) {
-        view.setTextIsSelectable(isSelectable)
     }
 
     /**
