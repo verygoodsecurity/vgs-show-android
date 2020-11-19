@@ -4,16 +4,17 @@ import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 internal class ViewsStore {
 
-    private val views: MutableSet<VGSTextView> = mutableSetOf()
+    private val views: MutableSet<VGSView<*>> = mutableSetOf()
 
-    fun add(view: VGSTextView) {
+    fun add(view: VGSView<*>) {
         views.add(view)
     }
 
-    fun remove(view: VGSTextView) {
+    fun remove(view: VGSView<*>) {
         views.remove(view)
     }
 
@@ -24,7 +25,10 @@ internal class ViewsStore {
     @MainThread
     fun update(data: IResponseData?) {
         views.forEach {
-            if (!it.isIgnored()) it.setText(data?.getValue(it.getFieldName()))
+            when (it) {
+                is VGSTextView -> it.setText(data?.getValue(it.getFieldName()))
+                else -> throw IllegalArgumentException("Not implemented yet!")
+            }
         }
     }
 

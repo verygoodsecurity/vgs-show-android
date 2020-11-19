@@ -5,12 +5,14 @@
     <attr name="hint" format="string" localization="suggested" />
 
     <!-- Hint text color. -->
-    <attr name="hintTextColor" format="color"/>
+    <attr name="hintTextColor" format="color" />
 
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="fieldName" format="string" localization="suggested" />
+
+    <attr name="ignoreField" format="boolean" />
 
     <!-- Font family (named by string or as a font resource reference) for the text. -->
     <attr name="fontFamily" format="string" />
@@ -92,11 +94,7 @@
         <flag name="italic" value="2" />
     </attr>
 
-    <attr name="letterSpacing" format="float"/>
-
-    <!-- Indicates that the content of a non-editable TextView can be selected.
-     Default value is false. -->
-    <attr name="textIsSelectable" format="boolean" />
+    <attr name="letterSpacing" format="float" />
 
     <!-- Set the enabled state of this view. -->
     <attr name="enabled" format="boolean" />
@@ -141,13 +139,18 @@
     <attr name="passwordEnd" format="integer" />
 
     <!-- Sets the text color, size, style etc.-->
-    <attr name="textAppearance" format="reference"/>
+    <attr name="textAppearance" format="reference" />
+
+    <declare-styleable name="VGSView">
+
+        <attr name="fieldName" />
+        <attr name="ignoreField" />
+    </declare-styleable>
 
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
         <attr name="hintTextColor" />
-
         <attr name="fieldName" />
         <attr name="gravity" />
         <attr name="singleLine" />
@@ -156,13 +159,11 @@
         <attr name="textColor" />
         <attr name="textStyle" />
         <attr name="fontFamily" />
-        <attr name="letterSpacing"/>
-        <attr name="textIsSelectable" />
+        <attr name="letterSpacing" />
         <attr name="inputType" />
-        <attr name="textAppearance"/>
+        <attr name="textAppearance" />
 
         <attr name="passwordStart" />
         <attr name="passwordEnd" />
     </declare-styleable>
-
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.NetworkOnMainThreadException
+import android.view.View
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
@@ -22,15 +23,15 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.toMD5
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import org.json.JSONObject
 
 /**
@@ -174,8 +175,8 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun subscribeView(view: VGSTextView) {
-        analyticsManager.log(InitEvent(view.getViewType().toAnalyticTag()))
+    fun subscribeView(view: VGSView<*>) {
+        analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
         viewsStore.add(view)
     }
 
@@ -184,7 +185,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun unsubscribeView(view: VGSTextView) {
+    fun unsubscribeView(view: VGSView<*>) {
         viewsStore.remove(view)
     }
 
