@@ -5,7 +5,7 @@
     <attr name="hint" format="string" localization="suggested" />
 
     <!-- Hint text color. -->
-    <attr name="hintTextColor" format="color"/>
+    <attr name="hintTextColor" format="color" />
 
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
@@ -96,10 +96,6 @@
 
     <attr name="letterSpacing" format="float" />
 
-    <!-- Indicates that the content of a non-editable TextView can be selected.
-     Default value is false. -->
-    <attr name="textIsSelectable" format="boolean" />
-
     <!-- Set the enabled state of this view. -->
     <attr name="enabled" format="boolean" />
 
@@ -143,7 +139,7 @@
     <attr name="passwordEnd" format="integer" />
 
     <!-- Sets the text color, size, style etc.-->
-    <attr name="textAppearance" format="reference"/>
+    <attr name="textAppearance" format="reference" />
 
     <declare-styleable name="VGSView">
 
@@ -164,9 +160,8 @@
         <attr name="textStyle" />
         <attr name="fontFamily" />
         <attr name="letterSpacing" />
-        <attr name="textIsSelectable" />
         <attr name="inputType" />
-        <attr name="textAppearance"/>
+        <attr name="textAppearance" />
 
         <attr name="passwordStart" />
         <attr name="passwordEnd" />

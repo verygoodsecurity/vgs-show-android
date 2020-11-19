@@ -24,18 +24,17 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     protected abstract fun createChildView(): T
 
-    protected abstract fun saveState(state: Parcelable?): Parcelable?
+    protected abstract fun saveState(state: Parcelable?): BaseSavedState?
 
-    protected abstract fun restoreState(state: Parcelable?)
+    protected abstract fun restoreState(state: BaseSavedState)
 
-    protected val view: T = createChildView()
+    protected val view: T = createChildView().apply { this.id = View.generateViewId() }
 
     private var fieldName: String? = null
 
     var ignoreField: Boolean = false
 
     init {
-
         context.obtainStyledAttributes(attrs, R.styleable.VGSView).use {
             fieldName = it.getString(R.styleable.VGSView_fieldName)
             ignoreField = it.getBoolean(R.styleable.VGSView_ignoreField, false)
@@ -44,31 +43,31 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?) {
+        if (child == view) super.addView(child)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, index: Int) {
+        if (child == view) super.addView(child, index)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, width: Int, height: Int) {
+        if (child == view) super.addView(child, width, height)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
+        if (child == view) super.addView(child, params)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if (child == view) {
-            super.addView(child, index, params)
-        }
+        if (child == view) super.addView(child, index, params)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    override fun getChildAt(index: Int): View? {
-        return super.getChildAt(index)
-    }
+    override fun getChildAt(index: Int): View? = super.getChildAt(index)
 
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     public override fun onAttachedToWindow() {
@@ -84,8 +83,10 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        super.onRestoreInstanceState(state)
-        restoreState(state)
+        (state as? BaseSavedState).let { saveState ->
+            super.onRestoreInstanceState(saveState?.superState)
+            saveState?.let { restoreState(it) }
+        }
     }
 
     open fun onChildClick(v: View?) {

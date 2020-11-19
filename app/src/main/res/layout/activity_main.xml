@@ -140,7 +140,6 @@
             app:inputType="textPassword"
             app:passwordStart="6"
             app:passwordEnd="12"
-            app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
             app:textStyle="italic" />
@@ -154,7 +153,6 @@
             android:layout_marginBottom="30dp"
             app:fieldName="json.expiration"
             app:hint="no Data"
-            app:textIsSelectable="true"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"
             app:textStyle="italic" />

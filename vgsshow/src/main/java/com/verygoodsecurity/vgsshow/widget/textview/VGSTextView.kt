@@ -54,23 +54,18 @@ class VGSTextView @JvmOverloads constructor(
             setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, -1))
 
             setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
-
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
-            setTextIsSelectable(getBoolean(R.styleable.VGSTextView_textIsSelectable, false))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
-
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
-
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
-
-            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
-
             setPasswordRange(
                 getInt(R.styleable.VGSTextView_passwordStart, -1),
                 getInt(R.styleable.VGSTextView_passwordEnd, -1)
             )
+
+            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
             if (isLollipopOrGreater) {
                 getFloatOrNull(R.styleable.VGSTextView_letterSpacing)?.let {
@@ -85,14 +80,12 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun createChildView() = AppCompatTextView(context)
 
-    override fun saveState(state: Parcelable?): Parcelable? = State(state).apply {
-        text = view.text
+    override fun saveState(state: Parcelable?) = VGSTextViewState(state).apply {
+        this.text = view.text?.toString()
     }
 
-    override fun restoreState(state: Parcelable?) {
-        (state as? State)?.let {
-            view.text = it.text
-        }
+    override fun restoreState(state: BaseSavedState) {
+        (state as? VGSTextViewState)?.let { view.text = state.text }
     }
 
     override fun onChildClick(v: View?) {
@@ -219,7 +212,6 @@ class VGSTextView @JvmOverloads constructor(
             view.inputType = inputType
             view.typeface = this
         }
-        setTextIsSelectable(view.isTextSelectable && !isPasswordViewType())
     }
 
     @Suppress("DEPRECATION")
@@ -259,17 +251,6 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setTextColor(@ColorInt color: Int) {
         view.setTextColor(color)
-    }
-
-    /**
-     * Sets whether or not (default) the content of this view is selectable by the user.
-     *
-     * Indicates that the content of a non-editable TextView can be selected. Default value is false.
-     *
-     * @param isSelectable
-     */
-    fun setTextIsSelectable(isSelectable: Boolean) {
-        view.setTextIsSelectable(isSelectable)
     }
 
     /**
@@ -422,37 +403,33 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    internal class State : BaseSavedState {
+    class VGSTextViewState : BaseSavedState {
 
         var text: CharSequence? = null
-
-        var defaultText: CharSequence? = null
-
-        companion object {
-
-            @JvmField
-            val CREATOR = object : Parcelable.Creator<State> {
-                override fun createFromParcel(source: Parcel): State {
-                    return State(source)
-                }
-
-                override fun newArray(size: Int): Array<State?> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
 
         constructor(superState: Parcelable?) : super(superState)
 
         constructor(`in`: Parcel) : super(`in`) {
             text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
-            defaultText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             TextUtils.writeToParcel(text, out, flags)
-            TextUtils.writeToParcel(defaultText, out, flags)
+        }
+
+        companion object {
+
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<VGSTextViewState> {
+                override fun createFromParcel(source: Parcel): VGSTextViewState {
+                    return VGSTextViewState(source)
+                }
+
+                override fun newArray(size: Int): Array<VGSTextViewState?> {
+                    return arrayOfNulls(size)
+                }
+            }
         }
     }
 
