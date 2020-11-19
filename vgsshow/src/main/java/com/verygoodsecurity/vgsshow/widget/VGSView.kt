@@ -28,7 +28,7 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     protected abstract fun restoreState(state: Parcelable?)
 
-    protected val view: T = createChildView()
+    protected val view: T = createChildView().apply { this.id = this@VGSView.id }
 
     private var fieldName: String? = null
 

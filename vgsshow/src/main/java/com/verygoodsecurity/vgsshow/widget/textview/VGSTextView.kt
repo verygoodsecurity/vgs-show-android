@@ -46,22 +46,18 @@ class VGSTextView @JvmOverloads constructor(
             setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, -1))
 
             setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
-
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
-
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
-
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
-
-            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
-
             setPasswordRange(
                 getInt(R.styleable.VGSTextView_passwordStart, -1),
                 getInt(R.styleable.VGSTextView_passwordEnd, -1)
             )
+
+            isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
             if (isLollipopOrGreater) {
                 getFloatOrNull(R.styleable.VGSTextView_letterSpacing)?.let {
