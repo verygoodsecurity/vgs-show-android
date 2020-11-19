@@ -69,7 +69,7 @@ internal class AnalyticsManager constructor(
         private const val LIVE_BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
         private const val SANDBOX_BASE_URL = "https://vgs-collect-keeper.verygoodsecurity.io"
 
-        private const val KEY_SESSION_ID = "vgsCollectSessionId"
+        private const val KEY_SESSION_ID = "vgsShowSessionId"
         private const val KEY_FORM_ID = "formId"
         private const val KEY_SOURCE = "source"
         private const val KEY_TENANT_ID = "tnt"
