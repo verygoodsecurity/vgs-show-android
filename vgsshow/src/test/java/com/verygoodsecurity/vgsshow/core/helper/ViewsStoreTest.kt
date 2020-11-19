@@ -90,8 +90,8 @@ class ViewsStoreTest {
         verify(ignoredField, times(1)).setText(null)
 
         // Act
-        doReturn(true).`when`(ignoredField).isIgnored()
-        ignoredField.setIgnore(true)
+        doReturn(true).`when`(ignoredField).ignoreField
+        ignoredField.ignoreField = true
 
         // Assert
         verify(ignoredField, times(1)).setText(null)

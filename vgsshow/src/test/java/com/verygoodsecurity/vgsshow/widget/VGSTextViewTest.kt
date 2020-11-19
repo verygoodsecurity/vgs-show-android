@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
-import com.verygoodsecurity.vgsshow.R
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -32,14 +31,6 @@ class VGSTextViewTest {
     }
 
     @Test
-    fun test_internal_state() {
-        view.onAttachedToWindow()
-        val internal = view.getState()
-        assertNotNull(internal)
-        assertTrue(internal!!.isViewReady)
-    }
-
-    @Test
     fun test_attach_view() {
         view.onAttachedToWindow()
 
@@ -55,115 +46,61 @@ class VGSTextViewTest {
 
         view.onAttachedToWindow()
         assertEquals(view.getFieldName(), fn)
-
-        val state = view.getState()
-        assertEquals(state?.fieldName, fn)
     }
 
     @Test
     fun test_paddings() {
-        view.onAttachedToWindow()
-
         view.setPadding(30, 20, 10, 0)
 
         assertEquals(view.paddingLeft, 30)
         assertEquals(view.paddingTop, 20)
         assertEquals(view.paddingRight, 10)
         assertEquals(view.paddingBottom, 0)
-
-        val state = view.getState()
-        assertNotNull(state)
-        assertEquals(state!!.paddingLeft, 30)
-        assertEquals(state.paddingTop, 20)
-        assertEquals(state.paddingRight, 10)
-        assertEquals(state.paddingBottom, 0)
     }
 
     @Test
     fun test_gravity() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
-        view.setGravity(Gravity.NO_GRAVITY)
-        assertEquals(state!!.gravity, Gravity.NO_GRAVITY)
-
         view.setGravity(Gravity.CENTER)
-        assertEquals(state.gravity, Gravity.CENTER)
+        assertEquals(view.getChildView().gravity, Gravity.CENTER)
 
         view.setGravity(Gravity.TOP or Gravity.END)
-        assertEquals(state.gravity, Gravity.TOP or Gravity.END)
-    }
-
-    @Test
-    fun test_singleline() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
-        view.setSingleLine(true)
-        assertEquals(state!!.isSingleLine, true)
-
-        view.setSingleLine(false)
-        assertEquals(state.isSingleLine, false)
+        assertEquals(view.getChildView().gravity, Gravity.TOP or Gravity.END)
     }
 
     @Test
     fun test_text_size() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
         view.setTextSize(21f)
-        assertEquals(state!!.textSize, 21f)
+        assertEquals(view.getChildView().textSize, 21f)
 
         view.setTextSize(25f)
-        assertEquals(state.textSize, 25f)
+        assertEquals(view.getChildView().textSize, 25f)
     }
 
     @Test
     fun test_text_color() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
         view.setTextColor(Color.BLUE)
-        assertEquals(state!!.textColor, Color.BLUE)
+        assertEquals(view.getChildView().textColors.defaultColor, Color.BLUE)
 
         view.setTextColor(Color.YELLOW)
-        assertEquals(state.textColor, Color.YELLOW)
+        assertEquals(view.getChildView().textColors.defaultColor, Color.YELLOW)
     }
 
     @Test
     fun test_enabled() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
         view.isEnabled = true
-        assertEquals(state!!.enabled, true)
+        assertEquals(view.getChildView().isEnabled, true)
 
         view.isEnabled = false
-        assertEquals(state.enabled, false)
+        assertEquals(view.getChildView().isEnabled, false)
     }
 
     @Test
     fun testTextStyles() {
-        view.onAttachedToWindow()
-
-        val state = view.getState()
-        assertNotNull(state)
-
         view.setTypeface(Typeface.SERIF)
-        assertEquals(state!!.typeface, Typeface.SERIF)
+        assertEquals(view.getChildView().typeface, Typeface.SERIF)
 
         view.setTypeface(Typeface.DEFAULT)
-        assertEquals(state.typeface, Typeface.DEFAULT)
+        assertEquals(view.getChildView().typeface, Typeface.DEFAULT)
     }
 
     @Test
@@ -172,13 +109,13 @@ class VGSTextViewTest {
         val value = "77"
 
         view.setHint(hint)
-        assertEquals(hint, view.getState()?.hint)
+        assertEquals(hint, view.getChildView().hint)
 
         view.setText(value)
-        assertEquals(hint, view.getState()?.hint)
+        assertEquals(hint, view.getChildView().hint)
 
         view.setText("")
-        assertEquals(hint, view.getState()?.hint)
+        assertEquals(hint, view.getChildView().hint)
     }
 
     @Test
@@ -187,13 +124,13 @@ class VGSTextViewTest {
         view.setOnTextChangeListener(listener)
 
         view.setText("123")
-        verify(listener).onTextChange(false)
+        verify(listener).onTextChange(view, false)
 
         view.setText("")
-        verify(listener).onTextChange(true)
+        verify(listener).onTextChange(view, true)
 
         view.setText("test")
-        verify(listener, times(2)).onTextChange(false)
+        verify(listener, times(2)).onTextChange(view, false)
     }
 
     @Test
@@ -201,40 +138,22 @@ class VGSTextViewTest {
         val inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(inputType)
 
-        assertEquals(inputType, view.getState()?.inputType)
+        assertEquals(inputType, view.getChildView().inputType)
     }
 
     @Test
     fun setIgnoreView() {
-        view.setIgnore(true)
-        assertTrue(view.getState()?.ignoreField ?: false)
+        view.ignoreField = true
+        assertTrue(view.ignoreField)
 
-        view.setIgnore(false)
-        assertFalse(view.getState()?.ignoreField ?: true)
-    }
-
-    @Test
-    fun setLetterSpacing() {
-        view.setLetterSpacing(0.8f)
-        assertEquals(view.getState()?.letterSpacing, 0.8f)
-
-        view.setLetterSpacing(0.4f)
-        assertEquals(view.getState()?.letterSpacing, 0.4f)
-    }
-
-    @Test
-    fun setTextAppearance() {
-        val textAppearanceStyleId = android.R.style.TextAppearance
-
-        view.setTextAppearance(textAppearanceStyleId)
-
-        assertEquals(view.getState()?.textAppearance, textAppearanceStyleId)
+        view.ignoreField = false
+        assertFalse(view.ignoreField)
     }
 
     @Test
     fun setHintTextColor() {
         view.setHintTextColor(Color.CYAN)
 
-        assertEquals(view.getState()?.hintTextColor, Color.CYAN)
+        assertEquals(view.getChildView().hintTextColors.defaultColor, Color.CYAN)
     }
 }
