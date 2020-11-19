@@ -24,9 +24,9 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
     protected abstract fun createChildView(): T
 
-    protected abstract fun saveState(state: Parcelable?): State
+    protected abstract fun saveState(state: Parcelable?): BaseSavedState?
 
-    protected abstract fun restoreState(state: State)
+    protected abstract fun restoreState(state: BaseSavedState)
 
     protected val view: T = createChildView().apply { this.id = View.generateViewId() }
 
@@ -83,9 +83,9 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        (state as? State).run {
-            super.onRestoreInstanceState(this?.state)
-            this?.let { restoreState(it) }
+        (state as? BaseSavedState).let { saveState ->
+            super.onRestoreInstanceState(saveState?.superState)
+            saveState?.let { restoreState(it) }
         }
     }
 
@@ -130,6 +130,4 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
 
         internal const val DEFAULT_GRAVITY = Gravity.START or Gravity.CENTER_VERTICAL
     }
-
-    abstract class State constructor(val state: Parcelable?) : BaseSavedState(state)
 }

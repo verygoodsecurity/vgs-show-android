@@ -5,8 +5,10 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.Typeface.*
 import android.os.Build
+import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -74,7 +76,7 @@ class VGSTextView @JvmOverloads constructor(
         this.text = view.text?.toString()
     }
 
-    override fun restoreState(state: State) {
+    override fun restoreState(state: BaseSavedState) {
         (state as? VGSTextViewState)?.let { view.text = state.text }
     }
 
@@ -378,9 +380,34 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    class VGSTextViewState(state: Parcelable?) : State(state) {
+    class VGSTextViewState : BaseSavedState {
 
-        var text: String? = null
+        var text: CharSequence? = null
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(`in`: Parcel) : super(`in`) {
+            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            TextUtils.writeToParcel(text, out, flags)
+        }
+
+        companion object {
+
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<VGSTextViewState> {
+                override fun createFromParcel(source: Parcel): VGSTextViewState {
+                    return VGSTextViewState(source)
+                }
+
+                override fun newArray(size: Int): Array<VGSTextViewState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
     }
 
     interface OnTextChangedListener {

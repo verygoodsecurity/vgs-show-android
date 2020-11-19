@@ -23,9 +23,9 @@ class VGSImageView @JvmOverloads constructor(
 
     override fun createChildView() = AppCompatImageView(context)
 
-    override fun saveState(state: Parcelable?): State = TODO()
+    override fun saveState(state: Parcelable?): BaseSavedState? = null
 
-    override fun restoreState(state: State) {
+    override fun restoreState(state: BaseSavedState) {
         // TODO: restore
     }
 }
