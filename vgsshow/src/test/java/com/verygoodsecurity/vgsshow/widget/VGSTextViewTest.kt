@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

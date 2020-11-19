@@ -129,7 +129,7 @@
             android:progressTint="@color/colorPrimary"
             android:visibility="invisible" />
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:id="@+id/number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             app:textSize="14dp"
             app:textStyle="italic" />
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:id="@+id/expiration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

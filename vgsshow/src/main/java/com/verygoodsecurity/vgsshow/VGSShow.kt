@@ -31,7 +31,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.toMD5
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
-import com.verygoodsecurity.vgsshow.widget.VGSView
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import org.json.JSONObject
 
 /**

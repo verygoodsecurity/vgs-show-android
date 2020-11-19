@@ -19,7 +19,7 @@
             android:layout_gravity="center_horizontal"/>
 
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
@@ -27,7 +27,7 @@
             app:fontFamily="@font/test3"
             android:layout_gravity="center_horizontal"
             />
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
@@ -37,7 +37,7 @@
             android:background="@color/test_color"
             android:layout_gravity="center_horizontal"
             />
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
@@ -47,7 +47,7 @@
             android:background="@color/test_color"
             android:layout_gravity="center_horizontal"
             />
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
@@ -58,7 +58,7 @@
             android:layout_gravity="center_horizontal"
             />
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fieldName="someName"
@@ -75,7 +75,7 @@
             />
 
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fieldName="someName"
@@ -87,7 +87,7 @@
             app:text="33dp" />
 
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fieldName="someName"
@@ -98,7 +98,7 @@
             app:text="7dp" />
 
 
-        <com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+        <com.verygoodsecurity.vgsshow.widget.VGSTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fieldName="someName"

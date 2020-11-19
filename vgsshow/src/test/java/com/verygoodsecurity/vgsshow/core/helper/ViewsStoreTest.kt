@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers

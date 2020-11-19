@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.textview.method
+package com.verygoodsecurity.vgsshow.widget.view.textview.method
 
 import android.text.method.PasswordTransformationMethod
 import android.view.View

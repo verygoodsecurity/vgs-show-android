@@ -4,8 +4,8 @@ import android.view.View
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
-import com.verygoodsecurity.vgsshow.widget.VGSView
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 internal class ViewsStore {
 

@@ -1,11 +1,11 @@
-package com.verygoodsecurity.vgsshow.widget.imageview
+package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.verygoodsecurity.vgsshow.widget.VGSView
-import com.verygoodsecurity.vgsshow.widget.ViewType
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
+import com.verygoodsecurity.vgsshow.widget.core.VGSViewType
 
 class VGSImageView @JvmOverloads constructor(
     context: Context,
@@ -17,7 +17,7 @@ class VGSImageView @JvmOverloads constructor(
         // TODO: read all attributes atc.
     }
 
-    override fun getViewType(): ViewType {
+    override fun getViewType(): VGSViewType {
         TODO("Not yet implemented")
     }
 

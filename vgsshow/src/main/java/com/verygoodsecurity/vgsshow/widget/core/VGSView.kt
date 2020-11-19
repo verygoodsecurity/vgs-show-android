@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget
+package com.verygoodsecurity.vgsshow.widget.core
 
 import android.content.Context
 import android.content.res.Resources
@@ -20,7 +20,7 @@ abstract class VGSView<out T : View> @JvmOverloads internal constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    abstract fun getViewType(): ViewType
+    abstract fun getViewType(): VGSViewType
 
     protected abstract fun createChildView(): T
 

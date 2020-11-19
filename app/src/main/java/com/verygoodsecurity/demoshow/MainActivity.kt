@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject

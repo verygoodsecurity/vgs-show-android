@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.textview
+package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
 import android.graphics.Color
@@ -21,15 +21,15 @@ import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
-import com.verygoodsecurity.vgsshow.widget.VGSView
-import com.verygoodsecurity.vgsshow.widget.ViewType
 import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView.CopyTextFormat.FORMATTED
-import com.verygoodsecurity.vgsshow.widget.textview.VGSTextView.CopyTextFormat.RAW
-import com.verygoodsecurity.vgsshow.widget.textview.method.RangePasswordTransformationMethod
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
+import com.verygoodsecurity.vgsshow.widget.core.VGSViewType
+import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
     context: Context,
@@ -76,7 +76,7 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
-    override fun getViewType() = ViewType.INFO
+    override fun getViewType() = VGSViewType.INFO
 
     override fun createChildView() = AppCompatTextView(context)
 
