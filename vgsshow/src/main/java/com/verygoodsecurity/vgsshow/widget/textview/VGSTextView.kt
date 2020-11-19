@@ -70,7 +70,9 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun createChildView() = AppCompatTextView(context)
 
-    override fun saveState(state: Parcelable?) = VGSTextViewState(state, view.text?.toString())
+    override fun saveState(state: Parcelable?) = VGSTextViewState(state).apply {
+        this.text = view.text?.toString()
+    }
 
     override fun restoreState(state: State) {
         (state as? VGSTextViewState)?.let { view.text = state.text }
@@ -376,7 +378,10 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    class VGSTextViewState(state: Parcelable?, val text: String? = null) : State(state)
+    class VGSTextViewState(state: Parcelable?) : State(state) {
+
+        var text: String? = null
+    }
 
     interface OnTextChangedListener {
 
