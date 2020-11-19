@@ -125,13 +125,13 @@ class VGSTextViewTest {
         view.setOnTextChangeListener(listener)
 
         view.setText("123")
-        verify(listener).onTextChange(false)
+        verify(listener).onTextChange(view, false)
 
         view.setText("")
-        verify(listener).onTextChange(true)
+        verify(listener).onTextChange(view, true)
 
         view.setText("test")
-        verify(listener, times(2)).onTextChange(false)
+        verify(listener, times(2)).onTextChange(view, false)
     }
 
     @Test
