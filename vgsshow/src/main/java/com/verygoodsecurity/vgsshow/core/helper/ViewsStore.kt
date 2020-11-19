@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
-import android.view.View
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
@@ -9,13 +8,13 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 internal class ViewsStore {
 
-    private val views: MutableSet<VGSView<View>> = mutableSetOf()
+    private val views: MutableSet<VGSView<*>> = mutableSetOf()
 
-    fun add(view: VGSView<View>) {
+    fun add(view: VGSView<*>) {
         views.add(view)
     }
 
-    fun remove(view: VGSView<View>) {
+    fun remove(view: VGSView<*>) {
         views.remove(view)
     }
 
