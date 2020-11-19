@@ -59,9 +59,8 @@ internal class AnalyticsManager constructor(
 
     companion object {
 
-        private const val PATH = "/vgs"
-
         private const val BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
+        private const val PATH = "/vgs"
 
         private const val KEY_SESSION_ID = "vgsShowSessionId"
         private const val KEY_FORM_ID = "formId"
