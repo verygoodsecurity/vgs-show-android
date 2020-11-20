@@ -12,9 +12,7 @@ import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
-import com.verygoodsecurity.vgsshow.core.analytics.event.InitEvent
-import com.verygoodsecurity.vgsshow.core.analytics.event.RequestEvent
-import com.verygoodsecurity.vgsshow.core.analytics.event.ResponseEvent
+import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
@@ -28,6 +26,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import org.json.JSONObject
 
@@ -42,7 +41,11 @@ import org.json.JSONObject
  *
  * @since 1.0.0
  */
-class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnvironment) {
+class VGSShow constructor(
+    context: Context,
+    vaultId: String,
+    environment: VGSEnvironment
+) : VGSTextView.OnTextCopyListener {
 
     private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
 
@@ -79,6 +82,10 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
         vaultId: String,
         environment: String
     ) : this(context, vaultId, environment.toVGSEnvironment())
+
+    override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+        analyticsManager.log(CopyToClipboardEvent(format))
+    }
 
     /**
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
@@ -170,8 +177,12 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
     fun subscribeView(view: VGSView<*>) {
-        analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
-        viewsStore.add(view)
+        if (viewsStore.add(view)) {
+            analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
+            if (view is VGSTextView) {
+                view.addOnCopyTextListener(this)
+            }
+        }
     }
 
     /**
@@ -180,7 +191,12 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
     fun unsubscribeView(view: VGSView<*>) {
-        viewsStore.remove(view)
+        if (viewsStore.remove(view)) {
+            analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
+            if (view is VGSTextView) {
+                view.removeOnCopyTextListener(this)
+            }
+        }
     }
 
     /**
@@ -198,6 +214,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
         proxyRequestManager.cancelAll()
         analyticsManager.cancelAll()
         listeners.clear()
+        viewsStore.getViews().forEach { (it as? VGSTextView)?.removeOnCopyTextListener(this) }
         viewsStore.clear()
         headersStore.clear()
     }

@@ -21,14 +21,14 @@ import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
+import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
-import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
-import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
-import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
 class VGSTextView @JvmOverloads constructor(
@@ -43,7 +43,7 @@ class VGSTextView @JvmOverloads constructor(
 
     private var replacement: String = ""
 
-    private var copyListener: OnTextCopyListener? = null
+    private var copyListeners: MutableList<OnTextCopyListener> = mutableListOf()
 
     init {
 
@@ -335,8 +335,18 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    fun setOnCopyTextListener(listener: OnTextCopyListener?) {
-        this.copyListener = listener
+    /**
+     * When an object of this type is attached to an field, its methods will be called when the text was copied.
+     */
+    fun addOnCopyTextListener(listener: OnTextCopyListener) {
+        this.copyListeners.add(listener)
+    }
+
+    /**
+     * Remove text copy listener, so it will not be called.
+     */
+    fun removeOnCopyTextListener(listener: OnTextCopyListener) {
+        this.copyListeners.remove(listener)
     }
 
     fun copyToClipboard(format: CopyTextFormat = RAW) {
@@ -346,7 +356,7 @@ class VGSTextView @JvmOverloads constructor(
                 FORMATTED -> view.text?.toString()
             }
         )
-        copyListener?.onTextCopied(this, format)
+        copyListeners.forEach { it.onTextCopied(this, format) }
     }
 
     /**
