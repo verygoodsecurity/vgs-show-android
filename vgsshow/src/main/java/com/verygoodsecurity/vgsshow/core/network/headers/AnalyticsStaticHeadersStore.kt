@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgsshow.core.network.headers
 
 /**
- * Analytics headers store, as currently analytics doesn't require headers it's empty
+ * Restrict ability to mistakenly add extra headers
  */
-class AnalyticsStaticHeadersStore : IVGSStaticHeadersStore {
+internal class AnalyticsStaticHeadersStore : BaseHeadersStore() {
 
     override fun add(key: String, value: String) {
         // unused
@@ -12,10 +12,6 @@ class AnalyticsStaticHeadersStore : IVGSStaticHeadersStore {
     override fun remove(key: String) {
         // unused
     }
-
-    override fun getAll(): Map<String, String> = emptyMap()
-
-    override fun containsUserHeaders(): Boolean  = false
 
     override fun clear() {
         // unused
