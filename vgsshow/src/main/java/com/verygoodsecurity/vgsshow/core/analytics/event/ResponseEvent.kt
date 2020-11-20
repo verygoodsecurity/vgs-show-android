@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.core.analytics.event
 internal data class ResponseEvent(
     val code: String,
     val status: Status,
-    val checkSum: String,
     val errorMessage: String? = null
 ) : Event() {
 
@@ -14,7 +13,6 @@ internal data class ResponseEvent(
         get() = mutableMapOf(
             KEY_STATUS_CODE to code,
             KEY_STATUS to status.value,
-            KEY_CHECK_SUM to checkSum
         ).apply {
             errorMessage?.let {
                 put(KEY_ERROR_MESSAGE, errorMessage)
@@ -27,7 +25,11 @@ internal data class ResponseEvent(
 
         private const val KEY_STATUS_CODE = "statusCode"
         private const val KEY_STATUS = "status"
-        private const val KEY_CHECK_SUM = "checkSum"
         private const val KEY_ERROR_MESSAGE = "error"
+
+        fun createSuccessful(code: Int): ResponseEvent = ResponseEvent(code.toString(), Status.OK)
+
+        fun createFailed(code: Int, message: String?): ResponseEvent =
+            ResponseEvent(code.toString(), Status.FAILED, message)
     }
 }
