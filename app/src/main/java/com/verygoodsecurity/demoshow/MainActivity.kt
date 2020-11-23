@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                 Log.e("test", "state text: $isEmpty")
             }
         })
-        number?.setOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(

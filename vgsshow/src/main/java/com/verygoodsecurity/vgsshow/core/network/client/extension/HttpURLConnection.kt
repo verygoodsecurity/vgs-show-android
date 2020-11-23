@@ -1,14 +1,14 @@
 package com.verygoodsecurity.vgsshow.core.network.client.extension
 
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
+import com.verygoodsecurity.vgsshow.util.extension.toURL
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
-import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSocketFactory
 
 @Throws(ClassCastException::class, MalformedURLException::class)
-internal fun String.openConnection() = (URL(this).openConnection() as HttpURLConnection)
+internal fun String.openConnection() = (this.toURL().openConnection() as HttpURLConnection)
 
 internal fun HttpURLConnection.callTimeout(timeout: Long): HttpURLConnection {
     connectTimeout = timeout.toInt()

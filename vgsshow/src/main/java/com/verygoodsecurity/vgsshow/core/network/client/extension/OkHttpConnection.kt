@@ -18,8 +18,7 @@ internal fun Request.Builder.setMethod(
     data: String?,
     mediaType: MediaType?
 ): Request.Builder {
-    when (method) {
+    return when (method) {
         VGSHttpMethod.POST -> post(data?.toRequestBody(mediaType) ?: EMPTY_REQUEST)
     }
-    return this
 }

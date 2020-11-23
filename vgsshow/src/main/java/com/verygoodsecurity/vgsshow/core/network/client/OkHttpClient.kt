@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
@@ -12,7 +13,9 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.toURL
 import okhttp3.*
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
 import java.net.URL
@@ -59,7 +62,7 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
-            .url(URL(baseUrl concatWithSlash request.path))
+            .url((baseUrl concatWithSlash request.path).toURL())
             .addHeaders(request.headers)
             .setMethod(
                 request.method,

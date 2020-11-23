@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
-import java.security.MessageDigest
+import java.net.MalformedURLException
+import java.net.URL
 
 private const val SLASH = "/"
 
@@ -18,9 +19,13 @@ internal infix fun String.concatWithDash(suffix: String): String = when {
     else -> this + DASH + suffix
 }
 
-private const val MD_5_ALGORITHM = "MD5"
-
-internal fun String.toMD5(): String {
-    val bytes = MessageDigest.getInstance(MD_5_ALGORITHM).digest(this.toByteArray())
-    return bytes.joinToString("") { "%02x".format(it) }
+@Throws(Exception::class)
+fun String.toURL(): URL {
+    try {
+        val url = URL(this)
+        url.toURI()
+        return url
+    } catch (e: Exception) {
+        throw MalformedURLException()
+    }
 }

@@ -134,6 +134,29 @@ class VGSTextViewTest {
     }
 
     @Test
+    fun addOnTextCopyListener_listenerCalled() {
+        val listener = mock(VGSTextView.OnTextCopyListener::class.java)
+        view.addOnCopyTextListener(listener)
+
+        view.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        verify(listener, times(1)).onTextCopied(view, VGSTextView.CopyTextFormat.RAW)
+
+        view.copyToClipboard(VGSTextView.CopyTextFormat.FORMATTED)
+        verify(listener, times(1)).onTextCopied(view, VGSTextView.CopyTextFormat.FORMATTED)
+    }
+
+    @Test
+    fun removeOnTextCopyListener_listenerNotCalled() {
+        val listener = mock(VGSTextView.OnTextCopyListener::class.java)
+
+        view.addOnCopyTextListener(listener)
+        view.removeOnCopyTextListener(listener)
+        view.copyToClipboard(VGSTextView.CopyTextFormat.FORMATTED)
+
+        verify(listener, times(0)).onTextCopied(view, VGSTextView.CopyTextFormat.FORMATTED)
+    }
+
+    @Test
     fun setInputType() {
         val inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(inputType)
