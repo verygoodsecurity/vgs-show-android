@@ -7,5 +7,6 @@ package com.verygoodsecurity.vgsshow.widget.core
  */
 enum class VGSFieldType {
 
-    INFO
+    INFO,
+    IMAGE // TODO: rename
 }

@@ -1,10 +1,7 @@
 package com.verygoodsecurity.vgsshow
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.os.NetworkOnMainThreadException
-import android.view.View
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
@@ -28,6 +25,7 @@ import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.util.ThreadHelper.runOnUiThread
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.toMD5
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
@@ -50,8 +48,6 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
     private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
 
     private val viewsStore = ViewsStore()
-
-    private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     private val headersStore: IVGSStaticHeadersStore
 
@@ -110,7 +106,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
             logRequestEvent(request, response, this)
             logResponseEvent(response, this)
         }
-        mainHandler.post { viewsStore.update((response as? VGSResponse.Success)?.data) }
+        runOnUiThread { viewsStore.update((response as? VGSResponse.Success)?.data) }
         return response
     }
 
@@ -138,7 +134,7 @@ class VGSShow constructor(context: Context, vaultId: String, environment: VGSEnv
                 logRequestEvent(request, it, this)
                 logResponseEvent(it, this)
             }
-            mainHandler.post {
+            runOnUiThread {
                 viewsStore.update((it as? VGSResponse.Success)?.data)
                 notifyResponseListeners(it)
             }

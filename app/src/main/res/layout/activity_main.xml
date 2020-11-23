@@ -88,6 +88,50 @@
             android:singleLine="true"
             android:text="token:" />
 
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundModes="outline"
+            app:boxCornerRadius="4dp"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:hint="Image url"
+            app:hintEnabled="true">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:id="@+id/imageUrl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="4dp"
+                app:enableValidation="false"
+                app:text="https://memegenerator.net/img/images/72868957.jpg"
+                app:fieldName="imageUrl3"
+                app:textSize="12dp" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <TextView
+            android:id="@+id/tokenView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="token:" />
+
+        <Button
+            android:id="@+id/attachImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Attach image"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:id="@+id/tokenView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="token:" />
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
@@ -152,6 +196,32 @@
             android:layout_marginTop="47dp"
             android:layout_marginBottom="30dp"
             app:fieldName="json.expiration"
+            app:hint="no Data"
+            app:textColor="@android:color/holo_red_dark"
+            app:textSize="14dp"
+            app:textStyle="italic" />
+
+        <com.verygoodsecurity.vgsshow.widget.VGSImageView
+            android:id="@+id/revealImageUrl"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            app:fieldName="json.revealImageUrl3"
+            app:hint="no Data"
+            app:textColor="@android:color/holo_red_dark"
+            app:textSize="14dp"
+            app:textStyle="italic" />
+
+        <com.verygoodsecurity.vgsshow.widget.VGSImageView
+            android:id="@+id/revealImageBase64"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
+            app:fieldName="json.revealImageBase64"
             app:hint="no Data"
             app:textColor="@android:color/holo_red_dark"
             app:textSize="14dp"

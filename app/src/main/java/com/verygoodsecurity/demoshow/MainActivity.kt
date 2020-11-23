@@ -1,5 +1,6 @@
 package com.verygoodsecurity.demoshow
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -22,11 +23,11 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
+        VGSShow(this, "tntaq8uft80", VGSEnvironment.Sandbox())
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, "tntpszqgikn", "sandbox")
+        VGSCollect(this, "tntaq8uft80", "sandbox")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +60,17 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
             number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
         showVgs.subscribeView(expiration)
+        showVgs.subscribeView(revealImageUrl)
+        showVgs.subscribeView(revealImageBase64)
 
         requestButton?.setOnClickListener {
             revealData()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        vgsForm.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
@@ -85,8 +93,17 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private var revealtoken: String = ""
     private var revealtoken2: String = ""
+    private var revealtoken3: String = ""
+    private var revealtoken4: String = ""
 
     private fun setupCollect() {
+        attachImage?.setOnClickListener {
+            if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
+                vgsForm.getFileProvider().attachFile("imageBase64")
+            } else {
+                vgsForm.getFileProvider().detachAll()
+            }
+        }
         submitButton?.setOnClickListener {
             submitProgress?.visibility = View.VISIBLE
             cardNumber?.isEnabled = false
@@ -108,12 +125,15 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
                     parseNumberToken(json)
                     parseDateToken(json)
+                    parseImageBase64Token(json)
+                    parseImageUrlToken(json)
                 } catch (e: JSONException) {
                 }
             }
         })
         vgsForm.bindView(cardNumber)
         vgsForm.bindView(expDate)
+        vgsForm.bindView(imageUrl)
     }
 
     private fun parseDateToken(json: JSONObject?) {
@@ -138,10 +158,34 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         }
     }
 
+    private fun parseImageUrlToken(json: JSONObject?) {
+        json?.let {
+            if (it.has("json") && it.getJSONObject("json").has("imageUrl3")) {
+                it.getJSONObject("json").getString("imageUrl3")?.let {
+                    tokenView3?.text = "token: $it"
+                    revealtoken3 = it
+                }
+            }
+        }
+    }
+
+    private fun parseImageBase64Token(json: JSONObject?) {
+        json?.let {
+            if (it.has("json") && it.getJSONObject("json").has("imageBase64")) {
+                it.getJSONObject("json").getString("imageBase64")?.let {
+                    tokenView4?.text = "token: $it"
+                    revealtoken4 = it
+                }
+            }
+        }
+    }
+
     private fun makeJsonObject(): JSONObject {
         return with(JSONObject()) {
             put("number", revealtoken)
             put("expiration", revealtoken2)
+            put("revealImageUrl3", revealtoken3)
+            put("revealImageBase64", revealtoken4)
             this
         }
     }

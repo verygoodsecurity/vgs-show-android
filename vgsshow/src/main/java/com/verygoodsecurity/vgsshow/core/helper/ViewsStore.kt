@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.core.helper
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
+import com.verygoodsecurity.vgsshow.widget.VGSImageView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -27,6 +28,7 @@ internal class ViewsStore {
         views.forEach {
             when (it) {
                 is VGSTextView -> it.setText(data?.getValue(it.getFieldName()))
+                is VGSImageView -> it.setImage(data?.getValue(it.getFieldName()))
                 else -> throw IllegalArgumentException("Not implemented yet!")
             }
         }
