@@ -21,17 +21,17 @@ import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
+import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
+import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
-import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
-import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
-import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
-class VGSTextView @JvmOverloads constructor(
+class VGSTextView @JvmOverloads internal constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -80,12 +80,12 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun createChildView() = AppCompatTextView(context)
 
-    override fun saveState(state: Parcelable?) = VGSTextViewState(state).apply {
+    override fun saveState(state: Parcelable?) = SavedState(state).apply {
         this.text = view.text?.toString()
     }
 
     override fun restoreState(state: BaseSavedState) {
-        (state as? VGSTextViewState)?.let { view.text = state.text }
+        (state as? SavedState)?.let { view.text = state.text }
     }
 
     override fun onChildClick(v: View?) {
@@ -403,7 +403,8 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    class VGSTextViewState : BaseSavedState {
+    // TODO: Think about access restriction
+    class SavedState : BaseSavedState {
 
         var text: CharSequence? = null
 
@@ -421,12 +422,12 @@ class VGSTextView @JvmOverloads constructor(
         companion object {
 
             @JvmField
-            val CREATOR = object : Parcelable.Creator<VGSTextViewState> {
-                override fun createFromParcel(source: Parcel): VGSTextViewState {
-                    return VGSTextViewState(source)
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
                 }
 
-                override fun newArray(size: Int): Array<VGSTextViewState?> {
+                override fun newArray(size: Int): Array<SavedState?> {
                     return arrayOfNulls(size)
                 }
             }
