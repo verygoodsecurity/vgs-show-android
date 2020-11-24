@@ -8,7 +8,7 @@ internal abstract class BaseHeadersStore : IVGSStaticHeadersStore {
     private val staticHeaders: MutableMap<String, String> = HashMap()
 
     private val defaultStaticHeaders: Map<String, String> = mapOf(
-        AGENT_HEADER to "source=show-androidSdk&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}&vgsShowSessionId=${Session.id}"
+        AGENT_HEADER to "source=show-androidSdk&medium=vgs-show&content=${BuildConfig.VERSION_NAME}&vgsShowSessionId=${Session.id}"
     )
 
     override fun add(key: String, value: String) {
