@@ -1,8 +1,10 @@
 package com.verygoodsecurity.demoshow
 
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -29,40 +31,13 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
+    private var isPassword: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setupCollect()
-
-//        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
-
-        showVgs.addResponseListener(this)
-        showVgs.subscribeView(number)
-
-        number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
-            override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
-                Log.e("test", "state text: $isEmpty")
-            }
-        })
-        number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
-
-            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-                Toast.makeText(
-                    applicationContext,
-                    "Number text copied! format: $format",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
-        number?.setOnClickListener {
-            number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
-        }
-        showVgs.subscribeView(expiration)
-
-        requestButton?.setOnClickListener {
-            revealData()
-        }
+        setupShow()
     }
 
     override fun onDestroy() {
@@ -79,7 +54,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     }
 
     override fun onResponse(response: VGSResponse) {
-        progressReveal?.visibility = View.INVISIBLE
+        progressReveal?.visibility = View.GONE
         Log.d(MainActivity::class.simpleName, response.toString())
     }
 
@@ -96,7 +71,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
         vgsForm.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
-                submitProgress?.visibility = View.INVISIBLE
+                submitProgress?.visibility = View.GONE
                 cardNumber?.isEnabled = true
                 expDate?.isEnabled = true
 
@@ -116,11 +91,55 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         vgsForm.bindView(expDate)
     }
 
+    private fun setupShow() {
+        showVgs.addResponseListener(this)
+        showVgs.subscribeView(number)
+        showVgs.subscribeView(expiration)
+        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
+        number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
+            override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
+                Log.e("test", "state text: $isEmpty")
+            }
+        })
+        number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+
+            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+                Toast.makeText(
+                    applicationContext,
+                    "Number text copied! format: $format",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+        number?.setOnClickListener {
+            number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+            number.setPasswordRange(0, 0)
+            number.setInputType(EditorInfo.TYPE_NULL)
+            applyResetPasswordType?.text = "Set password"
+            isPassword = false
+        }
+        requestButton?.setOnClickListener {
+            revealData()
+        }
+        applyResetPasswordType?.setOnClickListener {
+            if (isPassword) {
+                number.setPasswordRange(0, 0)
+                number.setInputType(EditorInfo.TYPE_NULL)
+                applyResetPasswordType?.text = "Set password"
+            } else {
+                number.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                number.setPasswordRange(6, 12)
+                applyResetPasswordType?.text = "Reset password"
+            }
+            isPassword = !isPassword
+        }
+    }
+
     private fun parseDateToken(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate")?.let {
-                    tokenView2?.text = "token: $it"
+                    tokenView2?.text = it
                     revealtoken2 = it
                 }
             }
@@ -131,7 +150,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let {
-                    tokenView1?.text = "token: $it"
+                    tokenView1?.text = it
                     revealtoken = it
                 }
             }
