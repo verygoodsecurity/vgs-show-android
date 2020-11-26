@@ -165,6 +165,14 @@ class VGSTextViewTest {
     }
 
     @Test
+    fun isPasswordInputType() {
+        val inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(inputType)
+
+        assertTrue(view.isPasswordInputType())
+    }
+
+    @Test
     fun setIgnoreView() {
         view.ignoreField = true
         assertTrue(view.ignoreField)

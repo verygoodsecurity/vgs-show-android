@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
-    private var isPassword: Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -113,17 +111,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         })
         number?.setOnClickListener {
             number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
-            number.setPasswordRange(0, 0)
-            number.setInputType(EditorInfo.TYPE_NULL)
-            applyResetPasswordType?.text = "Set password"
-            isPassword = false
         }
         requestButton?.setOnClickListener {
             revealData()
         }
         applyResetPasswordType?.setOnClickListener {
-            if (isPassword) {
-                number.setPasswordRange(0, 0)
+            if (number.isPasswordInputType()) {
                 number.setInputType(EditorInfo.TYPE_NULL)
                 applyResetPasswordType?.text = "Set password"
             } else {
@@ -131,7 +124,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                 number.setPasswordRange(6, 12)
                 applyResetPasswordType?.text = "Reset password"
             }
-            isPassword = !isPassword
         }
     }
 
