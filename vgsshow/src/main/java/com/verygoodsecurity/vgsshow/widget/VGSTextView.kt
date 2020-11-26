@@ -11,7 +11,6 @@ import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.annotation.*
@@ -86,13 +85,6 @@ class VGSTextView @JvmOverloads constructor(
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSTextViewState)?.let { view.text = state.text }
-    }
-
-    override fun onChildClick(v: View?) {
-        if (isPasswordViewType()) {
-            view.transformationMethod = null
-        }
-        super.onChildClick(v)
     }
 
     /**
@@ -211,6 +203,20 @@ class VGSTextView @JvmOverloads constructor(
         with(view.typeface) {
             view.inputType = inputType
             view.typeface = this
+            if (!isPasswordInputType()) {
+                view.transformationMethod = null
+            }
+        }
+    }
+
+    /**
+     * @return true of view input type is password and false otherwise
+     */
+    fun isPasswordInputType(): Boolean {
+        return when (view.inputType) {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> true
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> true
+            else -> false
         }
     }
 
@@ -330,7 +336,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param end end of part that should be hided.
      */
     fun setPasswordRange(start: Int, end: Int) {
-        if (isPasswordViewType()) {
+        if (isPasswordInputType()) {
             view.transformationMethod = RangePasswordTransformationMethod(start, end)
         }
     }
@@ -404,14 +410,6 @@ class VGSTextView @JvmOverloads constructor(
 
     @VisibleForTesting
     internal fun getChildView() = view
-
-    private fun isPasswordViewType(): Boolean {
-        return when (view.inputType) {
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> true
-            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> true
-            else -> false
-        }
-    }
 
     class VGSTextViewState : BaseSavedState {
 
