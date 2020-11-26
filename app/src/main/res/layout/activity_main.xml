@@ -30,7 +30,8 @@
             app:boxCornerRadius="8dp"
             app:boxStrokeColor="@color/colorPrimary"
             app:hint="Card Number"
-            app:hintEnabled="true">
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/EditTextHintTextAppearance">
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/cardNumber"
@@ -43,7 +44,7 @@
                 app:imeOptions="actionNext"
                 app:numberDivider=" "
                 app:text="4111111111111111"
-                app:textColor="#363b3e"
+                app:textColor="@color/colorPrimaryDark"
                 app:textSize="12dp"
                 tools:ignore="SpUsage" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -62,9 +63,10 @@
             android:layout_marginTop="16dp"
             app:boxBackgroundModes="outline"
             app:boxCornerRadius="8dp"
-            app:boxStrokeColor="@color/colorPrimary"
+            app:boxStrokeColor="@color/colorAccent"
             app:hint="Expiration Date"
-            app:hintEnabled="true">
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/EditTextHintTextAppearance">
 
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                 android:id="@+id/expDate"
@@ -74,7 +76,7 @@
                 android:padding="4dp"
                 app:fieldName="expDate"
                 app:text="12/2024"
-                app:textColor="#363b3e"
+                app:textColor="@color/colorPrimaryDark"
                 app:textSize="12dp"
                 tools:ignore="SpUsage" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -121,7 +123,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorPrimary" />
 
     <LinearLayout
         android:layout_width="0dp"
