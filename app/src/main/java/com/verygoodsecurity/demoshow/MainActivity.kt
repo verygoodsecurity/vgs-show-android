@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -20,15 +21,22 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
+import org.w3c.dom.Document
+import java.io.StringWriter
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
+        VGSShow(this, "tntaq8uft80", VGSEnvironment.Sandbox())
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, "tntpszqgikn", "sandbox")
+        VGSCollect(this, "tntaq8uft80", "sandbox")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +55,10 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
-            VGSRequest.Builder("post", VGSHttpMethod.POST).body(makeJsonObject()).build()
+            VGSRequest.Builder("xml", VGSHttpMethod.POST)
+                .body(makeXmlObject(), VGSHttpBodyFormat.XML)
+                .responseFormat(VGSHttpBodyFormat.XML)
+                .build()
         )
     }
 
@@ -157,6 +168,26 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         }
     }
 
+    private fun makeXmlObject(): String {
+        val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
+        val root = doc.createElement("cc")
+        root.appendChild(doc.createElement("pan").apply {
+            textContent = revealtoken
+        })
+        root.appendChild(doc.createElement("expDate").apply {
+            textContent = revealtoken2
+        })
+        doc.appendChild(root)
+        return doc.string()
+    }
+
+    private fun Document.string(): String {
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes")
+        val sw = StringWriter()
+        transformer.transform(DOMSource(this), StreamResult(sw))
+        return sw.toString()
+    }
 }
 
 typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?

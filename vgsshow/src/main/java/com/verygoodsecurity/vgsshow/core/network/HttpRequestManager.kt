@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.core.network.extension.toDocument
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
@@ -16,10 +17,12 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.XmlResponseData
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import org.json.JSONException
 import org.json.JSONObject
+import org.w3c.dom.DOMException
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
@@ -98,6 +101,7 @@ internal class HttpRequestManager(
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {
         return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
+            VGSHttpBodyFormat.XML -> XmlResponseData(data.toDocument())
         }
     }
 
@@ -105,7 +109,8 @@ internal class HttpRequestManager(
     internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
-        is JSONException -> VGSException.JSONException()
+        is JSONException -> VGSException.ResponseFormatException()
+        is DOMException -> VGSException.ResponseFormatException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
 

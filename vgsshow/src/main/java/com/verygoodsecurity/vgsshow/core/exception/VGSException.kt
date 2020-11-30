@@ -19,7 +19,7 @@ internal sealed class VGSException : Exception() {
         override val code: Int
             get() = 1480
 
-        override val errorMessage: String? = "URL is not valid"
+        override val errorMessage: String = "URL is not valid"
     }
 
     class NoInternetPermission : VGSException() {
@@ -27,7 +27,7 @@ internal sealed class VGSException : Exception() {
         override val code: Int
             get() = 1481
 
-        override val errorMessage: String? = "Permission denied (missing INTERNET permission?)"
+        override val errorMessage: String = "Permission denied (missing INTERNET permission?)"
     }
 
     class NoInternetConnection : VGSException() {
@@ -35,7 +35,7 @@ internal sealed class VGSException : Exception() {
         override val code: Int
             get() = 1482
 
-        override val errorMessage: String? = "No Internet connection"
+        override val errorMessage: String = "No Internet connection"
     }
 
     class RequestTimeout : VGSException() {
@@ -43,14 +43,14 @@ internal sealed class VGSException : Exception() {
         override val code: Int
             get() = 1483
 
-        override val errorMessage: String? = "TimeoutException"
+        override val errorMessage: String = "TimeoutException"
     }
 
-    class JSONException : VGSException() {
+    class ResponseFormatException : VGSException() {
 
         override val code: Int
             get() = 1401
 
-        override val errorMessage: String? = "Unexpected Response Data Format"
+        override val errorMessage: String = "Unexpected Response Data Format"
     }
 }

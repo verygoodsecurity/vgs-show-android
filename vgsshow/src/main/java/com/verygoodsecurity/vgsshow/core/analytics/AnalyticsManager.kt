@@ -54,7 +54,7 @@ internal class AnalyticsManager constructor(
 
     private fun buildRequest(event: Event): VGSRequest =
         VGSRequest.Builder(PATH, VGSHttpMethod.POST)
-            .body((defaultInfo + event.attributes).toJSON(), VGSHttpBodyFormat.JSON)
+            .body((defaultInfo + event.attributes).toJSON().toString(), VGSHttpBodyFormat.JSON)
             .build()
 
     companion object {
