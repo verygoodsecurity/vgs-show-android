@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
@@ -103,6 +104,42 @@ class VGSShow constructor(
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
      * @throws android.os.NetworkOnMainThreadException if this function executes in main thread.
      *
+     * @param path path for a request.
+     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     * @param payload data in string representation
+     * @param requestFormat http payload request format
+     */
+    @WorkerThread
+    @Throws(NetworkOnMainThreadException::class)
+    fun request(
+        path: String,
+        method: VGSHttpMethod,
+        payload: String,
+        requestFormat: VGSHttpBodyFormat
+    ): VGSResponse = request(VGSRequest.Builder(path, method).body(payload, requestFormat).build())
+
+    /**
+     * Synchronous request for reveal data. Note: This function should be executed in background thread.
+     * @throws android.os.NetworkOnMainThreadException if this function executes in main thread.
+     *
+     * @param path path for a request.
+     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     * @param payload data in ByteArray representation
+     * @param requestFormat http payload request format
+     */
+    @WorkerThread
+    @Throws(NetworkOnMainThreadException::class)
+    fun request(
+        path: String,
+        method: VGSHttpMethod,
+        payload: ByteArray,
+        requestFormat: VGSHttpBodyFormat
+    ): VGSResponse = request(VGSRequest.Builder(path, method).body(payload, requestFormat).build())
+
+    /**
+     * Synchronous request for reveal data. Note: This function should be executed in background thread.
+     * @throws android.os.NetworkOnMainThreadException if this function executes in main thread.
+     *
      * @param request @see [com.verygoodsecurity.vgsshow.core.network.model.VGSRequest]
      */
     @WorkerThread
@@ -126,6 +163,42 @@ class VGSShow constructor(
     @AnyThread
     fun requestAsync(path: String, method: VGSHttpMethod, payload: Map<String, Any>) {
         requestAsync(VGSRequest.Builder(path, method).body(payload).build())
+    }
+
+    /**
+     * Asynchronous request for reveal data
+     *
+     * @param path path for a request.
+     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     * @param payload data in string representation
+     * @param requestFormat http payload request format
+     */
+    @AnyThread
+    fun requestAsync(
+        path: String,
+        method: VGSHttpMethod,
+        payload: String,
+        requestFormat: VGSHttpBodyFormat
+    ) {
+        requestAsync(VGSRequest.Builder(path, method).body(payload, requestFormat).build())
+    }
+
+    /**
+     * Asynchronous request for reveal data
+     *
+     * @param path path for a request.
+     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     * @param payload data in ByteArray representation
+     * @param requestFormat http payload request format
+     */
+    @AnyThread
+    fun requestAsync(
+        path: String,
+        method: VGSHttpMethod,
+        payload: ByteArray,
+        requestFormat: VGSHttpBodyFormat
+    ) {
+        requestAsync(VGSRequest.Builder(path, method).body(payload, requestFormat).build())
     }
 
     /**
