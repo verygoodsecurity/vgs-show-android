@@ -100,7 +100,7 @@ internal class HttpRequestManager(
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {
         return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
-//            VGSHttpBodyFormat.XML -> XmlResponseData(data.toDocument()) // TODO: Uncomment when public release needed
+            VGSHttpBodyFormat.XML -> XmlResponseData(data.toDocument())
         }
     }
 

@@ -42,25 +42,23 @@ class VGSRequest private constructor(
             this.payload = payload.toJsonByteArray()
         }
 
-        // TODO: Uncomment when public release needed
-//        /**
-//         * Body that will send with this request.
-//         *
-//         */
-//        fun body(payload: String, requestFormat: VGSHttpBodyFormat): Builder = apply {
-//            this.payload = payload.toByteArray(Charsets.UTF_8)
-//            this.requestFormat = requestFormat
-//        }
-//
-        // TODO: Uncomment when public release needed
-//        /**
-//         * Body that will send with this request.
-//         *
-//         */
-//        fun body(payload: ByteArray, requestFormat: VGSHttpBodyFormat): Builder = apply {
-//            this.payload = payload
-//            this.requestFormat = requestFormat
-//        }
+        /**
+         * Body that will send with this request.
+         *
+         */
+        fun body(payload: String, requestFormat: VGSHttpBodyFormat): Builder = apply {
+            this.payload = payload.toByteArray(Charsets.UTF_8)
+            this.requestFormat = requestFormat
+        }
+
+        /**
+         * Body that will send with this request.
+         *
+         */
+        fun body(payload: ByteArray, requestFormat: VGSHttpBodyFormat): Builder = apply {
+            this.payload = payload
+            this.requestFormat = requestFormat
+        }
 
         /**
          * Specifies expected response body format.

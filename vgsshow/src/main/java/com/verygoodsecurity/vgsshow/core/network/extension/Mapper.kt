@@ -8,12 +8,12 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.extension.plus
 import okhttp3.Response
+import org.json.JSONObject
 import org.w3c.dom.DOMException
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
-import org.json.JSONObject
 
 internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
     this.path,
@@ -24,11 +24,11 @@ internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = Http
 )
 
 private const val APPLICATION_JSON = "application/json"
-//private const val APPLICATION_XML = "application/xml" // TODO: Uncomment when public release needed
+private const val APPLICATION_XML = "application/xml"
 
 internal fun VGSHttpBodyFormat.toContentType() = when (this) {
     VGSHttpBodyFormat.JSON -> APPLICATION_JSON
-//    VGSHttpBodyFormat.XML -> APPLICATION_XML // TODO: Uncomment when public release needed
+    VGSHttpBodyFormat.XML -> APPLICATION_XML
 }
 
 internal fun Response.toHttpResponse() = HttpResponse(
