@@ -92,11 +92,11 @@ class VGSShow constructor(
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload TODO: implement payload as raw string or sealed class and add comment
+     * @param payload key-value data
      */
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
-    fun request(path: String, method: VGSHttpMethod, payload: String): VGSResponse =
+    fun request(path: String, method: VGSHttpMethod, payload: Map<String, Any>): VGSResponse =
         request(VGSRequest.Builder(path, method).body(payload).build())
 
     /**
@@ -121,10 +121,10 @@ class VGSShow constructor(
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload TODO: implement payload as raw string or sealed class and add comment
+     * @param payload key-value data
      */
     @AnyThread
-    fun requestAsync(path: String, method: VGSHttpMethod, payload: String) {
+    fun requestAsync(path: String, method: VGSHttpMethod, payload: Map<String, Any>) {
         requestAsync(VGSRequest.Builder(path, method).body(payload).build())
     }
 

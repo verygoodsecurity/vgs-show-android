@@ -15,7 +15,7 @@ internal fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.
 
 internal fun Request.Builder.setMethod(
     method: VGSHttpMethod,
-    data: String?,
+    data: ByteArray?,
     mediaType: MediaType?
 ): Request.Builder {
     return when (method) {

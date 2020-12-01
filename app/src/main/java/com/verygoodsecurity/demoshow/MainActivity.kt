@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -32,11 +31,11 @@ import javax.xml.transform.stream.StreamResult
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntaq8uft80", VGSEnvironment.Sandbox())
+        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, "tntaq8uft80", "sandbox")
+        VGSCollect(this, "tntpszqgikn", "sandbox")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +54,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
-            VGSRequest.Builder("xml", VGSHttpMethod.POST)
-                .body(makeXmlObject(), VGSHttpBodyFormat.XML)
-                .responseFormat(VGSHttpBodyFormat.XML)
-                .build()
+            VGSRequest.Builder("post", VGSHttpMethod.POST).body(
+                mapOf(
+                    "number" to revealtoken,
+                    "expiration" to revealtoken2
+                )
+            ).build()
         )
     }
 
@@ -157,14 +158,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                     revealtoken = it
                 }
             }
-        }
-    }
-
-    private fun makeJsonObject(): JSONObject {
-        return with(JSONObject()) {
-            put("number", revealtoken)
-            put("expiration", revealtoken2)
-            this
         }
     }
 

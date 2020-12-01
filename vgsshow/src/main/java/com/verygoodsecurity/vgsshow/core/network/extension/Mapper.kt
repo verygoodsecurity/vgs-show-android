@@ -13,6 +13,7 @@ import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
+import org.json.JSONObject
 
 internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
     this.path,
@@ -38,6 +39,14 @@ internal fun Response.toHttpResponse() = HttpResponse(
 )
 
 internal fun VGSException.toVGSResponse() = VGSResponse.Error.create(this)
+
+internal fun Map<String, Any>.toJsonByteArray(): ByteArray? {
+    return try {
+        JSONObject(this).toString().toByteArray(Charsets.UTF_8)
+    } catch (e: Exception) {
+        null
+    }
+}
 
 @Throws(DOMException::class)
 fun String.toDocument(): Document {

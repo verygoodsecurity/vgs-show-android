@@ -8,12 +8,10 @@ import com.verygoodsecurity.vgsshow.core.analytics.event.Event
 import com.verygoodsecurity.vgsshow.core.analytics.event.Status
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.toJSON
 import java.util.*
 
 internal class AnalyticsManager constructor(
@@ -54,7 +52,7 @@ internal class AnalyticsManager constructor(
 
     private fun buildRequest(event: Event): VGSRequest =
         VGSRequest.Builder(PATH, VGSHttpMethod.POST)
-            .body((defaultInfo + event.attributes).toJSON().toString(), VGSHttpBodyFormat.JSON)
+            .body(defaultInfo + event.attributes)
             .build()
 
     companion object {

@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.util.extension
 import org.json.JSONArray
 import org.json.JSONObject
 
-
 internal fun JSONObject.getValue(path: String): String {
     var value: Any? = this
 
