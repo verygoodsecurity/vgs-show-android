@@ -98,7 +98,10 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.addResponseListener(this)
         showVgs.subscribeView(number)
         showVgs.subscribeView(expiration)
-        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
+
+        number.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+        number.addTransformationRegex("-".toRegex(), " - ")
+
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.e("test", "state text: $isEmpty")
