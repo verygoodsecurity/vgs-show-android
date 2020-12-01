@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgsshow.core.network.client
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
@@ -15,10 +14,8 @@ import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toURL
 import okhttp3.*
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
-import java.net.URL
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 

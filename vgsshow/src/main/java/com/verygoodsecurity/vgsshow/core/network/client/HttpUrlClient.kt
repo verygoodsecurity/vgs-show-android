@@ -73,8 +73,8 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
     }
 
     @Throws(IOException::class)
-    private fun writeData(connection: HttpURLConnection, data: String?) {
-        data?.toByteArray(Charsets.UTF_8).let {
+    private fun writeData(connection: HttpURLConnection, data: ByteArray?) {
+        data?.let {
             connection.outputStream.use { os ->
                 os.write(it)
             }

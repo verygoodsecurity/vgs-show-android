@@ -28,7 +28,6 @@ import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import org.json.JSONObject
 
 /**
  * Allows reveal secure data into secure views.
@@ -93,11 +92,11 @@ class VGSShow constructor(
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload TODO: implement payload as raw string or sealed class and add comment
+     * @param payload key-value data
      */
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
-    fun request(path: String, method: VGSHttpMethod, payload: JSONObject): VGSResponse =
+    fun request(path: String, method: VGSHttpMethod, payload: Map<String, Any>): VGSResponse =
         request(VGSRequest.Builder(path, method).body(payload).build())
 
     /**
@@ -122,10 +121,10 @@ class VGSShow constructor(
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload TODO: implement payload as raw string or sealed class and add comment
+     * @param payload key-value data
      */
     @AnyThread
-    fun requestAsync(path: String, method: VGSHttpMethod, payload: JSONObject) {
+    fun requestAsync(path: String, method: VGSHttpMethod, payload: Map<String, Any>) {
         requestAsync(VGSRequest.Builder(path, method).body(payload).build())
     }
 

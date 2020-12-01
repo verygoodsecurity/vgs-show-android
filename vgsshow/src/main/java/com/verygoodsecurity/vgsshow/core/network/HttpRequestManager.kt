@@ -92,7 +92,6 @@ internal class HttpRequestManager(
         }
     }
 
-    // TODO: Add new types of format and handle it here
     @VisibleForTesting
     @Throws(Exception::class)
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {

@@ -8,12 +8,13 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.extension.plus
 import okhttp3.Response
+import org.json.JSONObject
 
 internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
     this.path,
     this.method,
     this.headers + extraHeaders,
-    this.payload?.toString(),
+    this.payload,
     this.requestFormat
 )
 
@@ -31,3 +32,11 @@ internal fun Response.toHttpResponse() = HttpResponse(
 )
 
 internal fun VGSException.toVGSResponse() = VGSResponse.Error.create(this)
+
+internal fun Map<String, Any>.toJsonByteArray(): ByteArray? {
+    return try {
+        JSONObject(this).toString().toByteArray(Charsets.UTF_8)
+    } catch (e: Exception) {
+        null
+    }
+}
