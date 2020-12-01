@@ -24,11 +24,11 @@ internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = Http
 )
 
 private const val APPLICATION_JSON = "application/json"
-private const val APPLICATION_XML = "application/xml"
+//private const val APPLICATION_XML = "application/xml" // TODO: Uncomment when public release needed
 
 internal fun VGSHttpBodyFormat.toContentType() = when (this) {
     VGSHttpBodyFormat.JSON -> APPLICATION_JSON
-    VGSHttpBodyFormat.XML -> APPLICATION_XML
+//    VGSHttpBodyFormat.XML -> APPLICATION_XML // TODO: Uncomment when public release needed
 }
 
 internal fun Response.toHttpResponse() = HttpResponse(

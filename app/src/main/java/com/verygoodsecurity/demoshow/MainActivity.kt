@@ -20,13 +20,6 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
-import org.w3c.dom.Document
-import java.io.StringWriter
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.OutputKeys
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
 
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
@@ -159,27 +152,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                 }
             }
         }
-    }
-
-    private fun makeXmlObject(): String {
-        val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
-        val root = doc.createElement("cc")
-        root.appendChild(doc.createElement("pan").apply {
-            textContent = revealtoken
-        })
-        root.appendChild(doc.createElement("expDate").apply {
-            textContent = revealtoken2
-        })
-        doc.appendChild(root)
-        return doc.string()
-    }
-
-    private fun Document.string(): String {
-        val transformer = TransformerFactory.newInstance().newTransformer()
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes")
-        val sw = StringWriter()
-        transformer.transform(DOMSource(this), StreamResult(sw))
-        return sw.toString()
     }
 }
 
