@@ -47,7 +47,12 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     private fun revealData() {
         progressReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
-            VGSRequest.Builder("post", VGSHttpMethod.POST).body(makeJsonObject()).build()
+            VGSRequest.Builder("post", VGSHttpMethod.POST).body(
+                mapOf(
+                    "number" to revealtoken,
+                    "expiration" to revealtoken2
+                )
+            ).build()
         )
     }
 
@@ -148,15 +153,6 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
             }
         }
     }
-
-    private fun makeJsonObject(): JSONObject {
-        return with(JSONObject()) {
-            put("number", revealtoken)
-            put("expiration", revealtoken2)
-            this
-        }
-    }
-
 }
 
 typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?

@@ -2,13 +2,13 @@ package com.verygoodsecurity.vgsshow.core.network.model
 
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import org.json.JSONObject
+import com.verygoodsecurity.vgsshow.core.network.extension.toJsonByteArray
 
 class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
     val headers: Map<String, String>? = null,
-    val payload: JSONObject? = null,
+    val payload: ByteArray? = null,
     val requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
     val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 ) {
@@ -22,7 +22,7 @@ class VGSRequest private constructor(
     data class Builder(private val path: String, private val method: VGSHttpMethod) {
 
         private var headers: Map<String, String>? = null
-        private var payload: JSONObject? = null
+        private var payload: ByteArray? = null
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 
@@ -37,14 +37,20 @@ class VGSRequest private constructor(
         /**
          * Body that will send with this request.
          *
-         * TODO: implement payload as raw string or sealed class and add comment
          */
-        fun body(payload: JSONObject, format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON): Builder {
-            return apply {
-                this.payload = payload
-                this.requestFormat = format
-            }
+        fun body(payload: Map<String, Any>): Builder = apply {
+            this.payload = payload.toJsonByteArray()
         }
+
+        // TODO: Uncomment when public release needed
+//        /**
+//         * Body that will send with this request.
+//         *
+//         */
+//        fun body(payload: ByteArray, requestFormat: VGSHttpBodyFormat): Builder = apply {
+//            this.payload = payload
+//            this.requestFormat = requestFormat
+//        }
 
         /**
          * Specifies expected response body format.
