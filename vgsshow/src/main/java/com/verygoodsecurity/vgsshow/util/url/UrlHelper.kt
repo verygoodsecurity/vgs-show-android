@@ -19,7 +19,7 @@ internal object UrlHelper {
             logDebug("Vault id is not valid", VGSShow::class.simpleName)
             PROXY_URL_DEFAULT
         }
-        !environment.isValid() -> { // TODO: Fix hardcoded VGSEnvironment
+        !environment.isValid() -> {
             logDebug("Environment is not valid", VGSShow::class.simpleName)
             PROXY_URL_DEFAULT
         }
