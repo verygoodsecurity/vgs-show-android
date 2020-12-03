@@ -19,7 +19,6 @@ import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
-import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
@@ -38,9 +37,12 @@ class VGSTextView @JvmOverloads constructor(
 
     private var rawText: String? = null
 
-    private var transformationRegex: String? = null
+    private val transformations = mutableListOf<VGSTransformationRegex>()
 
-    private var replacement: String = ""
+    internal data class VGSTransformationRegex(
+        val regex: Regex,
+        val replacement: String
+    )
 
     private var copyListeners: MutableList<OnTextCopyListener> = mutableListOf()
 
@@ -324,9 +326,8 @@ class VGSTextView @JvmOverloads constructor(
      * @param regex Regular expression for transformation revealed data.
      * @param replacement A replacement expression that can include substitutions.
      */
-    fun setTransformationRegex(regex: String, replacement: String) {
-        this.transformationRegex = regex
-        this.replacement = replacement
+    fun addTransformationRegex(regex: Regex, replacement: String) {
+        VGSTransformationRegex(regex, replacement).let { transformations.add(it) }
     }
 
     /**
@@ -403,9 +404,9 @@ class VGSTextView @JvmOverloads constructor(
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
         this.rawText = text?.toString()
-        with(transformationRegex?.transformWithRegex(text.toString(), replacement) ?: text) {
-            view.setText(this, type)
-        }
+
+        val formattedText = transformations.applyTransformationTo(text.toString())
+        view.setText(formattedText, type)
     }
 
     @VisibleForTesting
@@ -474,5 +475,17 @@ class VGSTextView @JvmOverloads constructor(
          * @param format Format in which text was copied.
          */
         fun onTextCopied(view: VGSTextView, format: CopyTextFormat)
+    }
+}
+
+private fun MutableList<VGSTextView.VGSTransformationRegex>.applyTransformationTo(text: String): String {
+    return try {
+        var temporaryText = text
+        forEach {
+            temporaryText = it.regex.replace(temporaryText, it.replacement)
+        }
+        temporaryText
+    } catch (ex: Exception) {
+        text
     }
 }
