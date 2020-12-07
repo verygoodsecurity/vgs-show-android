@@ -42,8 +42,8 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  */
 class VGSShow constructor(
     context: Context,
-    vaultId: String,
-    environment: VGSEnvironment
+    private val vaultId: String,
+    private val environment: VGSEnvironment
 ) : VGSTextView.OnTextCopyListener {
 
     private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
@@ -143,6 +143,15 @@ class VGSShow constructor(
                 notifyResponseListeners(it)
             }
         }
+    }
+
+    /**
+     * Sets the VGSShow instance to use the custom hostname.
+     *
+     * @param cname Custom hostname.
+     */
+    fun setCname(cname: String?) {
+        this.proxyRequestManager.setCname(vaultId, cname)
     }
 
     /**

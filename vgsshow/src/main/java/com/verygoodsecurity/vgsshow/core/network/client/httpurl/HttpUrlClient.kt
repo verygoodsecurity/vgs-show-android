@@ -1,12 +1,15 @@
-package com.verygoodsecurity.vgsshow.core.network.client
+package com.verygoodsecurity.vgsshow.core.network.client.httpurl
 
 import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
+import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
+import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
+import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.extension.*
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
-import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
+import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -63,6 +66,10 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
             }
         }
         submittedTasks.add(task)
+    }
+
+    override fun setCname(vaultId: String, cname: String?) {
+        // TODO: implement
     }
 
     override fun cancelAll() {

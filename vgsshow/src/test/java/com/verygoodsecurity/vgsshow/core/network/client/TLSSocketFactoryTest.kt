@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
+import com.verygoodsecurity.vgsshow.core.network.client.httpurl.TLSSocketFactory
 import org.junit.Assert.*
 import org.junit.Test
 
