@@ -175,7 +175,7 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun subscribeView(view: VGSView<*>) {
+    fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
@@ -189,7 +189,7 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun unsubscribeView(view: VGSView<*>) {
+    fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
             analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
