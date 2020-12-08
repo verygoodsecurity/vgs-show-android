@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), VgsShowResponseListener {
+class MainActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
         VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     }
 
     private fun setupShow() {
-        showVgs.addResponseListener(this)
+        showVgs.addOnResponseListener(this)
         showVgs.subscribe(number)
         showVgs.subscribe(expiration)
 
