@@ -51,8 +51,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
-                    "number" to revealtoken,
-                    "expiration" to revealtoken2
+                    "payment_card_number" to revealtoken
                 )
             ).build()
         )
