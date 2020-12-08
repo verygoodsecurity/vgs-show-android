@@ -52,7 +52,8 @@ class VGSShow constructor(
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
-    private val headersStore: VGSStaticHeadersStore
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal val headersStore: VGSStaticHeadersStore
 
     private val proxyRequestManager: IHttpRequestManager
 
