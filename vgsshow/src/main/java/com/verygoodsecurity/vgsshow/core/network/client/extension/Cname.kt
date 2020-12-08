@@ -26,3 +26,7 @@ internal fun String.toHttps(): String {
         else -> "https://$this"
     }
 }
+
+internal infix fun String.equalsUrl(name: String?): Boolean {
+    return toHost() == name?.toHost()
+}
