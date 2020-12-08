@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.network.client.extension
 
-import java.net.MalformedURLException
-import java.net.URL
+import com.verygoodsecurity.vgsshow.util.extension.toHost
 
 internal fun String.toHostnameValidationUrl(vaultId: String): String {
     return String.format(
@@ -9,24 +8,4 @@ internal fun String.toHostnameValidationUrl(vaultId: String): String {
         this.toHost(),
         vaultId
     )
-}
-
-internal fun String.toHost(): String {
-    return try {
-        URL(this.toHttps()).host
-    } catch (e: MalformedURLException) {
-        ""
-    }
-}
-
-internal fun String.toHttps(): String {
-    return when {
-        startsWith("http://") -> this
-        startsWith("https://") -> this
-        else -> "https://$this"
-    }
-}
-
-internal infix fun String.equalsUrl(name: String?): Boolean {
-    return toHost() == name?.toHost()
 }

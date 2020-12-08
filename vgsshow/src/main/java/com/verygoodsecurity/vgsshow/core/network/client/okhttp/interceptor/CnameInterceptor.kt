@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgsshow.core.network.client.okhttp.interceptor
 
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.core.network.client.extension.equalsUrl
-import com.verygoodsecurity.vgsshow.core.network.client.extension.toHost
 import com.verygoodsecurity.vgsshow.core.network.client.extension.toHostnameValidationUrl
+import com.verygoodsecurity.vgsshow.util.extension.equalsHosts
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.toHost
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -60,7 +60,7 @@ internal class CnameInterceptor : Interceptor {
         return try {
             chain.proceed(cnameRequest).takeIf { it.isSuccessful }?.let { response ->
                 val body = response.body?.string()
-                if (!body.isNullOrEmpty() && body equalsUrl cname) {
+                if (!body.isNullOrEmpty() && body equalsHosts cname) {
                     logDebug("Specified cname valid: $cname", VGSShow::class.simpleName)
                     cname
                 } else {
