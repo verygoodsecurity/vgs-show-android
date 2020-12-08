@@ -56,3 +56,7 @@ internal fun HttpURLConnection.setMethod(method: VGSHttpMethod): HttpURLConnecti
     requestMethod = method.name
     return this
 }
+
+internal fun HttpURLConnection.isSuccessful(): Boolean {
+    return this.responseCode in 200..299
+}

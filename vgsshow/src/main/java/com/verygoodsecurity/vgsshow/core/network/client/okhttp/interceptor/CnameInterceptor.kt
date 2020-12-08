@@ -12,20 +12,19 @@ import okhttp3.Response
 
 internal class CnameInterceptor : Interceptor {
 
-    private var vaultId: String? = null
     private var cname: String? = null
-
+    private var vaultId: String? = null
     private var isCnameValid: Boolean? = null
 
     fun setCname(vaultId: String, cname: String?) {
-        this.vaultId = vaultId
         this.cname = cname
+        this.vaultId = vaultId
         this.isCnameValid = null
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(with(chain.request()) {
-            if (!vaultId.isNullOrEmpty() && !cname.isNullOrEmpty()) {
+            if (!cname.isNullOrEmpty() && !vaultId.isNullOrEmpty()) {
                 return@with buildRequestWithCname(chain, this, cname!!, vaultId!!)
             }
             this
