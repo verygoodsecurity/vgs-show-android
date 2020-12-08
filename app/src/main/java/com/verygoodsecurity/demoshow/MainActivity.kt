@@ -24,9 +24,10 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox()).apply {
-            setCname("collect-android-testing.verygoodsecurity.io/test")
-        }
+        VGSShow.Builder(this, "tntpszqgikn")
+            .setEnvironment(VGSEnvironment.Sandbox())
+            .setHostname("collect-android-testing.verygoodsecurity.io/test")
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
@@ -100,7 +101,10 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.subscribeView(number)
         showVgs.subscribeView(expiration)
 
-        number.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+        number.addTransformationRegex(
+            "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
+            "\$1-\$2-\$3-\$4"
+        )
         number.addTransformationRegex("-".toRegex(), " - ")
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {

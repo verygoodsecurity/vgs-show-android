@@ -25,6 +25,9 @@ import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -146,15 +149,6 @@ class VGSShow constructor(
     }
 
     /**
-     * Sets the VGSShow instance to use the custom hostname.
-     *
-     * @param cname Custom hostname.
-     */
-    fun setCname(cname: String?) {
-        this.proxyRequestManager.setCname(vaultId, cname)
-    }
-
-    /**
      * Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.
      *
      * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener]
@@ -235,6 +229,15 @@ class VGSShow constructor(
     internal fun getViewsStore() = viewsStore
     //endregion
 
+    /**
+     * Sets the VGSShow instance to use the custom hostname.
+     *
+     * @param cname Custom hostname.
+     */
+    private fun setCname(cname: String?) {
+        this.proxyRequestManager.setCname(vaultId, cname)
+    }
+
     @MainThread
     private fun notifyResponseListeners(response: VGSResponse) {
         listeners.forEach {
@@ -263,5 +266,35 @@ class VGSShow constructor(
                 is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
             }
         )
+    }
+
+    class Builder constructor(private val context: Context, private val id: String) {
+
+        private var environment: VGSEnvironment = VGSEnvironment.Sandbox()
+
+        private var host: String? = null
+
+        /** Specify Environment for the VGSCollect instance. */
+        fun setEnvironment(environment: VGSEnvironment): Builder = this.apply {
+            this.environment = environment
+        }
+
+        /** Sets the VGSCollect instance to use the custom hostname. */
+        fun setHostname(cname: String): Builder {
+            if (cname.isValidUrl()) {
+                host = cname.toHost()
+            }
+
+            if (host != cname) {
+                logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
+            }
+
+            return this
+        }
+
+
+        fun build() = VGSShow(context, id, environment).apply {
+            host?.let { setCname(it) }
+        }
     }
 }
