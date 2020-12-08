@@ -49,8 +49,7 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
-                    "number" to revealtoken,
-                    "expiration" to revealtoken2
+                    "payment_card_number" to revealAlias
                 )
             ).build()
         )
@@ -61,8 +60,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         Log.d(MainActivity::class.simpleName, response.toString())
     }
 
-    private var revealtoken: String = ""
-    private var revealtoken2: String = ""
+    private var revealAlias: String = ""
+    private var revealAlias2: String = ""
 
     private fun setupCollect() {
         submitButton?.setOnClickListener {
@@ -84,8 +83,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                         else -> null
                     }
 
-                    parseNumberToken(json)
-                    parseDateToken(json)
+                    parseNumberAlias(json)
+                    parseDateAlias(json)
                 } catch (e: JSONException) {
                 }
             }
@@ -96,8 +95,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
 
     private fun setupShow() {
         showVgs.addResponseListener(this)
-        showVgs.subscribeView(number)
-        showVgs.subscribeView(expiration)
+        showVgs.subscribe(number)
+        showVgs.subscribe(expiration)
 
         number.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
         number.addTransformationRegex("-".toRegex(), " - ")
@@ -135,23 +134,23 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         }
     }
 
-    private fun parseDateToken(json: JSONObject?) {
+    private fun parseDateAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate")?.let {
                     tokenView2?.text = it
-                    revealtoken2 = it
+                    revealAlias2 = it
                 }
             }
         }
     }
 
-    private fun parseNumberToken(json: JSONObject?) {
+    private fun parseNumberAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let {
                     tokenView1?.text = it
-                    revealtoken = it
+                    revealAlias = it
                 }
             }
         }
