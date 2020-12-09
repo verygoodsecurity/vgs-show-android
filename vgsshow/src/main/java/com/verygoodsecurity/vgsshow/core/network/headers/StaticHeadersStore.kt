@@ -5,7 +5,7 @@ package com.verygoodsecurity.vgsshow.core.network.headers
  *
  * @since 1.0.0
  */
-interface IVGSStaticHeadersStore {
+internal interface StaticHeadersStore {
 
     /**
      * Add custom header. Does not allow duplication.

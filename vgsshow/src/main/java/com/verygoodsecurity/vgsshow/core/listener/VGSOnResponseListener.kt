@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 /**
  * Interface definition for a receiving callback.
  */
-interface VgsShowResponseListener {
+interface VGSOnResponseListener {
 
     /**
      * Callback that called after request execution complete with success of failure response.

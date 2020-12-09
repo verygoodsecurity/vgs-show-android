@@ -3,12 +3,12 @@ package com.verygoodsecurity.vgsshow.core.network.headers
 import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 
-internal abstract class BaseHeadersStore : IVGSStaticHeadersStore {
+internal abstract class BaseHeadersStore : StaticHeadersStore {
 
     private val staticHeaders: MutableMap<String, String> = HashMap()
 
     private val defaultStaticHeaders: Map<String, String> = mapOf(
-        AGENT_HEADER to "source=show-androidSdk&medium=vgs-show&content=${BuildConfig.VERSION_NAME}&vgsShowSessionId=${Session.id}"
+        AGENT_HEADER to "source=show-androidSDK&medium=vgs-show&content=${BuildConfig.VERSION_NAME}&vgsShowSessionId=${Session.id}"
     )
 
     override fun add(key: String, value: String) {
