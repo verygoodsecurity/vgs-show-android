@@ -135,9 +135,6 @@
         <enum name="date" value="4" />
     </attr>
 
-    <attr name="passwordStart" format="integer" />
-    <attr name="passwordEnd" format="integer" />
-
     <!-- Sets the text color, size, style etc.-->
     <attr name="textAppearance" format="reference" />
 
@@ -163,7 +160,5 @@
         <attr name="inputType" />
         <attr name="textAppearance" />
 
-        <attr name="passwordStart" />
-        <attr name="passwordEnd" />
     </declare-styleable>
 </resources>
