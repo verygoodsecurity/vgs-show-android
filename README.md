@@ -24,6 +24,7 @@ Table of contents
 | Target SDK | 30 |
 | androidx.appcompat:appcompat | 1.2.0 |
 | com.google.android.material:material | 1.2.0 |
+| com.squareup.okhttp3:okhttp | 4.8.0 |
 
 ## Structure
 * **VGSShow SDK** - provides an API for interacting with the VGS Vault
