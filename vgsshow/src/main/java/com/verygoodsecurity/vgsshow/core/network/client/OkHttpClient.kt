@@ -75,10 +75,7 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
         override fun intercept(chain: Interceptor.Chain): Response {
             with(VGSShow::class.java.simpleName) {
                 return chain.proceed(chain.request().also {
-                    logDebug(
-                        "Request{method=${it.method}, body=${getBody(it.body)}}",
-                        VGSShow::class.simpleName
-                    )
+                    logDebug("Request{method=${it.method}}", VGSShow::class.simpleName)
                 }).also {
                     logDebug(
                         "Response{code=${it.code}, message=${it.message}}",
