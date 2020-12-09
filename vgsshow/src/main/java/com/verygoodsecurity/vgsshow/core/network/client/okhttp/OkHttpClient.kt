@@ -24,7 +24,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 internal class OkHttpClient : IHttpClient {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
