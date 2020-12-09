@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toURL
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okio.Buffer
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
@@ -81,6 +82,16 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
                         VGSShow::class.simpleName
                     )
                 }
+            }
+        }
+
+        private fun getBody(request: RequestBody?): String {
+            return try {
+                val buffer = Buffer()
+                request?.writeTo(buffer)
+                buffer.readUtf8()
+            } catch (e: IOException) {
+                ""
             }
         }
     }

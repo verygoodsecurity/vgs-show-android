@@ -61,10 +61,6 @@ class VGSTextView @JvmOverloads constructor(
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
-            setPasswordRange(
-                getInt(R.styleable.VGSTextView_passwordStart, -1),
-                getInt(R.styleable.VGSTextView_passwordEnd, -1)
-            )
 
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
@@ -336,7 +332,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param start start of part that should be hided.
      * @param end end of part that should be hided.
      */
-    fun setPasswordRange(start: Int, end: Int) {
+    internal fun setPasswordRange(start: Int, end: Int) {
         if (isPasswordInputType()) {
             view.transformationMethod = RangePasswordTransformationMethod(start, end)
         }

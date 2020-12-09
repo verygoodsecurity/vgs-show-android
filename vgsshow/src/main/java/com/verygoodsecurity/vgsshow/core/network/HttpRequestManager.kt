@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallbac
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
-import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     baseUrl: String,
-    private val headersStore: IVGSStaticHeadersStore,
+    private val headersStore: StaticHeadersStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 

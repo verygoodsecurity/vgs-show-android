@@ -75,6 +75,6 @@ internal class AnalyticsManager constructor(
         private const val KEY_DEVICE_OS = "osVersion"
 
         private const val ANDROID = "android"
-        private const val ANDROID_SDK = "androidSDK"
+        private const val ANDROID_SDK = "show-androidSDK"
     }
 }

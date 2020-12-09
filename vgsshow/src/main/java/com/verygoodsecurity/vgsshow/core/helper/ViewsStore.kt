@@ -21,7 +21,7 @@ internal class ViewsStore {
     fun update(data: IResponseData?) {
         views.forEach {
             when (it) {
-                is VGSTextView -> it.setText(data?.getValue(it.getFieldName()))
+                is VGSTextView -> it.setText(data?.getValue(it.getContentPath()))
                 else -> throw IllegalArgumentException("Not implemented yet!")
             }
         }

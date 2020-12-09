@@ -15,12 +15,12 @@ import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
-import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -46,13 +46,14 @@ class VGSShow constructor(
     environment: VGSEnvironment
 ) : VGSTextView.OnTextCopyListener {
 
-    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
+    private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
 
     private val viewsStore = ViewsStore()
 
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
-    private val headersStore: IVGSStaticHeadersStore
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal val headersStore: StaticHeadersStore
 
     private val proxyRequestManager: IHttpRequestManager
 
@@ -148,18 +149,18 @@ class VGSShow constructor(
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener]
+     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
      */
-    fun addResponseListener(listener: VgsShowResponseListener) {
+    fun addOnResponseListener(listener: VGSOnResponseListener) {
         listeners.add(listener)
     }
 
     /**
      * Clear specific listener attached before.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener]
+     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
      */
-    fun removeResponseListener(listener: VgsShowResponseListener) {
+    fun removeOnResponseListener(listener: VGSOnResponseListener) {
         listeners.remove(listener)
     }
 
@@ -175,7 +176,7 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun subscribeView(view: VGSView<*>) {
+    fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
@@ -189,7 +190,7 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun unsubscribeView(view: VGSView<*>) {
+    fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
             analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
@@ -200,10 +201,10 @@ class VGSShow constructor(
 
     /**
      * Used to edit static request headers that will be added to all requests of this VGSShow instance.
-     *
-     * @return Static headers store. @see [com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore]
      */
-    fun getStaticHeadersStore(): IVGSStaticHeadersStore = headersStore
+    fun setCustomHeader(header: String, value: String) {
+        headersStore.add(header, value)
+    }
 
     /**
      * Clear all information collected before by VGSShow, cancel all network requests.
