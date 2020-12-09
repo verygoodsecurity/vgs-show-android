@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network.headers
 import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 
-internal abstract class BaseHeadersStore : VGSStaticHeadersStore {
+internal abstract class BaseHeadersStore : StaticHeadersStore {
 
     private val staticHeaders: MutableMap<String, String> = HashMap()
 

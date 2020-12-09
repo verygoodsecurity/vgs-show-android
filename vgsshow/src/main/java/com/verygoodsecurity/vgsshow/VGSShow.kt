@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.headers.VGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -53,7 +53,7 @@ class VGSShow constructor(
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: VGSStaticHeadersStore
+    internal val headersStore: StaticHeadersStore
 
     private val proxyRequestManager: IHttpRequestManager
 
