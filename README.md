@@ -12,6 +12,7 @@ Table of contents
    * [Structure](#structure)
    * [Integration](#integration)
    * [Next steps](#next-steps)
+   * [Releases](#releases)
    * [License](#license)
 <!--te-->
 
@@ -233,6 +234,8 @@ class MainActivity : AppCompatActivity() {
 </table>
 
 
+## Releases
+To follow **VGS Show SDK** updates and changes check the [releases](https://github.com/verygoodsecurity/vgs-show-android/releases) page.
 
 ## License
 VGSShow Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-show-android/blob/master/LICENSE) for details.
