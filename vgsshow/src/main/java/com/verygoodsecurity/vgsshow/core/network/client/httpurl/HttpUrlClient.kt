@@ -18,7 +18,7 @@ internal class HttpUrlClient : IHttpClient {
     private var cname: String? = null
     private var vaultId: String? = null
     private var isCnameValid: Boolean? = null
-    private var cnameResult: ((Boolean) -> Unit)? = null
+    private var cnameResult: ((Boolean, Long) -> Unit)? = null
 
     private val submittedTasks = mutableListOf<Future<*>>()
 
@@ -62,7 +62,7 @@ internal class HttpUrlClient : IHttpClient {
         submittedTasks.add(task)
     }
 
-    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
         this.cname = cname
         this.vaultId = vaultId
         this.isCnameValid = null
@@ -107,16 +107,16 @@ internal class HttpUrlClient : IHttpClient {
             val response = readResponse(connection)
             val responseCname = response.responseBody?.toHost()
             if (response.isSuccessful && !responseCname.isNullOrEmpty() && responseCname equalsHosts cname) {
-                cnameResult?.invoke(true)
+                cnameResult?.invoke(true, 0)
                 cname
             } else {
                 logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-                cnameResult?.invoke(false)
+                cnameResult?.invoke(false, 0)
                 null
             }
         } catch (e: Exception) {
             logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-            cnameResult?.invoke(false)
+            cnameResult?.invoke(false, 0)
             null
         } finally {
             connection?.disconnect()

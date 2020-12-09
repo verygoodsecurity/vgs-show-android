@@ -48,17 +48,13 @@ class VGSShow constructor(
     private val environment: VGSEnvironment
 ) : VGSTextView.OnTextCopyListener {
 
-    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
-
     private val viewsStore = ViewsStore()
-
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
-
+    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
     private val headersStore: IVGSStaticHeadersStore
-
     private val proxyRequestManager: IHttpRequestManager
-
     private val analyticsManager: IAnalyticsManager
+    private var hasCustomHostname: Boolean = false
 
     init {
         headersStore = ProxyStaticHeadersStore()
@@ -234,8 +230,14 @@ class VGSShow constructor(
      * @param cname Custom hostname.
      */
     private fun setCname(cname: String?) {
-        this.proxyRequestManager.setCname(vaultId, cname) {
-
+        this.proxyRequestManager.setCname(vaultId, cname) { isSuccessful, latency ->
+            hasCustomHostname = isSuccessful
+            analyticsManager.log(
+                when (isSuccessful) {
+                    true -> CnameValidationEvent.createSuccessful(cname, latency)
+                    false -> CnameValidationEvent.createFailed(cname, latency)
+                }
+            )
         }
     }
 
@@ -251,8 +253,17 @@ class VGSShow constructor(
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
         analyticsManager.log(
             when (response.code) {
-                in NETWORK_RESPONSE_CODES -> RequestEvent.createSuccessful(hasFields, hasHeaders)
-                else -> RequestEvent.createFailed(hasFields, hasHeaders, response.code)
+                in NETWORK_RESPONSE_CODES -> RequestEvent.createSuccessful(
+                    hasFields,
+                    hasHeaders,
+                    hasCustomHostname
+                )
+                else -> RequestEvent.createFailed(
+                    hasFields,
+                    hasHeaders,
+                    hasCustomHostname,
+                    response.code
+                )
             }
         )
     }

@@ -73,7 +73,7 @@ internal class HttpRequestManager(
         }
     }
 
-    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
         this.client.setCname(vaultId, cname, cnameResult)
     }
 

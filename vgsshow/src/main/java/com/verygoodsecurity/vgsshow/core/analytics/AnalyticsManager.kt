@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.util.*
 
 internal class AnalyticsManager constructor(
@@ -41,6 +42,7 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
+        logDebug(event.attributes.toString())
         requestManager.enqueue(buildRequest(event), null)
     }
 

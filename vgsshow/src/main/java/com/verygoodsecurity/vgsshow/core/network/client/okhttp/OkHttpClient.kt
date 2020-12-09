@@ -60,7 +60,7 @@ internal class OkHttpClient : IHttpClient {
         }
     }
 
-    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
         cnameInterceptor.setCname(vaultId, cname, cnameResult)
     }
 

@@ -9,15 +9,16 @@ import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import kotlin.system.measureTimeMillis
 
 internal class CnameInterceptor : Interceptor {
 
     private var cname: String? = null
     private var vaultId: String? = null
     private var isCnameValid: Boolean? = null
-    private var cnameResult: ((Boolean) -> Unit)? = null
+    private var cnameResult: ((Boolean, Long) -> Unit)? = null
 
-    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
         this.cname = cname
         this.vaultId = vaultId
         this.isCnameValid = null
@@ -61,19 +62,21 @@ internal class CnameInterceptor : Interceptor {
         val cnameRequest = buildCnameRequest(request, cname, vaultId)
         var response: Response? = null
         return try {
-            response = chain.proceed(cnameRequest)
-            val body = response.body?.string()
+            val responseTime = measureTimeMillis {
+                response = chain.proceed(cnameRequest)
+            }
+            val body = response?.body?.string()
             return if (!body.isNullOrEmpty() && body equalsHosts cname) {
-                cnameResult?.invoke(true)
+                cnameResult?.invoke(true, responseTime)
                 cname
             } else {
                 logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-                cnameResult?.invoke(false)
+                cnameResult?.invoke(false, responseTime)
                 null
             }
         } catch (e: Exception) {
             logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-            cnameResult?.invoke(false)
+            cnameResult?.invoke(false, 0)
             null
         } finally {
             response?.close()

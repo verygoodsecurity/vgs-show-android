@@ -13,7 +13,7 @@ internal interface IHttpRequestManager {
 
     fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?)
 
-    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit)
+    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit)
 
     fun cancelAll()
 }
