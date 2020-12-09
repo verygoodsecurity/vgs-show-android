@@ -58,7 +58,7 @@ dependencies {
 
   <tr>
     <td colspan="2">
-    <b>Add input fields to <code>R.layout.activity_main </code> layout file </b>.
+    <b>Add input fields to <code>R.layout.activity_main</code> layout file </b>.
     </td>
   </tr>
   <tr>
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
   <tr>
     <td colspan="2">
-    <b> Receive responses. </b> </br> </br> To retrieve response you need to implement <code>VGSShowOnResponseListener </code>.
+    <b> Receive responses. </b> </br> </br> To retrieve response you need to implement <code>VGSShowOnResponseListener</code>.
     </td>
 
   </tr>
