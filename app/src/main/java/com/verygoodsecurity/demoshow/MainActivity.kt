@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
-                    "payment_card_number" to revealAlias
+                    "payment_card_number" to revealAlias,
+                    "payment_card_expiration_date" to revealAlias2
                 )
             ).build()
         )
@@ -128,7 +129,6 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
                 applyResetPasswordType?.text = "Set password"
             } else {
                 number.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                number.setPasswordRange(6, 12)
                 applyResetPasswordType?.text = "Reset password"
             }
         }
