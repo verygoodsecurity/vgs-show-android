@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
   <tr>
     <td colspan="2">
-    <b>Revealing Sensitive Data. </br> Call <code>requestAsync</code> to reveal and send data on VGS Server.
+    <b>Revealing Sensitive Data.</b> </br> Call <code>requestAsync</code> to reveal and send data on VGS Server.
     </td>
 
   </tr>
