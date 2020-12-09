@@ -96,8 +96,6 @@ dependencies {
       To initialize VGSShow you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b>
       </br>
       Use <code>subscribe(VGSView)</code> to attach view to <code>VGSShow</code>.
-      </br>
-      You can find more information at the following <a href="https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/submit-data#start-session">section</a>.
     </td>
 
   </tr>
@@ -188,6 +186,7 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -204,7 +203,7 @@ class MainActivity : AppCompatActivity() {
             vgsShow.requestAsync("/post", VGSHttpMethod.POST, createRequestPayload())
         }
 
-        showVgs.addResponseListener(object : VgsShowResponseListener {
+        showVgs.addResponseListener(object : VGSOnResponseListener {
             override fun onResponse(response: VGSResponse) {
                 when(response) {
                     is VGSResponse.Success -> {
