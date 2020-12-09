@@ -159,12 +159,11 @@ class MainActivity : AppCompatActivity() {
         vgsShow.subscribe(findViewById(R.id.cardNumberTextView))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
-            vgsShow.requestAsync("/post", VGSHttpMethod.POST, createRequestPayload())
+            vgsShow.requestAsync("/post",
+                VGSHttpMethod.POST,
+                mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>")
+            )
         }
-    }
-
-    private fun createRequestPayload() {
-        return JSONObject(mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>"))
     }
 }
 ```
@@ -205,7 +204,10 @@ class MainActivity : AppCompatActivity() {
         vgsShow.subscribe(findViewById(R.id.cardNumberTextView))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
-            vgsShow.requestAsync("/post", VGSHttpMethod.POST, createRequestPayload())
+            vgsShow.requestAsync("/post",
+                VGSHttpMethod.POST,
+                mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>")
+            )
         }
 
         showVgs.addOnResponseListeners(object : VGSOnResponseListener {
@@ -221,10 +223,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun createRequestPayload() {
-        return JSONObject(mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>"))
     }
 }
 ```
