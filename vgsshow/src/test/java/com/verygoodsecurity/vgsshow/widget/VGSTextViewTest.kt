@@ -41,11 +41,11 @@ class VGSTextViewTest {
     fun test_field_name() {
         val fn = "test_field_name"
 
-        view.setFieldName(fn)
-        assertEquals(view.getFieldName(), fn)
+        view.setContentPath(fn)
+        assertEquals(view.getContentPath(), fn)
 
         view.onAttachedToWindow()
-        assertEquals(view.getFieldName(), fn)
+        assertEquals(view.getContentPath(), fn)
     }
 
     @Test

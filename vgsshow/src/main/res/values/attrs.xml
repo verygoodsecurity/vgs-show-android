@@ -10,7 +10,7 @@
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
-    <attr name="fieldName" format="string" localization="suggested" />
+    <attr name="contentPath" format="string" localization="suggested" />
 
     <attr name="ignoreField" format="boolean" />
 
@@ -143,7 +143,7 @@
 
     <declare-styleable name="VGSView">
 
-        <attr name="fieldName" />
+        <attr name="contentPath" />
         <attr name="ignoreField" />
     </declare-styleable>
 
@@ -151,7 +151,7 @@
 
         <attr name="hint" />
         <attr name="hintTextColor" />
-        <attr name="fieldName" />
+        <attr name="contentPath" />
         <attr name="gravity" />
         <attr name="singleLine" />
         <attr name="textSize" />

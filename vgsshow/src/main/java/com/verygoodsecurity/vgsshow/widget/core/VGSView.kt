@@ -30,13 +30,13 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
 
     protected val view: T = createChildView().apply { this.id = View.generateViewId() }
 
-    private var fieldName: String? = null
+    private var contentPath: String? = null
 
     var ignoreField: Boolean = false
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.VGSView).use {
-            fieldName = it.getString(R.styleable.VGSView_fieldName)
+            contentPath = it.getString(R.styleable.VGSView_contentPath)
             ignoreField = it.getBoolean(R.styleable.VGSView_ignoreField, false)
         }
     }
@@ -104,8 +104,8 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      *
      * @param name the name of the field
      */
-    fun setFieldName(name: String?) {
-        this.fieldName = name
+    fun setContentPath(name: String?) {
+        this.contentPath = name
     }
 
     /**
@@ -115,8 +115,8 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * @param id the resource identifier of the field name
      */
     @Throws(Resources.NotFoundException::class)
-    fun setFieldName(@StringRes id: Int) {
-        this.fieldName = resources.getString(id)
+    fun setContentPath(@StringRes id: Int) {
+        this.contentPath = resources.getString(id)
     }
 
     /**
@@ -124,7 +124,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      *
      * @return The text used by the field.
      */
-    fun getFieldName(): String = fieldName ?: ""
+    fun getContentPath(): String = contentPath ?: ""
 
     companion object {
 
