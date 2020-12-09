@@ -57,11 +57,12 @@ dependencies {
 
 
   <tr>
-    <td> <b>Add input fields to <code>R.layout.activity_main </code> layout file </b>. </td>
-     <th rowspan="2" width="33%" ><img src="/img/vgs-layout-config.png"></th>
+    <td colspan="2">
+    <b>Add input fields to <code>R.layout.activity_main </code> layout file </b>.
+    </td>
   </tr>
   <tr>
-    <td >
+    <td colspan="2">
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -90,7 +91,7 @@ dependencies {
   </tr>
 
   <tr>
-    <td>
+    <td colspan="2">
       <b>
       To initialize VGSShow you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b>
       </br>
@@ -98,10 +99,10 @@ dependencies {
       </br>
       You can find more information at the following <a href="https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/submit-data#start-session">section</a>.
     </td>
-     <th rowspan="2"><img src="/img/vgs-field-setup-state.gif"></th>
+
   </tr>
   <tr>
-    <td>
+    <td colspan="2">
 
 ```kotlin
 import android.os.Bundle
@@ -130,11 +131,13 @@ class MainActivity : AppCompatActivity() {
 
 
   <tr>
-    <td> <b>Revealing Sensitive Data. </br> Call <code>requestAsync</code> to reveal and send data on VGS Server. </td>
-     <th rowspan="2"><img src="/img/vgs-response-state.gif"></th>
+    <td colspan="2">
+    <b>Revealing Sensitive Data. </br> Call <code>requestAsync</code> to reveal and send data on VGS Server.
+    </td>
+
   </tr>
   <tr>
-    <td>
+    <td colspan="2">
 
 ```kotlin
 import android.os.Bundle
@@ -170,11 +173,13 @@ class MainActivity : AppCompatActivity() {
 
 
   <tr>
-    <td> <b> Receive responses. </b> </br> </br> To retrieve response you need to implement <code>VGSShowOnResponseListener </code>. </td>
-     <th rowspan="2"><img src="/img/vgs-response-state.gif"></th>
+    <td colspan="2">
+    <b> Receive responses. </b> </br> </br> To retrieve response you need to implement <code>VGSShowOnResponseListener </code>.
+    </td>
+
   </tr>
   <tr>
-    <td>
+    <td colspan="2">
 
 ```kotlin
 import android.os.Bundle
@@ -224,12 +229,6 @@ class MainActivity : AppCompatActivity() {
 
 </table>
 
-
-## Next steps
-Check out documentation guides:
--  <a href="https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/overview">Overview</a>
--  <a href="https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/ui-components">UI Components</a>
--  <a href="https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/submit-data">Revealing Data</a>
 
 
 ## License
