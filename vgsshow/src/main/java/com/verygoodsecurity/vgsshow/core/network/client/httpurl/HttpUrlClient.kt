@@ -13,11 +13,12 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpClient {
+internal class HttpUrlClient : IHttpClient {
 
     private var cname: String? = null
     private var vaultId: String? = null
     private var isCnameValid: Boolean? = null
+    private var cnameResult: ((Boolean) -> Unit)? = null
 
     private val submittedTasks = mutableListOf<Future<*>>()
 
@@ -28,7 +29,8 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
     override fun execute(request: HttpRequest): HttpResponse {
         var connection: HttpURLConnection? = null
         try {
-            connection = (generateBaseUrl() concatWithSlash request.path).openConnection()
+            connection = (generateBaseUrl(request) concatWithSlash request.path).toURL().toString()
+                .openConnection()
                 .setSSLSocketFactory(TLSSocketFactory())
                 .callTimeout(CONNECTION_TIME_OUT)
                 .readTimeout(CONNECTION_TIME_OUT)
@@ -38,14 +40,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
                 .addHeader(CONTENT_TYPE, request.format.toContentType())
                 .addHeaders(request.headers)
                 .setMethod(request.method)
-
-            logDebug("Request{method=${connection.requestMethod}}", VGSShow::class.simpleName)
             writeData(connection, request.data)
-
-            logDebug(
-                "Response{code=${connection.responseCode}, message=${connection.responseMessage}}",
-                VGSShow::class.simpleName
-            )
             return readResponse(connection)
         } catch (e: Exception) {
             throw e
@@ -67,10 +62,11 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         submittedTasks.add(task)
     }
 
-    override fun setCname(vaultId: String, cname: String?) {
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
         this.cname = cname
         this.vaultId = vaultId
         this.isCnameValid = null
+        this.cnameResult = cnameResult
     }
 
     override fun cancelAll() {
@@ -80,21 +76,25 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
         submittedTasks.clear()
     }
 
-    private fun generateBaseUrl(): String {
+    private fun generateBaseUrl(request: HttpRequest): String {
         if (!cname.isNullOrEmpty() && !vaultId.isNullOrEmpty()) {
-            return generateBaseUrlWithCname(cname!!, vaultId!!)
+            return generateBaseUrlWithCname(request.url, cname!!, vaultId!!)
         }
-        return baseUrl
+        return request.url
     }
 
-    private fun generateBaseUrlWithCname(cname: String, vaultId: String): String =
+    private fun generateBaseUrlWithCname(
+        url: String,
+        cname: String,
+        vaultId: String
+    ): String =
         synchronized(this) {
             return when (isCnameValid) {
                 true -> cname.concatWithHttpProtocol()
-                false -> baseUrl
+                false -> url
                 else -> {
                     isCnameValid = getValidatedCname(cname, vaultId) != null
-                    if (isCnameValid == true) cname.toHost().concatWithHttpProtocol() else baseUrl
+                    if (isCnameValid == true) cname.toHost().concatWithHttpProtocol() else url
                 }
             }
         }
@@ -107,14 +107,16 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
             val response = readResponse(connection)
             val responseCname = response.responseBody?.toHost()
             if (response.isSuccessful && !responseCname.isNullOrEmpty() && responseCname equalsHosts cname) {
-                logDebug("Specified cname valid: $cname", VGSShow::class.simpleName)
+                cnameResult?.invoke(true)
                 cname
             } else {
                 logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
+                cnameResult?.invoke(false)
                 null
             }
         } catch (e: Exception) {
             logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
+            cnameResult?.invoke(false)
             null
         } finally {
             connection?.disconnect()
@@ -123,6 +125,7 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
 
     @Throws(IOException::class)
     private fun writeData(connection: HttpURLConnection, data: ByteArray?) {
+        logDebug("Request{method=${connection.requestMethod}}", VGSShow::class.simpleName)
         data?.let {
             connection.outputStream.use { os ->
                 os.write(it)
@@ -132,6 +135,10 @@ internal class HttpUrlClient constructor(private val baseUrl: String) : IHttpCli
 
     @Throws(IOException::class)
     private fun readResponse(connection: HttpURLConnection): HttpResponse {
+        logDebug(
+            "Response{code=${connection.responseCode}, message=${connection.responseMessage}}",
+            VGSShow::class.simpleName
+        )
         return when {
             connection.isSuccessful() -> connection.inputStream.bufferedReader().use {
                 HttpResponse(connection.responseCode, true, responseBody = it.readText())

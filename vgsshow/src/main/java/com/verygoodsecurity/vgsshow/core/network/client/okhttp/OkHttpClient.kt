@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClient {
+internal class OkHttpClient : IHttpClient {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
 
@@ -60,8 +60,8 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
         }
     }
 
-    override fun setCname(vaultId: String, cname: String?) {
-        cnameInterceptor.setCname(vaultId, cname)
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+        cnameInterceptor.setCname(vaultId, cname, cnameResult)
     }
 
     override fun cancelAll() {
@@ -71,7 +71,7 @@ internal class OkHttpClient constructor(private val baseUrl: String) : IHttpClie
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
-            .url((baseUrl concatWithSlash request.path).toURL())
+            .url((request.url concatWithSlash request.path).toURL())
             .addHeaders(request.headers)
             .setMethod(
                 request.method,

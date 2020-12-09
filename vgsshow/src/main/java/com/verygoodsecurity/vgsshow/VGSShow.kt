@@ -234,7 +234,9 @@ class VGSShow constructor(
      * @param cname Custom hostname.
      */
     private fun setCname(cname: String?) {
-        this.proxyRequestManager.setCname(vaultId, cname)
+        this.proxyRequestManager.setCname(vaultId, cname) {
+
+        }
     }
 
     @MainThread

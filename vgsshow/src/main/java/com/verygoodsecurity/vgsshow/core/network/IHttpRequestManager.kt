@@ -4,7 +4,6 @@ import android.os.NetworkOnMainThreadException
 import androidx.annotation.WorkerThread
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import kotlin.jvm.Throws
 
 internal interface IHttpRequestManager {
 
@@ -14,7 +13,7 @@ internal interface IHttpRequestManager {
 
     fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?)
 
-    fun setCname(vaultId: String, cname: String?)
+    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit)
 
     fun cancelAll()
 }

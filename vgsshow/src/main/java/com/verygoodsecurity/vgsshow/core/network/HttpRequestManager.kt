@@ -25,13 +25,13 @@ import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
-    baseUrl: String,
+    private val baseUrl: String,
     private val headersStore: IVGSStaticHeadersStore,
     private val connectionHelper: IConnectionHelper
 ) : IHttpRequestManager {
 
     private val client: IHttpClient by lazy {
-        if (isLollipopOrGreater) OkHttpClient(baseUrl) else HttpUrlClient(baseUrl)
+        if (isLollipopOrGreater) OkHttpClient() else HttpUrlClient()
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
@@ -40,7 +40,7 @@ internal class HttpRequestManager(
         }
         return try {
             parseResponse(
-                client.execute(request.toHttpRequest(headersStore.getAll())),
+                client.execute(request.toHttpRequest(baseUrl, headersStore.getAll())),
                 request.responseFormat
             )
         } catch (e: NetworkOnMainThreadException) {
@@ -55,7 +55,7 @@ internal class HttpRequestManager(
             callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
-        with(request.toHttpRequest(headersStore.getAll())) {
+        with(request.toHttpRequest(baseUrl, headersStore.getAll())) {
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {
@@ -73,8 +73,8 @@ internal class HttpRequestManager(
         }
     }
 
-    override fun setCname(vaultId: String, cname: String?) {
-        this.client.setCname(vaultId, cname)
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
+        this.client.setCname(vaultId, cname, cnameResult)
     }
 
     override fun cancelAll() {

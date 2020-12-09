@@ -10,18 +10,18 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-// TODO: Send event + add latency param with request duration
-
 internal class CnameInterceptor : Interceptor {
 
     private var cname: String? = null
     private var vaultId: String? = null
     private var isCnameValid: Boolean? = null
+    private var cnameResult: ((Boolean) -> Unit)? = null
 
-    fun setCname(vaultId: String, cname: String?) {
+    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit) {
         this.cname = cname
         this.vaultId = vaultId
         this.isCnameValid = null
+        this.cnameResult = cnameResult
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -64,14 +64,16 @@ internal class CnameInterceptor : Interceptor {
             response = chain.proceed(cnameRequest)
             val body = response.body?.string()
             return if (!body.isNullOrEmpty() && body equalsHosts cname) {
-                logDebug("Specified cname valid: $cname", VGSShow::class.simpleName)
+                cnameResult?.invoke(true)
                 cname
             } else {
                 logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
+                cnameResult?.invoke(false)
                 null
             }
         } catch (e: Exception) {
             logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
+            cnameResult?.invoke(false)
             null
         } finally {
             response?.close()

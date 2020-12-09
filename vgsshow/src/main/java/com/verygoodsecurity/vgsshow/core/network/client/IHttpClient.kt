@@ -16,7 +16,7 @@ internal interface IHttpClient {
 
     fun enqueue(request: HttpRequest, callback: HttpRequestCallback)
 
-    fun setCname(vaultId: String, cname: String?)
+    fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean) -> Unit)
 
     fun cancelAll()
 }
