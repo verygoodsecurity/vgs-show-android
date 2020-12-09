@@ -10,6 +10,8 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
+// TODO: Send event + add latency param with request duration
+
 internal class CnameInterceptor : Interceptor {
 
     private var cname: String? = null
@@ -23,12 +25,13 @@ internal class CnameInterceptor : Interceptor {
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        return chain.proceed(with(chain.request()) {
+        val request = with(chain.request()) {
             if (!cname.isNullOrEmpty() && !vaultId.isNullOrEmpty()) {
                 return@with buildRequestWithCname(chain, this, cname!!, vaultId!!)
             }
             this
-        })
+        }
+        return chain.proceed(request)
     }
 
     private fun buildRequestWithCname(
@@ -56,20 +59,22 @@ internal class CnameInterceptor : Interceptor {
         vaultId: String
     ): String? {
         val cnameRequest = buildCnameRequest(request, cname, vaultId)
+        var response: Response? = null
         return try {
-            chain.proceed(cnameRequest).takeIf { it.isSuccessful }?.let { response ->
-                val body = response.body?.string()
-                if (!body.isNullOrEmpty() && body equalsHosts cname) {
-                    logDebug("Specified cname valid: $cname", VGSShow::class.simpleName)
-                    cname
-                } else {
-                    logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-                    null
-                }
+            response = chain.proceed(cnameRequest)
+            val body = response.body?.string()
+            return if (!body.isNullOrEmpty() && body equalsHosts cname) {
+                logDebug("Specified cname valid: $cname", VGSShow::class.simpleName)
+                cname
+            } else {
+                logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
+                null
             }
         } catch (e: Exception) {
             logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
             null
+        } finally {
+            response?.close()
         }
     }
 

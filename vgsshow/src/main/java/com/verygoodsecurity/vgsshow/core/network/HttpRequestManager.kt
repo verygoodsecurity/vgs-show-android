@@ -31,7 +31,7 @@ internal class HttpRequestManager(
 ) : IHttpRequestManager {
 
     private val client: IHttpClient by lazy {
-        /*if (isLollipopOrGreater) OkHttpClient(baseUrl) else*/ HttpUrlClient(baseUrl)
+        if (isLollipopOrGreater) OkHttpClient(baseUrl) else HttpUrlClient(baseUrl)
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
