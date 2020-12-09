@@ -172,7 +172,9 @@ class MainActivity : AppCompatActivity() {
 
   <tr>
     <td colspan="2">
-    <b> Receive responses. </b> </br> </br> To retrieve response you need to implement <code>VGSShowOnResponseListener</code>.
+    <b> Receive responses. </b>
+    </br>
+    To retrieve response you need to implement <code>VGSShowOnResponseListener</code>.
     </td>
 
   </tr>
