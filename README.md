@@ -188,6 +188,7 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
+import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 
 class MainActivity : AppCompatActivity() {
@@ -205,7 +206,7 @@ class MainActivity : AppCompatActivity() {
             vgsShow.requestAsync("/post", VGSHttpMethod.POST, createRequestPayload())
         }
 
-        showVgs.addResponseListener(object : VGSOnResponseListener {
+        showVgs.addOnResponseListeners(object : VGSOnResponseListener {
             override fun onResponse(response: VGSResponse) {
                 when(response) {
                     is VGSResponse.Success -> {
