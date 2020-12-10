@@ -89,11 +89,11 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         }
     }
 
-    open fun onChildClick(v: View?) {
+    protected open fun onChildClick(v: View?) {
         callOnClick()
     }
 
-    open fun onChildLongClick(v: View?): Boolean {
+    protected open fun onChildLongClick(v: View?): Boolean {
         performLongClick()
         return false
     }
