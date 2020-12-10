@@ -2,13 +2,14 @@ package com.verygoodsecurity.vgsshow.core.network.model
 
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.extension.toJsonByteArray
+import com.verygoodsecurity.vgsshow.core.network.model.data.request.JsonRequestData
+import com.verygoodsecurity.vgsshow.core.network.model.data.request.RequestData
 
 class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
     val headers: Map<String, String>? = null,
-    val payload: ByteArray? = null,
+    val payload: RequestData? = null,
     val requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
     val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 ) {
@@ -22,7 +23,7 @@ class VGSRequest private constructor(
     data class Builder(private val path: String, private val method: VGSHttpMethod) {
 
         private var headers: Map<String, String>? = null
-        private var payload: ByteArray? = null
+        private var payload: RequestData? = null
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 
@@ -39,7 +40,7 @@ class VGSRequest private constructor(
          *
          */
         fun body(payload: Map<String, Any>): Builder = apply {
-            this.payload = payload.toJsonByteArray()
+            this.payload = JsonRequestData(payload)
         }
 
         /**

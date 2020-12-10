@@ -14,18 +14,20 @@ import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.url.UrlHelper
+import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -57,16 +59,14 @@ class VGSShow constructor(
 
     private val proxyRequestManager: IHttpRequestManager
 
+    private val connectionHelper: IConnectionHelper
+
     private val analyticsManager: IAnalyticsManager
 
     init {
         headersStore = ProxyStaticHeadersStore()
-        val connectionHelper = ConnectionHelper(context)
-        proxyRequestManager = HttpRequestManager(
-            UrlHelper.buildProxyUrl(vaultId, environment),
-            headersStore,
-            connectionHelper
-        )
+        connectionHelper = ConnectionHelper(context)
+        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
     }
 
@@ -109,8 +109,11 @@ class VGSShow constructor(
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
     fun request(request: VGSRequest): VGSResponse {
+        if (!connectionHelper.isConnectionAvailable()) {
+            return VGSException.NoInternetConnection().toVGSResponse()
+        }
+        logRequestEvent(request)
         return with(proxyRequestManager.execute(request)) {
-            logRequestEvent(request, this)
             logResponseEvent(this)
             mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
             this
@@ -136,8 +139,11 @@ class VGSShow constructor(
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
+        if (!connectionHelper.isConnectionAvailable()) {
+            notifyResponseListeners(VGSException.NoInternetConnection().toVGSResponse())
+        }
+        logRequestEvent(request)
         proxyRequestManager.enqueue(request) {
-            logRequestEvent(request, it)
             logResponseEvent(it)
             mainHandler.post {
                 viewsStore.update((it as? VGSResponse.Success)?.data)
@@ -234,21 +240,13 @@ class VGSShow constructor(
         }
     }
 
-    private fun logRequestEvent(request: VGSRequest, response: VGSResponse) {
+    private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
-        analyticsManager.log(
-            when (response.code) {
-                in NETWORK_RESPONSE_CODES -> RequestEvent.createSuccessful(hasFields, hasHeaders)
-                else -> RequestEvent.createFailed(hasFields, hasHeaders, response.code)
-            }
-        )
+        analyticsManager.log(RequestEvent.createSuccessful(hasFields, hasHeaders))
     }
 
     private fun logResponseEvent(response: VGSResponse) {
-        if (response.code !in NETWORK_RESPONSE_CODES) {
-            return
-        }
         analyticsManager.log(
             when (response) {
                 is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)

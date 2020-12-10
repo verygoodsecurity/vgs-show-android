@@ -14,7 +14,7 @@ internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = Http
     this.path,
     this.method,
     this.headers + extraHeaders,
-    this.payload,
+    this.payload?.getData(),
     this.requestFormat
 )
 

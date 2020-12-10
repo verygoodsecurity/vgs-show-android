@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
 import androidx.annotation.MainThread
-import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -18,7 +18,7 @@ internal class ViewsStore {
     }
 
     @MainThread
-    fun update(data: IResponseData?) {
+    fun update(data: ResponseData?) {
         views.forEach { view ->
             when (view) {
                 is VGSTextView -> data?.getValue(view.getContentPath())?.let { view.setText(it) }

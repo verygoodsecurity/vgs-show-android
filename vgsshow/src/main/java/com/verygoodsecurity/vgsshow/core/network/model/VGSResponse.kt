@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 
 /**
  * The base class definition for a VGSCollect response states.
@@ -19,7 +19,7 @@ sealed class VGSResponse {
      */
     class Success private constructor(
         override val code: Int,
-        internal val data: IResponseData,
+        internal val data: ResponseData,
         internal val raw: String?
     ) : VGSResponse() {
 
@@ -27,7 +27,7 @@ sealed class VGSResponse {
 
         internal companion object {
 
-            fun create(code: Int, data: IResponseData, raw: String?) = Success(code, data, raw)
+            fun create(code: Int, data: ResponseData, raw: String?) = Success(code, data, raw)
         }
     }
 

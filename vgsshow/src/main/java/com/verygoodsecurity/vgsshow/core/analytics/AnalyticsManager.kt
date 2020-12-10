@@ -17,11 +17,11 @@ import java.util.*
 internal class AnalyticsManager constructor(
     tenantId: String,
     environment: VGSEnvironment,
-    connectionHelper: IConnectionHelper
+    private val connectionHelper: IConnectionHelper
 ) : IAnalyticsManager {
 
     private val requestManager: IHttpRequestManager by lazy {
-        HttpRequestManager(BASE_URL, getHeadersStore(), connectionHelper)
+        HttpRequestManager(BASE_URL, getHeadersStore())
     }
 
     private val defaultInfo: Map<String, Any> = mapOf(
@@ -41,7 +41,9 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        requestManager.enqueue(buildRequest(event), null)
+        if (connectionHelper.isConnectionAvailable()) {
+            requestManager.enqueue(buildRequest(event), null)
+        }
     }
 
     override fun cancelAll() {

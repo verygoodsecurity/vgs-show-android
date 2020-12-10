@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
 import io.mockk.mockk
 import org.json.JSONException
@@ -25,7 +25,7 @@ class HttpRequestManagerTest {
 
     @Before
     fun setUp() {
-        sut = HttpRequestManager("", headersStore, connectionHelper)
+        sut = HttpRequestManager("", headersStore)
     }
 
     @Test
