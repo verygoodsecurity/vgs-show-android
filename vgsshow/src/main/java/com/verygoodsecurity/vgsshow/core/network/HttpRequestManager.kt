@@ -103,9 +103,4 @@ internal class HttpRequestManager(
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
-
-    companion object {
-
-        val NETWORK_RESPONSE_CODES = 200..999
-    }
 }
