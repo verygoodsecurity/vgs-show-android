@@ -12,9 +12,10 @@
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="contentPath" format="string" localization="suggested" />
 
+    <!-- Ignore certain fields directly before revealing data. If true, revealed data will not be set in this field. -->
     <attr name="ignoreField" format="boolean" />
 
-    <!-- Font family (named by string or as a font resource reference) for the text. -->
+   <!-- Font family (named by string or as a font resource reference) for the text. -->
     <attr name="fontFamily" format="string" />
 
     <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
@@ -94,6 +95,7 @@
         <flag name="italic" value="2" />
     </attr>
 
+    <!-- Text letter-spacing. -->
     <attr name="letterSpacing" format="float" />
 
     <!-- Set the enabled state of this view. -->

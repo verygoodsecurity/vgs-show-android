@@ -5,6 +5,9 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.JsonRequestData
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.RequestData
 
+/**
+ * Request definition class for revealing data.
+ */
 class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
@@ -20,7 +23,10 @@ class VGSRequest private constructor(
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
      */
-    data class Builder(private val path: String, private val method: VGSHttpMethod) {
+    data class Builder(
+        private val path: String,
+        private val method: VGSHttpMethod
+    ) {
 
         private var headers: Map<String, String>? = null
         private var payload: RequestData? = null
