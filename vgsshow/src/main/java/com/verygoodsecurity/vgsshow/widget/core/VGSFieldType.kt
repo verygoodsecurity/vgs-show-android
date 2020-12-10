@@ -7,5 +7,9 @@ package com.verygoodsecurity.vgsshow.widget.core
  */
 enum class VGSFieldType {
 
+    /**
+     * VGS basic View control that displays reviled content to the user.
+     * The input field has no limitations.
+     */
     INFO
 }

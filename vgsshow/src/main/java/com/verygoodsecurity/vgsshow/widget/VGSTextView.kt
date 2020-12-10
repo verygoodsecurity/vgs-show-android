@@ -29,6 +29,9 @@ import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
+/**
+ * VGS basic View control that displays reviled content to the user.
+ */
 class VGSTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -73,6 +76,11 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
+    /**
+     * Gets the current field type of the InputFieldView.
+     *
+     * @return VGSFieldType
+     */
     override fun getFieldType() = VGSFieldType.INFO
 
     override fun createChildView() = AppCompatTextView(context)
@@ -352,6 +360,9 @@ class VGSTextView @JvmOverloads constructor(
         this.copyListeners.remove(listener)
     }
 
+    /**
+     * Copy data to the clipboard from current View. After copying, text trigger [OnTextCopyListener].
+     */
     fun copyToClipboard(format: CopyTextFormat = RAW) {
         context.copyToClipboard(
             when (format) {
@@ -446,11 +457,14 @@ class VGSTextView @JvmOverloads constructor(
      */
     enum class CopyTextFormat {
 
-
         RAW,
         FORMATTED
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when the text is changed.
+     */
     interface OnTextChangedListener {
 
         /**
@@ -462,6 +476,10 @@ class VGSTextView @JvmOverloads constructor(
         fun onTextChange(view: VGSTextView, isEmpty: Boolean)
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when user copy content.
+     */
     interface OnTextCopyListener {
 
         /**

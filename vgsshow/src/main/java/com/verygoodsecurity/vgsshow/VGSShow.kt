@@ -30,15 +30,15 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 /**
- * Allows reveal secure data into secure views.
- * Entry-point into Show SDK.
+ * VGS Show - Android SDK that enables you to securely display sensitive data.
+ * @see <a href="https://www.verygoodsecurity.com/docs/vgs-show">www.verygoodsecurity.com</a>
+ *
+ * Allows reveal secure data into secure views. Entry-point into Show SDK.
  *
  * @constructor create configured, ready to use entry-point into Show SDK.
  * @param context lifecycle owner context.
  * @param vaultId unique vault id.
  * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
- *
- * @since 1.0.0
  */
 class VGSShow constructor(
     context: Context,
@@ -83,6 +83,7 @@ class VGSShow constructor(
         environment: String
     ) : this(context, vaultId, environment.toVGSEnvironment())
 
+
     override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
         analyticsManager.log(CopyToClipboardEvent(format))
     }
@@ -118,7 +119,7 @@ class VGSShow constructor(
     }
 
     /**
-     * Asynchronous request for reveal data
+     * Asynchronous request for reveal data.
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
