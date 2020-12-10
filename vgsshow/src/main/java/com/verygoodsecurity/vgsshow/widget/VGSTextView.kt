@@ -400,7 +400,6 @@ class VGSTextView @JvmOverloads constructor(
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
         this.rawText = text?.toString()
-
         val formattedText = transformations.applyTransformationTo(text.toString())
         view.setText(formattedText, type)
     }
