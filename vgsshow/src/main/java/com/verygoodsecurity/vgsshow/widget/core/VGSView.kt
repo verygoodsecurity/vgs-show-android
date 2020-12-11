@@ -76,6 +76,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         view.setOnClickListener { onChildClick(it) }
         view.setOnLongClickListener { onChildLongClick(it) }
+        view.isLongClickable = false
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -95,7 +96,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
 
     protected open fun onChildLongClick(v: View?): Boolean {
         performLongClick()
-        return false
+        return true
     }
 
     /**

@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
-                Log.e("test", "state text: $isEmpty")
+                Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
         number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {

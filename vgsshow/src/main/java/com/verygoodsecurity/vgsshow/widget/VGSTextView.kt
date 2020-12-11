@@ -364,13 +364,14 @@ class VGSTextView @JvmOverloads constructor(
      * Copy data to the clipboard from current View. After copying, text trigger [OnTextCopyListener].
      */
     fun copyToClipboard(format: CopyTextFormat = RAW) {
-        context.copyToClipboard(
-            when (format) {
-                RAW -> rawText
-                FORMATTED -> view.text?.toString()
-            }
-        )
-        copyListeners.forEach { it.onTextCopied(this, format) }
+        val textToCopy = when (format) {
+            RAW -> rawText
+            FORMATTED -> view.text?.toString()
+        }
+        if (!textToCopy.isNullOrEmpty()) {
+            context.copyToClipboard(textToCopy)
+            copyListeners.forEach { it.onTextCopied(this, format) }
+        }
     }
 
     /**
@@ -411,7 +412,6 @@ class VGSTextView @JvmOverloads constructor(
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
         this.rawText = text?.toString()
-
         val formattedText = transformations.applyTransformationTo(text.toString())
         view.setText(formattedText, type)
     }
