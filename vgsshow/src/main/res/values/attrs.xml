@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Hint text to display when the text is empty. -->
+    <attr name="hint" format="string" localization="suggested" />
+
+    <!-- Hint text color. -->
+    <attr name="hintTextColor" format="color" />
+
+    <!--    Sets the text to be used for data transfer to VGS proxy.
+         Usually, it is similar to field-name in JSON path in your inbound route filters.
+         It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
+    <attr name="contentPath" format="string" localization="suggested" />
+
+    <!-- Ignore certain fields directly before revealing data. If true, revealed data will not be set in this field. -->
+    <attr name="ignoreField" format="boolean" />
+
+   <!-- Font family (named by string or as a font resource reference) for the text. -->
+    <attr name="fontFamily" format="string" />
+
+    <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
+         Supported values include the following:<p/>
+    <ul>
+        <li><b>px</b> Pixels</li>
+        <li><b>sp</b> Scaled pixels (scaled to relative pixel size on screen). See {@link android.util.DisplayMetrics} for more information.</li>
+        <li><b>pt</b> Points</li>
+        <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
+    </ul>
+        -->
+    <attr name="textSize" format="dimension" />
+
+    <!-- Color of text (usually same as colorForeground). -->
+    <attr name="textColor" format="color" />
+
+
+    <!-- Constrains the text to a single horizontally scrolling line
+         instead of letting it wrap onto multiple lines, and advances
+         focus instead of inserting a newline when you press the
+         enter key.
+
+         The default value is false (multi-line wrapped text mode) for non-editable text, but if
+         you specify any value for inputType, the default is true (single-line input field mode).
+
+         {@deprecated This attribute is deprecated. Use <code>maxLines</code> instead to change
+         the layout of a static text, and use the <code>textMultiLine</code> flag in the
+         inputType attribute instead for editable text views (if both singleLine and inputType
+         are supplied, the inputType flags will override the value of singleLine). } -->
+    <attr name="singleLine" format="boolean" />
+
+
+    <!-- Specifies how an object should position its content, on both the X and Y axes,
+         within its own bounds.  -->
+    <attr name="gravity">
+        <!-- Push object to the top of its container, not changing its size. -->
+        <flag name="top" value="0x30" />
+        <!-- Push object to the bottom of its container, not changing its size. -->
+        <flag name="bottom" value="0x50" />
+        <!-- Push object to the left of its container, not changing its size. -->
+        <flag name="left" value="0x03" />
+        <!-- Push object to the right of its container, not changing its size. -->
+        <flag name="right" value="0x05" />
+        <!-- Place object in the vertical center of its container, not changing its size. -->
+        <flag name="center_vertical" value="0x10" />
+        <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+        <flag name="fill_vertical" value="0x70" />
+        <!-- Place object in the horizontal center of its container, not changing its size. -->
+        <flag name="center_horizontal" value="0x01" />
+        <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+        <flag name="fill_horizontal" value="0x07" />
+        <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+        <flag name="center" value="0x11" />
+        <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+        <flag name="fill" value="0x77" />
+        <!-- Additional option that can be set to have the top and/or bottom edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the vertical gravity: a top gravity will clip the bottom
+             edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+        <flag name="clip_vertical" value="0x80" />
+        <!-- Additional option that can be set to have the left and/or right edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the horizontal gravity: a left gravity will clip the right
+             edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+        <flag name="clip_horizontal" value="0x08" />
+        <!-- Push object to the beginning of its container, not changing its size. -->
+        <flag name="start" value="0x00800003" />
+        <!-- Push object to the end of its container, not changing its size. -->
+        <flag name="end" value="0x00800005" />
+    </attr>
+
+
+    <!-- Default text typeface style. -->
+    <attr name="textStyle">
+        <flag name="normal" value="0" />
+        <flag name="bold" value="1" />
+        <flag name="italic" value="2" />
+    </attr>
+
+    <!-- Text letter-spacing. -->
+    <attr name="letterSpacing" format="float" />
+
+    <!-- Set the enabled state of this view. -->
+    <attr name="enabled" format="boolean" />
+
+    <!-- The type of data being placed in a text field, used to help an
+         input method decide how to let the user enter text.  The constants
+         here correspond to those defined by
+         InputType.  Generally you can select
+         a single value, though some can be combined together as
+         indicated.  Setting this attribute to anything besides
+         <var>none</var> also implies that the text is editable. -->
+    <attr name="inputType">
+        <!-- There is no content type.  The text is not editable. -->
+        <enum name="none" value="0" />
+        <!-- Just plain old text.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
+        <enum name="text" value="1" />
+
+        <!-- Text that is a password.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
+        <enum name="textPassword" value="129" />
+
+        <!-- A numeric only field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
+        <enum name="number" value="2" />
+
+        <!-- A numeric password field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_PASSWORD}. -->
+        <enum name="numberPassword" value="18" />
+
+        <!-- For entering a date.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_DATETIME} |
+             {@link android.text.InputType#TYPE_DATETIME_VARIATION_DATE}. -->
+        <enum name="date" value="4" />
+    </attr>
+
+    <!-- Sets the text color, size, style etc.-->
+    <attr name="textAppearance" format="reference" />
+
+    <declare-styleable name="VGSView">
+
+        <attr name="contentPath" />
+        <attr name="ignoreField" />
+    </declare-styleable>
+
+    <declare-styleable name="VGSTextView">
+
+        <attr name="hint" />
+        <attr name="hintTextColor" />
+        <attr name="contentPath" />
+        <attr name="gravity" />
+        <attr name="singleLine" />
+        <attr name="textSize" />
+        <attr name="enabled" />
+        <attr name="textColor" />
+        <attr name="textStyle" />
+        <attr name="fontFamily" />
+        <attr name="letterSpacing" />
+        <attr name="inputType" />
+        <attr name="textAppearance" />
+
+    </declare-styleable>
+</resources>
