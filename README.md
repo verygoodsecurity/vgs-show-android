@@ -76,10 +76,10 @@ dependencies {
     android:orientation="vertical">
   
     <com.verygoodsecurity.vgsshow.widget.VGSTextView
-        android:id="@+id/textField"
+        android:id="@+id/infoField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:fieldName="<FIELD_NAME>"
+        app:contentPath="<CONTENT_PATH>"
         app:gravity="center"
         app:textColor="@android:color/black"
         app:textStyle="bold" 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
 
-        val view = findViewById<VGSTextView>(R.id.textField)
+        val view = findViewById<VGSTextView>(R.id.infoField)
         vgsShow.subscribe(view)
     }
 }
@@ -155,12 +155,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
-        vgsShow.subscribe(findViewById(R.id.cardNumberTextView))
+        vgsShow.subscribe(findViewById(R.id.infoField))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
             vgsShow.requestAsync("/post",
                 VGSHttpMethod.POST,
-                mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>")
+                mapOf("<FIELD_NAME>" to "<REVEAL_ALIAS>")
             )
         }
     }
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
     <td colspan="2">
     <b> Receive responses. </b>
     </br>
-    To retrieve response you need to implement <code>VGSShowOnResponseListener</code>.
+    To retrieve response you need to implement <code>VGSOnResponseListener</code>.
     </td>
 
   </tr>
@@ -200,12 +200,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
-        vgsShow.subscribe(findViewById(R.id.cardNumberTextView))
+        vgsShow.subscribe(findViewById(R.id.infoField))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
             vgsShow.requestAsync("/post",
                 VGSHttpMethod.POST,
-                mapOf("<FIELD_NAME>" to "<REVEAL_TOKEN>")
+                mapOf("<FIELD_NAME>" to "<REVEAL_ALIAS>")
             )
         }
 
