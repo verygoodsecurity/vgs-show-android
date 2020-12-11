@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
-import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import io.mockk.mockk
 import org.json.JSONException
 import org.junit.Assert.assertTrue
@@ -21,7 +21,7 @@ class HttpRequestManagerTest {
     private lateinit var sut: HttpRequestManager
 
     private val headersStore = mockk<ProxyStaticHeadersStore>(relaxed = true)
-    private val connectionHelper = mockk<ConnectionHelper>(relaxed = true)
+    private val connectionHelper = mockk<BaseNetworkConnectionHelper>(relaxed = true)
 
     @Before
     fun setUp() {
