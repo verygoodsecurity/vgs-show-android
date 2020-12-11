@@ -14,18 +14,20 @@ import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.url.UrlHelper
+import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -44,7 +46,7 @@ class VGSShow constructor(
     context: Context,
     vaultId: String,
     environment: VGSEnvironment
-) : VGSTextView.OnTextCopyListener {
+) {
 
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
 
@@ -57,17 +59,23 @@ class VGSShow constructor(
 
     private val proxyRequestManager: IHttpRequestManager
 
+    private val connectionHelper: IConnectionHelper
+
     private val analyticsManager: IAnalyticsManager
+
+    private val onTextCopyListener: VGSTextView.OnTextCopyListener
 
     init {
         headersStore = ProxyStaticHeadersStore()
-        val connectionHelper = ConnectionHelper(context)
-        proxyRequestManager = HttpRequestManager(
-            UrlHelper.buildProxyUrl(vaultId, environment),
-            headersStore,
-            connectionHelper
-        )
+        connectionHelper = ConnectionHelper(context)
+        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
+        onTextCopyListener = object : VGSTextView.OnTextCopyListener {
+
+            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+                analyticsManager.log(CopyToClipboardEvent(format))
+            }
+        }
     }
 
     /**
@@ -82,11 +90,6 @@ class VGSShow constructor(
         vaultId: String,
         environment: String
     ) : this(context, vaultId, environment.toVGSEnvironment())
-
-
-    override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-        analyticsManager.log(CopyToClipboardEvent(format))
-    }
 
     /**
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
@@ -110,8 +113,11 @@ class VGSShow constructor(
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
     fun request(request: VGSRequest): VGSResponse {
+        if (!connectionHelper.isConnectionAvailable()) {
+            return VGSException.NoInternetConnection().toVGSResponse()
+        }
+        logRequestEvent(request)
         return with(proxyRequestManager.execute(request)) {
-            logRequestEvent(request, this)
             logResponseEvent(this)
             mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
             this
@@ -137,13 +143,14 @@ class VGSShow constructor(
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
+        if (!connectionHelper.isConnectionAvailable()) {
+            handleResponse(VGSException.NoInternetConnection().toVGSResponse())
+            return
+        }
+        logRequestEvent(request)
         proxyRequestManager.enqueue(request) {
-            logRequestEvent(request, it)
             logResponseEvent(it)
-            mainHandler.post {
-                viewsStore.update((it as? VGSResponse.Success)?.data)
-                notifyResponseListeners(it)
-            }
+            handleResponse(it)
         }
     }
 
@@ -181,7 +188,7 @@ class VGSShow constructor(
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.addOnCopyTextListener(this)
+                view.addOnCopyTextListener(onTextCopyListener)
             }
         }
     }
@@ -195,7 +202,7 @@ class VGSShow constructor(
         if (viewsStore.remove(view)) {
             analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.removeOnCopyTextListener(this)
+                view.removeOnCopyTextListener(onTextCopyListener)
             }
         }
     }
@@ -215,7 +222,9 @@ class VGSShow constructor(
         proxyRequestManager.cancelAll()
         analyticsManager.cancelAll()
         listeners.clear()
-        viewsStore.getViews().forEach { (it as? VGSTextView)?.removeOnCopyTextListener(this) }
+        viewsStore.getViews().forEach {
+            (it as? VGSTextView)?.removeOnCopyTextListener(onTextCopyListener)
+        }
         viewsStore.clear()
         headersStore.clear()
     }
@@ -235,21 +244,20 @@ class VGSShow constructor(
         }
     }
 
-    private fun logRequestEvent(request: VGSRequest, response: VGSResponse) {
+    private fun handleResponse(response: VGSResponse) {
+        mainHandler.post {
+            viewsStore.update((response as? VGSResponse.Success)?.data)
+            notifyResponseListeners(response)
+        }
+    }
+
+    private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
-        analyticsManager.log(
-            when (response.code) {
-                in NETWORK_RESPONSE_CODES -> RequestEvent.createSuccessful(hasFields, hasHeaders)
-                else -> RequestEvent.createFailed(hasFields, hasHeaders, response.code)
-            }
-        )
+        analyticsManager.log(RequestEvent.createSuccessful(hasFields, hasHeaders))
     }
 
     private fun logResponseEvent(response: VGSResponse) {
-        if (response.code !in NETWORK_RESPONSE_CODES) {
-            return
-        }
         analyticsManager.log(
             when (response) {
                 is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
