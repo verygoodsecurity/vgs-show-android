@@ -145,6 +145,7 @@ class VGSShow constructor(
     fun requestAsync(request: VGSRequest) {
         if (!connectionHelper.isConnectionAvailable()) {
             handleResponse(VGSException.NoInternetConnection().toVGSResponse())
+            return
         }
         logRequestEvent(request)
         proxyRequestManager.enqueue(request) {
