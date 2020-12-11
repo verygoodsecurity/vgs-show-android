@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgsshow.util.connection
 
-internal interface IConnectionHelper {
+internal interface NetworkConnectionHelper {
 
     fun isNetworkPermissionsGranted(): Boolean
 
-    fun isConnectionAvailable(): Boolean
+    fun isNetworkConnectionAvailable(): Boolean
 }

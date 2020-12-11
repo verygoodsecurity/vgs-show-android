@@ -25,8 +25,8 @@ import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
-import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -59,7 +59,7 @@ class VGSShow constructor(
 
     private val proxyRequestManager: IHttpRequestManager
 
-    private val connectionHelper: IConnectionHelper
+    private val connectionHelper: NetworkConnectionHelper
 
     private val analyticsManager: IAnalyticsManager
 
@@ -67,7 +67,7 @@ class VGSShow constructor(
 
     init {
         headersStore = ProxyStaticHeadersStore()
-        connectionHelper = ConnectionHelper(context)
+        connectionHelper = BaseNetworkConnectionHelper(context)
         proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
         onTextCopyListener = object : VGSTextView.OnTextCopyListener {
@@ -113,14 +113,21 @@ class VGSShow constructor(
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
     fun request(request: VGSRequest): VGSResponse {
-        if (!connectionHelper.isConnectionAvailable()) {
-            return VGSException.NoInternetConnection().toVGSResponse()
-        }
-        logRequestEvent(request)
-        return with(proxyRequestManager.execute(request)) {
-            logResponseEvent(this)
-            mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
-            this
+        return when {
+            !connectionHelper.isNetworkPermissionsGranted() -> {
+                VGSException.NoInternetPermission().toVGSResponse()
+            }
+            !connectionHelper.isNetworkConnectionAvailable() -> {
+                VGSException.NoInternetConnection().toVGSResponse()
+            }
+            else -> {
+                logRequestEvent(request)
+                with(proxyRequestManager.execute(request)) {
+                    logResponseEvent(this)
+                    mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
+                    this
+                }
+            }
         }
     }
 
@@ -143,7 +150,10 @@ class VGSShow constructor(
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
-        if (!connectionHelper.isConnectionAvailable()) {
+        if (!connectionHelper.isNetworkPermissionsGranted()) {
+            handleResponse(VGSException.NoInternetPermission().toVGSResponse())
+            return
+        } else if (!connectionHelper.isNetworkConnectionAvailable()) {
             handleResponse(VGSException.NoInternetConnection().toVGSResponse())
             return
         }
