@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
@@ -34,7 +35,7 @@ internal class HttpRequestManager(
     override fun execute(request: VGSRequest): VGSResponse {
         return try {
             if (request.isInvalidPayload()) {
-                return VGSException.PayloadException(request.requestFormat).toVGSResponse()
+                return VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
             }
             val response = client.execute(request.toHttpRequest(headersStore.getAll()))
             parseResponse(response, request.responseFormat)
@@ -47,7 +48,9 @@ internal class HttpRequestManager(
 
     override fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?) {
         if (request.isInvalidPayload()) {
-            callback?.invoke(VGSException.PayloadException(request.requestFormat).toVGSResponse())
+            callback?.invoke(
+                VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
+            )
             return
         }
         with(request.toHttpRequest(headersStore.getAll())) {
@@ -101,6 +104,7 @@ internal class HttpRequestManager(
     internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
+        is JSONException -> VGSException.ResponsePayloadException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
 }

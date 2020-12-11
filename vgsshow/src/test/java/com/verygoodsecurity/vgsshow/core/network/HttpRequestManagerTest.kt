@@ -21,7 +21,6 @@ class HttpRequestManagerTest {
     private lateinit var sut: HttpRequestManager
 
     private val headersStore = mockk<ProxyStaticHeadersStore>(relaxed = true)
-    private val connectionHelper = mockk<BaseNetworkConnectionHelper>(relaxed = true)
 
     @Before
     fun setUp() {
@@ -56,7 +55,7 @@ class HttpRequestManagerTest {
         try {
             sut.parseResponse(testResponse, VGSHttpBodyFormat.JSON)
         } catch (e: Exception) {
-            assertTrue(e is VGSException.JSONException)
+            assertTrue(e is VGSException.ResponsePayloadException)
         }
     }
 
@@ -117,6 +116,6 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).code == VGSException.JSONException().code)
+        assertTrue((result as VGSResponse.Error).code == VGSException.ResponsePayloadException().code)
     }
 }
