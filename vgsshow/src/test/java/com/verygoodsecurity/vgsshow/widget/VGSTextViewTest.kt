@@ -136,6 +136,7 @@ class VGSTextViewTest {
     @Test
     fun addOnTextCopyListener_listenerCalled() {
         val listener = mock(VGSTextView.OnTextCopyListener::class.java)
+        view.setText("test")
         view.addOnCopyTextListener(listener)
 
         view.copyToClipboard(VGSTextView.CopyTextFormat.RAW)

@@ -11,13 +11,13 @@ import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
-import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import java.util.*
 
 internal class AnalyticsManager constructor(
     tenantId: String,
     environment: VGSEnvironment,
-    private val connectionHelper: IConnectionHelper
+    private val connectionHelper: NetworkConnectionHelper
 ) : IAnalyticsManager {
 
     private val requestManager: IHttpRequestManager by lazy {
@@ -41,7 +41,7 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        if (connectionHelper.isConnectionAvailable()) {
+        if (connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
             requestManager.enqueue(buildRequest(event), null)
         }
     }
