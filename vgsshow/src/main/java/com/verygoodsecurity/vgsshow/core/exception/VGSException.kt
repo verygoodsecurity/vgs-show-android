@@ -19,15 +19,15 @@ internal sealed class VGSException : Exception() {
     class UrlNotValid : VGSException() {
 
         override val code: Int
-            get() = 1481
+            get() = 1480
 
-        override val errorMessage: String = "URL is not valid"
+        override val errorMessage: String = "VGS configuration URL is not valid"
     }
 
     class NoInternetPermission : VGSException() {
 
         override val code: Int
-            get() = 1482
+            get() = 1481
 
         override val errorMessage: String = "Permission denied (missing INTERNET permission?)"
     }
@@ -35,7 +35,7 @@ internal sealed class VGSException : Exception() {
     class NoInternetConnection : VGSException() {
 
         override val code: Int
-            get() = 1483
+            get() = 1482
 
         override val errorMessage: String = "No Internet connection"
     }
@@ -43,7 +43,7 @@ internal sealed class VGSException : Exception() {
     class RequestTimeout : VGSException() {
 
         override val code: Int
-            get() = 1484
+            get() = 1483
 
         override val errorMessage: String = "TimeoutException"
     }
