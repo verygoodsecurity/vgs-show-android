@@ -129,6 +129,11 @@ workflows:
       - "Assemble_Debug_Build":
           requires:
             *all_test
+          filters:
+            branches:
+              only:
+                - main
+                - stage
 #      - "Deploy to Bintray":
 #          requires:
 #            *debug_build
