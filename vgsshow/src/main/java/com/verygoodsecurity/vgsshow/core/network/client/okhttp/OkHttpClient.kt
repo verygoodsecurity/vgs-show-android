@@ -18,6 +18,7 @@ import com.verygoodsecurity.vgsshow.util.extension.toURL
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okio.Buffer
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
@@ -79,5 +80,31 @@ internal class OkHttpClient : IHttpClient {
                 request.format.toContentType().toMediaTypeOrNull()
             )
             .build()
+    }
+
+    internal class LoggingInterceptor : Interceptor {
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            with(VGSShow::class.java.simpleName) {
+                return chain.proceed(chain.request().also {
+                    logDebug("Request{method=${it.method}}", VGSShow::class.simpleName)
+                }).also {
+                    logDebug(
+                        "Response{code=${it.code}, message=${it.message}}",
+                        VGSShow::class.simpleName
+                    )
+                }
+            }
+        }
+
+        private fun getBody(request: RequestBody?): String {
+            return try {
+                val buffer = Buffer()
+                request?.writeTo(buffer)
+                buffer.readUtf8()
+            } catch (e: IOException) {
+                ""
+            }
+        }
     }
 }

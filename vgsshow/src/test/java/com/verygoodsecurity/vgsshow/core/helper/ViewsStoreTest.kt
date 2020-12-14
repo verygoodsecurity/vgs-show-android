@@ -1,13 +1,15 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers
+import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 
 class ViewsStoreTest {
 
@@ -16,9 +18,20 @@ class ViewsStoreTest {
     private val testView = mockk<VGSTextView>(relaxed = true)
     private val testView2 = mockk<VGSTextView>(relaxed = true)
 
+    private val testResponseData = JsonResponseData(
+        JSONObject(
+            mapOf(
+                "number" to "1111",
+                "date" to "0000",
+            )
+        )
+    )
+
     @Before
     fun setUp() {
         sut = ViewsStore()
+        every { testView.getContentPath() } returns "number"
+        every { testView2.getContentPath() } returns "date"
     }
 
     @Test
@@ -27,10 +40,10 @@ class ViewsStoreTest {
         sut.add(testView)
         sut.add(testView2)
         // Act
-        sut.update(null)
+        sut.update(testResponseData)
         // Assert
-        verify { testView.setText(null) }
-        verify { testView2.setText(null) }
+        verify { testView.setText("1111") }
+        verify { testView2.setText("0000") }
     }
 
     @Test
@@ -80,20 +93,12 @@ class ViewsStoreTest {
     }
 
     @Test
-    fun update_setTextCalled_ignoreField() {
+    fun update_setTextNotCalled_ignoreField() {
         // Arrange
-        val ignoredField = mock(VGSTextView::class.java)
-        sut.add(ignoredField)
+        every { testView.ignoreField } returns true
         // Act
-        sut.update(null)
+        sut.update(testResponseData)
         // Assert
-        verify(ignoredField, times(1)).setText(null)
-
-        // Act
-        doReturn(true).`when`(ignoredField).ignoreField
-        ignoredField.ignoreField = true
-
-        // Assert
-        verify(ignoredField, times(1)).setText(null)
+        verify(exactly = 0) { testView.setText("1111") }
     }
 }

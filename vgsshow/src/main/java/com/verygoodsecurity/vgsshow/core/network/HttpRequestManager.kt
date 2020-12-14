@@ -11,12 +11,11 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
-import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
-import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
-import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import org.json.JSONException
 import org.json.JSONObject
@@ -26,8 +25,7 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     private val baseUrl: String,
-    private val headersStore: IVGSStaticHeadersStore,
-    private val connectionHelper: IConnectionHelper
+    private val headersStore: StaticHeadersStore
 ) : IHttpRequestManager {
 
     private val client: IHttpClient by lazy {
@@ -35,14 +33,12 @@ internal class HttpRequestManager(
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
-        if (!connectionHelper.isConnectionAvailable()) {
-            return VGSException.NoInternetConnection().toVGSResponse()
-        }
         return try {
-            parseResponse(
-                client.execute(request.toHttpRequest(baseUrl, headersStore.getAll())),
-                request.responseFormat
-            )
+            if (request.isInvalidPayload()) {
+                return VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
+            }
+            val response = client.execute(request.toHttpRequest(baseUrl, headersStore.getAll()))
+            parseResponse(response, request.responseFormat)
         } catch (e: NetworkOnMainThreadException) {
             throw e
         } catch (e: Exception) {
@@ -51,8 +47,10 @@ internal class HttpRequestManager(
     }
 
     override fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?) {
-        if (!connectionHelper.isConnectionAvailable()) {
-            callback?.invoke(VGSException.NoInternetConnection().toVGSResponse())
+        if (request.isInvalidPayload()) {
+            callback?.invoke(
+                VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
+            )
             return
         }
         with(request.toHttpRequest(baseUrl, headersStore.getAll())) {
@@ -81,6 +79,8 @@ internal class HttpRequestManager(
         client.cancelAll()
     }
 
+    private fun VGSRequest.isInvalidPayload() = payload != null && !payload.isValid()
+
     @VisibleForTesting
     @Throws(Exception::class)
     internal fun parseResponse(response: HttpResponse, format: VGSHttpBodyFormat): VGSResponse {
@@ -98,7 +98,7 @@ internal class HttpRequestManager(
 
     @VisibleForTesting
     @Throws(Exception::class)
-    internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): IResponseData {
+    internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): ResponseData {
         return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
         }
@@ -108,12 +108,7 @@ internal class HttpRequestManager(
     internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
-        is JSONException -> VGSException.JSONException()
+        is JSONException -> VGSException.ResponsePayloadException()
         else -> VGSException.Exception(errorMessage = e.message)
     }).toVGSResponse()
-
-    companion object {
-
-        val NETWORK_RESPONSE_CODES = 200..999
-    }
 }

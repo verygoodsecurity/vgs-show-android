@@ -1,0 +1,25 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSRequest.Builder///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.Builder.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSResponse.Error///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.Error.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSResponse.Success///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.Success.html
+$dokka.location:com.verygoodsecurity.vgsshow.core/VGSEnvironment.Companion///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/VGSEnvironment.Companion.html
+$dokka.location:com.verygoodsecurity.vgsshow.core/VGSEnvironment.Live.Companion///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/VGSEnvironment.Live.Companion.html
+$dokka.location:com.verygoodsecurity.vgsshow.core/VGSEnvironment.Live///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/VGSEnvironment.Live.html
+$dokka.location:com.verygoodsecurity.vgsshow.core/VGSEnvironment.Sandbox.Companion///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/VGSEnvironment.Sandbox.Companion.html
+$dokka.location:com.verygoodsecurity.vgsshow.core/VGSEnvironment.Sandbox///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/VGSEnvironment.Sandbox.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView.Companion///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/core/VGSView.Companion.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/VGSTextView.CopyTextFormat.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.OnTextChangedListener///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/VGSTextView.OnTextChangedListener.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.OnTextCopyListener///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/VGSTextView.OnTextCopyListener.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.VGSTextViewState.Companion///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/VGSTextView.VGSTextViewState.Companion.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.VGSTextViewState///PointingToDeclaration/com/verygoodsecurity/vgsshow/widget/VGSTextView.VGSTextViewState.html
+com.verygoodsecurity.vgsshow
+com.verygoodsecurity.vgsshow.core
+com.verygoodsecurity.vgsshow.core.listener
+com.verygoodsecurity.vgsshow.core.network.client
+com.verygoodsecurity.vgsshow.core.network.model
+com.verygoodsecurity.vgsshow.util.extension
+com.verygoodsecurity.vgsshow.widget
+com.verygoodsecurity.vgsshow.widget.core
+

@@ -29,6 +29,9 @@ import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
+/**
+ * VGS basic View control that displays reviled content to the user.
+ */
 class VGSTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -61,10 +64,6 @@ class VGSTextView @JvmOverloads constructor(
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
-            setPasswordRange(
-                getInt(R.styleable.VGSTextView_passwordStart, -1),
-                getInt(R.styleable.VGSTextView_passwordEnd, -1)
-            )
 
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
@@ -77,6 +76,11 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
+    /**
+     * Gets the current field type of the InputFieldView.
+     *
+     * @return VGSFieldType
+     */
     override fun getFieldType() = VGSFieldType.INFO
 
     override fun createChildView() = AppCompatTextView(context)
@@ -336,7 +340,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param start start of part that should be hided.
      * @param end end of part that should be hided.
      */
-    fun setPasswordRange(start: Int, end: Int) {
+    internal fun setPasswordRange(start: Int, end: Int) {
         if (isPasswordInputType()) {
             view.transformationMethod = RangePasswordTransformationMethod(start, end)
         }
@@ -356,14 +360,18 @@ class VGSTextView @JvmOverloads constructor(
         this.copyListeners.remove(listener)
     }
 
+    /**
+     * Copy data to the clipboard from current View. After copying, text trigger [OnTextCopyListener].
+     */
     fun copyToClipboard(format: CopyTextFormat = RAW) {
-        context.copyToClipboard(
-            when (format) {
-                RAW -> rawText
-                FORMATTED -> view.text?.toString()
-            }
-        )
-        copyListeners.forEach { it.onTextCopied(this, format) }
+        val textToCopy = when (format) {
+            RAW -> rawText
+            FORMATTED -> view.text?.toString()
+        }
+        if (!textToCopy.isNullOrEmpty()) {
+            context.copyToClipboard(textToCopy)
+            copyListeners.forEach { it.onTextCopied(this, format) }
+        }
     }
 
     /**
@@ -404,7 +412,6 @@ class VGSTextView @JvmOverloads constructor(
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
         this.rawText = text?.toString()
-
         val formattedText = transformations.applyTransformationTo(text.toString())
         view.setText(formattedText, type)
     }
@@ -450,11 +457,14 @@ class VGSTextView @JvmOverloads constructor(
      */
     enum class CopyTextFormat {
 
-
         RAW,
         FORMATTED
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when the text is changed.
+     */
     interface OnTextChangedListener {
 
         /**
@@ -466,6 +476,10 @@ class VGSTextView @JvmOverloads constructor(
         fun onTextChange(view: VGSTextView, isEmpty: Boolean)
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when user copy content.
+     */
     interface OnTextCopyListener {
 
         /**

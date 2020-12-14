@@ -14,57 +14,72 @@ import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
-import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager.Companion.NETWORK_RESPONSE_CODES
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
-import com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
+import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.util.connection.ConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toHost
-import com.verygoodsecurity.vgsshow.util.url.UrlHelper
+import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 /**
- * Allows reveal secure data into secure views.
- * Entry-point into Show SDK.
+ * VGS Show - Android SDK that enables you to securely display sensitive data.
+ * @see <a href="https://www.verygoodsecurity.com/docs/vgs-show">www.verygoodsecurity.com</a>
+ *
+ * Allows reveal secure data into secure views. Entry-point into Show SDK.
  *
  * @constructor create configured, ready to use entry-point into Show SDK.
  * @param context lifecycle owner context.
  * @param vaultId unique vault id.
  * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
- *
- * @since 1.0.0
  */
 class VGSShow constructor(
     context: Context,
-    private val vaultId: String,
-    private val environment: VGSEnvironment
-) : VGSTextView.OnTextCopyListener {
+    vaultId: String,
+    environment: VGSEnvironment
+) {
+
+    private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
 
     private val viewsStore = ViewsStore()
+
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
-    private val listeners: MutableSet<VgsShowResponseListener> by lazy { mutableSetOf() }
-    private val headersStore: IVGSStaticHeadersStore
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal val headersStore: StaticHeadersStore
+
     private val proxyRequestManager: IHttpRequestManager
+
+    private val connectionHelper: NetworkConnectionHelper
+
     private val analyticsManager: IAnalyticsManager
+
     private var hasCustomHostname: Boolean = false
+
+    private val onTextCopyListener: VGSTextView.OnTextCopyListener
 
     init {
         headersStore = ProxyStaticHeadersStore()
-        val connectionHelper = ConnectionHelper(context)
-        proxyRequestManager = HttpRequestManager(
-            UrlHelper.buildProxyUrl(vaultId, environment),
-            headersStore,
-            connectionHelper
-        )
+        connectionHelper = BaseNetworkConnectionHelper(context)
+        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
+        onTextCopyListener = object : VGSTextView.OnTextCopyListener {
+
+            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+                analyticsManager.log(CopyToClipboardEvent(format))
+            }
+        }
     }
 
     /**
@@ -79,10 +94,6 @@ class VGSShow constructor(
         vaultId: String,
         environment: String
     ) : this(context, vaultId, environment.toVGSEnvironment())
-
-    override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-        analyticsManager.log(CopyToClipboardEvent(format))
-    }
 
     /**
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
@@ -106,16 +117,26 @@ class VGSShow constructor(
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
     fun request(request: VGSRequest): VGSResponse {
-        return with(proxyRequestManager.execute(request)) {
-            logRequestEvent(request, this)
-            logResponseEvent(this)
-            mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
-            this
+        return when {
+            !connectionHelper.isNetworkPermissionsGranted() -> {
+                VGSException.NoInternetPermission().toVGSResponse()
+            }
+            !connectionHelper.isNetworkConnectionAvailable() -> {
+                VGSException.NoInternetConnection().toVGSResponse()
+            }
+            else -> {
+                logRequestEvent(request)
+                with(proxyRequestManager.execute(request)) {
+                    logResponseEvent(this)
+                    mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
+                    this
+                }
+            }
         }
     }
 
     /**
-     * Asynchronous request for reveal data
+     * Asynchronous request for reveal data.
      *
      * @param path path for a request.
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
@@ -133,31 +154,35 @@ class VGSShow constructor(
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
+        if (!connectionHelper.isNetworkPermissionsGranted()) {
+            handleResponse(VGSException.NoInternetPermission().toVGSResponse())
+            return
+        } else if (!connectionHelper.isNetworkConnectionAvailable()) {
+            handleResponse(VGSException.NoInternetConnection().toVGSResponse())
+            return
+        }
+        logRequestEvent(request)
         proxyRequestManager.enqueue(request) {
-            logRequestEvent(request, it)
             logResponseEvent(it)
-            mainHandler.post {
-                viewsStore.update((it as? VGSResponse.Success)?.data)
-                notifyResponseListeners(it)
-            }
+            handleResponse(it)
         }
     }
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener]
+     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
      */
-    fun addResponseListener(listener: VgsShowResponseListener) {
+    fun addOnResponseListener(listener: VGSOnResponseListener) {
         listeners.add(listener)
     }
 
     /**
      * Clear specific listener attached before.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener]
+     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
      */
-    fun removeResponseListener(listener: VgsShowResponseListener) {
+    fun removeOnResponseListener(listener: VGSOnResponseListener) {
         listeners.remove(listener)
     }
 
@@ -173,11 +198,11 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun subscribeView(view: VGSView<*>) {
+    fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.addOnCopyTextListener(this)
+                view.addOnCopyTextListener(onTextCopyListener)
             }
         }
     }
@@ -187,21 +212,21 @@ class VGSShow constructor(
      *
      * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
      */
-    fun unsubscribeView(view: VGSView<*>) {
+    fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
             analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.removeOnCopyTextListener(this)
+                view.removeOnCopyTextListener(onTextCopyListener)
             }
         }
     }
 
     /**
      * Used to edit static request headers that will be added to all requests of this VGSShow instance.
-     *
-     * @return Static headers store. @see [com.verygoodsecurity.vgsshow.core.network.headers.IVGSStaticHeadersStore]
      */
-    fun getStaticHeadersStore(): IVGSStaticHeadersStore = headersStore
+    fun setCustomHeader(header: String, value: String) {
+        headersStore.add(header, value)
+    }
 
     /**
      * Clear all information collected before by VGSShow, cancel all network requests.
@@ -211,7 +236,9 @@ class VGSShow constructor(
         proxyRequestManager.cancelAll()
         analyticsManager.cancelAll()
         listeners.clear()
-        viewsStore.getViews().forEach { (it as? VGSTextView)?.removeOnCopyTextListener(this) }
+        viewsStore.getViews().forEach {
+            (it as? VGSTextView)?.removeOnCopyTextListener(onTextCopyListener)
+        }
         viewsStore.clear()
         headersStore.clear()
     }
@@ -248,30 +275,20 @@ class VGSShow constructor(
         }
     }
 
-    private fun logRequestEvent(request: VGSRequest, response: VGSResponse) {
+    private fun handleResponse(response: VGSResponse) {
+        mainHandler.post {
+            viewsStore.update((response as? VGSResponse.Success)?.data)
+            notifyResponseListeners(response)
+        }
+    }
+
+    private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
-        analyticsManager.log(
-            when (response.code) {
-                in NETWORK_RESPONSE_CODES -> RequestEvent.createSuccessful(
-                    hasFields,
-                    hasHeaders,
-                    hasCustomHostname
-                )
-                else -> RequestEvent.createFailed(
-                    hasFields,
-                    hasHeaders,
-                    hasCustomHostname,
-                    response.code
-                )
-            }
-        )
+        analyticsManager.log(RequestEvent.createSuccessful(hasFields, hasHeaders, hasCustomHostname))
     }
 
     private fun logResponseEvent(response: VGSResponse) {
-        if (response.code !in NETWORK_RESPONSE_CODES) {
-            return
-        }
         analyticsManager.log(
             when (response) {
                 is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
