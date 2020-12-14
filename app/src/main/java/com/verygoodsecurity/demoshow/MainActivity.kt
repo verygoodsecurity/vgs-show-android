@@ -24,7 +24,9 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
+        VGSShow.Builder(this, "tntpszqgikn")
+            .setHostname("collect-android-testing.verygoodsecurity.io/test")
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {

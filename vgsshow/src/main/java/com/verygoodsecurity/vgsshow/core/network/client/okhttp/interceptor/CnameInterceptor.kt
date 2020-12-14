@@ -61,22 +61,20 @@ internal class CnameInterceptor : Interceptor {
     ): String? {
         val cnameRequest = buildCnameRequest(request, cname, vaultId)
         var response: Response? = null
+        var responseTime: Long? = null
         return try {
-            val responseTime = measureTimeMillis {
+            responseTime = measureTimeMillis {
                 response = chain.proceed(cnameRequest)
             }
-            val body = response?.body?.string()
-            return if (!body.isNullOrEmpty() && body equalsHosts cname) {
-                cnameResult?.invoke(true, responseTime)
-                cname
-            } else {
-                logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-                cnameResult?.invoke(false, responseTime)
-                null
-            }
+            response?.takeIf { it.isSuccessful }?.body?.string()
+                ?.takeIf { it.isNotEmpty() && it equalsHosts cname }
+                ?.run {
+                    cnameResult?.invoke(true, responseTime)
+                    cname
+                } ?: throw Exception()
         } catch (e: Exception) {
-            logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-            cnameResult?.invoke(false, 0)
+            logDebug("A specified cname incorrect! $responseTime", VGSShow::class.simpleName)
+            cnameResult?.invoke(false, responseTime ?: 0)
             null
         } finally {
             response?.close()

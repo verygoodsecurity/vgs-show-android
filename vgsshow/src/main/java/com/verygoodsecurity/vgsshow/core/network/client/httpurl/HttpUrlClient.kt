@@ -12,6 +12,7 @@ import java.net.HttpURLConnection
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import kotlin.system.measureTimeMillis
 
 internal class HttpUrlClient : IHttpClient {
 
@@ -101,22 +102,23 @@ internal class HttpUrlClient : IHttpClient {
 
     private fun getValidatedCname(cname: String, vaultId: String): String? {
         var connection: HttpURLConnection? = null
+        var responseTime: Long? = null
+        var response: HttpResponse?
         return try {
-            connection = cname.toHostnameValidationUrl(vaultId).openConnection()
-            connection.requestMethod = "GET" // TODO: Refactor
-            val response = readResponse(connection)
-            val responseCname = response.responseBody?.toHost()
-            if (response.isSuccessful && !responseCname.isNullOrEmpty() && responseCname equalsHosts cname) {
-                cnameResult?.invoke(true, 0)
-                cname
-            } else {
-                logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-                cnameResult?.invoke(false, 0)
-                null
+            responseTime = measureTimeMillis {
+                connection = cname.toHostnameValidationUrl(vaultId).openConnection()
+                connection!!.requestMethod = "GET" // TODO: Refactor
+                response = readResponse(connection!!)
             }
+            response?.takeIf { it.isSuccessful }?.responseBody
+                ?.takeIf { it.isNotEmpty() && it equalsHosts cname }
+                ?.run {
+                    cnameResult?.invoke(true, responseTime)
+                    cname
+                } ?: throw Exception()
         } catch (e: Exception) {
-            logDebug("A specified cname incorrect!", VGSShow::class.simpleName)
-            cnameResult?.invoke(false, 0)
+            logDebug("A specified cname incorrect! $responseTime", VGSShow::class.simpleName)
+            cnameResult?.invoke(false, responseTime ?: 0)
             null
         } finally {
             connection?.disconnect()
