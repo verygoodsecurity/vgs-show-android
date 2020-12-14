@@ -17,10 +17,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
-import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
-import com.verygoodsecurity.vgsshow.core.network.model.data.JsonResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.XmlResponseData
-import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import org.json.JSONException
 import org.json.JSONObject

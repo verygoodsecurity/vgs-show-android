@@ -40,9 +40,17 @@ internal fun Response.toHttpResponse() = HttpResponse(
 
 internal fun VGSException.toVGSResponse() = VGSResponse.Error.create(this)
 
-internal fun Map<String, Any>.toJsonByteArray(): ByteArray? {
+internal fun Map<String, Any>.toJsonOrNull(): JSONObject? {
     return try {
-        JSONObject(this).toString().toByteArray(Charsets.UTF_8)
+        JSONObject(this)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+internal fun String.toJsonOrNull(): JSONObject? {
+    return try {
+        JSONObject(this)
     } catch (e: Exception) {
         null
     }
@@ -55,5 +63,14 @@ fun String.toDocument(): Document {
         documentBuilder.parse(InputSource(StringReader(this)))
     } catch (e: Exception) {
         throw DOMException(-1, "")
+    }
+}
+
+fun String.toDocumentOrNull(): Document? {
+    val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+    return try {
+        documentBuilder.parse(InputSource(StringReader(this)))
+    } catch (e: Exception) {
+       null
     }
 }
