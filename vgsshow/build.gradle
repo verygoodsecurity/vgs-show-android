@@ -60,3 +60,5 @@ dependencies {
 
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
+
+apply from: rootProject.file('release-bintray.gradle')

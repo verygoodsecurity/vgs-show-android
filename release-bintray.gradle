@@ -1,0 +1,35 @@
+ext {
+    bintrayRepo = 'vgs-show-android'
+    bintrayName = POM_BINTRAY_NAME
+
+    publishedGroupId = 'com.verygoodsecurity'
+    libraryName = 'VGS Show'
+    artifact = POM_ARTIFACT_ID
+    packagingType = POM_PACKAGING
+
+    libraryDescription = POM_DESCRIPTION
+
+    siteUrl = 'https://github.com/verygoodsecurity/vgs-show-android'
+    gitUrl = 'https://github.com/verygoodsecurity/vgs-show-android.git'
+
+    libraryVersion = POM_VERSION
+
+    Properties properties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        properties.load(rootProject.file("local.properties").newDataInputStream())
+    }
+
+    developerId = properties.getProperty("DEVELOPER_ID", "")
+    developerName = properties.getProperty("DEVELOPER_NAME", "")
+    developerEmail = properties.getProperty("DEVELOPER_EMAIL", "")
+
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT License"]
+}
+
+// Set up the Android Maven publication.
+apply from: rootProject.file('jcenter/maven-install.gradle')
+
+// Publish on Bintray.
+apply from: rootProject.file('jcenter/bintray.gradle')
