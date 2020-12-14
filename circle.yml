@@ -126,4 +126,19 @@ workflows:
       - "Run_Unit_Tests":
           requires:
             *prepare_sources
+#      - "Assemble_Debug_Build":
+#          requires:
+#            *all_test
+#          filters:
+#            branches:
+#              only:
+#                - main
+#                - stage
+#      - "Deploy to Bintray":
+#          requires:
+#            *debug_build
+#          filters:
+#            branches:
+#              only:
+#                - main
 
