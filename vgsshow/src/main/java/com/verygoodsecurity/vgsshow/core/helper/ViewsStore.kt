@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
 import androidx.annotation.MainThread
-import com.verygoodsecurity.vgsshow.core.network.model.data.IResponseData
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -18,10 +18,13 @@ internal class ViewsStore {
     }
 
     @MainThread
-    fun update(data: IResponseData?) {
-        views.forEach {
-            when (it) {
-                is VGSTextView -> it.setText(data?.getValue(it.getFieldName()))
+    fun update(data: ResponseData?) {
+        for (view in views) {
+            if (view.ignoreField) {
+                continue
+            }
+            when (view) {
+                is VGSTextView -> data?.getValue(view.getContentPath())?.let { view.setText(it) }
                 else -> throw IllegalArgumentException("Not implemented yet!")
             }
         }

@@ -23,7 +23,7 @@ class JsonExtension {
 
         val value = json.getValue(fieldName)
 
-        Assert.assertEquals("", value)
+        Assert.assertEquals(null, value)
     }
 
     @Test
@@ -33,7 +33,7 @@ class JsonExtension {
 
         val value = json.getValue(fieldName)
 
-        Assert.assertEquals("", value)
+        Assert.assertEquals(null, value)
     }
 
     @Test
@@ -43,7 +43,7 @@ class JsonExtension {
 
         val value = json.getValue(fieldName)
 
-        Assert.assertEquals("", value)
+        Assert.assertEquals(null, value)
     }
 
     @Test
@@ -53,7 +53,7 @@ class JsonExtension {
 
         val value = json.getValue(fieldName)
 
-        Assert.assertEquals("", value)
+        Assert.assertEquals(null, value)
     }
 
     private fun generateJson():JSONObject {

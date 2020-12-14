@@ -10,11 +10,12 @@
     <!--    Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
-    <attr name="fieldName" format="string" localization="suggested" />
+    <attr name="contentPath" format="string" localization="suggested" />
 
+    <!-- Ignore certain fields directly before revealing data. If true, revealed data will not be set in this field. -->
     <attr name="ignoreField" format="boolean" />
 
-    <!-- Font family (named by string or as a font resource reference) for the text. -->
+   <!-- Font family (named by string or as a font resource reference) for the text. -->
     <attr name="fontFamily" format="string" />
 
     <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
@@ -94,6 +95,7 @@
         <flag name="italic" value="2" />
     </attr>
 
+    <!-- Text letter-spacing. -->
     <attr name="letterSpacing" format="float" />
 
     <!-- Set the enabled state of this view. -->
@@ -135,15 +137,12 @@
         <enum name="date" value="4" />
     </attr>
 
-    <attr name="passwordStart" format="integer" />
-    <attr name="passwordEnd" format="integer" />
-
     <!-- Sets the text color, size, style etc.-->
     <attr name="textAppearance" format="reference" />
 
     <declare-styleable name="VGSView">
 
-        <attr name="fieldName" />
+        <attr name="contentPath" />
         <attr name="ignoreField" />
     </declare-styleable>
 
@@ -151,7 +150,7 @@
 
         <attr name="hint" />
         <attr name="hintTextColor" />
-        <attr name="fieldName" />
+        <attr name="contentPath" />
         <attr name="gravity" />
         <attr name="singleLine" />
         <attr name="textSize" />
@@ -163,7 +162,5 @@
         <attr name="inputType" />
         <attr name="textAppearance" />
 
-        <attr name="passwordStart" />
-        <attr name="passwordEnd" />
     </declare-styleable>
 </resources>

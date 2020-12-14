@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow
 import android.content.Context
 import android.os.Looper
 import android.util.Log
-import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
@@ -19,8 +19,8 @@ class VGSShowTest {
 
     private val context = mockk<Context>(relaxed = true)
     private val looper = mockk<Looper>(relaxed = true)
-    private val testListenerOne = mockk<VgsShowResponseListener>(relaxed = true)
-    private val testListenerTwo = mockk<VgsShowResponseListener>(relaxed = true)
+    private val testListenerOne = mockk<VGSOnResponseListener>(relaxed = true)
+    private val testListenerTwo = mockk<VGSOnResponseListener>(relaxed = true)
     private val testView = mockk<VGSTextView>(relaxed = true)
 
     @Before
@@ -33,73 +33,73 @@ class VGSShowTest {
     }
 
     @Test
-    fun addResponseListener_listenerAdded() {
+    fun addOnResponseListener_listenerAdded() {
         // Act
-        sut.addResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerOne)
         // Assert
         assertThat(sut.getResponseListeners(), hasItem(testListenerOne))
     }
 
     @Test
-    fun addResponseListener_addDuplicateListener_oneListenerAdded() {
+    fun addOnResponseListener_addDuplicateListener_oneListenerAdded() {
         // Act
-        sut.addResponseListener(testListenerOne)
-        sut.addResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerOne)
         // Assert
         assertTrue(sut.getResponseListeners().size == 1)
     }
 
     @Test
-    fun addResponseListener_listenerRemoved() {
+    fun addOnResponseListener_listenerRemoved() {
         // Act
-        sut.addResponseListener(testListenerOne)
-        sut.removeResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerOne)
+        sut.removeOnResponseListener(testListenerOne)
         // Assert
         assertFalse(sut.getResponseListeners().contains(testListenerOne))
     }
 
     @Test
-    fun addResponseListener_correctListenerRemoved() {
+    fun addOnResponseListener_correctListenerRemoved() {
         // Act
-        sut.addResponseListener(testListenerOne)
-        sut.addResponseListener(testListenerTwo)
-        sut.removeResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerTwo)
+        sut.removeOnResponseListener(testListenerOne)
         // Assert
         assertFalse(sut.getResponseListeners().contains(testListenerOne))
     }
 
     @Test
-    fun addResponseListener_allListenersRemoved() {
+    fun addOnResponseListener_allListenersRemoved() {
         // Act
-        sut.addResponseListener(testListenerOne)
-        sut.addResponseListener(testListenerTwo)
+        sut.addOnResponseListener(testListenerOne)
+        sut.addOnResponseListener(testListenerTwo)
         sut.clearResponseListeners()
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
     }
 
     @Test
-    fun subscribeView_viewAdded() {
+    fun subscribe_viewAdded() {
         // Act
-        sut.subscribeView(testView)
+        sut.subscribe(testView)
         // Assert
         assertThat(sut.getViewsStore().getViews(), hasItem(testView))
     }
 
     @Test
-    fun subscribeView_duplicateViews_oneViewAdded() {
+    fun subscribe_duplicateViews_oneViewAdded() {
         // Act
-        sut.subscribeView(testView)
-        sut.subscribeView(testView)
+        sut.subscribe(testView)
+        sut.subscribe(testView)
         // Assert
         assertEquals(sut.getViewsStore().getViews().size, 1)
     }
 
     @Test
-    fun subscribeView_viewRemoved() {
+    fun subscribe_viewRemoved() {
         // Act
-        sut.subscribeView(testView)
-        sut.unsubscribeView(testView)
+        sut.subscribe(testView)
+        sut.unsubscribe(testView)
         // Assert
         assertTrue(sut.getViewsStore().getViews().isEmpty())
     }
@@ -107,15 +107,15 @@ class VGSShowTest {
     @Test
     fun onDestroy_allSourcesCleared() {
         // Arrange
-        sut.subscribeView(testView)
-        sut.addResponseListener(testListenerOne)
-        sut.getStaticHeadersStore().add("test", "test")
+        sut.subscribe(testView)
+        sut.addOnResponseListener(testListenerOne)
+        sut.setCustomHeader("test", "test")
         // Act
         sut.onDestroy()
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
         assertTrue(sut.getViewsStore().isEmpty())
-        assertFalse(sut.getStaticHeadersStore().containsUserHeaders())
+        assertFalse(sut.headersStore.containsUserHeaders())
     }
 
     companion object {

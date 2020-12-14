@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-import com.verygoodsecurity.vgsshow.core.listener.VgsShowResponseListener
+import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), VgsShowResponseListener {
+class MainActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
         VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
-                    "number" to revealtoken,
-                    "expiration" to revealtoken2
+                    "payment_card_number" to revealAlias,
+                    "payment_card_expiration_date" to revealAlias2
                 )
             ).build()
         )
@@ -61,8 +61,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
         Log.d(MainActivity::class.simpleName, response.toString())
     }
 
-    private var revealtoken: String = ""
-    private var revealtoken2: String = ""
+    private var revealAlias: String = ""
+    private var revealAlias2: String = ""
 
     private fun setupCollect() {
         submitButton?.setOnClickListener {
@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                         else -> null
                     }
 
-                    parseNumberToken(json)
-                    parseDateToken(json)
+                    parseNumberAlias(json)
+                    parseDateAlias(json)
                 } catch (e: JSONException) {
                 }
             }
@@ -95,13 +95,16 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
     }
 
     private fun setupShow() {
-        showVgs.addResponseListener(this)
-        showVgs.subscribeView(number)
-        showVgs.subscribeView(expiration)
-        number.setTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})", "\$1-\$2-\$3-\$4")
+        showVgs.addOnResponseListener(this)
+        showVgs.subscribe(number)
+        showVgs.subscribe(expiration)
+
+        number.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+        number.addTransformationRegex("-".toRegex(), " - ")
+
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
-                Log.e("test", "state text: $isEmpty")
+                Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
         number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
@@ -126,29 +129,28 @@ class MainActivity : AppCompatActivity(), VgsShowResponseListener {
                 applyResetPasswordType?.text = "Set password"
             } else {
                 number.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                number.setPasswordRange(6, 12)
                 applyResetPasswordType?.text = "Reset password"
             }
         }
     }
 
-    private fun parseDateToken(json: JSONObject?) {
+    private fun parseDateAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate")?.let {
                     tokenView2?.text = it
-                    revealtoken2 = it
+                    revealAlias2 = it
                 }
             }
         }
     }
 
-    private fun parseNumberToken(json: JSONObject?) {
+    private fun parseNumberAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let {
                     tokenView1?.text = it
-                    revealtoken = it
+                    revealAlias = it
                 }
             }
         }

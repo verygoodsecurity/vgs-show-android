@@ -41,11 +41,11 @@ class VGSTextViewTest {
     fun test_field_name() {
         val fn = "test_field_name"
 
-        view.setFieldName(fn)
-        assertEquals(view.getFieldName(), fn)
+        view.setContentPath(fn)
+        assertEquals(view.getContentPath(), fn)
 
         view.onAttachedToWindow()
-        assertEquals(view.getFieldName(), fn)
+        assertEquals(view.getContentPath(), fn)
     }
 
     @Test
@@ -136,6 +136,7 @@ class VGSTextViewTest {
     @Test
     fun addOnTextCopyListener_listenerCalled() {
         val listener = mock(VGSTextView.OnTextCopyListener::class.java)
+        view.setText("test")
         view.addOnCopyTextListener(listener)
 
         view.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
@@ -187,4 +188,16 @@ class VGSTextViewTest {
 
         assertEquals(view.getChildView().hintTextColors.defaultColor, Color.CYAN)
     }
+
+    @Test
+    fun addTransformationRegex() {
+        val RESULT = "4111 - 1111 - 1111 - 1111"
+
+        view.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+        view.addTransformationRegex("-".toRegex(), " - ")
+        view.setText("4111111111111111")
+
+        assertEquals(RESULT, view.getChildView().text.toString())
+    }
+
 }

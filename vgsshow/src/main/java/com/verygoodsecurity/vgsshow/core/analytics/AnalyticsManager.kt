@@ -11,17 +11,17 @@ import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
-import com.verygoodsecurity.vgsshow.util.connection.IConnectionHelper
+import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import java.util.*
 
 internal class AnalyticsManager constructor(
     tenantId: String,
     environment: VGSEnvironment,
-    connectionHelper: IConnectionHelper
+    private val connectionHelper: NetworkConnectionHelper
 ) : IAnalyticsManager {
 
     private val requestManager: IHttpRequestManager by lazy {
-        HttpRequestManager(BASE_URL, getHeadersStore(), connectionHelper)
+        HttpRequestManager(BASE_URL, getHeadersStore())
     }
 
     private val defaultInfo: Map<String, Any> = mapOf(
@@ -41,7 +41,9 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        requestManager.enqueue(buildRequest(event), null)
+        if (connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
+            requestManager.enqueue(buildRequest(event), null)
+        }
     }
 
     override fun cancelAll() {
@@ -75,6 +77,6 @@ internal class AnalyticsManager constructor(
         private const val KEY_DEVICE_OS = "osVersion"
 
         private const val ANDROID = "android"
-        private const val ANDROID_SDK = "androidSDK"
+        private const val ANDROID_SDK = "show-androidSDK"
     }
 }

@@ -19,7 +19,6 @@ import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
-import com.verygoodsecurity.vgsshow.util.extension.transformWithRegex
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
@@ -30,6 +29,9 @@ import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
 
+/**
+ * VGS basic View control that displays reviled content to the user.
+ */
 class VGSTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -38,9 +40,12 @@ class VGSTextView @JvmOverloads constructor(
 
     private var rawText: String? = null
 
-    private var transformationRegex: String? = null
+    private val transformations = mutableListOf<VGSTransformationRegex>()
 
-    private var replacement: String = ""
+    internal data class VGSTransformationRegex(
+        val regex: Regex,
+        val replacement: String
+    )
 
     private var copyListeners: MutableList<OnTextCopyListener> = mutableListOf()
 
@@ -59,10 +64,6 @@ class VGSTextView @JvmOverloads constructor(
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
-            setPasswordRange(
-                getInt(R.styleable.VGSTextView_passwordStart, -1),
-                getInt(R.styleable.VGSTextView_passwordEnd, -1)
-            )
 
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
@@ -75,6 +76,11 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
+    /**
+     * Gets the current field type of the InputFieldView.
+     *
+     * @return VGSFieldType
+     */
     override fun getFieldType() = VGSFieldType.INFO
 
     override fun createChildView() = AppCompatTextView(context)
@@ -324,9 +330,8 @@ class VGSTextView @JvmOverloads constructor(
      * @param regex Regular expression for transformation revealed data.
      * @param replacement A replacement expression that can include substitutions.
      */
-    fun setTransformationRegex(regex: String, replacement: String) {
-        this.transformationRegex = regex
-        this.replacement = replacement
+    fun addTransformationRegex(regex: Regex, replacement: String) {
+        VGSTransformationRegex(regex, replacement).let { transformations.add(it) }
     }
 
     /**
@@ -335,7 +340,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param start start of part that should be hided.
      * @param end end of part that should be hided.
      */
-    fun setPasswordRange(start: Int, end: Int) {
+    internal fun setPasswordRange(start: Int, end: Int) {
         if (isPasswordInputType()) {
             view.transformationMethod = RangePasswordTransformationMethod(start, end)
         }
@@ -355,14 +360,18 @@ class VGSTextView @JvmOverloads constructor(
         this.copyListeners.remove(listener)
     }
 
+    /**
+     * Copy data to the clipboard from current View. After copying, text trigger [OnTextCopyListener].
+     */
     fun copyToClipboard(format: CopyTextFormat = RAW) {
-        context.copyToClipboard(
-            when (format) {
-                RAW -> rawText
-                FORMATTED -> view.text?.toString()
-            }
-        )
-        copyListeners.forEach { it.onTextCopied(this, format) }
+        val textToCopy = when (format) {
+            RAW -> rawText
+            FORMATTED -> view.text?.toString()
+        }
+        if (!textToCopy.isNullOrEmpty()) {
+            context.copyToClipboard(textToCopy)
+            copyListeners.forEach { it.onTextCopied(this, format) }
+        }
     }
 
     /**
@@ -403,9 +412,8 @@ class VGSTextView @JvmOverloads constructor(
      */
     internal fun setText(text: CharSequence?, type: TextView.BufferType) {
         this.rawText = text?.toString()
-        with(transformationRegex?.transformWithRegex(text.toString(), replacement) ?: text) {
-            view.setText(this, type)
-        }
+        val formattedText = transformations.applyTransformationTo(text.toString())
+        view.setText(formattedText, type)
     }
 
     @VisibleForTesting
@@ -449,11 +457,14 @@ class VGSTextView @JvmOverloads constructor(
      */
     enum class CopyTextFormat {
 
-
         RAW,
         FORMATTED
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when the text is changed.
+     */
     interface OnTextChangedListener {
 
         /**
@@ -465,6 +476,10 @@ class VGSTextView @JvmOverloads constructor(
         fun onTextChange(view: VGSTextView, isEmpty: Boolean)
     }
 
+    /**
+     * When an object of this type is attached to an [VGSTextView], its method will
+     * be called when user copy content.
+     */
     interface OnTextCopyListener {
 
         /**
@@ -474,5 +489,17 @@ class VGSTextView @JvmOverloads constructor(
          * @param format Format in which text was copied.
          */
         fun onTextCopied(view: VGSTextView, format: CopyTextFormat)
+    }
+}
+
+private fun MutableList<VGSTextView.VGSTransformationRegex>.applyTransformationTo(text: String): String {
+    return try {
+        var temporaryText = text
+        forEach {
+            temporaryText = it.regex.replace(temporaryText, it.replacement)
+        }
+        temporaryText
+    } catch (ex: Exception) {
+        text
     }
 }
