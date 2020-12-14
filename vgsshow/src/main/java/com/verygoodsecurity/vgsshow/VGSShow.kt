@@ -46,8 +46,8 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  */
 class VGSShow constructor(
     context: Context,
-    vaultId: String,
-    environment: VGSEnvironment
+    private val vaultId: String,
+    private val environment: VGSEnvironment
 ) {
 
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
