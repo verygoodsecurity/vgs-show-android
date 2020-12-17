@@ -1,5 +1,5 @@
 ext {
-    bintrayRepo = 'vgs-show-android'
+    bintrayRepo = 'vgs-collect-android'
     bintrayName = POM_BINTRAY_NAME
 
     publishedGroupId = 'com.verygoodsecurity'
