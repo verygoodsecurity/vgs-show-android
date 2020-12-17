@@ -51,16 +51,6 @@ aliases:
         path: app/build/outputs/apk/debug/app-debug.apk
         destination: app-debug.apk
 
-  - &deployToBintray
-    - checkout
-    - *attach_workspace
-    - run:
-        name: Install
-        command: ./gradlew install
-    - run:
-        name: Bintray Upload
-        command: ./gradlew bintrayUpload
-
 
   - &deploy_environment
     working_directory: ~/code
@@ -108,55 +98,15 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps: *assembleDebug
 
-  "Deploy_to_Bintray":
-    <<: *test_environment
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps: *deployToBintray
-
 
 workflows:
   version: 2.1
   main:
     jobs:
-      - "Prepared_Sources":
-          filters:
-            branches:
-              only:
-                - main
-                - stage
-                - development
+      - "Prepared_Sources"
       - "Run_Lint":
           requires:
             *prepare_sources
-          filters:
-            branches:
-              only:
-                - main
-                - stage
-                - development
       - "Run_Unit_Tests":
           requires:
             *prepare_sources
-          filters:
-            branches:
-              only:
-                - main
-                - stage
-                - development
-      - "Assemble_Debug_Build":
-          requires:
-            *all_test
-          filters:
-            branches:
-              only:
-                - main
-                - stage
-#      - "Deploy to Bintray":
-#          requires:
-#            *debug_build
-#          filters:
-#            branches:
-#              only:
-#                - main
-

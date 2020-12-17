@@ -48,7 +48,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "TimeoutException"
     }
 
-    class JSONException : VGSException() {
+    class ResponsePayloadException : VGSException() {
 
         override val code: Int
             get() = 1401
@@ -56,7 +56,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "Unexpected Response Data Format"
     }
 
-    class PayloadException constructor(httpPayloadFormat: VGSHttpBodyFormat): VGSException() {
+    class RequestPayloadException constructor(httpPayloadFormat: VGSHttpBodyFormat): VGSException() {
 
         override val code: Int
             get() = 1404
