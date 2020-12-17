@@ -1,5 +1,4 @@
 buildscript {
-
     ext.kotlin_version = "1.4.21"
     ext.dokka_version = '1.4.20'
     ext.mockito_version = '3.6.0'
