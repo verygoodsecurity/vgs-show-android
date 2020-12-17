@@ -58,7 +58,4 @@ dependencies {
     testImplementation "io.mockk:mockk:1.10.0"
     androidTestImplementation 'androidx.test:runner:1.3.0'
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
-
-apply from: rootProject.file('release-bintray.gradle')
