@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 
 /**
- * The base class definition for a VGSCollect response states.
+ * The base class definition for a VGSShow response states.
  *
  * @property code The response code from server.
  *
