@@ -21,7 +21,7 @@ internal sealed class VGSException : Exception() {
         override val code: Int
             get() = 1480
 
-        override val errorMessage: String = "VGS configuration URL is not valid"
+        override val errorMessage: String = "URL Error: Not valid organization parameters"
     }
 
     class NoInternetPermission : VGSException() {
