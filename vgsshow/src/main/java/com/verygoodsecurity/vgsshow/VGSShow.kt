@@ -260,9 +260,10 @@ class VGSShow constructor(
         this.proxyRequestManager.setCname(vaultId, cname) { isSuccessful, latency ->
             hasCustomHostname = isSuccessful
             analyticsManager.log(
-                when (isSuccessful) {
-                    true -> CnameValidationEvent.createSuccessful(cname, latency)
-                    false -> CnameValidationEvent.createFailed(cname, latency)
+                if (isSuccessful) {
+                    CnameValidationEvent.createSuccessful(cname, latency)
+                } else {
+                    CnameValidationEvent.createFailed(cname, latency)
                 }
             )
         }
@@ -285,7 +286,13 @@ class VGSShow constructor(
     private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
-        analyticsManager.log(RequestEvent.createSuccessful(hasFields, hasHeaders, hasCustomHostname))
+        analyticsManager.log(
+            RequestEvent.createSuccessful(
+                hasFields,
+                hasHeaders,
+                hasCustomHostname
+            )
+        )
     }
 
     private fun logResponseEvent(response: VGSResponse) {

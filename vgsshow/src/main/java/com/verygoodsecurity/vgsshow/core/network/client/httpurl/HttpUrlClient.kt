@@ -88,17 +88,14 @@ internal class HttpUrlClient : IHttpClient {
         url: String,
         cname: String,
         vaultId: String
-    ): String =
-        synchronized(this) {
-            return when (isCnameValid) {
-                true -> cname.concatWithHttpProtocol()
-                false -> url
-                else -> {
-                    isCnameValid = getValidatedCname(cname, vaultId) != null
-                    if (isCnameValid == true) cname.toHost().concatWithHttpProtocol() else url
-                }
+    ): String = synchronized(this) {
+        val isValid = isCnameValid ?: getValidatedCname(cname, vaultId).run {
+            (this != null).also {
+                isCnameValid = it
             }
         }
+        return@synchronized if (isValid) cname.concatWithHttpProtocol() else url
+    }
 
     private fun getValidatedCname(cname: String, vaultId: String): String? {
         var connection: HttpURLConnection? = null

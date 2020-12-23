@@ -41,16 +41,14 @@ internal class CnameInterceptor : Interceptor {
         cname: String,
         vaultId: String
     ): Request {
-        return request.newBuilder().url(
-            when (isCnameValid) {
-                true -> buildCnameUrl(request, cname)
-                false -> request.url
-                else -> {
-                    isCnameValid = getValidatedCname(chain, request, cname, vaultId) != null
-                    if (isCnameValid == true) buildCnameUrl(request, cname) else request.url
-                }
+        val isValid = isCnameValid ?: getValidatedCname(chain, request, cname, vaultId).run {
+            (this != null).also {
+                isCnameValid = it
             }
-        ).build()
+        }
+        return request.newBuilder()
+            .url(if (isValid) buildCnameUrl(request, cname) else request.url)
+            .build()
     }
 
     private fun getValidatedCname(
