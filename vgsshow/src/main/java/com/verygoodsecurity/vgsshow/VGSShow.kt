@@ -27,6 +27,9 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -44,8 +47,8 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  */
 class VGSShow constructor(
     context: Context,
-    vaultId: String,
-    environment: VGSEnvironment
+    private val vaultId: String,
+    private val environment: VGSEnvironment
 ) {
 
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
@@ -62,6 +65,8 @@ class VGSShow constructor(
     private val connectionHelper: NetworkConnectionHelper
 
     private val analyticsManager: IAnalyticsManager
+
+    private var hasCustomHostname: Boolean = false
 
     private val onTextCopyListener: VGSTextView.OnTextCopyListener
 
@@ -247,6 +252,24 @@ class VGSShow constructor(
     internal fun getViewsStore() = viewsStore
     //endregion
 
+    /**
+     * Sets the VGSShow instance to use the custom hostname.
+     *
+     * @param cname Custom hostname.
+     */
+    private fun setCname(cname: String?) {
+        this.proxyRequestManager.setCname(vaultId, cname) { isSuccessful, latency ->
+            hasCustomHostname = isSuccessful
+            analyticsManager.log(
+                if (isSuccessful) {
+                    CnameValidationEvent.createSuccessful(cname, latency)
+                } else {
+                    CnameValidationEvent.createFailed(cname, latency)
+                }
+            )
+        }
+    }
+
     @MainThread
     private fun notifyResponseListeners(response: VGSResponse) {
         listeners.forEach {
@@ -264,7 +287,13 @@ class VGSShow constructor(
     private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
         val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
-        analyticsManager.log(RequestEvent.createSuccessful(hasFields, hasHeaders))
+        analyticsManager.log(
+            RequestEvent.createSuccessful(
+                hasFields,
+                hasHeaders,
+                hasCustomHostname
+            )
+        )
     }
 
     private fun logResponseEvent(response: VGSResponse) {
@@ -274,5 +303,33 @@ class VGSShow constructor(
                 is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
             }
         )
+    }
+
+    class Builder constructor(private val context: Context, private val id: String) {
+
+        private var environment: VGSEnvironment = VGSEnvironment.Sandbox()
+
+        private var host: String? = null
+
+        /** Specify Environment for the VGSCollect instance. */
+        fun setEnvironment(environment: VGSEnvironment): Builder = this.apply {
+            this.environment = environment
+        }
+
+        /** Sets the VGSCollect instance to use the custom hostname. */
+        fun setHostname(cname: String): Builder {
+            if (cname.isValidUrl()) {
+                host = cname.toHost()
+                if (host != cname) {
+                    logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
+                }
+            }
+            return this
+        }
+
+
+        fun build() = VGSShow(context, id, environment).apply {
+            host?.let { setCname(it) }
+        }
     }
 }

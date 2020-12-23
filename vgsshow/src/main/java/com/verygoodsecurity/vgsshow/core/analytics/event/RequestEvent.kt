@@ -4,6 +4,7 @@ internal data class RequestEvent(
     val status: Status,
     val hasFields: Boolean,
     val hasHeaders: Boolean,
+    val hasCustomHostname: Boolean,
     val code: String = DEFAULT_CODE
 ) : Event() {
 
@@ -17,6 +18,7 @@ internal data class RequestEvent(
             KEY_CONTENT to mutableListOf<String>().apply {
                 if (hasFields) add(HAS_FIELDS)
                 if (hasHeaders) add(HAS_HEADERS)
+                if (hasCustomHostname) add(HAS_CUSTOM_HOSTNAME)
             }
         )
 
@@ -32,11 +34,19 @@ internal data class RequestEvent(
 
         private const val HAS_FIELDS = "fields"
         private const val HAS_HEADERS = "customHeaders"
+        private const val HAS_CUSTOM_HOSTNAME = "customHostName"
 
-        fun createSuccessful(hasFields: Boolean, hasHeaders: Boolean): RequestEvent =
-            RequestEvent(Status.OK, hasFields, hasHeaders)
+        fun createSuccessful(
+            hasFields: Boolean,
+            hasHeaders: Boolean,
+            hasCustomHostname: Boolean
+        ) = RequestEvent(Status.OK, hasFields, hasHeaders, hasCustomHostname)
 
-        fun createFailed(hasFields: Boolean, hasHeaders: Boolean, code: Int): RequestEvent =
-            RequestEvent(Status.FAILED, hasFields, hasHeaders, code.toString())
+        fun createFailed(
+            hasFields: Boolean,
+            hasHeaders: Boolean,
+            hasCustomHostname: Boolean,
+            code: Int
+        ) = RequestEvent(Status.FAILED, hasFields, hasHeaders, hasCustomHostname, code.toString())
     }
 }

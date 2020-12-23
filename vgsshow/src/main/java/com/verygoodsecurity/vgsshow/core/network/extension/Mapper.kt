@@ -10,13 +10,15 @@ import com.verygoodsecurity.vgsshow.util.extension.plus
 import okhttp3.Response
 import org.json.JSONObject
 
-internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
-    this.path,
-    this.method,
-    this.headers + extraHeaders,
-    this.payload?.getData(),
-    this.requestFormat
-)
+internal fun VGSRequest.toHttpRequest(url: String, extraHeaders: Map<String, String>?) =
+    HttpRequest(
+        url,
+        this.path,
+        this.method,
+        this.headers + extraHeaders,
+        this.payload?.getData(),
+        this.requestFormat
+    )
 
 private const val APPLICATION_JSON = "application/json"
 private const val APPLICATION_URLENCODED = "application/x-www-form-urlencoded"

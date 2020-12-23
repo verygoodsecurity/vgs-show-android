@@ -11,7 +11,6 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
@@ -24,7 +23,9 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow(this, "tntpszqgikn", VGSEnvironment.Sandbox())
+        VGSShow.Builder(this, "tntpszqgikn")
+            .setHostname("collect-android-testing.verygoodsecurity.io/test")
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
@@ -99,7 +100,10 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         showVgs.subscribe(number)
         showVgs.subscribe(expiration)
 
-        number.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+        number.addTransformationRegex(
+            "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
+            "\$1-\$2-\$3-\$4"
+        )
         number.addTransformationRegex("-".toRegex(), " - ")
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
