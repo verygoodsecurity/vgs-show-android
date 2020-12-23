@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
@@ -317,7 +318,9 @@ class VGSShow constructor(
 
         /** Sets the VGSCollect instance to use the custom hostname. */
         fun setHostname(cname: String): Builder {
-            host = cname.toHost()
+            if (cname.isValidUrl()) {
+                host = cname.toHost()
+            }
             if (host != cname) {
                 logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
             }
