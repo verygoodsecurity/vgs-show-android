@@ -5,6 +5,9 @@ package com.verygoodsecurity.vgsshow.core.network.headers
  */
 internal class AnalyticsStaticHeadersStore : BaseHeadersStore() {
 
+    override val defaultStaticHeaders: Map<String, String>
+        get() = emptyMap()
+
     override fun add(key: String, value: String) {
         // unused
     }

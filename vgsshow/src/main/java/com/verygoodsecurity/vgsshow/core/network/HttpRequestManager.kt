@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.EmptyResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
@@ -97,6 +98,7 @@ internal class HttpRequestManager(
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): ResponseData {
         return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
+            VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> EmptyResponseData()
         }
     }
 
