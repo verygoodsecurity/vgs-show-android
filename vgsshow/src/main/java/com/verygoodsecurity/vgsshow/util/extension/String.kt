@@ -43,7 +43,7 @@ fun String.toURL(): URL {
 
 internal fun String.toHost(): String {
     return try {
-        URL(this.concatWithHttpProtocol()).host
+        this.concatWithHttpProtocol().toURL().host
     } catch (e: MalformedURLException) {
         ""
     }
