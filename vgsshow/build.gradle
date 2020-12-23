@@ -10,10 +10,10 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode CODE_VERSION.toInteger()
+        versionName POM_VERSION
 
-        buildConfigField "String", "VERSION_NAME", "\"1.0\""
+        buildConfigField "String", "VERSION_NAME", "\"${POM_VERSION}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
