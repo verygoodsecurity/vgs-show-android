@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 
 internal data class HttpRequest(
+    val url: String,
     val path: String,
     val method: VGSHttpMethod,
     var headers: Map<String, String>? = null,
@@ -17,6 +18,7 @@ internal data class HttpRequest(
 
         other as HttpRequest
 
+        if (url != other.url) return false
         if (path != other.path) return false
         if (method != other.method) return false
         if (headers != other.headers) return false
@@ -30,7 +32,8 @@ internal data class HttpRequest(
     }
 
     override fun hashCode(): Int {
-        var result = path.hashCode()
+        var result = url.hashCode()
+        result = 31 * result + path.hashCode()
         result = 31 * result + method.hashCode()
         result = 31 * result + (headers?.hashCode() ?: 0)
         result = 31 * result + (data?.contentHashCode() ?: 0)

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.core.network.client
+package com.verygoodsecurity.vgsshow.core.network.client.httpurl
 
 import androidx.annotation.VisibleForTesting
 import java.io.IOException
