@@ -320,9 +320,9 @@ class VGSShow constructor(
         fun setHostname(cname: String): Builder {
             if (cname.isValidUrl()) {
                 host = cname.toHost()
-            }
-            if (host != cname) {
-                logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
+                if (host != cname) {
+                    logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
+                }
             }
             return this
         }
