@@ -5,11 +5,11 @@ import com.verygoodsecurity.vgsshow.core.Session
 
 internal abstract class BaseHeadersStore : StaticHeadersStore {
 
-    private val staticHeaders: MutableMap<String, String> = HashMap()
-
-    private val defaultStaticHeaders: Map<String, String> = mapOf(
+    protected open val defaultStaticHeaders: Map<String, String> = mapOf(
         AGENT_HEADER to "source=show-androidSDK&medium=vgs-show&content=${BuildConfig.VERSION_NAME}&vgsShowSessionId=${Session.id}"
     )
+
+    private val staticHeaders: MutableMap<String, String> = HashMap()
 
     override fun add(key: String, value: String) {
         staticHeaders[key] = value

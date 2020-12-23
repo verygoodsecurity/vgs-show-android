@@ -8,7 +8,9 @@ import com.verygoodsecurity.vgsshow.core.analytics.event.Event
 import com.verygoodsecurity.vgsshow.core.analytics.event.Status
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
+import com.verygoodsecurity.vgsshow.core.network.extension.toJsonOrNull
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
@@ -42,7 +44,8 @@ internal class AnalyticsManager constructor(
 
     override fun log(event: Event) {
         if (connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
-            requestManager.enqueue(buildRequest(event), null)
+            val payload = (defaultInfo + event.attributes).toJsonOrNull().toString()
+            requestManager.enqueue(buildRequest(payload), null)
         }
     }
 
@@ -52,9 +55,9 @@ internal class AnalyticsManager constructor(
 
     private fun getHeadersStore() = AnalyticsStaticHeadersStore()
 
-    private fun buildRequest(event: Event): VGSRequest =
+    private fun buildRequest(payload: String): VGSRequest =
         VGSRequest.Builder(PATH, VGSHttpMethod.POST)
-            .body(defaultInfo + event.attributes)
+            .body(payload, VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
             .build()
 
     companion object {

@@ -1,11 +1,21 @@
 package com.verygoodsecurity.vgsshow.core.network.model.data.request
 
-import com.verygoodsecurity.vgsshow.core.network.extension.toJsonByteArray
-import com.verygoodsecurity.vgsshow.util.extension.isValidJson
+import com.verygoodsecurity.vgsshow.core.network.extension.toJsonOrNull
+import org.json.JSONObject
 
-class JsonRequestData constructor(private val data: Map<String, Any>) : RequestData {
+class JsonRequestData : RequestData {
 
-    override fun getData(): ByteArray? = data.toJsonByteArray()
+    private val data: JSONObject?
 
-    override fun isValid(): Boolean = data.isValidJson()
+    constructor(data: Map<String, Any>) {
+        this.data = data.toJsonOrNull()
+    }
+
+    constructor(data: String) {
+        this.data = data.toJsonOrNull()
+    }
+
+    override fun getData(): ByteArray? = data?.toString()?.toByteArray(Charsets.UTF_8)
+
+    override fun isValid(): Boolean = data != null
 }
