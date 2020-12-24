@@ -3,17 +3,18 @@ package com.verygoodsecurity.vgsshow.core.network
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.network.client.HttpUrlClient
+import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
-import com.verygoodsecurity.vgsshow.core.network.client.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
-import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequestCallback
+import com.verygoodsecurity.vgsshow.core.network.client.httpurl.HttpUrlClient
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
+import com.verygoodsecurity.vgsshow.core.network.client.okhttp.OkHttpClient
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpRequest
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
+import com.verygoodsecurity.vgsshow.core.network.model.data.response.EmptyResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
@@ -24,12 +25,12 @@ import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
-    baseUrl: String,
+    private val baseUrl: String,
     private val headersStore: StaticHeadersStore
 ) : IHttpRequestManager {
 
     private val client: IHttpClient by lazy {
-        if (isLollipopOrGreater) OkHttpClient(baseUrl) else HttpUrlClient(baseUrl)
+        if (isLollipopOrGreater) OkHttpClient() else HttpUrlClient()
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
@@ -37,7 +38,7 @@ internal class HttpRequestManager(
             if (request.isInvalidPayload()) {
                 return VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
             }
-            val response = client.execute(request.toHttpRequest(headersStore.getAll()))
+            val response = client.execute(request.toHttpRequest(baseUrl, headersStore.getAll()))
             parseResponse(response, request.responseFormat)
         } catch (e: NetworkOnMainThreadException) {
             throw e
@@ -53,7 +54,7 @@ internal class HttpRequestManager(
             )
             return
         }
-        with(request.toHttpRequest(headersStore.getAll())) {
+        with(request.toHttpRequest(baseUrl, headersStore.getAll())) {
             client.enqueue(this, object : HttpRequestCallback {
 
                 override fun onResponse(response: HttpResponse) {
@@ -69,6 +70,10 @@ internal class HttpRequestManager(
                 }
             })
         }
+    }
+
+    override fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
+        this.client.setCname(vaultId, cname, cnameResult)
     }
 
     override fun cancelAll() {
@@ -97,6 +102,7 @@ internal class HttpRequestManager(
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): ResponseData {
         return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
+            VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> EmptyResponseData()
         }
     }
 

@@ -27,6 +27,7 @@ class ValidatorKtTest {
     @Test
     fun isUrlValid_correctParams_trueReturned() {
         //Assert
+        assertTrue("www.example".isValidUrl())
         assertTrue("http://www.exa".isValidUrl())
         assertTrue("https://www.exa".isValidUrl())
         assertTrue("https://www.example.com".isValidUrl())
@@ -37,8 +38,6 @@ class ValidatorKtTest {
     @Test
     fun isUrlValid_incorrectParams_falseReturned() {
         //Assert
-        assertFalse("www.example".isValidUrl())
-        assertFalse("example.com".isValidUrl())
         assertFalse("https://www.exam ple.com".isValidUrl())
     }
 }

@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.JsonRequestData
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.RequestData
+import com.verygoodsecurity.vgsshow.core.network.model.data.request.UrlencodedData
 
 /**
  * Request definition class for revealing data.
@@ -47,6 +48,19 @@ class VGSRequest private constructor(
          */
         fun body(payload: Map<String, Any>): Builder = apply {
             this.payload = JsonRequestData(payload)
+        }
+
+        /**
+         * Body that will send with this request.
+         *
+         */
+        fun body(payload: String, format: VGSHttpBodyFormat): Builder = apply {
+            this.requestFormat = format
+            this.responseFormat = format
+            this.payload = when(format) {
+                VGSHttpBodyFormat.JSON -> JsonRequestData(payload)
+                VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> UrlencodedData(payload)
+            }
         }
 
         /**

@@ -23,25 +23,9 @@ class AnalyticsStaticHeadersStoreTest {
     }
 
     @Test
-    fun removeHeader_removeDefaultHeader_defaultHeaderNotRemoved() {
-        // Act
-        sut.remove("vgs-client")
-        //Assert
-        assertTrue(sut.getAll().containsKey("vgs-client"))
-    }
-
-    @Test
-    fun clear_defaultHeaderNotRemoved() {
-        // Act
-        sut.clear()
-        //Assert
-        assertTrue(sut.getAll().containsKey("vgs-client"))
-    }
-
-    @Test
-    fun getAll_successDefaultHeadersContains() {
+    fun getAll_successDefaultHeadersNotContains() {
         // Assert
-        assertTrue(sut.getAll().containsKey("vgs-client"))
+        assertFalse(sut.getAll().containsKey("vgs-client"))
     }
 
     companion object {

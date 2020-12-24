@@ -19,6 +19,17 @@ internal infix fun String.concatWithDash(suffix: String): String = when {
     else -> this + DASH + suffix
 }
 
+private const val HTTP_PROTOCOL = "http://"
+private const val HTTPS_PROTOCOL = "https://"
+
+internal fun String.concatWithHttpProtocol(): String {
+    return when {
+        startsWith(HTTP_PROTOCOL) -> this
+        startsWith(HTTPS_PROTOCOL) -> this
+        else -> HTTPS_PROTOCOL + this
+    }
+}
+
 @Throws(Exception::class)
 fun String.toURL(): URL {
     try {
@@ -28,4 +39,16 @@ fun String.toURL(): URL {
     } catch (e: Exception) {
         throw MalformedURLException()
     }
+}
+
+internal fun String.toHost(): String {
+    return try {
+        this.concatWithHttpProtocol().toURL().host
+    } catch (e: MalformedURLException) {
+        ""
+    }
+}
+
+internal infix fun String.equalsHosts(name: String?): Boolean {
+    return toHost() == name?.toHost()
 }

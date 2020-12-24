@@ -10,18 +10,22 @@ import com.verygoodsecurity.vgsshow.util.extension.plus
 import okhttp3.Response
 import org.json.JSONObject
 
-internal fun VGSRequest.toHttpRequest(extraHeaders: Map<String, String>?) = HttpRequest(
-    this.path,
-    this.method,
-    this.headers + extraHeaders,
-    this.payload?.getData(),
-    this.requestFormat
-)
+internal fun VGSRequest.toHttpRequest(url: String, extraHeaders: Map<String, String>?) =
+    HttpRequest(
+        url,
+        this.path,
+        this.method,
+        this.headers + extraHeaders,
+        this.payload?.getData(),
+        this.requestFormat
+    )
 
 private const val APPLICATION_JSON = "application/json"
+private const val APPLICATION_URLENCODED = "application/x-www-form-urlencoded"
 
 internal fun VGSHttpBodyFormat.toContentType() = when (this) {
     VGSHttpBodyFormat.JSON -> APPLICATION_JSON
+    VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> APPLICATION_URLENCODED
 }
 
 internal fun Response.toHttpResponse() = HttpResponse(
@@ -33,9 +37,17 @@ internal fun Response.toHttpResponse() = HttpResponse(
 
 internal fun VGSException.toVGSResponse() = VGSResponse.Error.create(this)
 
-internal fun Map<String, Any>.toJsonByteArray(): ByteArray? {
+internal fun String.toJsonOrNull(): JSONObject? {
     return try {
-        JSONObject(this).toString().toByteArray(Charsets.UTF_8)
+        JSONObject(this)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+internal fun Map<String, Any>.toJsonOrNull(): JSONObject? {
+    return try {
+        JSONObject(this)
     } catch (e: Exception) {
         null
     }
