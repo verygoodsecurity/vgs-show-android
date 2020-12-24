@@ -110,3 +110,6 @@ workflows:
       - "Run_Unit_Tests":
           requires:
             *prepare_sources
+      - "Assemble_Debug_Build":
+          requires:
+            *all_test
