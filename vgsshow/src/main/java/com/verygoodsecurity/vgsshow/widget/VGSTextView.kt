@@ -27,7 +27,8 @@ import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
-import com.verygoodsecurity.vgsshow.widget.view.textview.method.RangePasswordTransformationMethod
+import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
+import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureTextOptions
 
 /**
  * VGS basic View control that displays reviled content to the user.
@@ -39,15 +40,9 @@ class VGSTextView @JvmOverloads constructor(
 ) : VGSView<AppCompatTextView>(context, attrs, defStyleAttr) {
 
     private var rawText: String? = null
-
     private val transformations = mutableListOf<VGSTransformationRegex>()
-
-    internal data class VGSTransformationRegex(
-        val regex: Regex,
-        val replacement: String
-    )
-
     private var copyListeners: MutableList<OnTextCopyListener> = mutableListOf()
+    private lateinit var secureTextTransformMethod: SecureTransformationMethod
 
     init {
 
@@ -64,6 +59,13 @@ class VGSTextView @JvmOverloads constructor(
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
+            setSecureTextRange(
+                IntRange(
+                    getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
+                    getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
+                ), VGSSecureTextOptions.Builder().build()
+            )
+            isSecureText(getBoolean(R.styleable.VGSTextView_isSecureText, false))
 
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
@@ -209,9 +211,6 @@ class VGSTextView @JvmOverloads constructor(
         with(view.typeface) {
             view.inputType = inputType
             view.typeface = this
-            if (!isPasswordInputType()) {
-                view.transformationMethod = null
-            }
         }
     }
 
@@ -335,15 +334,22 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * Used to determinate which part of text should be hided.
+     * Used to determinate should text be replaced with special symbols. For ex. : 4111••••11111111
      *
-     * @param start start of part that should be hided.
-     * @param end end of part that should be hided.
+     * @param isSecure true if should be secured, false otherwise.
      */
-    internal fun setPasswordRange(start: Int, end: Int) {
-        if (isPasswordInputType()) {
-            view.transformationMethod = RangePasswordTransformationMethod(start, end)
-        }
+    fun isSecureText(isSecure: Boolean) {
+        view.transformationMethod = if (isSecure) secureTextTransformMethod else null
+    }
+
+    /**
+     * Used to determinate which part of text should be secured.
+     *
+     * @param range part that should be secured.
+     * @param options additional options.
+     */
+    fun setSecureTextRange(range: IntRange, options: VGSSecureTextOptions) {
+        this.secureTextTransformMethod = SecureTransformationMethod(range, options)
     }
 
     /**
@@ -418,6 +424,11 @@ class VGSTextView @JvmOverloads constructor(
 
     @VisibleForTesting
     internal fun getChildView() = view
+
+    internal data class VGSTransformationRegex(
+        val regex: Regex,
+        val replacement: String
+    )
 
     class VGSTextViewState : BaseSavedState {
 

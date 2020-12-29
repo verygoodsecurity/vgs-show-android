@@ -140,6 +140,12 @@
     <!-- Sets the text color, size, style etc.-->
     <attr name="textAppearance" format="reference" />
 
+    <attr name="isSecureText" format="boolean"/>
+
+    <attr name="secureTextStart" format="integer"/>
+
+    <attr name="secureTextEnd" format="integer"/>
+
     <declare-styleable name="VGSView">
 
         <attr name="contentPath" />
@@ -162,5 +168,8 @@
         <attr name="inputType" />
         <attr name="textAppearance" />
 
+        <attr name="isSecureText"/>
+        <attr name="secureTextStart"/>
+        <attr name="secureTextEnd"/>
     </declare-styleable>
 </resources>
