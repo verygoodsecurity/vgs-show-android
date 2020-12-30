@@ -1,14 +1,24 @@
 package com.verygoodsecurity.vgsshow.widget.view.textview.method
 
-class VGSSecureTextOptions private constructor(val ignoreTransformationRegex: Boolean) {
+private const val DEFAULT_SECURE_REPLACEMENT = '•'
+private const val DEFAULT_IGNORE_TRANSFORMATION_REGEX = true
+
+class VGSSecureTextOptions private constructor(
+    val secureSymbol: Char,
+    val ignoreTransformationRegex: Boolean
+) {
 
     class Builder {
 
-        private var ignoreTransformationRegex: Boolean = false
+        private var secureSymbol: Char = DEFAULT_SECURE_REPLACEMENT
 
-        fun isIgnoreTransformationRegex(isIgnore: Boolean) =
+        private var ignoreTransformationRegex: Boolean = DEFAULT_IGNORE_TRANSFORMATION_REGEX
+
+        fun setSecureSymbol(secureSymbol: Char) = apply { this.secureSymbol = secureSymbol }
+
+        fun setIsIgnoreTransformationRegex(isIgnore: Boolean) =
             apply { this.ignoreTransformationRegex = isIgnore }
 
-        fun build() = VGSSecureTextOptions(ignoreTransformationRegex)
+        fun build() = VGSSecureTextOptions(secureSymbol, ignoreTransformationRegex)
     }
 }

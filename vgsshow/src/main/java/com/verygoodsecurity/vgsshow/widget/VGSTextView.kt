@@ -60,10 +60,9 @@ class VGSTextView @JvmOverloads constructor(
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSecureTextRange(
-                IntRange(
-                    getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
-                    getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
-                ), VGSSecureTextOptions.Builder().build()
+                getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
+                getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE),
+                VGSSecureTextOptions.Builder().build()
             )
             isSecureText(getBoolean(R.styleable.VGSTextView_isSecureText, false))
 
@@ -348,8 +347,8 @@ class VGSTextView @JvmOverloads constructor(
      * @param range part that should be secured.
      * @param options additional options.
      */
-    fun setSecureTextRange(range: IntRange, options: VGSSecureTextOptions) {
-        this.secureTextTransformMethod = SecureTransformationMethod(range, options)
+    fun setSecureTextRange(start: Int, end: Int, options: VGSSecureTextOptions) {
+        this.secureTextTransformMethod = SecureTransformationMethod(IntRange(start, end), options)
     }
 
     /**

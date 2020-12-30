@@ -6,7 +6,7 @@ import kotlin.math.min
 
 internal class SecureTransformationMethod(
     private val range: IntRange,
-    options: VGSSecureTextOptions
+    private val options: VGSSecureTextOptions
 ) : PasswordTransformationMethod() {
 
     private val regex: Regex = getPattern(options.ignoreTransformationRegex).toRegex()
@@ -21,10 +21,10 @@ internal class SecureTransformationMethod(
     }
 
     private fun getReplacedPart(source: CharSequence): String =
-        source.substring(first, last).replace(regex, SECURE_REPLACEMENT)
+        source.substring(first, last).replace(regex, options.secureSymbol.toString())
 
     private fun getPattern(ignoreTransformRegex: Boolean) =
-        if (ignoreTransformRegex) ANY_CHARACTERS_PATTERN else ONLY_LETTERS_AND_NUMBERS_PATTERN
+        if (ignoreTransformRegex) ONLY_LETTERS_AND_NUMBERS_PATTERN else ANY_CHARACTERS_PATTERN
 
     private fun getFirst(length: Int): Int =
         if (range.first in (0..min(range.last, length))) range.first else 0
@@ -37,8 +37,6 @@ internal class SecureTransformationMethod(
         private const val EMPTY = ""
 
         private const val ANY_CHARACTERS_PATTERN = "."
-        private const val ONLY_LETTERS_AND_NUMBERS_PATTERN = "[A-Z0-9]"
-
-        private const val SECURE_REPLACEMENT = "•"
+        private const val ONLY_LETTERS_AND_NUMBERS_PATTERN = "[a-zA-Z0-9]"
     }
 }

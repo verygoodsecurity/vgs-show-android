@@ -10,7 +10,7 @@ class SecureTransformationMethodTest {
     private val fullRange = IntRange(Int.MIN_VALUE, Int.MAX_VALUE)
     private val options = VGSSecureTextOptions.Builder().build()
     private val ignoreTransformationOptions =
-        VGSSecureTextOptions.Builder().isIgnoreTransformationRegex(true).build()
+        VGSSecureTextOptions.Builder().setIsIgnoreTransformationRegex(false).build()
 
     @Test
     fun test_1() {
@@ -126,6 +126,18 @@ class SecureTransformationMethodTest {
             .getTransformation(EXAMPLE_WITH_TRANSFORMATION, null)
 
         assertEquals("••••-••••-••••-••••", charSequence.toString())
+    }
+
+    @Test
+    fun test_14() {
+        val ignoreTransformationOptions = VGSSecureTextOptions.Builder()
+            .setIsIgnoreTransformationRegex(true)
+            .setSecureSymbol('*')
+            .build()
+        val charSequence = SecureTransformationMethod(fullRange, ignoreTransformationOptions)
+            .getTransformation(EXAMPLE_WITH_TRANSFORMATION, null)
+
+        assertEquals("****-****-****-****", charSequence.toString())
     }
 
     companion object {
