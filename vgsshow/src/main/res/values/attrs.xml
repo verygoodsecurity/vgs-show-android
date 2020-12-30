@@ -140,10 +140,13 @@
     <!-- Sets the text color, size, style etc.-->
     <attr name="textAppearance" format="reference" />
 
+    <!-- Determinate should text be replaced with special symbols. For ex. : 4111••••11111111-->
     <attr name="isSecureText" format="boolean"/>
 
+    <!-- Start of text that should be replaced with special symbols.-->
     <attr name="secureTextStart" format="integer"/>
 
+    <!-- End of text that should be replaced with special symbols.-->
     <attr name="secureTextEnd" format="integer"/>
 
     <declare-styleable name="VGSView">

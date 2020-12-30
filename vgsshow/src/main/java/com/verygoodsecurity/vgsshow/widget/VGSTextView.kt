@@ -344,7 +344,8 @@ class VGSTextView @JvmOverloads constructor(
     /**
      * Used to determinate which part of text should be secured.
      *
-     * @param range part that should be secured.
+     * @param start start of text that should be secured.
+     * @param end end of text that should be secured.
      * @param options additional options.
      */
     fun setSecureTextRange(start: Int, end: Int, options: VGSSecureTextOptions) {
