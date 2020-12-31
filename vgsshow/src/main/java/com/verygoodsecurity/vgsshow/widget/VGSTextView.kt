@@ -375,6 +375,13 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
+     * Check if text is empty.
+     *
+     * @return true if empty, false otherwise.
+     */
+    fun isEmpty() = rawText.isNullOrEmpty()
+
+    /**
      * Sets the text to be displayed.
      *
      * @param text text to be displayed
