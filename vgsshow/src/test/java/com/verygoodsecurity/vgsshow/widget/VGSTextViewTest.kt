@@ -200,4 +200,12 @@ class VGSTextViewTest {
         assertEquals(RESULT, view.getChildView().text.toString())
     }
 
+    @Test
+    fun clearText() {
+        view.setText("4111111111111111")
+
+        view.clearText()
+
+        assertTrue(view.getChildView().text.isEmpty())
+    }
 }
