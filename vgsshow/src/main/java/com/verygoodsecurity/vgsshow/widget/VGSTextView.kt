@@ -28,6 +28,7 @@ import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
+import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureRange
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureTextOptions
 
 /**
@@ -38,6 +39,15 @@ class VGSTextView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : VGSView<AppCompatTextView>(context, attrs, defStyleAttr) {
+
+    /**
+     * Used to determinate should text be replaced with special symbols. For ex. : 4111••••11111111
+     */
+    var isSecureText: Boolean = false
+        set(value) {
+            view.transformationMethod = if (value) secureTextTransformMethod else null
+            field = value
+        }
 
     private var rawText: String? = null
     private val transformations = mutableListOf<VGSTransformationRegex>()
@@ -60,11 +70,12 @@ class VGSTextView @JvmOverloads constructor(
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSecureTextRange(
-                getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
-                getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
+                VGSSecureRange(
+                    getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
+                    getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
+                )
             )
-            setIsSecureText(getBoolean(R.styleable.VGSTextView_isSecureText, false))
-
+            isSecureText = getBoolean(R.styleable.VGSTextView_isSecureText, false)
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
             if (isLollipopOrGreater) {
@@ -332,20 +343,18 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * Used to determinate should text be replaced with special symbols. For ex. : 4111••••11111111
+     * Used to determinate which part of text should be secured.
      *
-     * @param isSecure true if should be secured.
+     * @param start start of text that should be secured.
+     * @param end end of text that should be secured.
+     * @param options additional options.
      */
-    fun setIsSecureText(isSecure: Boolean) {
-        view.transformationMethod = if (isSecure) secureTextTransformMethod else null
+    fun setSecureTextRange(
+        range: VGSSecureRange,
+        options: VGSSecureTextOptions = VGSSecureTextOptions.Builder().build()
+    ) {
+        this.secureTextTransformMethod = SecureTransformationMethod(arrayOf(range), options)
     }
-
-    /**
-     * Check is secure text applied or not.
-     *
-     * @return true if text secured.
-     */
-    fun isSecureText() = view.transformationMethod == secureTextTransformMethod
 
     /**
      * Used to determinate which part of text should be secured.
@@ -355,11 +364,10 @@ class VGSTextView @JvmOverloads constructor(
      * @param options additional options.
      */
     fun setSecureTextRange(
-        start: Int,
-        end: Int,
+        ranges: Array<VGSSecureRange>,
         options: VGSSecureTextOptions = VGSSecureTextOptions.Builder().build()
     ) {
-        this.secureTextTransformMethod = SecureTransformationMethod(IntRange(start, end), options)
+        this.secureTextTransformMethod = SecureTransformationMethod(ranges, options)
     }
 
     /**

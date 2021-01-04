@@ -5,38 +5,35 @@ import android.view.View
 import kotlin.math.min
 
 internal class SecureTransformationMethod(
-    private val range: IntRange,
+    private val ranges: Array<VGSSecureRange>,
     private val options: VGSSecureTextOptions
 ) : PasswordTransformationMethod() {
 
-    private val regex: Regex = getPattern(options.ignoreTransformationRegex).toRegex()
-
-    private var first: Int = range.first
-    private var last: Int = range.last
+    private val regex: Regex = ANY_CHARACTERS_PATTERN.toRegex()
 
     override fun getTransformation(source: CharSequence?, view: View?): CharSequence {
-        first = getFirst(source?.length ?: 0)
-        last = getLast(source?.length ?: 0)
-        return source?.replaceRange(first, last, getReplacedPart(source)) ?: EMPTY
+        var result = source ?: return EMPTY
+        ranges.forEach {
+            val first = getFirst(it, result.length)
+            val last = getLast(it, result.length)
+            result = result.replaceRange(first, last, getReplacedPart(first, last, result))
+        }
+        return result
     }
 
-    private fun getReplacedPart(source: CharSequence): String =
-        source.substring(first, last).replace(regex, options.secureSymbol.toString())
+    private fun getReplacedPart(start: Int, end: Int, source: CharSequence): String =
+        source.substring(start, end).replace(regex, options.secureSymbol.toString())
 
-    private fun getPattern(ignoreTransformRegex: Boolean) =
-        if (ignoreTransformRegex) ONLY_LETTERS_AND_NUMBERS_PATTERN else ANY_CHARACTERS_PATTERN
+    private fun getFirst(range: VGSSecureRange, length: Int): Int =
+        if (range.start in (0..min(range.end, length))) range.start else 0
 
-    private fun getFirst(length: Int): Int =
-        if (range.first in (0..min(range.last, length))) range.first else 0
-
-    private fun getLast(length: Int): Int =
-        if (range.last in range.first..length) range.last else length
+    private fun getLast(range: VGSSecureRange, length: Int): Int =
+        if (range.end in range.start..length) range.end else length
 
     companion object {
 
         private const val EMPTY = ""
 
         private const val ANY_CHARACTERS_PATTERN = "."
-        private const val ONLY_LETTERS_AND_NUMBERS_PATTERN = "[a-zA-Z0-9]"
     }
 }
