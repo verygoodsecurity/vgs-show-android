@@ -382,6 +382,14 @@ class VGSTextView @JvmOverloads constructor(
     fun isEmpty() = rawText.isNullOrEmpty()
 
     /**
+     * Clear revealed text. Note: This action can't be reverted.
+     */
+    fun clearText() {
+        setText("")
+        rawText = null
+    }
+
+    /**
      * Sets the text to be displayed.
      *
      * @param text text to be displayed
