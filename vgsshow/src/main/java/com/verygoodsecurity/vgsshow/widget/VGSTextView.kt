@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
-import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureRange
+import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureTextRange
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.VGSSecureTextOptions
 
 /**
@@ -70,7 +70,7 @@ class VGSTextView @JvmOverloads constructor(
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSecureTextRange(
-                VGSSecureRange(
+                VGSSecureTextRange(
                     getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
                     getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
                 )
@@ -350,7 +350,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param options additional options.
      */
     fun setSecureTextRange(
-        range: VGSSecureRange,
+        range: VGSSecureTextRange,
         options: VGSSecureTextOptions = VGSSecureTextOptions.Builder().build()
     ) {
         this.secureTextTransformMethod = SecureTransformationMethod(arrayOf(range), options)
@@ -364,7 +364,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param options additional options.
      */
     fun setSecureTextRange(
-        ranges: Array<VGSSecureRange>,
+        ranges: Array<VGSSecureTextRange>,
         options: VGSSecureTextOptions = VGSSecureTextOptions.Builder().build()
     ) {
         this.secureTextTransformMethod = SecureTransformationMethod(ranges, options)

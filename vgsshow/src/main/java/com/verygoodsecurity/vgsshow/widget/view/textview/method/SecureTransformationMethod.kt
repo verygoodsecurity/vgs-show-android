@@ -5,7 +5,7 @@ import android.view.View
 import kotlin.math.min
 
 internal class SecureTransformationMethod(
-    private val ranges: Array<VGSSecureRange>,
+    private val ranges: Array<VGSSecureTextRange>,
     private val options: VGSSecureTextOptions
 ) : PasswordTransformationMethod() {
 
@@ -24,10 +24,10 @@ internal class SecureTransformationMethod(
     private fun getReplacedPart(start: Int, end: Int, source: CharSequence): String =
         source.substring(start, end).replace(regex, options.secureSymbol.toString())
 
-    private fun getFirst(range: VGSSecureRange, length: Int): Int =
+    private fun getFirst(range: VGSSecureTextRange, length: Int): Int =
         if (range.start in (0..min(range.end, length))) range.start else 0
 
-    private fun getLast(range: VGSSecureRange, length: Int): Int =
+    private fun getLast(range: VGSSecureTextRange, length: Int): Int =
         if (range.end in range.start..length) range.end else length
 
     companion object {
