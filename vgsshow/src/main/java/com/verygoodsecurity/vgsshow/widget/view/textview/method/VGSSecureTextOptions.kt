@@ -25,7 +25,7 @@ class VGSSecureTextOptions private constructor(
         fun setSecureSymbol(secureSymbol: Char) = apply { this.secureSymbol = secureSymbol }
 
         /**
-         * Decline should transformation regex be ignored by secure transformation or not
+         * Determine should be ignored transformation regex or not.
          *
          * @param isIgnore true if should be ignore and all symbols should be secured, false otherwise.
          */
