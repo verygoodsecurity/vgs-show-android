@@ -128,12 +128,12 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
             revealData()
         }
         applyResetPasswordType?.setOnClickListener {
-            if (number.isPasswordInputType()) {
-                number.setInputType(EditorInfo.TYPE_NULL)
-                applyResetPasswordType?.text = "Set password"
+            if (number.isSecureText()) {
+                number.setIsSecureText(false)
+                applyResetPasswordType?.text = "Set secure"
             } else {
-                number.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                applyResetPasswordType?.text = "Reset password"
+                number.setIsSecureText(true)
+                applyResetPasswordType?.text = "Reset secure"
             }
         }
     }
