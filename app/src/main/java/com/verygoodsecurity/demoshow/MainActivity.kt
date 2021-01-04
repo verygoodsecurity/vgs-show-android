@@ -1,10 +1,8 @@
 package com.verygoodsecurity.demoshow
 
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod

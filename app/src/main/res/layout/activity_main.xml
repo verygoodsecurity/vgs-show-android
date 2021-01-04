@@ -150,7 +150,6 @@
             app:contentPath="json.payment_card_number"
             app:hint="Card number"
             app:hintTextColor="@color/colorPrimary"
-            app:inputType="text"
             app:textColor="@color/colorPrimaryDark"
             app:textSize="16dp"
             tools:ignore="SpUsage" />
