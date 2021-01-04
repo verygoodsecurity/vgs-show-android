@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="Set password"
+            android:text="Set secure"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             app:backgroundTint="#5c6b7a"

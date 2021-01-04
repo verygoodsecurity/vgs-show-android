@@ -98,11 +98,11 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         showVgs.subscribe(number)
         showVgs.subscribe(expiration)
 
-        number.addTransformationRegex(
+        number?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        number.addTransformationRegex("-".toRegex(), " - ")
+        number?.addTransformationRegex("-".toRegex(), " - ")
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
@@ -126,11 +126,11 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
             revealData()
         }
         applyResetPasswordType?.setOnClickListener {
-            if (number.isSecureText()) {
-                number.setIsSecureText(false)
+            if (number.isSecureText) {
+                number.isSecureText = false
                 applyResetPasswordType?.text = "Set secure"
             } else {
-                number.setIsSecureText(true)
+                number.isSecureText = true
                 applyResetPasswordType?.text = "Reset secure"
             }
         }
