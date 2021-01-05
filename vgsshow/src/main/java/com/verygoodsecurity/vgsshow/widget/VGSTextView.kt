@@ -49,7 +49,7 @@ class VGSTextView @JvmOverloads constructor(
     /**
      * Symbol that will be used as replacement for secured text.
      */
-    var secureSymbol: Char = SECURE_SYMBOL
+    var secureTextSymbol: Char = SECURE_SYMBOL
         set(value) {
             this.secureTextTransformMethod.secureSymbol = value
             if (isSecureText) updateTransformationMethod(secureTextTransformMethod)
@@ -82,7 +82,7 @@ class VGSTextView @JvmOverloads constructor(
                     getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
                 )
             )
-            secureSymbol = getChar(R.styleable.VGSTextView_secureTextSymbol, SECURE_SYMBOL)
+            secureTextSymbol = getChar(R.styleable.VGSTextView_secureTextSymbol, SECURE_SYMBOL)
             isSecureText = getBoolean(R.styleable.VGSTextView_isSecureText, false)
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
@@ -365,7 +365,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param ranges array of ranges of text that should be secured.
      */
     fun setSecureTextRange(ranges: Array<VGSTextRange>) {
-        this.secureTextTransformMethod = SecureTransformationMethod(secureSymbol, ranges)
+        this.secureTextTransformMethod = SecureTransformationMethod(secureTextSymbol, ranges)
         if (isSecureText) updateTransformationMethod(secureTextTransformMethod)
     }
 
