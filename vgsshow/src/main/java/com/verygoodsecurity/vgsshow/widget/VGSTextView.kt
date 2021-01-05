@@ -82,7 +82,7 @@ class VGSTextView @JvmOverloads constructor(
                     getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
                 )
             )
-            secureSymbol = getChar(R.styleable.VGSTextView_secureSymbol, SECURE_SYMBOL)
+            secureSymbol = getChar(R.styleable.VGSTextView_secureTextSymbol, SECURE_SYMBOL)
             isSecureText = getBoolean(R.styleable.VGSTextView_isSecureText, false)
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 

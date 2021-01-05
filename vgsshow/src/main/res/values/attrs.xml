@@ -150,7 +150,7 @@
     <attr name="secureTextEnd" format="integer"/>
 
     <!-- Symbol that will be used as replacement for secured text.-->
-    <attr name="secureSymbol" format="string"/>
+    <attr name="secureTextSymbol" format="string"/>
 
     <declare-styleable name="VGSView">
 
@@ -177,6 +177,6 @@
         <attr name="isSecureText"/>
         <attr name="secureTextStart"/>
         <attr name="secureTextEnd"/>
-        <attr name="secureSymbol"/>
+        <attr name="secureTextSymbol"/>
     </declare-styleable>
 </resources>
