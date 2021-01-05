@@ -149,6 +149,9 @@
     <!-- End of text that should be replaced with special symbols.-->
     <attr name="secureTextEnd" format="integer"/>
 
+    <!-- Symbol that will be used as replacement for secured text.-->
+    <attr name="secureSymbol" format="string"/>
+
     <declare-styleable name="VGSView">
 
         <attr name="contentPath" />
@@ -174,5 +177,6 @@
         <attr name="isSecureText"/>
         <attr name="secureTextStart"/>
         <attr name="secureTextEnd"/>
+        <attr name="secureSymbol"/>
     </declare-styleable>
 </resources>

@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -126,11 +127,11 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
             revealData()
         }
         applyResetPasswordType?.setOnClickListener {
-            if (number.isSecureText) {
-                number.isSecureText = false
+            if (number?.isSecureText == true) {
+                number?.isSecureText = false
                 applyResetPasswordType?.text = "Set secure"
             } else {
-                number.isSecureText = true
+                number?.isSecureText = true
                 applyResetPasswordType?.text = "Reset secure"
             }
         }
