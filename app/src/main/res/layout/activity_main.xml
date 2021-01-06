@@ -24,7 +24,6 @@
             android:visibility="gone" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardNumberLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundModes="outline"
@@ -59,7 +58,6 @@
             android:singleLine="true" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/expDateLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
