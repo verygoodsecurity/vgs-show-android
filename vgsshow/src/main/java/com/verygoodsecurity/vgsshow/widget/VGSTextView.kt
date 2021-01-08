@@ -78,7 +78,7 @@ class VGSTextView @JvmOverloads constructor(
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSecureTextRange(
                 VGSTextRange(
-                    getInt(R.styleable.VGSTextView_secureTextStart, Int.MIN_VALUE),
+                    getInt(R.styleable.VGSTextView_secureTextStart, 0),
                     getInt(R.styleable.VGSTextView_secureTextEnd, Int.MAX_VALUE)
                 )
             )

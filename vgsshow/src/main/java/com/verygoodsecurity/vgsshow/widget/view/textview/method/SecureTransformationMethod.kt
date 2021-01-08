@@ -17,15 +17,35 @@ internal class SecureTransformationMethod(
             if (!range.isValid(result.length)) {
                 continue
             }
-            val first = range.getStart()
-            val last = range.getEnd(result.length)
-            result = result.replaceRange(first, last, getReplacedPart(first, last, result))
+            if(result.isNotEmpty()) {
+                result = replaceRange(range, result)
+            }
         }
         return result
     }
 
-    private fun getReplacedPart(start: Int, end: Int, source: CharSequence): String =
-        source.substring(start, end).replace(regex, secureSymbol.toString())
+    private fun replaceRange(range: VGSTextRange, source: CharSequence): CharSequence {
+        val first = range.start
+        val last = if (range.end > source.length) source.length else range.end.inc()
+
+        return source.replaceRange(
+            first,
+            last,
+            getReplacedPart(
+                first,
+                last,
+                source
+            )
+        )
+    }
+
+    private fun getReplacedPart(start: Int, end: Int, source: CharSequence): String {
+        return if (end > source.length) {
+            source.substring(start, source.length).replace(regex, secureSymbol.toString())
+        } else {
+            source.substring(start, end).replace(regex, secureSymbol.toString())
+        }
+    }
 
     companion object {
 
