@@ -56,24 +56,12 @@ class VGSTextRangeTest {
     @Test
     fun isValid_endGreaterThanLength_endAsLengthExpected() {
         val range = VGSTextRange(0, 100)
-        assertEquals(range.getEnd(4), 4)
-    }
-
-    @Test
-    fun isValid_correctParams_endAsLengthExpected() {
-        val range = VGSTextRange(0, 5)
-        assertEquals(range.getEnd(6), 6)
-    }
-
-    @Test
-    fun isValid_equalStartEndSmallerThanLength_endPlusOneExpected() {
-        val range = VGSTextRange(0, 0)
-        assertEquals(range.getEnd(6), 1)
+        assertEquals(range.end, 100)
     }
 
     @Test
     fun isValid_startCorrect_startReturned() {
         val range = VGSTextRange(0, 4)
-        assertEquals(range.getStart(), 0)
+        assertEquals(range.start, 0)
     }
 }

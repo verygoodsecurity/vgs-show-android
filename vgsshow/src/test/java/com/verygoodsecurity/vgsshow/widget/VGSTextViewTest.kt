@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -207,5 +208,17 @@ class VGSTextViewTest {
         view.clearText()
 
         assertTrue(view.getChildView().text.isEmpty())
+    }
+
+    @Test
+    fun setIsSecureText() {
+        view.isSecureText = true
+        assertTrue(view.isSecureText)
+
+        view.isSecureText = false
+        assertFalse(view.isSecureText)
+
+        view.isSecureText = true
+        assertTrue(view.isSecureText)
     }
 }

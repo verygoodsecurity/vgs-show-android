@@ -131,6 +131,37 @@ class SecureTransformationMethodTest {
         assertEquals("", charSequence.toString())
     }
 
+    @Test
+    fun test_14() {
+        val range = VGSTextRange(0, 0)
+        val rangeTwo = VGSTextRange(0, 0)
+        val charSequence = SecureTransformationMethod('#', arrayOf(range, rangeTwo))
+            .getTransformation(EXAMPLE, null)
+
+        assertEquals("#242424242424242", charSequence.toString())
+    }
+
+    @Test
+    fun test_15() {
+        val range1 = VGSTextRange(end = 0)
+        val charSequence1 = SecureTransformationMethod('#', arrayOf(range1))
+            .getTransformation(EXAMPLE, null)
+
+        assertEquals("#242424242424242", charSequence1.toString())
+
+        val range2 = VGSTextRange(2,2)
+        val charSequence2 = SecureTransformationMethod('#', arrayOf(range2))
+            .getTransformation(EXAMPLE, null)
+
+        assertEquals("42#2424242424242", charSequence2.toString())
+
+        val range3 = VGSTextRange()
+        val charSequence3 = SecureTransformationMethod('#', arrayOf(range3))
+            .getTransformation(EXAMPLE, null)
+
+        assertEquals("################", charSequence3.toString())
+    }
+
     companion object {
         private const val EXAMPLE = "4242424242424242"
     }
