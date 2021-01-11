@@ -152,7 +152,6 @@
             app:contentPath="json.payment_card_number"
             app:hint="Card number"
             app:hintTextColor="@color/colorPrimary"
-            app:inputType="text"
             app:textColor="@color/colorPrimaryDark"
             app:textSize="16dp"
             tools:ignore="SpUsage" />
@@ -188,7 +187,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="Set password"
+            android:text="Set secure"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             app:backgroundTint="#5c6b7a"
