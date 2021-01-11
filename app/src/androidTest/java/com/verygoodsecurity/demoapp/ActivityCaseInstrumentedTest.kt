@@ -70,7 +70,7 @@ class ActivityCaseInstrumentedTest {
         pauseTestFor(3000)
 
         revealedCardNumber.check(SecureTextCheck(CARD_NUMBER_RESULT))
-//        revealedCardExpDate.check(SecureTextCheck(CARD_EXP_DATE))
+        revealedCardExpDate.check(SecureTextCheck(CARD_EXP_DATE))
     }
 
     private fun interactWithCardNumberInput(): ViewInteraction {
