@@ -1,4 +1,4 @@
-version: 2.2
+version: 2.1
 aliases:
   - &restore_gem_cache
     name: Restore cache
