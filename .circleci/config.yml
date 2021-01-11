@@ -40,6 +40,7 @@ aliases:
         name: Run Unit Tests
         command: ./gradlew testDebugUnitTest
 
+
   - &assembleDebug
     - checkout
     - *attach_workspace
@@ -50,16 +51,6 @@ aliases:
         path: app/build/outputs/apk/debug/app-debug.apk
         destination: app-debug.apk
 
-  - &upload_apk_to_browserStack
-    - checkout
-    - *attach_workspace
-    - run:
-        name: Upload apk
-        command: |
-          UPLOAD_STATUS=$(curl -u "dmytrodmytryshyn1:DyKfpdxjcn5Fh9B324VB" \
-                      -X POST "https://api-cloud.browserstack.com/app-automate/espresso/v2/app" \
-                      -F "file=@app/build/outputs/apk/debug/app-debug.apk")
-          echo "Upload status: $UPLOAD_STATUS"
 
   - &deploy_environment
     working_directory: ~/code
@@ -107,11 +98,6 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps: *assembleDebug
 
-  "Upload_apk_to_browserStack":
-    <<: *test_environment
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps: *upload_apk_to_browserStack
 
 workflows:
   version: 2.1
@@ -127,6 +113,3 @@ workflows:
       - "Assemble_Debug_Build":
           requires:
             *all_test
-      - "Upload_apk_to_browserStack":
-          requires:
-            *assembleDebug
