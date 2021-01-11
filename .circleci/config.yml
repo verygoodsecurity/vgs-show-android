@@ -127,6 +127,6 @@ workflows:
       - "Assemble_Debug_Build":
           requires:
             *all_test
-      - "Assemble_Debug_Build":
+      - "Upload_apk_to_browserStack":
           requires:
             *assembleDebug
