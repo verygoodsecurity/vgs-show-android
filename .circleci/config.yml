@@ -128,3 +128,5 @@ workflows:
           requires:
             *all_test
       - "Assemble_Debug_Build":
+          requires:
+            *assembleDebug
