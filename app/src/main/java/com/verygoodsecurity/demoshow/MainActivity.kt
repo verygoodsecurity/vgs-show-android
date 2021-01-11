@@ -1,10 +1,8 @@
 package com.verygoodsecurity.demoshow
 
 import android.os.Bundle
-import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -16,6 +14,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -100,11 +99,11 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         showVgs.subscribe(number)
         showVgs.subscribe(expiration)
 
-        number.addTransformationRegex(
+        number?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        number.addTransformationRegex("-".toRegex(), " - ")
+        number?.addTransformationRegex("-".toRegex(), " - ")
 
         number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
@@ -128,12 +127,12 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
             revealData()
         }
         applyResetPasswordType?.setOnClickListener {
-            if (number.isPasswordInputType()) {
-                number.setInputType(EditorInfo.TYPE_NULL)
-                applyResetPasswordType?.text = "Set password"
+            if (number?.isSecureText == true) {
+                number?.isSecureText = false
+                applyResetPasswordType?.text = "Set secure"
             } else {
-                number.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                applyResetPasswordType?.text = "Reset password"
+                number?.isSecureText = true
+                applyResetPasswordType?.text = "Reset secure"
             }
         }
     }
