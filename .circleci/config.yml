@@ -69,7 +69,6 @@ aliases:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
-        -
   - &test_environment
     working_directory: ~/code
     docker:
