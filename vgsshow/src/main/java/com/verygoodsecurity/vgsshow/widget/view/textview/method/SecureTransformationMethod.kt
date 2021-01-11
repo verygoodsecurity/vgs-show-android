@@ -17,9 +17,7 @@ internal class SecureTransformationMethod(
             if (!range.isValid(result.length)) {
                 continue
             }
-            if(result.isNotEmpty()) {
-                result = replaceRange(range, result)
-            }
+            result = replaceRange(range, result)
         }
         return result
     }
@@ -27,24 +25,8 @@ internal class SecureTransformationMethod(
     private fun replaceRange(range: VGSTextRange, source: CharSequence): CharSequence {
         val first = range.start
         val last = if (range.end > source.length) source.length else range.end.inc()
-
-        return source.replaceRange(
-            first,
-            last,
-            getReplacedPart(
-                first,
-                last,
-                source
-            )
-        )
-    }
-
-    private fun getReplacedPart(start: Int, end: Int, source: CharSequence): String {
-        return if (end > source.length) {
-            source.substring(start, source.length).replace(regex, secureSymbol.toString())
-        } else {
-            source.substring(start, end).replace(regex, secureSymbol.toString())
-        }
+        val replacePart = source.substring(first, last).replace(regex, secureSymbol.toString())
+        return source.replaceRange(first, last, replacePart)
     }
 
     companion object {
