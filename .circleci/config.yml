@@ -58,7 +58,7 @@ aliases:
         command: |
           UPLOAD_STATUS=$(curl -u "dmytrodmytryshyn1:DyKfpdxjcn5Fh9B324VB" \
                       -X POST "https://api-cloud.browserstack.com/app-automate/espresso/v2/app" \
-                      -F "file=@app/build/outputs/apk/debug/app-debug.apk")
+                      -F "file=@$CIRCLE_ARTIFACTS/apk/app-debug.apk")
           echo "Upload status: $UPLOAD_STATUS"
 
   - &deploy_environment
