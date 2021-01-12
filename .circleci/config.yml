@@ -61,7 +61,7 @@ jobs:
               exit 1;
             fi
       - run:
-          name: BrowserStack - execute espresso test.
+          name: BrowserStack - execute UI test.
           command: |
             RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Samsung Galaxy S6-5.0\", \"Google Nexus 6-6.0\", \"Google Pixel-7.1\", \"Google Pixel 2-8.0\", \"Google Pixel 3-9.0\", \"Google Pixel 3-10.0\", \"Google Pixel 5-11.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
             echo "RESPONSE :  " + $RESPONSE;
