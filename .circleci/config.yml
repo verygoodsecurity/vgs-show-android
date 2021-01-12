@@ -61,9 +61,7 @@ aliases:
     - *attach_workspace
     - run:
         name: Upload build
-        command: |
-          echo "Apk uploaded to BrowserStack with app id", $BASH_ENV;
-          fi
+        command: echo "Apk uploaded to BrowserStack with app id"
 
   # dependency groups
   - &prepare_sources
