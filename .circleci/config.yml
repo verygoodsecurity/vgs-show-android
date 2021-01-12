@@ -19,17 +19,20 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
   lintChecks:
-    - run:
-        name: Run Lint
-        command: ./gradlew lintDebug
+    steps:
+      - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
   untiTests:
-    - run:
-        name: Run Unit tests
-        command: ./gradlew testDebugUnitTest
+    steps:
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
   build:
-    - run:
-        name: Generate apk
-        command: ./gradlew assembleDebug assembleAndroidTest
+    steps:
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug assembleAndroidTest
   brawserStack:
     steps:
       - run:
