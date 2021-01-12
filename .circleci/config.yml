@@ -98,7 +98,6 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps: *assembleDebug
 
-
 workflows:
   version: 2.1
   main:
