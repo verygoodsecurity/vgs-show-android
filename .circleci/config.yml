@@ -32,9 +32,7 @@ jobs:
       - run:
           name: Browserstack - upload app and set app url in environment variable.
           command: |
-            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload
-            -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
-            -F "file=@app/build/outputs/apk/debug/app-debug.apk");
+            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/debug/app-debug.apk");
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
             APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
             if [ $APP_URL != null ]; then
@@ -52,9 +50,7 @@ jobs:
       - run:
           name: Browserstack - upload app and set test app url in environment variable.
           command: |
-            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite"
-              -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
-              -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
+            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
             TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url");
             if [ $TEST_URL != null ]; then
@@ -72,10 +68,7 @@ jobs:
       - run:
           name: Browserstack - execute espresso test.
           command: |
-            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build"
-              -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
-              -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}"
-              -H "Content-Type: application/json");
+            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
             echo "RESPONSE :  " + $RESPONSE;
             MESSAGE=$(echo $RESPONSE | jq -r ".message");
             if [ MESSAGE == "Success" ]; then
