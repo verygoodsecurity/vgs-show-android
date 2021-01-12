@@ -19,21 +19,41 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
   lintChecks:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
   untiTests:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - run:
           name: Run Unit tests
           command: ./gradlew testDebugUnitTest
   build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
   brawserStack:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - run:
           name: BrowserStack - upload app and set app url in environment variable.
