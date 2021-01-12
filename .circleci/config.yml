@@ -69,7 +69,7 @@ jobs:
           name: Browserstack - execute espresso test.
           command: |
             RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_ID\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_APP_TEST_ID\"}" -H "Content-Type: application/json" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd")
-            echo "RESPONSE :  " + RESPONSE
+            echo "RESPONSE :  " + $RESPONSE
             MESSAGE=$(echo RESPONSE | jq -r ".message")
             BUULD_ID=$(echo RESPONSE | jq -r ".build_id")
             if [ MESSAGE == "Success" ]; then
