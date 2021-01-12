@@ -19,15 +19,15 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-#      - run:
-#          name: Run Lint
-#          command: ./gradlew lintDebug
+      - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
-#      - run:
-#          name: Run Unit tests
-#          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
       - run:
           name: BrowserStack - upload app and set app url in environment variable.
           command: |
