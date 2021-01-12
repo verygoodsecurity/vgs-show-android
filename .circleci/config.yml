@@ -107,16 +107,16 @@ workflows:
   main:
     jobs:
       - prepare
-      - lintChecks:
-          requires:
-            - prepare
-      - untiTests:
-          requires:
-            - prepare
-      - build:
-          - requires:
-              - lintChecks
-              - untiTests
-      - brawserStack:
-          requires:
-            - build
+#      - lintChecks:
+#          requires:
+#            - prepare
+#      - untiTests:
+#          requires:
+#            - prepare
+#      - build:
+#          - requires:
+#              - lintChecks
+#              - untiTests
+#      - brawserStack:
+#          requires:
+#            - build
