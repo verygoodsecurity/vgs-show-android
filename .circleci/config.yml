@@ -47,7 +47,7 @@ jobs:
           command: |
             APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
-            APP_TESTS_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url")
+            APP_TESTS_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url")
             if [ APP_TESTS_ID != null ]; then
               echo "Apk uploaded to BrowserStack with app id : ",APP_TESTS_ID;
               echo "export BROWSERSTACK_APP_TEST_ID=APP_TESTS_ID" >> $BASH_ENV;
