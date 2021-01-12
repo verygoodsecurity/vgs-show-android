@@ -39,7 +39,7 @@ jobs:
               echo "Apk uploaded to BrowserStack with app id : ",$APP_ID;
               echo "export BROWSERSTACK_APP_ID=$APP_ID" >> $BASH_ENV;
               source $BASH_ENV;
-              echo "Setting value of BROWSERSTACK_APP_ID in environment variables to  ",$APP_ID;
+              echo "Setting value of BROWSERSTACK_APP_ID in environment variables to ",$APP_ID;
             else
               UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error")
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
@@ -57,7 +57,7 @@ jobs:
               echo "Apk uploaded to BrowserStack with app id : ",APP_TESTS_ID;
               echo "export BROWSERSTACK_APP_TEST_ID=APP_TESTS_ID" >> $BASH_ENV;
               source $BASH_ENV;
-              echo "Setting value of BROWSERSTACK_APP_TEST_ID in environment variables to  ",APP_TESTS_ID;
+              echo "Setting value of BROWSERSTACK_APP_TEST_ID in environment variables to ",APP_TESTS_ID;
             else
               UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error")
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
@@ -68,12 +68,13 @@ jobs:
       - run:
           name: Browserstack - execute espresso test.
           command: |
+            echo "$BROWSERSTACK_APP_ID",$BROWSERSTACK_APP_ID;
+            echo "BROWSERSTACK_APP_TEST_ID",$BROWSERSTACK_APP_TEST_ID;
             RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_ID\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_APP_TEST_ID\"}" -H "Content-Type: application/json" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd")
             echo "RESPONSE :  " + $RESPONSE
             MESSAGE=$(echo RESPONSE | jq -r ".message")
-            BUULD_ID=$(echo RESPONSE | jq -r ".build_id")
             if [ MESSAGE == "Success" ]; then
-              echo "Esspresso tests triggered with build_id: ",BUULD_ID;
+              echo "Esspresso tests triggered with build_id: ",$(echo RESPONSE | jq -r ".build_id");
             else
               echo "Esspresso tests not triggered, reason : ",MESSAGE
               exit 1;
