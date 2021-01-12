@@ -23,6 +23,11 @@ jobs:
       # Generate apk
       - run: ./gradlew assembleDebug assembleAndroidTest
 
+      # run tests!
+      - run:
+          name: Run tests
+          command: ./gradlew test
+
       # Upload apk to BrowserStack and set app url in an environment variable.
       - run:
           name : App upload and Set app id in environment variable.
@@ -43,7 +48,7 @@ jobs:
 
       # Upload tests apk to BrowserStack and set app url in an environment variable.
       - run:
-          name: App upload and Set app id in environment variable.
+          name: App upload and Set test app id in environment variable.
           command: |
             APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
@@ -58,6 +63,3 @@ jobs:
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
               exit 1;
             fi
-
-      # run tests!
-      - run: ./gradlew test
