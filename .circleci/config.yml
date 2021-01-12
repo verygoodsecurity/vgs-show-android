@@ -62,7 +62,7 @@ aliases:
     - run:
         name: Upload build
         command: |
-          echo "Apk uploaded to BrowserStack with app id";
+          echo "Apk uploaded to BrowserStack with app id", $BASH_ENV;
           fi
 
   # dependency groups
