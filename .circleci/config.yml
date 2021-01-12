@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -27,7 +27,6 @@ jobs:
       - run: ./gradlew assembleDebug
 
       # Upload app to BrowserStack and set app url in an environment variable.
-      # Here replace browserstack_android_sample-debug.apk with name of your apk.
       - run:
           name : App upload and Set app id in environment variable.
           command : |
