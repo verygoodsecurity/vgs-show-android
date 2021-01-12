@@ -70,7 +70,7 @@ jobs:
           command: |
             echo "BROWSERSTACK_APP_URL",$BROWSERSTACK_APP_URL;
             echo "BROWSERSTACK_TEST_URL",$BROWSERSTACK_TEST_URL;
-            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_ID\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_APP_TEST_ID\"}" -H "Content-Type: application/json" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd")
+            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd")
             echo "RESPONSE :  " + $RESPONSE
             MESSAGE=$(echo RESPONSE | jq -r ".message")
             if [ MESSAGE == "Success" ]; then
