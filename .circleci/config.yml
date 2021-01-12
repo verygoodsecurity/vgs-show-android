@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  prepare:
+  build:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
@@ -19,47 +19,15 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-  lintChecks:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
-  unitTests:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
-      - run:
-          name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
-  build:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
-  brawserStack:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
       - run:
           name: BrowserStack - upload app and set app url in environment variable.
           command: |
@@ -67,14 +35,14 @@ jobs:
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
             APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
             if [ $APP_URL != null ]; then
-            echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
-            echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
-            source $BASH_ENV;
-            echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
+              echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
+              echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
+              source $BASH_ENV;
+              echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
             else
-            UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
-            echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
-            exit 1;
+              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
+              exit 1;
             fi
       - run:
           name: BrowserStack - upload app and set test app url in environment variable.
@@ -105,22 +73,3 @@ jobs:
               echo "Esspresso tests not triggered, reason : ",$MESSAGE;
               exit 1;
             fi
-
-workflows:
-  version: 2.1
-  main:
-    jobs:
-      - prepare
-      - lintChecks:
-          requires:
-            - prepare
-      - unitTests:
-          requires:
-            - prepare
-#      - build:
-#          - requires:
-#              - lintChecks
-#              - unitTests
-#      - brawserStack:
-#          requires:
-#            - build
