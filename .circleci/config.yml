@@ -71,8 +71,9 @@ jobs:
             RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
             echo "RESPONSE :  " + $RESPONSE;
             MESSAGE=$(echo $RESPONSE | jq -r ".message");
-            if [ MESSAGE == "Success" ]; then
-              echo "Esspresso tests triggered with build_id: ",$BROWSERSTACK_APP_URL;
+            if [ MESSAGE = "Success" ]; then
+              BUILD_ID=$(echo $RESPONSE | jq -r ".build_id");
+              echo "Esspresso tests triggered with build_id: ",$BUILD_ID;
             else
               echo "Esspresso tests not triggered, reason : ",$MESSAGE;
               exit 1;
