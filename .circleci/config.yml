@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
-  untiTests:
+  unitTests:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
@@ -107,16 +107,16 @@ workflows:
   main:
     jobs:
       - prepare
-#      - lintChecks:
-#          requires:
-#            - prepare
-#      - untiTests:
-#          requires:
-#            - prepare
+      - lintChecks:
+          requires:
+            - prepare
+      - unitTests:
+          requires:
+            - prepare
 #      - build:
 #          - requires:
 #              - lintChecks
-#              - untiTests
+#              - unitTests
 #      - brawserStack:
 #          requires:
 #            - build
