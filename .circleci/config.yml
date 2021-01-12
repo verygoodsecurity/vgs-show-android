@@ -32,17 +32,19 @@ jobs:
       - run:
           name: Browserstack - upload app and set app url in environment variable.
           command: |
-            APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@app/build/outputs/apk/debug/app-debug.apk")
-            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
-            APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url")
+            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload
+            -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
+            -F "file=@app/build/outputs/apk/debug/app-debug.apk");
+            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+            APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
             if [ $APP_URL != null ]; then
               echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
               echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
               source $BASH_ENV;
               echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
             else
-              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error")
-              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
+              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
               exit 1;
             fi
 
@@ -50,17 +52,19 @@ jobs:
       - run:
           name: Browserstack - upload app and set test app url in environment variable.
           command: |
-            APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
-            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
-            TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url")
+            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite"
+              -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
+              -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
+            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+            TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url");
             if [ $TEST_URL != null ]; then
               echo "Apk uploaded to BrowserStack with test test_url : ",$TEST_URL;
               echo "export BROWSERSTACK_TEST_URL=$TEST_URL" >> $BASH_ENV;
               source $BASH_ENV;
               echo "Setting value of BROWSERSTACK_TEST_URL in environment variables to ",TEST_URL;
             else
-              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error")
-              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
+              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
               exit 1;
             fi
 
@@ -68,11 +72,12 @@ jobs:
       - run:
           name: Browserstack - execute espresso test.
           command: |
-            echo "BROWSERSTACK_APP_URL",$BROWSERSTACK_APP_URL;
-            echo "BROWSERSTACK_TEST_URL",$BROWSERSTACK_TEST_URL;
-            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd")
-            echo "RESPONSE :  " + $RESPONSE
-            MESSAGE=$(echo RESPONSE | jq -r ".message")
+            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build"
+              -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd"
+              -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}"
+              -H "Content-Type: application/json");
+            echo "RESPONSE :  " + $RESPONSE;
+            MESSAGE=$(echo RESPONSE | jq -r ".message");
             if [ MESSAGE != null ]; then
               echo "Esspresso tests triggered with build_id: ",$BROWSERSTACK_APP_URL;
             else
