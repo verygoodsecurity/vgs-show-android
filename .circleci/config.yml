@@ -30,7 +30,7 @@ jobs:
 
       # Upload apk to BrowserStack and set app url in an environment variable.
       - run:
-          name: Browserstack - upload app and set app id in environment variable.
+          name: Browserstack - upload app and set app url in environment variable.
           command: |
             APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@app/build/outputs/apk/debug/app-debug.apk")
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
@@ -48,7 +48,7 @@ jobs:
 
       # Upload tests apk to BrowserStack and set app url in an environment variable.
       - run:
-          name: Browserstack - upload app and set test app id in environment variable.
+          name: Browserstack - upload app and set test app url in environment variable.
           command: |
             APP_UPLOAD_RESPONSE=$(curl -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
             echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE
@@ -74,7 +74,7 @@ jobs:
             echo "RESPONSE :  " + $RESPONSE
             MESSAGE=$(echo RESPONSE | jq -r ".message")
             if [ MESSAGE == "Success" ]; then
-              echo "Esspresso tests triggered with build_id: ",$(echo RESPONSE | jq -r ".build_id");
+              echo "Esspresso tests triggered with build_id: ",$BROWSERSTACK_APP_URL;
             else
               echo "Esspresso tests not triggered, reason : ",MESSAGE
               exit 1;
