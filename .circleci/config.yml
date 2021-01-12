@@ -77,8 +77,8 @@ jobs:
               -d  "{\"devices\": [\"Google Pixel 3-9.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}"
               -H "Content-Type: application/json");
             echo "RESPONSE :  " + $RESPONSE;
-            MESSAGE=$(echo RESPONSE | jq -r ".message");
-            if [ MESSAGE != null ]; then
+            MESSAGE=$(echo $RESPONSE | jq -r ".message");
+            if [ MESSAGE == "Success" ]; then
               echo "Esspresso tests triggered with build_id: ",$BROWSERSTACK_APP_URL;
             else
               echo "Esspresso tests not triggered, reason : ",$MESSAGE;
