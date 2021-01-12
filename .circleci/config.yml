@@ -26,6 +26,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - checkout
       - run:
           name: Run Lint
           command: ./gradlew lintDebug
@@ -36,6 +37,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - checkout
       - run:
           name: Run Unit tests
           command: ./gradlew testDebugUnitTest
@@ -46,6 +48,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - checkout
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
@@ -56,6 +59,7 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - checkout
       - run:
           name: BrowserStack - upload app and set app url in environment variable.
           command: |
