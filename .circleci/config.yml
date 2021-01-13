@@ -84,7 +84,12 @@ jobs:
   #              exit 1;
   #            fi
   github-changelog-generator/changelog-default:
-    context: github
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx3200m
+    context: gitbub
     filters:
       branches:
         ignore: /.*/
