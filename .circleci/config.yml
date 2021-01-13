@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  changelog: onimur/github-changelog-generator@2.1.9
+
 jobs:
   build:
     working_directory: ~/code
@@ -73,3 +77,41 @@ jobs:
               echo "Esspresso tests not triggered, reason : ",$MESSAGE;
               exit 1;
             fi
+  github-changelog-generator/changelog-custom:
+    breaking-label: '**Breaking**'
+    bugs-label: '**Bugs**'
+    context: github
+    date-format: '%d-%m-%Y'
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^\d+\.\d+\.\d+$/
+    header-label: '# My Changelog'
+    output: CUSTOM-CHANGELOG.md
+    post-steps:
+      - run:
+          command: >
+            git config user.name "BotUsername"
+
+            git config user.email "bot@email.com"
+
+            git add CHANGELOG.md
+
+            git commit -m "Your description [skip ci]"
+
+            git push -q
+            https://$<<parameters.token>>@github.com/YourUser/YourProjectName.git
+            master
+    pre-steps:
+      - checkout
+    push-git: false
+    token: GITHUB_TOKEN
+  print-changelog:
+    filters:
+      branches:
+        ignore: /.*/
+      tags:
+        only: /^\d+\.\d+\.\d+$/
+    requires:
+      - github-changelog-generator/changelog-custom
