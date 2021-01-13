@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
-  "build":
-    name: Build and test
+  "Build_And_Test":
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
@@ -74,3 +73,8 @@ jobs:
               echo "Esspresso tests not triggered, reason : ",$MESSAGE;
               exit 1;
             fi
+
+workflow:
+  main:
+    jobs:
+      - "Build_And_Test"
