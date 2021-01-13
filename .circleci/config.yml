@@ -107,11 +107,3 @@ jobs:
       - checkout
     push-git: false
     token: GITHUB_TOKEN
-  print-changelog:
-    filters:
-      branches:
-        ignore: /.*/
-      tags:
-        only: /^\d+\.\d+\.\d+$/
-    requires:
-      - github-changelog-generator/changelog-custom
