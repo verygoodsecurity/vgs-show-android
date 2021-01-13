@@ -1,7 +1,8 @@
 version: 2.1
 
 orbs:
-  changelog: onimur/github-changelog-generator@2.1.9
+  github-changelog-generator: onimur/github-changelog-generator@2.1.9
+  tools: onimur/common-tools@2.1.9
 
 orb_tagged_filters:
   branches:
