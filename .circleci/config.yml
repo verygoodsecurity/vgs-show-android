@@ -83,23 +83,13 @@ jobs:
   #              echo "Esspresso tests not triggered, reason : ",$MESSAGE;
   #              exit 1;
   #            fi
-  github-changelog-generator/changelog-custom:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
-    breaking-label: '**Breaking**'
-    bugs-label: '**Bugs**'
+  github-changelog-generator/changelog-default:
     context: github
-    date-format: '%d-%m-%Y'
     filters:
       branches:
         ignore: /.*/
       tags:
         only: /^\d+\.\d+\.\d+$/
-    header-label: '# My Changelog'
-    output: CUSTOM-CHANGELOG.md
     post-steps:
       - run:
           command: >
