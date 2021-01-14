@@ -139,9 +139,9 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
     private fun parseDateAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
-                it.getJSONObject("json").getString("expDate")?.let {
-                    tokenView2?.text = it
-                    revealAlias2 = it
+                it.getJSONObject("json").getString("expDate").let { date ->
+                    tokenView2?.text = date
+                    revealAlias2 = date
                 }
             }
         }
@@ -150,9 +150,9 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
     private fun parseNumberAlias(json: JSONObject?) {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
-                it.getJSONObject("json").getString("cardNumber").let {
-                    tokenView1?.text = it
-                    revealAlias = it
+                it.getJSONObject("json").getString("cardNumber").let { number ->
+                    tokenView1?.text = number
+                    revealAlias = number
                 }
             }
         }
