@@ -1,115 +1,80 @@
 version: 2.1
-aliases:
-  - &restore_gem_cache
-    name: Restore cache
-    keys:
-      - jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-
-  - &save_gem_cache
-    name: Saving cache
-    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-    paths:
-      - ~/.gradle
-
-  - &attach_workspace
-    attach_workspace:
-      at: ~/code
-
-  - &download_dep
-    - checkout
-    - *attach_workspace
-    - run:
-        name: Download Dependencies
-        command: |
-          sudo chmod +x gradlew
-          ./gradlew androidDependencies
-
-  - &run_lint
-    - checkout
-    - *attach_workspace
-    - restore_cache: *restore_gem_cache
-    - run:
-        name: Run Lint
-        command: ./gradlew lintDebug
-    - save_cache: *save_gem_cache
-
-  - &run_unit_tests
-    - checkout
-    - *attach_workspace
-    - run:
-        name: Run Unit Tests
-        command: ./gradlew testDebugUnitTest
-
-
-  - &assembleDebug
-    - checkout
-    - *attach_workspace
-    - run:
-        name: Build Debug
-        command: ./gradlew assembleDebug
-    - store_artifacts:
-        path: app/build/outputs/apk/debug/app-debug.apk
-        destination: app-debug.apk
-
-
-  - &deploy_environment
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-  - &test_environment
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-
-
-  # dependency groups
-  - &prepare_sources
-    - "Prepared_Sources"
-
-  - &all_test
-    - "Run_Lint"
-    - "Run_Unit_Tests"
-
-  - &debug_build
-    - "Assemble_Debug_Build"
-
 jobs:
-  "Prepared_Sources":
-    <<: *test_environment
+  "Build_And_Test":
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
-    steps: *download_dep
-
-  "Run_Lint":
-    <<: *test_environment
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps: *run_lint
-
-  "Run_Unit_Tests":
-    <<: *test_environment
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps: *run_unit_tests
-
-  "Assemble_Debug_Build":
-    <<: *test_environment
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps: *assembleDebug
-
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug assembleAndroidTest
+      - run:
+          name: BrowserStack - upload app and set app url in environment variable.
+          command: |
+            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/debug/app-debug.apk");
+            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+            APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
+            if [ $APP_URL != null ]; then
+              echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
+              echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
+              source $BASH_ENV;
+              echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
+            else
+              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
+              exit 1;
+            fi
+      - run:
+          name: BrowserStack - upload app and set test app url in environment variable.
+          command: |
+            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
+            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+            TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url");
+            if [ $TEST_URL != null ]; then
+              echo "Apk uploaded to BrowserStack with test test_url : ",$TEST_URL;
+              echo "export BROWSERSTACK_TEST_URL=$TEST_URL" >> $BASH_ENV;
+              source $BASH_ENV;
+              echo "Setting value of BROWSERSTACK_TEST_URL in environment variables to ",TEST_URL;
+            else
+              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
+              exit 1;
+            fi
+      - run:
+          name: BrowserStack - execute UI test.
+          command: |
+            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Samsung Galaxy S6-5.0\", \"Google Nexus 6-6.0\", \"Google Pixel-7.1\", \"Google Pixel 2-8.0\", \"Google Pixel 3-9.0\", \"Google Pixel 3-10.0\", \"Google Pixel 5-11.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
+            echo "RESPONSE :  " + $RESPONSE;
+            MESSAGE=$(echo $RESPONSE | jq -r ".message");
+            if [ $MESSAGE = "Success" ]; then
+              BUILD_ID=$(echo $RESPONSE | jq -r ".build_id");
+              echo "Esspresso tests triggered with build_id: ",$BUILD_ID;
+            else
+              echo "Esspresso tests not triggered, reason : ",$MESSAGE;
+              exit 1;
+            fi
 
 workflows:
-  version: 2.1
   main:
     jobs:
-      - "Prepared_Sources"
-      - "Run_Lint":
-          requires:
-            *prepare_sources
-      - "Run_Unit_Tests":
-          requires:
-            *prepare_sources
-      - "Assemble_Debug_Build":
-          requires:
-            *all_test
+      - "Build_And_Test"
