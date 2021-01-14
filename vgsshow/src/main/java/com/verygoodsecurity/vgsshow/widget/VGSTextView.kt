@@ -59,6 +59,7 @@ class VGSTextView @JvmOverloads constructor(
     private var rawText: String? = null
     private val transformations = mutableListOf<VGSTransformationRegex>()
     private var copyListeners: MutableList<OnTextCopyListener> = mutableListOf()
+    private var secureTextListener: OnSetSecureTextRangeSetListener? = null
     private lateinit var secureTextTransformMethod: SecureTransformationMethod
 
     init {
@@ -365,6 +366,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param ranges array of ranges of text that should be secured.
      */
     fun setSecureTextRange(ranges: Array<VGSTextRange>) {
+        this.secureTextListener?.onSecureTextRangeSet(this)
         this.secureTextTransformMethod = SecureTransformationMethod(secureTextSymbol, ranges)
         if (isSecureText) updateTransformationMethod(secureTextTransformMethod)
     }
@@ -457,6 +459,10 @@ class VGSTextView @JvmOverloads constructor(
     @VisibleForTesting
     internal fun getChildView() = view
 
+    internal fun setOnSecureTextRangeSetListener(listener: OnSetSecureTextRangeSetListener?) {
+        secureTextListener = listener
+    }
+
     private fun updateTransformationMethod(method: TransformationMethod) {
         this.view.transformationMethod = null
         this.view.transformationMethod = method
@@ -542,6 +548,11 @@ class VGSTextView @JvmOverloads constructor(
          * @param format Format in which text was copied.
          */
         fun onTextCopied(view: VGSTextView, format: CopyTextFormat)
+    }
+
+    internal interface OnSetSecureTextRangeSetListener {
+
+        fun onSecureTextRangeSet(view: VGSTextView)
     }
 }
 
