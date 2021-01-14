@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgsshow.widget.view.textview.method
 
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 internal class SecureTransformationMethod(
@@ -15,6 +16,7 @@ internal class SecureTransformationMethod(
         var result = source ?: return EMPTY
         for (range in ranges) {
             if (!range.isValid(result.length)) {
+                logDebug("A specified range[${range.start}, ${range.start}] was not correct. It will be skipped.")
                 continue
             }
             result = replaceRange(range, result)
