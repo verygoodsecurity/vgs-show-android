@@ -16,7 +16,7 @@ internal class SecureTransformationMethod(
         var result = source ?: return EMPTY
         for (range in ranges) {
             if (!range.isValid(result.length)) {
-                logDebug("A specified range[${range.start}, ${range.start}] was not correct. It will be skipped.")
+                logDebug("A specified range[${range.start}, ${range.end}] was not correct. It will be skipped.")
                 continue
             }
             result = replaceRange(range, result)
