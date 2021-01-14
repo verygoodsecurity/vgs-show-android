@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgsshow.widget.view.textview.method
 
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 internal class SecureTransformationMethod(
@@ -12,9 +13,10 @@ internal class SecureTransformationMethod(
     private val regex: Regex = ANY_CHARACTERS_PATTERN.toRegex()
 
     override fun getTransformation(source: CharSequence?, view: View?): CharSequence {
-        var result = source ?: return EMPTY
+        var result = (if (source.isNullOrEmpty()) null else source) ?: return EMPTY
         for (range in ranges) {
             if (!range.isValid(result.length)) {
+                logDebug("A specified range[${range.start}, ${range.end}] was not correct. It will be skipped.")
                 continue
             }
             result = replaceRange(range, result)
