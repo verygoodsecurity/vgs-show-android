@@ -13,12 +13,10 @@ internal class SecureTransformationMethod(
     private val regex: Regex = ANY_CHARACTERS_PATTERN.toRegex()
 
     override fun getTransformation(source: CharSequence?, view: View?): CharSequence {
-        var result = source ?: return EMPTY
+        var result = (if (source.isNullOrEmpty()) null else source) ?: return EMPTY
         for (range in ranges) {
             if (!range.isValid(result.length)) {
-                if(result.isNotEmpty()) {
-                    logDebug("A specified range[${range.start}, ${range.end}] was not correct. It will be skipped.")
-                }
+                logDebug("A specified range[${range.start}, ${range.end}] was not correct. It will be skipped.")
                 continue
             }
             result = replaceRange(range, result)
