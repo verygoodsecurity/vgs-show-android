@@ -1,9 +1,9 @@
 version: 2.1
 jobs:
-  "Build_And_Test":
+  "Build_And_Unit_Test":
     working_directory: ~/code
     docker:
-      - image: google/cloud-sdk:latest
+      - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -28,26 +28,44 @@ jobs:
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
-      - run:
-          name: Store Google Service Account
-          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
-      - run:
-          name: Authorize gcloud and set config defaults
-          command: |
-            sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-      - run:
-          name: Test with Firebase Test Lab
-          command: >
-            sudo gcloud firebase test android run \
-              --app @app/build/outputs/apk/debug/app-debug.apk \
-              --test @app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
-      - run:
-          name: Install gsutil dependency and copy test results data
-          command: |
-            sudo pip install -U crcmod
-            sudo gsutil -m cp -r -U `sudo gsutil ls gs://[BUCKET_NAME]/[OBJECT_NAME] | tail -1` ${CIRCLE_ARTIFACTS}/ | true
+  "Instrumented_test":
+    working_directory: ~/code
+      docker:
+          - image: google/cloud-sdk:latest
+      environment:
+        TERM: dumb
+      steps:
+        - run:
+            name: Store Google Service Account
+            command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+        - run:
+            name: Authorize gcloud and set config defaults
+            command: |
+              sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+              sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+        - run:
+            name: Test with Firebase Test Lab
+            command: >
+              sudo gcloud firebase test android run \
+                --app @app/build/outputs/apk/debug/app-debug.apk \
+                --test @app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+                --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
+        - run:
+            name: Install gsutil dependency and copy test results data
+            command: |
+              sudo pip install -U crcmod
+              sudo gsutil -m cp -r -U `sudo gsutil ls gs://[BUCKET_NAME]/[OBJECT_NAME] | tail -1` ${CIRCLE_ARTIFACTS}/ | true
+
+workflows:
+  main:
+    jobs:
+      - "Build_And_Test"
+      - "Instrumented_test":
+          requrid:
+            - "Build_And_Test"
+
+
+
 #      - run:
 #          name: BrowserStack - upload app and set app url in environment variable.
 #          command: |
@@ -93,8 +111,3 @@ jobs:
 #              echo "Esspresso tests not triggered, reason : ",$MESSAGE;
 #              exit 1;
 #            fi
-
-workflows:
-  main:
-    jobs:
-      - "Build_And_Test"
