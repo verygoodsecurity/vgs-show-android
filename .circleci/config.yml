@@ -61,7 +61,7 @@ workflows:
     jobs:
       - "Build_And_Unit_Test"
       - "Instrumented_test":
-          requred:
+          requires:
             - "Build_And_Unit_Test"
 
 
