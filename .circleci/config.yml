@@ -36,12 +36,13 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            echo "GOOGLE_PROJECT_ID : ",$GOOGLE_PROJECT_ID;
       - run:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app @app/build/outputs/apk/debug/app-debug.apk \
-              --test @app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+              --app app/build/outputs/apk/debug/app-debug.apk \
+              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
       - run:
           name: Install gsutil dependency and copy test results data
