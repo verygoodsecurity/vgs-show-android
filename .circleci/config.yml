@@ -19,60 +19,80 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
-      - run:
-          name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+      #      - run:
+      #          name: Run Lint
+      #          command: ./gradlew lintDebug
+      #      - run:
+      #          name: Run Unit tests
+      #          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
       - run:
-          name: BrowserStack - upload app and set app url in environment variable.
-          command: |
-            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/debug/app-debug.apk");
-            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
-            APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
-            if [ $APP_URL != null ]; then
-              echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
-              echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
-              source $BASH_ENV;
-              echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
-            else
-              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
-              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
-              exit 1;
-            fi
+          name: Store Google Service Account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
       - run:
-          name: BrowserStack - upload app and set test app url in environment variable.
+          name: Authorize gcloud and set config defaults
           command: |
-            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
-            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
-            TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url");
-            if [ $TEST_URL != null ]; then
-              echo "Apk uploaded to BrowserStack with test test_url : ",$TEST_URL;
-              echo "export BROWSERSTACK_TEST_URL=$TEST_URL" >> $BASH_ENV;
-              source $BASH_ENV;
-              echo "Setting value of BROWSERSTACK_TEST_URL in environment variables to ",TEST_URL;
-            else
-              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
-              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
-              exit 1;
-            fi
+            sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
       - run:
-          name: BrowserStack - execute UI test.
+          name: Test with Firebase Test Lab
+          command: >
+            sudo gcloud firebase test android run \
+              --app <local_server_path>/<app_apk>.apk \
+              --test <local_server_path>/<app_test_apk>.apk \
+              --results-bucket cloud-test-${GOOGLE_PROJECT_ID}
+      - run:
+          name: Install gsutil dependency and copy test results data
           command: |
-            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Samsung Galaxy S6-5.0\", \"Google Nexus 6-6.0\", \"Google Pixel-7.1\", \"Google Pixel 2-8.0\", \"Google Pixel 3-9.0\", \"Google Pixel 3-10.0\", \"Google Pixel 5-11.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
-            echo "RESPONSE :  " + $RESPONSE;
-            MESSAGE=$(echo $RESPONSE | jq -r ".message");
-            if [ $MESSAGE = "Success" ]; then
-              BUILD_ID=$(echo $RESPONSE | jq -r ".build_id");
-              echo "Esspresso tests triggered with build_id: ",$BUILD_ID;
-            else
-              echo "Esspresso tests not triggered, reason : ",$MESSAGE;
-              exit 1;
-            fi
+            sudo pip install -U crcmod
+            sudo gsutil -m cp -r -U `sudo gsutil ls gs://[BUCKET_NAME]/[OBJECT_NAME] | tail -1` ${CIRCLE_ARTIFACTS}/ | true
+#      - run:
+#          name: BrowserStack - upload app and set app url in environment variable.
+#          command: |
+#            APP_UPLOAD_RESPONSE=$(curl -X POST https://api-cloud.browserstack.com/app-automate/upload -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/debug/app-debug.apk");
+#            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+#            APP_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url");
+#            if [ $APP_URL != null ]; then
+#              echo "Apk uploaded to BrowserStack with app_url : ",$APP_URL;
+#              echo "export BROWSERSTACK_APP_URL=$APP_URL" >> $BASH_ENV;
+#              source $BASH_ENV;
+#              echo "Setting value of BROWSERSTACK_APP_URL in environment variables to ",$APP_URL;
+#            else
+#              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+#              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
+#              exit 1;
+#            fi
+#      - run:
+#          name: BrowserStack - upload app and set test app url in environment variable.
+#          command: |
+#            APP_UPLOAD_RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/test-suite" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -F "file=@app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk");
+#            echo "APP_UPLOAD_RESPONSE :  " + $APP_UPLOAD_RESPONSE;
+#            TEST_URL=$(echo $APP_UPLOAD_RESPONSE | jq -r ".test_url");
+#            if [ $TEST_URL != null ]; then
+#              echo "Apk uploaded to BrowserStack with test test_url : ",$TEST_URL;
+#              echo "export BROWSERSTACK_TEST_URL=$TEST_URL" >> $BASH_ENV;
+#              source $BASH_ENV;
+#              echo "Setting value of BROWSERSTACK_TEST_URL in environment variables to ",TEST_URL;
+#            else
+#              UPLOAD_ERROR_MESSAGE=$(echo $APP_UPLOAD_RESPONSE | jq -r ".error");
+#              echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE;
+#              exit 1;
+#            fi
+#      - run:
+#          name: BrowserStack - execute UI test.
+#          command: |
+#            RESPONSE=$(curl -X POST "https://api-cloud.browserstack.com/app-automate/espresso/build" -u "vgsvendors1:xjSscpXkZ8pUHxxz6Nsd" -d  "{\"devices\": [\"Samsung Galaxy S6-5.0\", \"Google Nexus 6-6.0\", \"Google Pixel-7.1\", \"Google Pixel 2-8.0\", \"Google Pixel 3-9.0\", \"Google Pixel 3-10.0\", \"Google Pixel 5-11.0\"], \"app\": \"$BROWSERSTACK_APP_URL\", \"deviceLogs\" : true, \"testSuite\": \"$BROWSERSTACK_TEST_URL\"}" -H "Content-Type: application/json");
+#            echo "RESPONSE :  " + $RESPONSE;
+#            MESSAGE=$(echo $RESPONSE | jq -r ".message");
+#            if [ $MESSAGE = "Success" ]; then
+#              BUILD_ID=$(echo $RESPONSE | jq -r ".build_id");
+#              echo "Esspresso tests triggered with build_id: ",$BUILD_ID;
+#            else
+#              echo "Esspresso tests not triggered, reason : ",$MESSAGE;
+#              exit 1;
+#            fi
 
 workflows:
   main:
