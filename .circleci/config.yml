@@ -59,10 +59,10 @@ jobs:
 workflows:
   main:
     jobs:
-      - "Build_And_Test"
+      - "Build_And_Unit_Test"
       - "Instrumented_test":
           requrid:
-            - "Build_And_Test"
+            - "Build_And_Unit_Test"
 
 
 
