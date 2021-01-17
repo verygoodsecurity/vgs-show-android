@@ -30,7 +30,7 @@ jobs:
           command: ./gradlew assembleDebug
       - store_artifacts:
           path: app/build/outputs
-          destination: apk
+          destination: app-debug.apk
       - persist_to_workspace:
           root: app/build
             paths:
