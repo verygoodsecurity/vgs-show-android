@@ -43,10 +43,6 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-      attach_workspace:
-        at: outputs
-      store_artifacts:
-        path: outputs/outputs/apk
       - run:
         name: Store Google Service Account
         command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
