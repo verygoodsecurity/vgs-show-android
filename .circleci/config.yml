@@ -69,8 +69,6 @@ jobs:
             sudo pip install -U crcmod
             sudo gsutil -m cp -r -U `sudo gsutil ls gs://test-lab-cqw7cy2hn179i-ikpi5m5q8mj9x | tail -1` ${CIRCLE_ARTIFACTS}/ | true
             echo "CIRCLE_ARTIFACTS : ",$CIRCLE_ARTIFACTS;
-
-
 workflows:
   main:
     jobs:
