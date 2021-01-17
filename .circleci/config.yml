@@ -41,9 +41,9 @@ jobs:
       - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
-    attach_workspace:
-      at: ~/code
     steps:
+      - attach_workspace:
+          at: ~/code
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
