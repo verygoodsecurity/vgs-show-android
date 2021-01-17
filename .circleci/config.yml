@@ -19,12 +19,12 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      #      - run:
-      #          name: Run Lint
-      #          command: ./gradlew lintDebug
-      #      - run:
-      #          name: Run Unit tests
-      #          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Run Lint
+          command: ./gradlew lintDebug
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
@@ -78,7 +78,3 @@ workflows:
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
-          filters:
-            branches:
-              only:
-                - main
