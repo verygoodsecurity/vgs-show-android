@@ -30,7 +30,10 @@ jobs:
           command: ./gradlew assembleDebug assembleAndroidTest
       - store_artifacts:
           path: app/build/outputs
-          destination: apk
+      - persist_to_workspace:
+          root: app/build
+          paths:
+            - outputs
 
   "Run_Instrumental_Test":
     working_directory: ~/code
