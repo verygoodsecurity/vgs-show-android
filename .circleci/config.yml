@@ -32,7 +32,7 @@ jobs:
           root: ~/code
           paths:
             - app
-  "Run_Instrumental_Test":
+  "Run_UI_Test":
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
@@ -75,6 +75,10 @@ workflows:
   main:
     jobs:
       - "Run_Unit_Test_And_Build"
-      - "Run_Instrumental_Test":
+      - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
+          filters:
+            branches:
+              only:
+                - master
