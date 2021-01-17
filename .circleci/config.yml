@@ -19,9 +19,9 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
+      #      - run:
+      #          name: Run Lint
+      #          command: ./gradlew lintDebug
       #      - run:
       #          name: Run Unit tests
       #          command: ./gradlew testDebugUnitTest
@@ -54,8 +54,8 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app app/build/outputs/apk/debug/app-debug.apk \
-              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+              --app ${HOME}/app/build/outputs/apk/debug/app-debug.apk \
+              --test ${HOME}/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --device model=Nexus5,version=19,locale=en,orientation=portrait \
               --device model=Nexus5,version=21,locale=en,orientation=portrait \
               --device model=Nexus5,version=22,locale=en,orientation=portrait \
