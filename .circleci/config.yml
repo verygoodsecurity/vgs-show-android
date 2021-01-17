@@ -31,6 +31,8 @@ jobs:
       - store_artifacts:
           path: app/build/outputs/apk/debug/app-debug.apk
           destination: app-debug.apk
+      - persist_to_workspace:
+          root: ~/code
 
   "Run_Instrumental_Test":
     working_directory: ~/code
