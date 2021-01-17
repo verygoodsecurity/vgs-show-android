@@ -30,6 +30,8 @@ jobs:
           command: ./gradlew assembleDebug assembleAndroidTest
       - persist_to_workspace:
           root: ~/code
+          paths:
+            - app
   "Run_Instrumental_Test":
     working_directory: ~/code
     docker:
