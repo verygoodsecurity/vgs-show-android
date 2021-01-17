@@ -42,6 +42,8 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - attach_workspace:
+          at: outputs
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
