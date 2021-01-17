@@ -33,8 +33,8 @@ jobs:
           destination: app-debug.apk
       - persist_to_workspace:
           root: app/build
-            paths:
-              - outputs
+          paths:
+            - outputs
 
   "Run_Instrumental_Test":
     working_directory: ~/code
@@ -47,9 +47,9 @@ jobs:
         at: outputs
       store_artifacts:
         path: outputs/outputs/apk
-      - run:
-          name: Store Google Service Account
-          command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
+        - run:
+            name: Store Google Service Account
+            command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
 #      - run:
 #          name: Authorize gcloud and set config defaults
 #          command: |
