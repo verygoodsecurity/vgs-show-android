@@ -43,7 +43,7 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - attach_workspace:
-          at: outputs
+          at: app/build/outputs/apk
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
@@ -56,8 +56,8 @@ jobs:
           name: Test with Firebase Test Lab
           command: >
             sudo gcloud firebase test android run \
-              --app app/build/outputs/apk/debug/app-debug.apk \
-              --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+              --app debug/app-debug.apk \
+              --test androidTest/debug/app-debug-androidTest.apk \
               --device model=Nexus5,version=19,locale=en,orientation=portrait \
               --device model=Nexus5,version=21,locale=en,orientation=portrait \
               --device model=Nexus5,version=22,locale=en,orientation=portrait \
