@@ -28,8 +28,6 @@ jobs:
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
-      - store_artifacts:
-          path: app/build/outputs/apk/debug
       - persist_to_workspace:
           root: ~/code
           paths:
