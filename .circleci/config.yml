@@ -27,14 +27,7 @@ jobs:
       #          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
-          command: ./gradlew assembleDebug
-      - store_artifacts:
-          path: app/build/outputs/apk/debug/app-debug.apk
-      - run:
-          name: Generate test apk
-          command: ./gradlew assembleAndroidTest
-      - store_artifacts:
-          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          command: ./gradlew assembleDebug assembleAndroidTest
   "Run_Instrumental_Test":
     working_directory: ~/code
     docker:
