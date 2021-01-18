@@ -76,3 +76,7 @@ workflows:
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
+          filters:
+            branches:
+              only:
+                - staging
