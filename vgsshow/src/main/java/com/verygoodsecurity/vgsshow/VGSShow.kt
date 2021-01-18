@@ -215,8 +215,7 @@ class VGSShow constructor(
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.addOnCopyTextListener(onTextCopyListener)
-                view.setOnSecureTextRangeSetListener(onSecureTextRangeSetListener)
+                handleSubscribeTextView(view)
             }
         }
     }
@@ -282,6 +281,12 @@ class VGSShow constructor(
                 }
             )
         }
+    }
+
+    private fun handleSubscribeTextView(view: VGSTextView) {
+        view.addOnCopyTextListener(onTextCopyListener)
+        view.setOnSecureTextRangeSetListener(onSecureTextRangeSetListener)
+        view.onViewSubscribed()
     }
 
     @MainThread
