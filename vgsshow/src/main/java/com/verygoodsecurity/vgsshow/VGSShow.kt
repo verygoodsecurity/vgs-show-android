@@ -69,6 +69,7 @@ class VGSShow constructor(
     private var hasCustomHostname: Boolean = false
 
     private val onTextCopyListener: VGSTextView.OnTextCopyListener
+    private val onSecureTextRangeSetListener: VGSTextView.OnSetSecureTextRangeSetListener
 
     init {
         headersStore = ProxyStaticHeadersStore()
@@ -79,6 +80,17 @@ class VGSShow constructor(
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 analyticsManager.log(CopyToClipboardEvent(format))
+            }
+        }
+        onSecureTextRangeSetListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
+
+            override fun onSecureTextRangeSet(view: VGSTextView) {
+                analyticsManager.log(
+                    SetSecureTextEvent(
+                        view.getContentPath(),
+                        view.getFieldType().toAnalyticTag()
+                    )
+                )
             }
         }
     }
@@ -203,8 +215,9 @@ class VGSShow constructor(
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                view.addOnCopyTextListener(onTextCopyListener)
+                handleTextViewSubscribtion(view)
             }
+            view.onViewSubscribed()
         }
     }
 
@@ -218,6 +231,7 @@ class VGSShow constructor(
             analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 view.removeOnCopyTextListener(onTextCopyListener)
+                view.setOnSecureTextRangeSetListener(null)
             }
         }
     }
@@ -277,6 +291,11 @@ class VGSShow constructor(
                 }
             )
         }
+    }
+
+    private fun handleTextViewSubscribtion(view: VGSTextView) {
+        view.addOnCopyTextListener(onTextCopyListener)
+        view.setOnSecureTextRangeSetListener(onSecureTextRangeSetListener)
     }
 
     @MainThread

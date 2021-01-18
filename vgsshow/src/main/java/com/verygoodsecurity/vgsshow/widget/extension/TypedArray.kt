@@ -4,6 +4,7 @@ import android.content.res.TypedArray
 import android.graphics.Typeface
 import androidx.annotation.StyleableRes
 import androidx.core.content.res.getFloatOrThrow
+import androidx.core.content.res.getIntOrThrow
 import androidx.core.content.res.getStringOrThrow
 import com.verygoodsecurity.vgsshow.util.extension.isOreoOrGreater
 
@@ -16,6 +17,12 @@ internal fun TypedArray.getFontOrNull(@StyleableRes id: Int): Typeface? = when {
 
 internal fun TypedArray.getFloatOrNull(@StyleableRes id: Int): Float? = try {
     getFloatOrThrow(id)
+} catch (e: Exception) {
+    null
+}
+
+internal fun TypedArray.getIntOrNull(@StyleableRes id: Int): Int? = try {
+    getIntOrThrow(id)
 } catch (e: Exception) {
     null
 }
