@@ -217,6 +217,7 @@ class VGSShow constructor(
             if (view is VGSTextView) {
                 handleSubscribeTextView(view)
             }
+            view.onViewSubscribed()
         }
     }
 
@@ -286,7 +287,6 @@ class VGSShow constructor(
     private fun handleSubscribeTextView(view: VGSTextView) {
         view.addOnCopyTextListener(onTextCopyListener)
         view.setOnSecureTextRangeSetListener(onSecureTextRangeSetListener)
-        view.onViewSubscribed()
     }
 
     @MainThread
