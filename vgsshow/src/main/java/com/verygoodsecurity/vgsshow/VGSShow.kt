@@ -230,6 +230,15 @@ class VGSShow constructor(
     }
 
     /**
+     * Used to enable/disable analytics events.
+     *
+     * @param isEnabled true if VGSShow should send analytics events.
+     */
+    fun setAnalyticsEnabled(isEnabled: Boolean) {
+        analyticsManager.isEnabled = isEnabled
+    }
+
+    /**
      * Clear all information collected before by VGSShow, cancel all network requests.
      * Preferably call it inside onDestroy system's callback.
      */
