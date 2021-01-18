@@ -56,16 +56,13 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=Nexus5,version=19,locale=en,orientation=portrait \
-              --device model=Nexus5,version=21,locale=en,orientation=portrait \
-              --device model=Nexus5,version=22,locale=en,orientation=portrait \
-              --device model=Nexus6P,version=23,locale=en,orientation=portrait \
-              --device model=Nexus6P,version=24,locale=en,orientation=portrait \
-              --device model=Nexus6P,version=25,locale=en,orientation=portrait \
-              --device model=Nexus6P,version=26,locale=en,orientation=portrait \
-              --device model=OnePlus6T,version=28,locale=en,orientation=portrait \
-              --device model=Pixel2,version=29,locale=en,orientation=portrait \
-              --device model=Pixel2,version=30,locale=en,orientation=portrait \
+              --device model=SM-T210,version=19,locale=en,orientation=portrait \
+              --device model=Nexus 5,version=21,locale=en,orientation=portrait \
+              --device model=LG-AS110,version=23,locale=en,orientation=portrait \
+              --device model=MI 5s,version=26,locale=en,orientation=portrait \
+              --device model=Mi A1,version=28,locale=en,orientation=portrait \
+              --device model=Pixel 4,version=29,locale=en,orientation=portrait \
+              --device model=Pixel 4,version=30,locale=en,orientation=portrait \
       - run:
           name: Install gsutil dependency and copy test results data
           command: |
