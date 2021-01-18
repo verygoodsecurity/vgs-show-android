@@ -1,11 +1,16 @@
 version: 2.1
-jobs:
-  "Run_Unit_Test_And_Build":
+
+aliases:
+  - &environment
     working_directory: ~/code
     docker:
       - image: circleci/android:api-29
     environment:
       JVM_OPTS: -Xmx3200m
+
+jobs:
+  "Run_Unit_Test_And_Build":
+    <<: *environment
     steps:
       - checkout
       - restore_cache:
@@ -33,11 +38,7 @@ jobs:
           paths:
             - app
   "Run_UI_Test":
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
+    <<: *environment
     steps:
       - attach_workspace:
           at: ~/code
