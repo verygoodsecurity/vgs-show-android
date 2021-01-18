@@ -22,6 +22,8 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
 
     abstract fun getFieldType(): VGSFieldType
 
+    internal abstract fun onViewSubscribed()
+
     protected abstract fun createChildView(): T
 
     protected abstract fun saveState(state: Parcelable?): BaseSavedState?
