@@ -221,4 +221,28 @@ class VGSTextViewTest {
         view.isSecureText = true
         assertTrue(view.isSecureText)
     }
+
+    @Test
+    fun setOnSecureTextRangeSetListenerCalled() {
+        val listener = mock(VGSTextView.OnSetSecureTextRangeSetListener::class.java)
+
+        view.setOnSecureTextRangeSetListener(listener)
+        view.setSecureTextRange(VGSTextRange())
+
+        verify(listener, times(1)).onSecureTextRangeSet(view)
+    }
+
+    @Test
+    fun setOnSecureTextRangeSetListenerCachedInvocationsCalledOnViewSubscribed() {
+        val listener = mock(VGSTextView.OnSetSecureTextRangeSetListener::class.java)
+
+        view.setSecureTextRange(VGSTextRange())
+        view.setSecureTextRange(VGSTextRange())
+        view.setSecureTextRange(VGSTextRange())
+
+        view.setOnSecureTextRangeSetListener(listener)
+        view.onViewSubscribed()
+
+        verify(listener, times(3)).onSecureTextRangeSet(view)
+    }
 }
