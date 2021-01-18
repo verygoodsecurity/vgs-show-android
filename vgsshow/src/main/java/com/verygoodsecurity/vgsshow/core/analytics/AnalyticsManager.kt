@@ -22,6 +22,8 @@ internal class AnalyticsManager constructor(
     private val connectionHelper: NetworkConnectionHelper
 ) : IAnalyticsManager {
 
+    override var isEnabled: Boolean = true
+
     private val requestManager: IHttpRequestManager by lazy {
         HttpRequestManager(BASE_URL, getHeadersStore())
     }
@@ -43,7 +45,7 @@ internal class AnalyticsManager constructor(
     )
 
     override fun log(event: Event) {
-        if (connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
+        if (isEnabled && connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
             val payload = (defaultInfo + event.attributes).toJsonOrNull().toString()
             requestManager.enqueue(buildRequest(payload), null)
         }
