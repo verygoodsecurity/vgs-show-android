@@ -305,7 +305,6 @@ class VGSTextView @JvmOverloads constructor(
      * @param singleLine
      */
     fun setSingleLine(singleLine: Boolean) {
-        logDebug("setSingleLine = $singleLine")
         view.isSingleLine = singleLine
     }
 
