@@ -10,7 +10,6 @@ import android.os.Parcelable
 import android.text.InputType
 import android.text.TextUtils
 import android.text.method.MovementMethod
-import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
@@ -21,7 +20,6 @@ import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
@@ -103,7 +101,6 @@ class VGSTextView @JvmOverloads constructor(
             }
         }
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-        view.movementMethod = ScrollingMovementMethod()
     }
 
     /**
