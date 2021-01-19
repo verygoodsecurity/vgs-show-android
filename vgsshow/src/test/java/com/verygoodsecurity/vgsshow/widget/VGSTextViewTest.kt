@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
+import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -200,4 +201,48 @@ class VGSTextViewTest {
         assertEquals(RESULT, view.getChildView().text.toString())
     }
 
+    @Test
+    fun clearText() {
+        view.setText("4111111111111111")
+
+        view.clearText()
+
+        assertTrue(view.getChildView().text.isEmpty())
+    }
+
+    @Test
+    fun setIsSecureText() {
+        view.isSecureText = true
+        assertTrue(view.isSecureText)
+
+        view.isSecureText = false
+        assertFalse(view.isSecureText)
+
+        view.isSecureText = true
+        assertTrue(view.isSecureText)
+    }
+
+    @Test
+    fun setOnSecureTextRangeSetListenerCalled() {
+        val listener = mock(VGSTextView.OnSetSecureTextRangeSetListener::class.java)
+
+        view.setOnSecureTextRangeSetListener(listener)
+        view.setSecureTextRange(VGSTextRange())
+
+        verify(listener, times(1)).onSecureTextRangeSet(view)
+    }
+
+    @Test
+    fun setOnSecureTextRangeSetListenerCachedInvocationsCalledOnViewSubscribed() {
+        val listener = mock(VGSTextView.OnSetSecureTextRangeSetListener::class.java)
+
+        view.setSecureTextRange(VGSTextRange())
+        view.setSecureTextRange(VGSTextRange())
+        view.setSecureTextRange(VGSTextRange())
+
+        view.setOnSecureTextRangeSetListener(listener)
+        view.onViewSubscribed()
+
+        verify(listener, times(3)).onSecureTextRangeSet(view)
+    }
 }
