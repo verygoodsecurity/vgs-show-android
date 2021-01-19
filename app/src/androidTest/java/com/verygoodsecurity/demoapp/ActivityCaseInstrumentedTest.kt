@@ -12,8 +12,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.check.SecureTextCheck
-import com.verygoodsecurity.demoshow.MainActivity
 import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.VGSShowActivity
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Before
@@ -32,7 +32,7 @@ class ActivityCaseInstrumentedTest {
     }
 
     @get:Rule
-    val rule = ActivityScenarioRule(MainActivity::class.java)
+    val rule = ActivityScenarioRule(VGSShowActivity::class.java)
 
     private lateinit var device: UiDevice
 
