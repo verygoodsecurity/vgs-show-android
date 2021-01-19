@@ -19,6 +19,7 @@ import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
@@ -74,10 +75,10 @@ class VGSTextView @JvmOverloads constructor(
             setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
-            setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
+            setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
 
             val secureTextStart = getIntOrNull(R.styleable.VGSTextView_secureTextStart)
             val secureTextEnd = getIntOrNull(R.styleable.VGSTextView_secureTextEnd)
@@ -301,6 +302,7 @@ class VGSTextView @JvmOverloads constructor(
      * @param singleLine
      */
     fun setSingleLine(singleLine: Boolean) {
+        logDebug("setSingleLine = $singleLine")
         view.isSingleLine = singleLine
     }
 
