@@ -75,7 +75,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAddStatesFromChildren(true)
-        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
         view.setOnClickListener { onChildClick(it) }
         view.setOnLongClickListener { onChildLongClick(it) }
         view.isLongClickable = false
