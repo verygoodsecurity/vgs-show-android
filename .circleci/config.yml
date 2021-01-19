@@ -24,12 +24,12 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
-      - run:
-          name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+#      - run:
+#          name: Run Lint
+#          command: ./gradlew lintDebug
+#      - run:
+#          name: Run Unit tests
+#          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
@@ -42,6 +42,17 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/code
+      - run:
+          name: Get destination branch name
+          command: |
+            if [[ -n ${CIRCLE_PR_NUMBER} ]]
+                then
+                curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" \
+                  -o jq
+                chmod +x jq
+                url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_TOKEN"
+                target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
+                echo "Esspresso tests triggered with build_id: ",$target_branch;
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
@@ -76,7 +87,7 @@ workflows:
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
-          filters:
-            branches:
-              only:
-                - staging
+#          filters:
+#            branches:
+#              only:
+#                - staging
