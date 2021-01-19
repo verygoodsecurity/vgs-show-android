@@ -8,4 +8,8 @@
             <solid android:color="@color/colorPrimaryDark" />
         </shape>
     </item>
+
+    <item
+        android:drawable="@drawable/ic_vgs_logo_white_82dp"
+        android:gravity="center" />
 </layer-list>
