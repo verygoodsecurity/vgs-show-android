@@ -9,6 +9,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
 import android.text.TextUtils
+import android.text.method.MovementMethod
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
@@ -74,10 +75,10 @@ class VGSTextView @JvmOverloads constructor(
             setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
-            setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
             getFontOrNull(R.styleable.VGSTextView_fontFamily)?.let { setTypeface(it) }
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
+            setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
 
             val secureTextStart = getIntOrNull(R.styleable.VGSTextView_secureTextStart)
             val secureTextEnd = getIntOrNull(R.styleable.VGSTextView_secureTextEnd)
@@ -379,6 +380,17 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setSecureTextRange(ranges: Array<VGSTextRange>) {
         setSecureTextRange(ranges, true)
+    }
+
+    /**
+     * Sets the {@link android.text.method.MovementMethod} for handling arrow key movement
+     * for this VGSTextView. This can be null to disallow using the arrow keys to move the
+     * cursor or scroll the view.
+     *
+     * @param movement method, for ex. ScrollingMovementMethod
+     */
+    fun setMovementMethod(movement: MovementMethod) {
+        this.view.movementMethod = movement
     }
 
     /**
