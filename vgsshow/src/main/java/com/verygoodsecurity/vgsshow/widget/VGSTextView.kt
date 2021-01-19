@@ -387,7 +387,7 @@ class VGSTextView @JvmOverloads constructor(
 
     /**
      * Sets the {@link android.text.method.MovementMethod} for handling arrow key movement
-     * for this TextView. This can be null to disallow using the arrow keys to move the
+     * for this VGSTextView. This can be null to disallow using the arrow keys to move the
      * cursor or scroll the view.
      *
      * @param movement method, for ex. ScrollingMovementMethod
