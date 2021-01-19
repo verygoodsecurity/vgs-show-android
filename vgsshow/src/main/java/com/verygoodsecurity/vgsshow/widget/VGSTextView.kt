@@ -9,6 +9,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
 import android.text.TextUtils
+import android.text.method.MovementMethod
+import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
@@ -101,6 +103,7 @@ class VGSTextView @JvmOverloads constructor(
             }
         }
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+        view.movementMethod = ScrollingMovementMethod()
     }
 
     /**
@@ -381,6 +384,17 @@ class VGSTextView @JvmOverloads constructor(
      */
     fun setSecureTextRange(ranges: Array<VGSTextRange>) {
         setSecureTextRange(ranges, true)
+    }
+
+    /**
+     * Sets the {@link android.text.method.MovementMethod} for handling arrow key movement
+     * for this TextView. This can be null to disallow using the arrow keys to move the
+     * cursor or scroll the view.
+     *
+     * @param movement method, for ex. ScrollingMovementMethod
+     */
+    fun setMovementMethod(movement: MovementMethod) {
+        this.view.movementMethod = movement
     }
 
     /**
