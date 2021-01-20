@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoshow.ui.fragment
+package com.verygoodsecurity.demoshow.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoshow.R

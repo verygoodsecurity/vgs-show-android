@@ -5,7 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.VGSShowActivity
-import com.verygoodsecurity.demoshow.ui.fragment.VGSShowFragmentActivity
+import com.verygoodsecurity.demoshow.ui.activity.VGSShowFragmentActivity
+import com.verygoodsecurity.demoshow.ui.activity.VGSShowViewPagerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         }
         btnStartFragmentMain?.setOnClickListener {
             startActivity(Intent(this, VGSShowFragmentActivity::class.java))
+        }
+        btnStartViewPagerMain?.setOnClickListener {
+            startActivity(Intent(this, VGSShowViewPagerActivity::class.java))
         }
     }
 
