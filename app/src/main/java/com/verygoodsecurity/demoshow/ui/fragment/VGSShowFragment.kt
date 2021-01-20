@@ -51,8 +51,8 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
 
         fun setLoading(isLoading: Boolean) {
             pbSubmitVGSFragment?.setVisible(isLoading)
-            cardNumber?.isEnabled = !isLoading
-            expDate?.isEnabled = !isLoading
+            etCardNumberVGSFragment?.isEnabled = !isLoading
+            etExpDateVGSFragment?.isEnabled = !isLoading
         }
 
         btnSubmitVGSFragment?.setOnClickListener {

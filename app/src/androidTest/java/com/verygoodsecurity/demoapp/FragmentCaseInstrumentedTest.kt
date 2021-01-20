@@ -1,12 +1,12 @@
 package com.verygoodsecurity.demoapp
 
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.TestUtils.interactWithDisplayedView
 import com.verygoodsecurity.demoapp.TestUtils.interactWithNestedView
@@ -16,8 +16,8 @@ import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.check.SecureTextCheck
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import org.hamcrest.Matchers.not
-import org.hamcrest.Matchers.notNullValue
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +25,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class ActivityCaseInstrumentedTest {
+class FragmentCaseInstrumentedTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"
@@ -40,16 +40,18 @@ class ActivityCaseInstrumentedTest {
 
     @Before
     fun prepareDevice_redactData() {
-        device = UiDevice.getInstance(getInstrumentation())
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-        val startWithActivityBtn = interactWithDisplayedView(R.id.btnStartActivityMain)
+        val startWithActivityBtn = interactWithDisplayedView(R.id.btnStartFragmentMain)
         performClick(startWithActivityBtn)
 
-        val cardInputField = interactWithNestedView(R.id.etCardNumberVGSActivity, R.id.tilCardNumberVGSActivity)
-        val cardExpDateInputField = interactWithNestedView(R.id.etExpDateVGSActivity, R.id.tilExpDateVGSActivity)
-        val numberResponseToke = interactWithDisplayedView(R.id.tvCardNumberAliasVGSActivity)
-        val expirationResponseToke = interactWithDisplayedView(R.id.tvExpDateAliasVGSActivity)
-        val submitButton = interactWithDisplayedView(R.id.mbSubmitVGSActivity)
+        val cardInputField =
+            interactWithNestedView(R.id.etCardNumberVGSFragment, R.id.tilCardNumberVGSFragment)
+        val cardExpDateInputField =
+            interactWithNestedView(R.id.etExpDateVGSFragment, R.id.tilExpDateVGSFragment)
+        val numberResponseToke = interactWithDisplayedView(R.id.tvCardNumberTokenVGSFragment)
+        val expirationResponseToke = interactWithDisplayedView(R.id.tvExpDateTokenVGSFragment)
+        val submitButton = interactWithDisplayedView(R.id.btnSubmitVGSFragment)
 
         cardInputField.perform(SetTextAction(CARD_NUMBER))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
@@ -57,17 +59,17 @@ class ActivityCaseInstrumentedTest {
         performClick(submitButton)
         pauseTestFor(5000)
 
-        numberResponseToke.check(matches(not(withText(""))))
-        expirationResponseToke.check(matches(not(withText(""))))
+        numberResponseToke.check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(""))))
+        expirationResponseToke.check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(""))))
     }
 
     @Test
     fun checkRevealedData_dataRevealedSuccessfully() {
         assertThat(device, notNullValue())
 
-        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumberVGSActivity)
-        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpirationVGSActivity)
-        val revealButton = interactWithDisplayedView(R.id.mbRequestVGSActivity)
+        val revealedCardNumber = interactWithDisplayedView(R.id.vtvCardNumberVGSFragment)
+        val revealedCardExpDate = interactWithDisplayedView(R.id.vtvExpirationVGSFragment)
+        val revealButton = interactWithDisplayedView(R.id.btnRequestVGSFragment)
 
         performClick(revealButton)
         pauseTestFor(5000)
@@ -80,9 +82,9 @@ class ActivityCaseInstrumentedTest {
     fun checkRevealedData_testDeviceRotation() {
         assertThat(device, notNullValue())
 
-        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumberVGSActivity)
-        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpirationVGSActivity)
-        val revealButton = interactWithDisplayedView(R.id.mbRequestVGSActivity)
+        val revealedCardNumber = interactWithDisplayedView(R.id.vtvCardNumberVGSFragment)
+        val revealedCardExpDate = interactWithDisplayedView(R.id.vtvExpirationVGSFragment)
+        val revealButton = interactWithDisplayedView(R.id.btnRequestVGSFragment)
 
         performClick(revealButton)
         pauseTestFor(5000)

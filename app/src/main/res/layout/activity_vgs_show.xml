@@ -17,7 +17,7 @@
         android:padding="8dp">
 
         <ProgressBar
-            android:id="@+id/submitProgress"
+            android:id="@+id/pbSubmitVGSActivity"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:visibility="gone" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardNumberLayout"
+            android:id="@+id/tilCardNumberVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundModes="outline"
@@ -36,7 +36,7 @@
             app:hintTextAppearance="@style/EditTextHintTextAppearance">
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-                android:id="@+id/cardNumber"
+                android:id="@+id/etCardNumberVGSActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/default_margin"
@@ -52,7 +52,7 @@
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <TextView
-            android:id="@+id/tokenView1"
+            android:id="@+id/tvCardNumberAliasVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
@@ -60,7 +60,7 @@
             android:singleLine="true" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/expDateLayout"
+            android:id="@+id/tilExpDateVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -72,7 +72,7 @@
             app:hintTextAppearance="@style/EditTextHintTextAppearance">
 
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-                android:id="@+id/expDate"
+                android:id="@+id/etExpDateVGSActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/default_margin"
@@ -85,7 +85,7 @@
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <TextView
-            android:id="@+id/tokenView2"
+            android:id="@+id/tvExpDateAliasVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
@@ -93,7 +93,7 @@
             android:singleLine="true" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/submitButton"
+            android:id="@+id/mbSubmitVGSActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -135,7 +135,7 @@
         android:padding="8dp">
 
         <ProgressBar
-            android:id="@+id/progressReveal"
+            android:id="@+id/pbRevealVGSActivity"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
             android:visibility="gone" />
 
         <com.verygoodsecurity.vgsshow.widget.VGSTextView
-            android:id="@+id/number"
+            android:id="@+id/tvCardNumberVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -156,7 +156,7 @@
             tools:ignore="SpUsage" />
 
         <com.verygoodsecurity.vgsshow.widget.VGSTextView
-            android:id="@+id/expiration"
+            android:id="@+id/tvCardExpirationVGSActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -169,7 +169,7 @@
             tools:ignore="SpUsage" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/requestButton"
+            android:id="@+id/mbRequestVGSActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -179,7 +179,7 @@
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnApplySecureText"
+            android:id="@+id/mbSetSecureTextVGSActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
