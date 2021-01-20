@@ -24,7 +24,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.activity_vgs_show.*
 import kotlinx.android.synthetic.main.fragment_vgs_show.*
 import org.json.JSONObject
 
@@ -99,7 +98,8 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
         )
         vtvCardNumberVGSFragment?.addTransformationRegex("-".toRegex(), " - ")
 
-        vtvCardNumberVGSFragment?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
+        vtvCardNumberVGSFragment?.setOnTextChangeListener(object :
+            VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }

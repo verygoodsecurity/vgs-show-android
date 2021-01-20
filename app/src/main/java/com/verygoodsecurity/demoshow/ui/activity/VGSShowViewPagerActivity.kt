@@ -1,17 +1,33 @@
 package com.verygoodsecurity.demoshow.ui.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.ui.fragment.VGSShowFragment
+import kotlinx.android.synthetic.main.activity_viewpager_vgs_show.*
 
-class VGSShowViewPagerActivity: AppCompatActivity(R.layout.activity_viewpager_vgs_show) {
+private const val PAGES_COUNT = 2
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_vgs_show) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         initViewPager()
     }
 
     private fun initViewPager() {
+        vpVGSViewPagerActivity?.adapter = VGSShowFragmentsAdapter(this)
+    }
+
+    private inner class VGSShowFragmentsAdapter constructor(
+        fa: FragmentActivity
+    ) : FragmentStateAdapter(fa) {
+
+        override fun getItemCount(): Int = PAGES_COUNT
+
+        override fun createFragment(position: Int): Fragment = VGSShowFragment()
     }
 }
