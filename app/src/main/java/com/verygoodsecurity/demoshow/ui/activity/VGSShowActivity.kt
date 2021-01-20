@@ -1,10 +1,12 @@
-package com.verygoodsecurity.demoshow
+package com.verygoodsecurity.demoshow.ui.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.ui.MainActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -57,7 +59,7 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     override fun onResponse(response: VGSResponse) {
         progressReveal?.visibility = View.GONE
-        Log.d(MainActivity::class.simpleName, response.toString())
+        Log.d(VGSShowActivity::class.simpleName, response.toString())
     }
 
     private var revealAlias: String = ""

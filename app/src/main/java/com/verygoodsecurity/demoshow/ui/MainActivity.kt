@@ -1,8 +1,10 @@
-package com.verygoodsecurity.demoshow
+package com.verygoodsecurity.demoshow.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.ui.activity.VGSShowActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

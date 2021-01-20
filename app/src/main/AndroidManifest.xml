@@ -15,7 +15,7 @@
         tools:ignore="AllowBackup">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.verygoodsecurity.demoshow.ui.MainActivity"
             android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +24,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".VGSShowActivity" />
+        <activity android:name=".ui.activity.VGSShowActivity" />
     </application>
 </manifest>
