@@ -127,13 +127,13 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
         requestButton?.setOnClickListener {
             revealData()
         }
-        applyResetPasswordType?.setOnClickListener {
+        btnApplySecureText?.setOnClickListener {
             if (number?.isSecureText == true) {
                 number?.isSecureText = false
-                applyResetPasswordType?.text = "Set secure"
+                btnApplySecureText?.text = "Set secure"
             } else {
                 number?.isSecureText = true
-                applyResetPasswordType?.text = "Reset secure"
+                btnApplySecureText?.text = "Reset secure"
             }
         }
     }
