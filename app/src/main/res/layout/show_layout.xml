@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,45 +11,57 @@
     <ProgressBar
         android:id="@+id/pbReveal"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.verygoodsecurity.vgsshow.widget.VGSTextView
         android:id="@+id/tvCardNumber"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="14dp"
         app:contentPath="json.payment_card_number"
         app:hint="Card number"
         app:hintTextColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbReveal"
         app:textColor="@color/colorPrimaryDark"
         app:textSize="16dp"
         tools:ignore="SpUsage" />
 
     <com.verygoodsecurity.vgsshow.widget.VGSTextView
         android:id="@+id/tvCardExpiration"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="58dp"
         app:contentPath="json.payment_card_expiration_date"
         app:hint="Expiration date"
         app:hintTextColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCardNumber"
         app:textColor="@color/colorPrimaryDark"
         app:textSize="16dp"
         tools:ignore="SpUsage" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbRequest"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="47dp"
         android:text="Reveal"
         android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/mbSetSecureText"
+        app:layout_constraintStart_toStartOf="@+id/mbSetSecureText"
+        app:layout_constraintTop_toBottomOf="@+id/tvCardExpiration"
         tools:ignore="HardcodedText" />
 
     <com.google.android.material.button.MaterialButton
@@ -60,13 +72,10 @@
         android:layout_marginTop="16dp"
         android:text="Set secure"
         android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mbRequest"
         tools:ignore="HardcodedText" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:ignore="NestedWeights" />
 
     <TextView
         android:layout_width="match_parent"
@@ -76,5 +85,8 @@
         android:textColor="@android:color/black"
         android:textSize="10dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText,SpUsage" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

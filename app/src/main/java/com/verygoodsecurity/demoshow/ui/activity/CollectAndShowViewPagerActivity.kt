@@ -6,7 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.demoshow.ui.fragment.CollectAndShowFragment
+import com.verygoodsecurity.demoshow.ui.fragment.CollectFragment
+import com.verygoodsecurity.demoshow.ui.fragment.ShowFragment
 import kotlinx.android.synthetic.main.activity_viewpager_collect_and_show.*
 
 private const val PAGES_COUNT = 2
@@ -22,12 +23,15 @@ class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_c
         vpVGSViewPagerActivity?.adapter = VGSShowFragmentsAdapter(this)
     }
 
-    private inner class VGSShowFragmentsAdapter constructor(
-        fa: FragmentActivity
-    ) : FragmentStateAdapter(fa) {
+    private inner class VGSShowFragmentsAdapter constructor(fa: FragmentActivity) :
+        FragmentStateAdapter(fa) {
 
         override fun getItemCount(): Int = PAGES_COUNT
 
-        override fun createFragment(position: Int): Fragment = CollectAndShowFragment()
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0 -> CollectFragment()
+            1 -> ShowFragment()
+            else -> throw IllegalArgumentException("Impalement fragment first!")
+        }
     }
 }
