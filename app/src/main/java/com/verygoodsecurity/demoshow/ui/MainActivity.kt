@@ -25,4 +25,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, VGSShowFragmentActivity::class.java))
         }
     }
+
+    companion object {
+
+        const val TENANT_ID = "tntpszqgikn"
+        const val ENVIRONMENT = "sandbox"
+        const val COLLECT_CUSTOM_HOSTNAME = "collect-android-testing.verygoodsecurity.io/test"
+    }
 }
+
+typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?
+typealias CollectSuccessResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse.SuccessResponse?

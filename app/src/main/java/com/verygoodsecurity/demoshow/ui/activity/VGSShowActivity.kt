@@ -6,7 +6,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.ui.CollectResponse
+import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -23,14 +27,13 @@ import org.json.JSONObject
 class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, "tntpszqgikn")
-            .setHostname("collect-android-testing.verygoodsecurity.io/test")
-            .build()
+        VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, "tntpszqgikn", "sandbox")
+        VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,6 +163,3 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
         }
     }
 }
-
-typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?
-typealias CollectSuccessResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse.SuccessResponse?
