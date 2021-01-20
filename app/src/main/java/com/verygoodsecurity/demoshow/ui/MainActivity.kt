@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.VGSShowActivity
+import com.verygoodsecurity.demoshow.ui.fragment.VGSShowFragmentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
     private fun initListeners() {
         btnStartActivityMain?.setOnClickListener {
             startActivity(Intent(this, VGSShowActivity::class.java))
+        }
+        btnStartFragmentMain?.setOnClickListener {
+            startActivity(Intent(this, VGSShowFragmentActivity::class.java))
         }
     }
 }

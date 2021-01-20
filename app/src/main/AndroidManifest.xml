@@ -25,5 +25,7 @@
         </activity>
 
         <activity android:name=".ui.activity.VGSShowActivity" />
+
+        <activity android:name=".ui.fragment.VGSShowFragmentActivity" />
     </application>
 </manifest>
