@@ -2,7 +2,7 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentVGSShowFragmentActivity"
-    android:name="com.verygoodsecurity.demoshow.ui.fragment.VGSShowFragment"
+    android:name="com.verygoodsecurity.demoshow.ui.fragment.CollectAndShowFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout="@layout/fragment_vgs_show" />
+    tools:layout="@layout/fragment_collect_and_show" />

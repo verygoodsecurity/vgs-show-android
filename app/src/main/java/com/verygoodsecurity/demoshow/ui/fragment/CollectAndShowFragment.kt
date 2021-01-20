@@ -13,7 +13,7 @@ import com.verygoodsecurity.demoshow.ui.MainActivity
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.ENVIRONMENT
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
-import com.verygoodsecurity.demoshow.ui.activity.VGSShowActivity
+import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.utils.extension.setVisible
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -24,10 +24,11 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.fragment_vgs_show.*
+import kotlinx.android.synthetic.main.collect_layout.*
+import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONObject
 
-class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
+class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
 
     private val show: VGSShow by lazy {
         VGSShow.Builder(requireContext(), TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
@@ -49,12 +50,12 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
     private fun setupCollect() {
 
         fun setLoading(isLoading: Boolean) {
-            pbSubmitVGSFragment?.setVisible(isLoading)
-            etCardNumberVGSFragment?.isEnabled = !isLoading
-            etExpDateVGSFragment?.isEnabled = !isLoading
+            pbSubmit?.setVisible(isLoading)
+            etCardNumber?.isEnabled = !isLoading
+            etExpDate?.isEnabled = !isLoading
         }
 
-        btnSubmitVGSFragment?.setOnClickListener {
+        mbSubmit?.setOnClickListener {
             setLoading(true)
             collect.asyncSubmit("/post", HTTPMethod.POST)
         }
@@ -67,17 +68,17 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
                     with(JSONObject((response as? CollectSuccessResponse)?.rawResponse ?: "")) {
                         cardNumberAlias = parseAlias(this, "cardNumber")
                         expirationDateAlias = parseAlias(this, "expDate")
-                        tvCardNumberTokenVGSFragment?.text = cardNumberAlias
-                        tvExpDateTokenVGSFragment?.text = expirationDateAlias
+                        tvCardNumberAlias?.text = cardNumberAlias
+                        tvExpDateAlias?.text = expirationDateAlias
                     }
                 } catch (e: Exception) {
-                    Log.e(VGSShowFragment::class.java.simpleName, e.message ?: "")
+                    Log.e(CollectAndShowFragment::class.java.simpleName, e.message ?: "")
                 }
             }
         })
 
-        collect.bindView(etCardNumberVGSFragment)
-        collect.bindView(etExpDateVGSFragment)
+        collect.bindView(etCardNumber)
+        collect.bindView(etExpDate)
     }
 
     @SuppressLint("SetTextI18n")
@@ -85,26 +86,26 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
         show.addOnResponseListener(object : VGSOnResponseListener {
 
             override fun onResponse(response: VGSResponse) {
-                pbRevealVGSFragment?.setVisible(false)
-                Log.d(VGSShowActivity::class.simpleName, response.toString())
+                pbReveal?.setVisible(false)
+                Log.d(CollectAndShowActivity::class.simpleName, response.toString())
             }
         })
-        show.subscribe(vtvCardNumberVGSFragment)
-        show.subscribe(vtvExpirationVGSFragment)
+        show.subscribe(tvCardNumber)
+        show.subscribe(tvCardExpiration)
 
-        vtvCardNumberVGSFragment?.addTransformationRegex(
+        tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        vtvCardNumberVGSFragment?.addTransformationRegex("-".toRegex(), " - ")
+        tvCardNumber?.addTransformationRegex("-".toRegex(), " - ")
 
-        vtvCardNumberVGSFragment?.setOnTextChangeListener(object :
+        tvCardNumber?.setOnTextChangeListener(object :
             VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
-        vtvCardNumberVGSFragment?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        tvCardNumber?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(
@@ -114,11 +115,11 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
                 ).show()
             }
         })
-        vtvCardNumberVGSFragment?.setOnClickListener {
-            vtvCardNumberVGSFragment.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        tvCardNumber?.setOnClickListener {
+            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
-        btnRequestVGSFragment?.setOnClickListener {
-            pbRevealVGSFragment?.setVisible(true)
+        mbRequest?.setOnClickListener {
+            pbReveal?.setVisible(true)
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                     mapOf(
@@ -128,13 +129,13 @@ class VGSShowFragment : Fragment(R.layout.fragment_vgs_show) {
                 ).build()
             )
         }
-        btnSecureTextVGSFragment?.setOnClickListener {
-            if (vtvCardNumberVGSFragment?.isSecureText == true) {
-                vtvCardNumberVGSFragment?.isSecureText = false
-                btnSecureTextVGSFragment?.text = "Set secure"
+        mbSetSecureText?.setOnClickListener {
+            if (tvCardNumber?.isSecureText == true) {
+                tvCardNumber?.isSecureText = false
+                mbSetSecureText?.text = "Set secure"
             } else {
-                vtvCardNumberVGSFragment?.isSecureText = true
-                btnSecureTextVGSFragment?.text = "Reset secure"
+                tvCardNumber?.isSecureText = true
+                mbSetSecureText?.text = "Reset secure"
             }
         }
     }

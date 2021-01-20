@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.demoshow.ui.fragment.VGSShowFragment
-import kotlinx.android.synthetic.main.activity_viewpager_vgs_show.*
+import com.verygoodsecurity.demoshow.ui.fragment.CollectAndShowFragment
+import kotlinx.android.synthetic.main.activity_viewpager_collect_and_show.*
 
 private const val PAGES_COUNT = 2
 
-class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_vgs_show) {
+class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_collect_and_show) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +28,6 @@ class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_v
 
         override fun getItemCount(): Int = PAGES_COUNT
 
-        override fun createFragment(position: Int): Fragment = VGSShowFragment()
+        override fun createFragment(position: Int): Fragment = CollectAndShowFragment()
     }
 }

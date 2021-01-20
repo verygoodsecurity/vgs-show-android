@@ -24,9 +24,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.VGSShowActivity" />
+        <activity android:name=".ui.activity.CollectAndShowActivity" />
 
-        <activity android:name=".ui.activity.VGSShowFragmentActivity" />
+        <activity android:name=".ui.activity.CollectAndShowFragmentActivity" />
 
         <activity android:name=".ui.activity.VGSShowViewPagerActivity" />
     </application>

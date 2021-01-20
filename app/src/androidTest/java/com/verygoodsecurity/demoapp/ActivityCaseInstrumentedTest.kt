@@ -8,10 +8,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
-import com.verygoodsecurity.demoapp.TestUtils.interactWithDisplayedView
-import com.verygoodsecurity.demoapp.TestUtils.interactWithNestedView
-import com.verygoodsecurity.demoapp.TestUtils.pauseTestFor
-import com.verygoodsecurity.demoapp.TestUtils.performClick
+import com.verygoodsecurity.demoapp.utils.TestUtils.interactWithDisplayedView
+import com.verygoodsecurity.demoapp.utils.TestUtils.interactWithNestedView
+import com.verygoodsecurity.demoapp.utils.TestUtils.pauseTestFor
+import com.verygoodsecurity.demoapp.utils.TestUtils.performClick
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.check.SecureTextCheck
 import com.verygoodsecurity.demoshow.R
@@ -45,11 +45,11 @@ class ActivityCaseInstrumentedTest {
         val startWithActivityBtn = interactWithDisplayedView(R.id.btnStartActivityMain)
         performClick(startWithActivityBtn)
 
-        val cardInputField = interactWithNestedView(R.id.etCardNumberVGSActivity, R.id.tilCardNumberVGSActivity)
-        val cardExpDateInputField = interactWithNestedView(R.id.etExpDateVGSActivity, R.id.tilExpDateVGSActivity)
-        val numberResponseToke = interactWithDisplayedView(R.id.tvCardNumberAliasVGSActivity)
-        val expirationResponseToke = interactWithDisplayedView(R.id.tvExpDateAliasVGSActivity)
-        val submitButton = interactWithDisplayedView(R.id.mbSubmitVGSActivity)
+        val cardInputField = interactWithNestedView(R.id.etCardNumber, R.id.tilCardNumber)
+        val cardExpDateInputField = interactWithNestedView(R.id.etExpDate, R.id.tilExpDate)
+        val numberResponseToke = interactWithDisplayedView(R.id.tvCardNumberAlias)
+        val expirationResponseToke = interactWithDisplayedView(R.id.tvExpDateAlias)
+        val submitButton = interactWithDisplayedView(R.id.mbSubmit)
 
         cardInputField.perform(SetTextAction(CARD_NUMBER))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
@@ -65,9 +65,9 @@ class ActivityCaseInstrumentedTest {
     fun checkRevealedData_dataRevealedSuccessfully() {
         assertThat(device, notNullValue())
 
-        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumberVGSActivity)
-        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpirationVGSActivity)
-        val revealButton = interactWithDisplayedView(R.id.mbRequestVGSActivity)
+        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumber)
+        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpiration)
+        val revealButton = interactWithDisplayedView(R.id.mbRequest)
 
         performClick(revealButton)
         pauseTestFor(5000)
@@ -80,9 +80,9 @@ class ActivityCaseInstrumentedTest {
     fun checkRevealedData_testDeviceRotation() {
         assertThat(device, notNullValue())
 
-        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumberVGSActivity)
-        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpirationVGSActivity)
-        val revealButton = interactWithDisplayedView(R.id.mbRequestVGSActivity)
+        val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumber)
+        val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpiration)
+        val revealButton = interactWithDisplayedView(R.id.mbRequest)
 
         performClick(revealButton)
         pauseTestFor(5000)

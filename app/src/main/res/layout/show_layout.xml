@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ProgressBar
+        android:id="@+id/pbReveal"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        android:id="@+id/tvCardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="14dp"
+        app:contentPath="json.payment_card_number"
+        app:hint="Card number"
+        app:hintTextColor="@color/colorPrimary"
+        app:textColor="@color/colorPrimaryDark"
+        app:textSize="16dp"
+        tools:ignore="SpUsage" />
+
+    <com.verygoodsecurity.vgsshow.widget.VGSTextView
+        android:id="@+id/tvCardExpiration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="58dp"
+        app:contentPath="json.payment_card_expiration_date"
+        app:hint="Expiration date"
+        app:hintTextColor="@color/colorPrimary"
+        app:textColor="@color/colorPrimaryDark"
+        app:textSize="16dp"
+        tools:ignore="SpUsage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="47dp"
+        android:text="Reveal"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbSetSecureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Set secure"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="NestedWeights" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Powered by VGS Show SDK"
+        android:textColor="@android:color/black"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,SpUsage" />
+</LinearLayout>

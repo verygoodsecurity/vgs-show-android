@@ -20,11 +20,12 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.activity_vgs_show.*
+import kotlinx.android.synthetic.main.collect_layout.*
+import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
+class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
         VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
@@ -37,7 +38,7 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_vgs_show)
+        setContentView(R.layout.activity_collect_and_show)
         setupCollect()
         setupShow()
     }
@@ -49,7 +50,7 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     private fun revealData() {
-        pbRevealVGSActivity?.visibility = View.VISIBLE
+        pbReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
@@ -61,26 +62,26 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     override fun onResponse(response: VGSResponse) {
-        pbRevealVGSActivity?.visibility = View.GONE
-        Log.d(VGSShowActivity::class.simpleName, response.toString())
+        pbReveal?.visibility = View.GONE
+        Log.d(CollectAndShowActivity::class.simpleName, response.toString())
     }
 
     private var revealAlias: String = ""
     private var revealAlias2: String = ""
 
     private fun setupCollect() {
-        mbSubmitVGSActivity?.setOnClickListener {
-            pbSubmitVGSActivity?.visibility = View.VISIBLE
-            etCardNumberVGSActivity?.isEnabled = false
-            etExpDateVGSActivity?.isEnabled = false
+        mbSubmit?.setOnClickListener {
+            pbSubmit?.visibility = View.VISIBLE
+            etCardNumber?.isEnabled = false
+            etExpDate?.isEnabled = false
             vgsForm.asyncSubmit("/post", HTTPMethod.POST)
         }
 
         vgsForm.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
-                pbSubmitVGSActivity?.visibility = View.GONE
-                etCardNumberVGSActivity?.isEnabled = true
-                etExpDateVGSActivity?.isEnabled = true
+                pbSubmit?.visibility = View.GONE
+                etCardNumber?.isEnabled = true
+                etExpDate?.isEnabled = true
 
                 try {
                     val json = when (response) {
@@ -94,27 +95,27 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
                 }
             }
         })
-        vgsForm.bindView(etCardNumberVGSActivity)
-        vgsForm.bindView(etExpDateVGSActivity)
+        vgsForm.bindView(etCardNumber)
+        vgsForm.bindView(etExpDate)
     }
 
     private fun setupShow() {
         showVgs.addOnResponseListener(this)
-        showVgs.subscribe(tvCardNumberVGSActivity)
-        showVgs.subscribe(tvCardExpirationVGSActivity)
+        showVgs.subscribe(tvCardNumber)
+        showVgs.subscribe(tvCardExpiration)
 
-        tvCardNumberVGSActivity?.addTransformationRegex(
+        tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        tvCardNumberVGSActivity?.addTransformationRegex("-".toRegex(), " - ")
+        tvCardNumber?.addTransformationRegex("-".toRegex(), " - ")
 
-        tvCardNumberVGSActivity?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
+        tvCardNumber?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
-        tvCardNumberVGSActivity?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        tvCardNumber?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(
@@ -124,19 +125,19 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
                 ).show()
             }
         })
-        tvCardNumberVGSActivity?.setOnClickListener {
-            tvCardNumberVGSActivity.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        tvCardNumber?.setOnClickListener {
+            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
-        mbRequestVGSActivity?.setOnClickListener {
+        mbRequest?.setOnClickListener {
             revealData()
         }
-        mbSetSecureTextVGSActivity?.setOnClickListener {
-            if (tvCardNumberVGSActivity?.isSecureText == true) {
-                tvCardNumberVGSActivity?.isSecureText = false
-                mbSetSecureTextVGSActivity?.text = "Set secure"
+        mbSetSecureText?.setOnClickListener {
+            if (tvCardNumber?.isSecureText == true) {
+                tvCardNumber?.isSecureText = false
+                mbSetSecureText?.text = "Set secure"
             } else {
-                tvCardNumberVGSActivity?.isSecureText = true
-                mbSetSecureTextVGSActivity?.text = "Reset secure"
+                tvCardNumber?.isSecureText = true
+                mbSetSecureText?.text = "Reset secure"
             }
         }
     }
@@ -145,7 +146,7 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate").let { date ->
-                    tvExpDateAliasVGSActivity?.text = date
+                    tvExpDateAlias?.text = date
                     revealAlias2 = date
                 }
             }
@@ -156,7 +157,7 @@ class VGSShowActivity : AppCompatActivity(), VGSOnResponseListener {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let { number ->
-                    tvCardNumberAliasVGSActivity?.text = number
+                    tvCardNumberAlias?.text = number
                     revealAlias = number
                 }
             }

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp
+package com.verygoodsecurity.demoapp.utils
 
 import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso
