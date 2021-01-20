@@ -13,5 +13,6 @@ class VGSShowViewPagerActivity: AppCompatActivity(R.layout.activity_viewpager_vg
     }
 
     private fun initViewPager() {
+
     }
 }
