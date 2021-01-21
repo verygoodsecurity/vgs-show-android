@@ -42,22 +42,22 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/code
-      #      - run:
-      #          name: "What branch am I on now?"
-      #          command: echo $CIRCLE_BRANCH
-      #      - run:
-      #          name: Get destination branch name
-      #          command: |
-      #            if [[ -n ${CIRCLE_PULL_REQUEST##*/} ]]
-      #              then
-      #              curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
-      #              chmod +x jq
-      #              url="https://api.github.com/repos/org/repo/pulls/${CIRCLE_PULL_REQUEST##*/}?access_token=$GITHUB_TOKEN"
-      #              target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
-      #              echo "Target_branch: ",$target_branch;
-      #            else
-      #              echo "Else: ",$CIRCLE_PR_NUMBER;
-      #            fi
+      - run:
+          name: "What branch am I on now?"
+          command: echo $CIRCLE_BRANCH
+      - run:
+          name: Get destination branch name
+          command: |
+            if [[ -n ${CIRCLE_PULL_REQUEST##*/} ]]
+              then
+              curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
+              chmod +x jq
+              url="https://api.github.com/repos/org/repo/pulls/${CIRCLE_PULL_REQUEST##*/}?access_token=$GITHUB_TOKEN"
+              target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
+              echo "Target_branch: ",$target_branch;
+            else
+              echo "Else: ",$CIRCLE_PR_NUMBER;
+            fi
       - run:
           name: Store Google Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/gcloud-service-key.json
