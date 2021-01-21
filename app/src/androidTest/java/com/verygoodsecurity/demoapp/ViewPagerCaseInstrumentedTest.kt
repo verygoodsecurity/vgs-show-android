@@ -68,6 +68,10 @@ class ViewPagerCaseInstrumentedTest {
     fun checkRevealedData_dataRevealedSuccessfully() {
         ViewMatchers.assertThat(device, CoreMatchers.notNullValue())
 
+        val viewPager = interactWithDisplayedView(R.id.vpVGSViewPagerActivity)
+
+        viewPager.perform(swipeLeft())
+
         val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumber)
         val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpiration)
         val revealButton = interactWithDisplayedView(R.id.mbRequest)
@@ -82,6 +86,10 @@ class ViewPagerCaseInstrumentedTest {
     @Test
     fun checkRevealedData_testDeviceRotation() {
         ViewMatchers.assertThat(device, CoreMatchers.notNullValue())
+
+        val viewPager = interactWithDisplayedView(R.id.vpVGSViewPagerActivity)
+
+        viewPager.perform(swipeLeft())
 
         val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumber)
         val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpiration)
@@ -106,6 +114,8 @@ class ViewPagerCaseInstrumentedTest {
         ViewMatchers.assertThat(device, CoreMatchers.notNullValue())
 
         val viewPager = interactWithDisplayedView(R.id.vpVGSViewPagerActivity)
+
+        viewPager.perform(swipeLeft())
 
         val revealedCardNumber = interactWithDisplayedView(R.id.tvCardNumber)
         val revealedCardExpDate = interactWithDisplayedView(R.id.tvCardExpiration)
