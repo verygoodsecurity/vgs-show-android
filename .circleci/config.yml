@@ -40,8 +40,8 @@ jobs:
   "Run_UI_Test":
     <<: *environment
     steps:
-      - attach_workspace:
-          at: ~/code
+#      - attach_workspace:
+#          at: ~/code
       - run:
           name: "What branch am I on now?"
           command: echo $CIRCLE_BRANCH
