@@ -13,26 +13,26 @@ jobs:
     <<: *environment
     steps:
       - checkout
-      #      - restore_cache:
-      #          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      #      - run:
-      #          name: Download Dependencies
-      #          command: |
-      #            sudo chmod +x gradlew
-      #            ./gradlew androidDependencies
-      #      - save_cache:
-      #          paths:
-      #            - ~/.gradle
-      #          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      #      - run:
-      #          name: Run Lint
-      #          command: ./gradlew lintDebug
-      #      - run:
-      #          name: Run Unit tests
-      #          command: ./gradlew testDebugUnitTest
-      #      - run:
-      #          name: Generate apk
-      #          command: ./gradlew assembleDebug assembleAndroidTest
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+        paths:
+          - ~/.gradle
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+#      - run:
+#          name: Run Lint
+#          command: ./gradlew lintDebug
+#      - run:
+#          name: Run Unit tests
+#          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Generate apk
+          command: ./gradlew assembleDebug assembleAndroidTest
       - persist_to_workspace:
           root: ~/code
           paths:
@@ -40,11 +40,11 @@ jobs:
   "Run_UI_Test":
     <<: *environment
     steps:
-#      - attach_workspace:
-#          at: ~/code
-#      - run:
-#          name: "What branch am I on now?"
-#          command: echo $CIRCLE_BRANCH
+      #      - attach_workspace:
+      #          at: ~/code
+      #      - run:
+      #          name: "What branch am I on now?"
+      #          command: echo $CIRCLE_BRANCH
       - run:
           name: Get destination branch name
           command: |
@@ -88,10 +88,10 @@ jobs:
 workflows:
   main:
     jobs:
-#      - "Run_Unit_Test_And_Build"
+      - "Run_Unit_Test_And_Build"
       - "Run_UI_Test":
-#          requires:
-#            - "Run_Unit_Test_And_Build"
+          requires:
+            - "Run_Unit_Test_And_Build"
 #          filters:
 #            branches:
 #              only:
