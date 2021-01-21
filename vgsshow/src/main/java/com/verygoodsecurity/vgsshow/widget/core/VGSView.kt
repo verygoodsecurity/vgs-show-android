@@ -81,6 +81,11 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         view.isLongClickable = false
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        super.removeAllViews()
+    }
+
     override fun onSaveInstanceState(): Parcelable? {
         return saveState(super.onSaveInstanceState())
     }

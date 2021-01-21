@@ -1,12 +1,12 @@
 package com.verygoodsecurity.demoapp
 
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.utils.TestUtils.interactWithDisplayedView
 import com.verygoodsecurity.demoapp.utils.TestUtils.interactWithNestedView
@@ -16,8 +16,8 @@ import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.check.SecureTextCheck
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import org.hamcrest.Matchers.not
-import org.hamcrest.Matchers.notNullValue
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +25,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class ActivityCaseInstrumentedTest {
+class FragmentCaseInstrumentedTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"
@@ -40,13 +40,15 @@ class ActivityCaseInstrumentedTest {
 
     @Before
     fun prepareDevice_redactData() {
-        device = UiDevice.getInstance(getInstrumentation())
+        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-        val startWithActivityBtn = interactWithDisplayedView(R.id.btnStartActivityMain)
+        val startWithActivityBtn = interactWithDisplayedView(R.id.btnStartFragmentMain)
         performClick(startWithActivityBtn)
 
-        val cardInputField = interactWithNestedView(R.id.etCardNumber, R.id.tilCardNumber)
-        val cardExpDateInputField = interactWithNestedView(R.id.etExpDate, R.id.tilExpDate)
+        val cardInputField =
+            interactWithNestedView(R.id.etCardNumber, R.id.tilCardNumber)
+        val cardExpDateInputField =
+            interactWithNestedView(R.id.etExpDate, R.id.tilExpDate)
         val numberResponseToke = interactWithDisplayedView(R.id.tvCardNumberAlias)
         val expirationResponseToke = interactWithDisplayedView(R.id.tvExpDateAlias)
         val submitButton = interactWithDisplayedView(R.id.mbSubmit)
@@ -57,8 +59,8 @@ class ActivityCaseInstrumentedTest {
         performClick(submitButton)
         pauseTestFor(5000)
 
-        numberResponseToke.check(matches(not(withText(""))))
-        expirationResponseToke.check(matches(not(withText(""))))
+        numberResponseToke.check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(""))))
+        expirationResponseToke.check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(""))))
     }
 
     @Test

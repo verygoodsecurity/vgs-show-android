@@ -1,10 +1,16 @@
-package com.verygoodsecurity.demoshow
+package com.verygoodsecurity.demoshow.ui.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoshow.R
+import com.verygoodsecurity.demoshow.ui.CollectResponse
+import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
+import com.verygoodsecurity.demoshow.ui.MainActivity
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -14,25 +20,25 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.collect_layout.*
+import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), VGSOnResponseListener {
+class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, "tntpszqgikn")
-            .setHostname("collect-android-testing.verygoodsecurity.io/test")
-            .build()
+        VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, "tntpszqgikn", "sandbox")
+        VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_collect_and_show)
         setupCollect()
         setupShow()
     }
@@ -44,7 +50,7 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     private fun revealData() {
-        progressReveal?.visibility = View.VISIBLE
+        pbReveal?.visibility = View.VISIBLE
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
@@ -56,26 +62,26 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     override fun onResponse(response: VGSResponse) {
-        progressReveal?.visibility = View.GONE
-        Log.d(MainActivity::class.simpleName, response.toString())
+        pbReveal?.visibility = View.GONE
+        Log.d(CollectAndShowActivity::class.simpleName, response.toString())
     }
 
     private var revealAlias: String = ""
     private var revealAlias2: String = ""
 
     private fun setupCollect() {
-        submitButton?.setOnClickListener {
-            submitProgress?.visibility = View.VISIBLE
-            cardNumber?.isEnabled = false
-            expDate?.isEnabled = false
+        mbSubmit?.setOnClickListener {
+            pbSubmit?.visibility = View.VISIBLE
+            etCardNumber?.isEnabled = false
+            etExpDate?.isEnabled = false
             vgsForm.asyncSubmit("/post", HTTPMethod.POST)
         }
 
         vgsForm.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
-                submitProgress?.visibility = View.GONE
-                cardNumber?.isEnabled = true
-                expDate?.isEnabled = true
+                pbSubmit?.visibility = View.GONE
+                etCardNumber?.isEnabled = true
+                etExpDate?.isEnabled = true
 
                 try {
                     val json = when (response) {
@@ -89,27 +95,27 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
                 }
             }
         })
-        vgsForm.bindView(cardNumber)
-        vgsForm.bindView(expDate)
+        vgsForm.bindView(etCardNumber)
+        vgsForm.bindView(etExpDate)
     }
 
     private fun setupShow() {
         showVgs.addOnResponseListener(this)
-        showVgs.subscribe(number)
-        showVgs.subscribe(expiration)
+        showVgs.subscribe(tvCardNumber)
+        showVgs.subscribe(tvCardExpiration)
 
-        number?.addTransformationRegex(
+        tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        number?.addTransformationRegex("-".toRegex(), " - ")
+        tvCardNumber?.addTransformationRegex("-".toRegex(), " - ")
 
-        number?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
+        tvCardNumber?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
-        number?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        tvCardNumber?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(
@@ -119,19 +125,19 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
                 ).show()
             }
         })
-        number?.setOnClickListener {
-            number.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        tvCardNumber?.setOnClickListener {
+            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
-        requestButton?.setOnClickListener {
+        mbRequest?.setOnClickListener {
             revealData()
         }
-        applyResetPasswordType?.setOnClickListener {
-            if (number?.isSecureText == true) {
-                number?.isSecureText = false
-                applyResetPasswordType?.text = "Set secure"
+        mbSetSecureText?.setOnClickListener {
+            if (tvCardNumber?.isSecureText == true) {
+                tvCardNumber?.isSecureText = false
+                mbSetSecureText?.text = "Set secure"
             } else {
-                number?.isSecureText = true
-                applyResetPasswordType?.text = "Reset secure"
+                tvCardNumber?.isSecureText = true
+                mbSetSecureText?.text = "Reset secure"
             }
         }
     }
@@ -140,7 +146,7 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate").let { date ->
-                    tokenView2?.text = date
+                    tvExpDateAlias?.text = date
                     revealAlias2 = date
                 }
             }
@@ -151,13 +157,10 @@ class MainActivity : AppCompatActivity(), VGSOnResponseListener {
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let { number ->
-                    tokenView1?.text = number
+                    tvCardNumberAlias?.text = number
                     revealAlias = number
                 }
             }
         }
     }
 }
-
-typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?
-typealias CollectSuccessResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse.SuccessResponse?
