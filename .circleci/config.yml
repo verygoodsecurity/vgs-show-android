@@ -42,9 +42,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/code
-      - run:
-          name: "What branch am I on now?"
-          command: echo $CIRCLE_BRANCH
+#      - run:
+#          name: "What branch am I on now?"
+#          command: echo $CIRCLE_BRANCH
       - run:
           name: Get destination branch name
           command: |
