@@ -1,10 +1,11 @@
 package com.verygoodsecurity.vgsshow.util.url
 
-import com.verygoodsecurity.vgsshow.VGSShow
+import com.google.firebase.firestore.util.Logger
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.isValid
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.logWaring
+
 
 internal object UrlHelper {
 
@@ -16,11 +17,11 @@ internal object UrlHelper {
 
     fun buildProxyUrl(vaultId: String, environment: VGSEnvironment): String = when {
         !vaultId.isValidTenantId() -> {
-            logDebug("Vault id is not valid", VGSShow::class.simpleName)
+            logWaring("Vault[$vaultId] id is not valid")
             PROXY_URL_DEFAULT
         }
         !environment.isValid() -> {
-            logDebug("Environment is not valid", VGSShow::class.simpleName)
+            logWaring("Environment[$environment] is not valid")
             PROXY_URL_DEFAULT
         }
         else -> StringBuilder(HTTPS_SCHEME)
