@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ProgressBar
+        android:id="@+id/pbSubmit"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/tilCardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundModes="outline"
+        app:boxCornerRadius="8dp"
+        app:boxStrokeColor="@color/colorPrimary"
+        app:hint="Card Number"
+        app:hintEnabled="true"
+        app:hintTextAppearance="@style/EditTextHintTextAppearance">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:id="@+id/etCardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/default_margin"
+            android:padding="4dp"
+            app:cardBrandIconGravity="end"
+            app:fieldName="cardNumber"
+            app:imeOptions="actionNext"
+            app:numberDivider=" "
+            app:text="4111111111111111"
+            app:textColor="@color/colorPrimaryDark"
+            app:textSize="12dp"
+            tools:ignore="SpUsage" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <TextView
+        android:id="@+id/tvCardNumberAlias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:singleLine="true" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/tilExpDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:boxBackgroundModes="outline"
+        app:boxCornerRadius="8dp"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hint="Expiration Date"
+        app:hintEnabled="true"
+        app:hintTextAppearance="@style/EditTextHintTextAppearance">
+
+        <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+            android:id="@+id/etExpDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/default_margin"
+            android:padding="4dp"
+            app:fieldName="expDate"
+            app:text="12/2024"
+            app:textColor="@color/colorPrimaryDark"
+            app:textSize="12dp"
+            tools:ignore="SpUsage" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <TextView
+        android:id="@+id/tvExpDateAlias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+        android:singleLine="true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Submit"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="NestedWeights" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="start"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="Powered by VGS Collect SDK"
+        android:textColor="@android:color/black"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,SpUsage" />
+</LinearLayout>
