@@ -349,7 +349,7 @@ class VGSShow constructor(
             if (cname.isValidUrl()) {
                 host = cname.toHost()
                 if (host != cname) {
-                    logWaring("Hostname will be normalized to the %s", host)
+                    logWaring("Hostname will be normalized to the $host")
                 }
             }
             return this

@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network.model.data.request
 import com.verygoodsecurity.vgsshow.core.network.extension.toJsonOrNull
 import org.json.JSONObject
 
-class JsonRequestData : RequestData {
+internal class JsonRequestData : RequestData {
 
     private val data: JSONObject?
 

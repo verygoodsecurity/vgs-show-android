@@ -28,7 +28,7 @@ import org.json.JSONObject
 class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, "test").setHostname(COLLECT_CUSTOM_HOSTNAME).build()
+        VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
     }
 
     private val vgsForm: VGSCollect by lazy {
