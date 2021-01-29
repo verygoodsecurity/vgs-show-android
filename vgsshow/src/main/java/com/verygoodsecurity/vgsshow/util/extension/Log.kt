@@ -10,10 +10,10 @@ internal fun Any.logDebug(message: String, tag: String? = this::class.simpleName
     }
 }
 
-internal fun Any.debug(message: String, vararg values: Any) {
-    VGSLogger.debug(this::class.java.simpleName, message, values)
+internal fun Any.logDebug(message: String, vararg values: Any) {
+    VGSLogger.debug(this::class.java.simpleName, message, *values)
 }
 
 internal fun Any.logWaring(message: String, vararg values: Any, tag: String? = null) {
-    VGSLogger.warning((tag ?: this::class.java.simpleName), message, values)
+    VGSLogger.warning((tag ?: this::class.java.simpleName), message, *values)
 }

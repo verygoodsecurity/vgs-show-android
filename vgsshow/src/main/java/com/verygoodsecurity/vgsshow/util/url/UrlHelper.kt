@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgsshow.util.url
 
-import com.google.firebase.firestore.util.Logger
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.isValid
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
