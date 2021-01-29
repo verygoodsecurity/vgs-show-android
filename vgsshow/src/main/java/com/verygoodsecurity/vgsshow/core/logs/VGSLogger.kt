@@ -12,11 +12,6 @@ object VGSLogger {
     var level: Level = Level.DEBUG
 
     /**
-     * Current log level.
-     */
-    var isNetworkLogsEnabled: Boolean = true
-
-    /**
      *
      * @return true if the logger is logging at DEBUG level.
      */
@@ -30,17 +25,11 @@ object VGSLogger {
         log(Level.WARN, tag, message)
     }
 
-    internal fun network(tag: String, message: String?) {
-        if (isNetworkLogsEnabled) {
-            log(Level.DEBUG, tag, message)
-        }
-    }
-
     private fun log(level: Level, tag: String, message: String?) {
         if (level.ordinal >= this.level.ordinal) {
             val msg = "$tag : $message"
             when (level) {
-                Level.DEBUG -> Log.i(TAG, msg)
+                Level.DEBUG -> Log.d(TAG, msg)
                 Level.WARN -> Log.w(TAG, msg)
                 Level.NONE -> {
                     /*do nothing*/
