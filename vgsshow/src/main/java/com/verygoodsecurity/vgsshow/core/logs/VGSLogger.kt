@@ -22,21 +22,21 @@ object VGSLogger {
      */
     fun isDebugEnabled() = Level.DEBUG.ordinal >= level.ordinal
 
-    internal fun debug(tag: String, message: String, vararg values: Any) {
+    internal fun debug(tag: String, message: String, vararg values: Any?) {
         log(Level.DEBUG, tag, message, *values)
     }
 
-    internal fun warning(tag: String, message: String, vararg values: Any) {
+    internal fun warning(tag: String, message: String, vararg values: Any?) {
         log(Level.WARN, tag, message, *values)
     }
 
-    internal fun network(tag: String, message: String, vararg values: Any) {
+    internal fun network(tag: String, message: String, vararg values: Any?) {
         if (isNetworkLogsEnabled) {
             log(Level.DEBUG, tag, message, *values)
         }
     }
 
-    private fun log(level: Level, tag: String, message: String, vararg values: Any) {
+    private fun log(level: Level, tag: String, message: String, vararg values: Any?) {
         if (level.ordinal >= this.level.ordinal) {
             val msg = "$tag : ${String.format(message, *values)}"
             when (level) {

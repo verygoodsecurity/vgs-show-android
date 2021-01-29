@@ -16,11 +16,11 @@ internal object UrlHelper {
 
     fun buildProxyUrl(vaultId: String, environment: VGSEnvironment): String = when {
         !vaultId.isValidTenantId() -> {
-            logWaring("Vault[$vaultId] id is not valid")
+            logWaring("VaultId(%s) is not valid", vaultId)
             PROXY_URL_DEFAULT
         }
         !environment.isValid() -> {
-            logWaring("Environment[$environment] is not valid")
+            logWaring("Environment(%s) is not valid", environment)
             PROXY_URL_DEFAULT
         }
         else -> StringBuilder(HTTPS_SCHEME)
