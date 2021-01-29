@@ -13,10 +13,7 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.client.okhttp.interceptor.CnameInterceptor
 import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
-import com.verygoodsecurity.vgsshow.util.extension.logRequest
-import com.verygoodsecurity.vgsshow.util.extension.logResponse
-import com.verygoodsecurity.vgsshow.util.extension.toURL
+import com.verygoodsecurity.vgsshow.util.extension.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
@@ -73,11 +70,10 @@ internal class OkHttpClient : IHttpClient {
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
             .url((request.url concatWithSlash request.path).toURL())
-            .addHeader(CONTENT_TYPE, request.format.toContentType())
-            .addHeaders(request.headers)
+            .addHeaders(request.headers.plusItem(CONTENT_TYPE to request.format.toContentType()))
             .setMethod(
                 request.method,
-                request.data,
+                request.data?.getData(),
                 request.format.toContentType().toMediaTypeOrNull()
             )
             .build()

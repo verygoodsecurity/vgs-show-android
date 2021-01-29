@@ -10,6 +10,8 @@ internal class UrlencodedData(data: String) : RequestData {
         null
     }
 
+    override fun getRawData(): String? = data
+
     override fun getData(): ByteArray? = data?.toByteArray(Charsets.UTF_8)
 
     override fun isValid(): Boolean = !data.isNullOrEmpty()

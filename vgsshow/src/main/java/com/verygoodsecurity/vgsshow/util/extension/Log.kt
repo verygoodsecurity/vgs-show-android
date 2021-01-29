@@ -15,7 +15,7 @@ internal fun Any.logRequest(
     requestUrl: String,
     method: String,
     headers: Map<String, String>,
-    payload: String,
+    payload: String?,
     tag: String? = null
 ) {
     VGSLogger.debug(

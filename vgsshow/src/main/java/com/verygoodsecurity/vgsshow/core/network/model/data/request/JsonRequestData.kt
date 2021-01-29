@@ -15,6 +15,8 @@ internal class JsonRequestData : RequestData {
         this.data = data.toJsonOrNull()
     }
 
+    override fun getRawData(): String? = data?.toString()
+
     override fun getData(): ByteArray? = data?.toString()?.toByteArray(Charsets.UTF_8)
 
     override fun isValid(): Boolean = data != null

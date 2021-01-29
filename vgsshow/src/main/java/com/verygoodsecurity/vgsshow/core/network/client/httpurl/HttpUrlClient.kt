@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgsshow.core.network.client.httpurl
 
-import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.*
 import com.verygoodsecurity.vgsshow.core.network.client.extension.*
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
@@ -9,6 +8,7 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.util.extension.*
 import java.io.IOException
 import java.net.HttpURLConnection
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -28,8 +28,11 @@ internal class HttpUrlClient : IHttpClient {
     }
 
     override fun execute(request: HttpRequest): HttpResponse {
+        val requestId: String = UUID.randomUUID().toString()
         var connection: HttpURLConnection? = null
         try {
+            val requestHeaders =
+                request.headers.plusItem(CONTENT_TYPE to request.format.toContentType())
             connection = (generateBaseUrl(request) concatWithSlash request.path).toURL().toString()
                 .openConnection()
                 .setSSLSocketFactory(TLSSocketFactory())
@@ -38,11 +41,15 @@ internal class HttpUrlClient : IHttpClient {
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
-                .addHeader(CONTENT_TYPE, request.format.toContentType())
-                .addHeaders(request.headers)
+                .addHeaders(requestHeaders)
                 .setMethod(request.method)
-            writeData(connection, request.data)
-            return readResponse(connection)
+            with(connection) {
+                logRequest(requestId, url.toString(), requestMethod, requestHeaders, request.data?.getRawData())
+                writeData(this, request.data?.getData())
+                val response = readResponse(this)
+                logResponse(requestId, url.toString(), responseCode, responseMessage, getHeaders())
+                return response
+            }
         } catch (e: Exception) {
             throw e
         } finally {
@@ -124,7 +131,6 @@ internal class HttpUrlClient : IHttpClient {
 
     @Throws(IOException::class)
     private fun writeData(connection: HttpURLConnection, data: ByteArray?) {
-        logDebug("Request{method=${connection.requestMethod}}", VGSShow::class.simpleName)
         data?.let {
             connection.outputStream.use { os ->
                 os.write(it)
@@ -134,10 +140,6 @@ internal class HttpUrlClient : IHttpClient {
 
     @Throws(IOException::class)
     private fun readResponse(connection: HttpURLConnection): HttpResponse {
-        logDebug(
-            "Response{code=${connection.responseCode}, message=${connection.responseMessage}}",
-            VGSShow::class.simpleName
-        )
         return when {
             connection.isSuccessful() -> connection.inputStream.bufferedReader().use {
                 HttpResponse(connection.responseCode, true, responseBody = it.readText())
