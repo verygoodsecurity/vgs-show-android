@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.logs
 
 import android.util.Log
+import com.verygoodsecurity.vgsshow.BuildConfig
 
 object VGSShowLogger {
 
@@ -9,7 +10,7 @@ object VGSShowLogger {
     /**
      * Current log level.
      */
-    var level: Level = Level.DEBUG
+    var level: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE
 
     /**
      *
