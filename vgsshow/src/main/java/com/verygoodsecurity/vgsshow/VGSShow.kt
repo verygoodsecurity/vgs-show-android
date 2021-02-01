@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
-import com.verygoodsecurity.vgsshow.util.extension.logWaring
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
@@ -349,7 +349,7 @@ class VGSShow constructor(
             if (cname.isValidUrl()) {
                 host = cname.toHost()
                 if (host != cname) {
-                    logWaring("Hostname will be normalized to the $host")
+                    logDebug("Hostname will be normalized to the $host")
                 }
             }
             return this
