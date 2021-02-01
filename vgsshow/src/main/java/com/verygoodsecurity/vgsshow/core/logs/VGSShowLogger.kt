@@ -17,7 +17,7 @@ object VGSShowLogger {
 
     /**
      *
-     * @return true if the logger is logging at DEBUG level.
+     * @return true if level is DEBUG.
      */
     fun isDebugEnabled() = Level.DEBUG.ordinal >= level.ordinal
 
@@ -43,12 +43,24 @@ object VGSShowLogger {
     }
 
     /**
-     * Level supported by this logger.
+     * Levels supported by this logger.
      */
     enum class Level {
 
+        /**
+         * Default setting. We print all information about processing.
+         * It includes errors, warnings, notifications, debug messages, requests and responses.
+         */
         DEBUG,
+
+        /**
+         * This setting allows you to minimize information and print only errors, warnings.
+         */
         WARN,
+
+        /**
+         * Disable debug-logs.
+         */
         NONE
     }
 }
