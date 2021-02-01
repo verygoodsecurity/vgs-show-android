@@ -16,6 +16,11 @@ object VGSShowLogger {
     var level: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE
 
     /**
+     * Disable/enable logs.
+     */
+    var isEnabled: Boolean = BuildConfig.DEBUG
+
+    /**
      *
      * @return true if level is DEBUG.
      */
@@ -30,7 +35,7 @@ object VGSShowLogger {
     }
 
     private fun log(level: Level, tag: String, message: String?) {
-        if (level.ordinal >= this.level.ordinal) {
+        if (isEnabled && level.ordinal >= this.level.ordinal) {
             val msg = "$tag : $message"
             when (level) {
                 Level.DEBUG -> Log.d(TAG, msg)
