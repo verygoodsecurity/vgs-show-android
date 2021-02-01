@@ -2,10 +2,10 @@ package com.verygoodsecurity.vgsshow.core.network.client.okhttp
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.verygoodsecurity.vgsshow.core.network.client.BaseHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
 import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
-import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
@@ -23,18 +23,18 @@ import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-internal class OkHttpClient : IHttpClient {
+internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient(isLogsEnabled) {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
 
     private val client: OkHttp3Client by lazy {
         OkHttp3Client().newBuilder()
-            .addInterceptor(LoggingInterceptor())
             .addInterceptor(cnameInterceptor)
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .build()
+            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS).also {
+                if (isLogsEnabled) it.addInterceptor(LoggingInterceptor())
+            }.build()
     }
 
     override fun execute(request: HttpRequest): HttpResponse {

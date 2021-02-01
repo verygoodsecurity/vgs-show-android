@@ -14,7 +14,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import kotlin.system.measureTimeMillis
 
-internal class HttpUrlClient : IHttpClient {
+internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClient(isLogsEnabled) {
 
     private var cname: String? = null
     private var vaultId: String? = null
@@ -43,13 +43,10 @@ internal class HttpUrlClient : IHttpClient {
                 .setCacheEnabled(false)
                 .addHeaders(requestHeaders)
                 .setMethod(request.method)
-            with(connection) {
-                logRequest(requestId, url.toString(), requestMethod, requestHeaders, request.data?.getRawData())
-                writeData(this, request.data?.getData())
-                val response = readResponse(this)
-                logResponse(requestId, url.toString(), responseCode, responseMessage, getHeaders())
-                return response
-            }
+            logRequest(requestId, request, requestHeaders, connection)
+            writeData(connection, request.data?.getData())
+            logResponse(requestId, connection)
+            return readResponse(connection)
         } catch (e: Exception) {
             throw e
         } finally {
@@ -148,5 +145,36 @@ internal class HttpUrlClient : IHttpClient {
                 HttpResponse(connection.responseCode, false, message = it.readText())
             }
         }
+    }
+
+    private fun logRequest(
+        requestId: String,
+        request: HttpRequest,
+        requestHeaders: Map<String, String>,
+        connection: HttpURLConnection
+    ) {
+        if (!isLogsEnabled) {
+            return
+        }
+        logRequest(
+            requestId,
+            connection.url.toString(),
+            connection.requestMethod,
+            requestHeaders,
+            request.data?.getRawData()
+        )
+    }
+
+    private fun logResponse(requestId: String, connection: HttpURLConnection) {
+        if (!isLogsEnabled) {
+            return
+        }
+        logResponse(
+            requestId,
+            connection.url.toString(),
+            connection.responseCode,
+            connection.responseMessage,
+            connection.getHeaders()
+        )
     }
 }
