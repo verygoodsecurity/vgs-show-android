@@ -3,6 +3,9 @@ package com.verygoodsecurity.vgsshow.core.logs
 import android.util.Log
 import com.verygoodsecurity.vgsshow.BuildConfig
 
+/**
+ * This object is used to log messages in VGS Show SDK.
+ */
 object VGSShowLogger {
 
     private const val TAG = "VGSShow"
