@@ -2,10 +2,10 @@ package com.verygoodsecurity.vgsshow.core.network.client.okhttp
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.network.client.BaseHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
+import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
 import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
-import com.verygoodsecurity.vgsshow.core.network.client.IHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
 import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
@@ -13,29 +13,28 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.client.okhttp.interceptor.CnameInterceptor
 import com.verygoodsecurity.vgsshow.core.network.extension.toContentType
 import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
-import com.verygoodsecurity.vgsshow.util.extension.concatWithSlash
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
-import com.verygoodsecurity.vgsshow.util.extension.toURL
+import com.verygoodsecurity.vgsshow.util.extension.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-internal class OkHttpClient : IHttpClient {
+internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient(isLogsEnabled) {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
 
     private val client: OkHttp3Client by lazy {
         OkHttp3Client().newBuilder()
-            .addInterceptor(LoggingInterceptor())
             .addInterceptor(cnameInterceptor)
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .build()
+            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS).also {
+                if (isLogsEnabled) it.addInterceptor(LoggingInterceptor())
+            }.build()
     }
 
     override fun execute(request: HttpRequest): HttpResponse {
@@ -71,10 +70,10 @@ internal class OkHttpClient : IHttpClient {
     private fun buildOkHttpRequest(request: HttpRequest): Request {
         return Request.Builder()
             .url((request.url concatWithSlash request.path).toURL())
-            .addHeaders(request.headers)
+            .addHeaders(request.headers.plusItem(CONTENT_TYPE to request.format.toContentType()))
             .setMethod(
                 request.method,
-                request.data,
+                request.data?.getData(),
                 request.format.toContentType().toMediaTypeOrNull()
             )
             .build()
@@ -83,15 +82,23 @@ internal class OkHttpClient : IHttpClient {
     internal class LoggingInterceptor : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
-            with(VGSShow::class.java.simpleName) {
-                return chain.proceed(chain.request().also {
-                    logDebug("Request{method=${it.method}}", VGSShow::class.simpleName)
-                }).also {
-                    logDebug(
-                        "Response{code=${it.code}, message=${it.message}}",
-                        VGSShow::class.simpleName
-                    )
-                }
+            val requestId = UUID.randomUUID().toString()
+            return chain.proceed(chain.request().also {
+                it.logRequest(
+                    requestId,
+                    it.url.toString(),
+                    it.method,
+                    it.headers.toMap(),
+                    getBody(it.body)
+                )
+            }).also {
+                logResponse(
+                    requestId,
+                    it.request.url.toString(),
+                    it.code,
+                    it.message,
+                    it.headers.toMap()
+                )
             }
         }
 

@@ -60,3 +60,17 @@ internal fun HttpURLConnection.setMethod(method: VGSHttpMethod): HttpURLConnecti
 internal fun HttpURLConnection.isSuccessful(): Boolean {
     return this.responseCode in 200..299
 }
+
+internal fun HttpURLConnection.getHeaders(): Map<String, String> {
+    val result = mutableMapOf<String, String>()
+    var index = 0
+    while (true) {
+        val key = getHeaderFieldKey(index)
+        val value = getHeaderField(index)
+        if (key == null || value == null) {
+            return result
+        }
+        result[key] = value
+        index++
+    }
+}
