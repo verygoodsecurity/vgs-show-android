@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgsshow.core.helper
 
 import androidx.annotation.MainThread
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -21,6 +20,10 @@ internal class ViewsStore {
 
     @MainThread
     fun update(data: ResponseData?) {
+        if (views.isEmpty()) {
+            logWaring("No subscribed views to reveal data.")
+            return
+        }
         logStartViewsUpdate()
         val unrevealedContentPaths = mutableListOf<String>()
         for (view in views) {
@@ -39,7 +42,7 @@ internal class ViewsStore {
             }
         }
         if (unrevealedContentPaths.isNotEmpty()) {
-            logDebug("Cannot reveal data for contentPaths: $unrevealedContentPaths")
+            logWaring("Cannot reveal data for contentPaths: $unrevealedContentPaths")
         }
     }
 
