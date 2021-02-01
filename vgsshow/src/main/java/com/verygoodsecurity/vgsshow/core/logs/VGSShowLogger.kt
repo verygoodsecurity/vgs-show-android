@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.core.logs
 
 import android.util.Log
 
-object VGSLogger {
+object VGSShowLogger {
 
     private const val TAG = "VGSShow"
 

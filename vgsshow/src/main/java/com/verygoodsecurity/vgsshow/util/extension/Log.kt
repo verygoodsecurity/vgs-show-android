@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
-import com.verygoodsecurity.vgsshow.core.logs.VGSLogger
+import com.verygoodsecurity.vgsshow.core.logs.VGSShowLogger
 
 internal fun Any.logDebug(message: String, tag: String? = null) {
-    VGSLogger.debug((tag ?: this::class.java.simpleName), message)
+    VGSShowLogger.debug((tag ?: this::class.java.simpleName), message)
 }
 
 internal fun Any.logWaring(message: String, tag: String? = null) {
-    VGSLogger.warning((tag ?: this::class.java.simpleName), message)
+    VGSShowLogger.warning((tag ?: this::class.java.simpleName), message)
 }
 
 internal fun Any.logRequest(
@@ -18,7 +18,7 @@ internal fun Any.logRequest(
     payload: String?,
     tag: String? = null
 ) {
-    VGSLogger.debug(
+    VGSShowLogger.debug(
         (tag ?: this::class.java.simpleName),
         """
             --> Send VGSShowSDK request id: $requestId
@@ -38,7 +38,7 @@ internal fun Any.logResponse(
     headers: Map<String, String>,
     tag: String? = null
 ) {
-    VGSLogger.debug(
+    VGSShowLogger.debug(
         (tag ?: this::class.java.simpleName),
         """
             <-- VGSShowSDK request id: $requestId
