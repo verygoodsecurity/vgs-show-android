@@ -16,7 +16,7 @@ object VGSShowLogger {
     var level: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE
 
     /**
-     * Disable/enable logs.
+     * Disable/enable printing logs.
      */
     var isEnabled: Boolean = BuildConfig.DEBUG
 
