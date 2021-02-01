@@ -11,12 +11,12 @@ object VGSShowLogger {
     private const val TAG = "VGSShow"
 
     /**
-     * Current log level.
+     * Current log level. Level.DEBUG in debug build by default.
      */
     var level: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE
 
     /**
-     * Disable/enable printing logs.
+     * Disable/enable printing logs. Enabled in debug build by default.
      */
     var isEnabled: Boolean = BuildConfig.DEBUG
 
@@ -36,7 +36,7 @@ object VGSShowLogger {
 
     private fun log(level: Level, tag: String, message: String?) {
         if (isEnabled && level.ordinal >= this.level.ordinal) {
-            val msg = "$tag : $message"
+            val msg = "$tag - $message"
             when (level) {
                 Level.DEBUG -> Log.d(TAG, msg)
                 Level.WARN -> Log.w(TAG, msg)
