@@ -13,10 +13,17 @@ class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
     val headers: Map<String, String>? = null,
-    val payload: RequestData? = null,
     val requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
-    val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+    val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
+    internal val payload: RequestData? = null
 ) {
+
+    /**
+     * Check if payload is valid
+     *
+     * @return true if payload valid
+     */
+    fun isPayloadValid(): Boolean = payload?.isValid() == true
 
     /**
      * VGSRequest builder helper.
@@ -30,9 +37,9 @@ class VGSRequest private constructor(
     ) {
 
         private var headers: Map<String, String>? = null
-        private var payload: RequestData? = null
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        private var payload: RequestData? = null
 
         /**
          * List of headers that will be added to this request.
@@ -57,7 +64,7 @@ class VGSRequest private constructor(
         fun body(payload: String, format: VGSHttpBodyFormat): Builder = apply {
             this.requestFormat = format
             this.responseFormat = format
-            this.payload = when(format) {
+            this.payload = when (format) {
                 VGSHttpBodyFormat.JSON -> JsonRequestData(payload)
                 VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> UrlencodedData(payload)
             }
@@ -75,6 +82,6 @@ class VGSRequest private constructor(
          *
          * @return configured VGSRequest.
          */
-        fun build() = VGSRequest(path, method, headers, payload, requestFormat, responseFormat)
+        fun build() = VGSRequest(path, method, headers, requestFormat, responseFormat, payload)
     }
 }

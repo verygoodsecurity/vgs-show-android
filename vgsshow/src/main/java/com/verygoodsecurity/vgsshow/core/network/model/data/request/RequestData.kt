@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgsshow.core.network.model.data.request
 
-interface RequestData {
+internal interface RequestData {
+
+    fun getRawData(): String?
 
     fun getData(): ByteArray?
 

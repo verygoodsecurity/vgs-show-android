@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network.model.data.request
 import com.verygoodsecurity.vgsshow.core.network.extension.toJsonOrNull
 import org.json.JSONObject
 
-class JsonRequestData : RequestData {
+internal class JsonRequestData : RequestData {
 
     private val data: JSONObject?
 
@@ -14,6 +14,8 @@ class JsonRequestData : RequestData {
     constructor(data: String) {
         this.data = data.toJsonOrNull()
     }
+
+    override fun getRawData(): String? = data?.toString()
 
     override fun getData(): ByteArray? = data?.toString()?.toByteArray(Charsets.UTF_8)
 

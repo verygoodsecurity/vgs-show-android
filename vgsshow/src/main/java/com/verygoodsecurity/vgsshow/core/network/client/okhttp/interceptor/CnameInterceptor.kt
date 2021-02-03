@@ -1,9 +1,8 @@
 package com.verygoodsecurity.vgsshow.core.network.client.okhttp.interceptor
 
-import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.network.client.extension.toHostnameValidationUrl
 import com.verygoodsecurity.vgsshow.util.extension.equalsHosts
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.util.extension.toHost
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
@@ -71,7 +70,7 @@ internal class CnameInterceptor : Interceptor {
                     cname
                 } ?: throw Exception()
         } catch (e: Exception) {
-            logDebug("A specified cname incorrect! $responseTime", VGSShow::class.simpleName)
+            logWaring("A specified cname($cname) incorrect, response time = $responseTime")
             cnameResult?.invoke(false, responseTime ?: 0)
             null
         } finally {

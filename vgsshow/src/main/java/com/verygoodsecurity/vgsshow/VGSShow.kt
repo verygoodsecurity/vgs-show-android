@@ -349,7 +349,7 @@ class VGSShow constructor(
             if (cname.isValidUrl()) {
                 host = cname.toHost()
                 if (host != cname) {
-                    logDebug("Hostname will be normalized to the $host", VGSShow::class.simpleName)
+                    logDebug("Hostname will be normalized to the $host")
                 }
             }
             return this

@@ -25,7 +25,7 @@ internal class AnalyticsManager constructor(
     override var isEnabled: Boolean = true
 
     private val requestManager: IHttpRequestManager by lazy {
-        HttpRequestManager(BASE_URL, getHeadersStore())
+        HttpRequestManager(BASE_URL, getHeadersStore(), false)
     }
 
     private val defaultInfo: Map<String, Any> = mapOf(

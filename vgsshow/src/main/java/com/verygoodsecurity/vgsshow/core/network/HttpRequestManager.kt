@@ -26,11 +26,12 @@ import java.util.concurrent.TimeoutException
 
 internal class HttpRequestManager(
     private val baseUrl: String,
-    private val headersStore: StaticHeadersStore
+    private val headersStore: StaticHeadersStore,
+    private val isLogsEnabled: Boolean = true
 ) : IHttpRequestManager {
 
     private val client: IHttpClient by lazy {
-        if (isLollipopOrGreater) OkHttpClient() else HttpUrlClient()
+        if (isLollipopOrGreater) OkHttpClient(isLogsEnabled) else HttpUrlClient(isLogsEnabled)
     }
 
     override fun execute(request: VGSRequest): VGSResponse {
@@ -77,7 +78,7 @@ internal class HttpRequestManager(
     }
 
     override fun cancelAll() {
-        client.cancelAll()
+        this.client.cancelAll()
     }
 
     private fun VGSRequest.isInvalidPayload() = payload != null && !payload.isValid()
