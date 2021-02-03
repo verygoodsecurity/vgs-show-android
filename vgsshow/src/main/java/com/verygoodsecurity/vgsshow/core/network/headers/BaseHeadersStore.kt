@@ -8,8 +8,8 @@ internal abstract class BaseHeadersStore : StaticHeadersStore {
 
     protected open val defaultStaticHeaders: Map<String, String>
         get() = mapOf(
-            AGENT_HEADER to "source=show-androidSD" +
-                    "K&medium=vgs-show" +
+            AGENT_HEADER to "source=show-androidSDK" +
+                    "&medium=vgs-show" +
                     "&content=${BuildConfig.VERSION_NAME}" +
                     "&vgsShowSessionId=${Session.id}" +
                     "&logLevel=${if (VGSShowLogger.level == VGSShowLogger.Level.NONE) "none" else "default"}"
