@@ -4,21 +4,17 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.NetworkOnMainThreadException
-import androidx.annotation.AnyThread
-import androidx.annotation.MainThread
-import androidx.annotation.VisibleForTesting
-import androidx.annotation.WorkerThread
+import androidx.annotation.*
+import androidx.annotation.IntRange
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
-import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
-import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
@@ -27,9 +23,11 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
+import com.verygoodsecurity.vgsshow.util.extension.isValidIp
 import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.toHost
+import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -44,11 +42,15 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  * @param context lifecycle owner context.
  * @param vaultId unique vault id.
  * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
+ * @param localhost that will be used as base url. Use for testing.
+ * @param port localhost port.
  */
-class VGSShow constructor(
+class VGSShow private constructor(
     context: Context,
     private val vaultId: String,
-    private val environment: VGSEnvironment
+    private val environment: VGSEnvironment,
+    private var localhost: String?,
+    private var port: Int?
 ) {
 
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
@@ -58,45 +60,50 @@ class VGSShow constructor(
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: StaticHeadersStore
+    internal val headersStore: StaticHeadersStore = ProxyStaticHeadersStore()
 
-    private val proxyRequestManager: IHttpRequestManager
+    private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
 
-    private val connectionHelper: NetworkConnectionHelper
+    private val proxyRequestManager = HttpRequestManager(buildBaseUrl(), headersStore)
 
-    private val analyticsManager: IAnalyticsManager
+    private val analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
 
     private var hasCustomHostname: Boolean = false
 
-    private val onTextCopyListener: VGSTextView.OnTextCopyListener
-    private val onSecureTextRangeSetListener: VGSTextView.OnSetSecureTextRangeSetListener
+    private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
-    init {
-        headersStore = ProxyStaticHeadersStore()
-        connectionHelper = BaseNetworkConnectionHelper(context)
-        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
-        analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
-        onTextCopyListener = object : VGSTextView.OnTextCopyListener {
-
-            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-                analyticsManager.log(CopyToClipboardEvent(format))
-            }
+        override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+            analyticsManager.log(CopyToClipboardEvent(format))
         }
-        onSecureTextRangeSetListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
+    }
 
-            override fun onSecureTextRangeSet(view: VGSTextView) {
-                analyticsManager.log(
-                    SetSecureTextEvent(
-                        view.getContentPath(),
-                        view.getFieldType().toAnalyticTag()
-                    )
+    private val onSecureTextRangeListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
+
+        override fun onSecureTextRangeSet(view: VGSTextView) {
+            analyticsManager.log(
+                SetSecureTextEvent(
+                    view.getContentPath(),
+                    view.getFieldType().toAnalyticTag()
                 )
-            }
+            )
         }
     }
 
     /**
-     * Secondary constructor that allows specify environment as string.
+     * Constructor that allows specify environment as object.
+     *
+     * @param context lifecycle owner context.
+     * @param vaultId unique vault id.
+     * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
+     */
+    constructor(
+        context: Context,
+        vaultId: String,
+        environment: VGSEnvironment
+    ) : this(context, vaultId, environment, null, null)
+
+    /**
+     * Constructor that allows specify environment as string.
      *
      * @param context lifecycle owner context.
      * @param vaultId unique vault id.
@@ -106,7 +113,7 @@ class VGSShow constructor(
         context: Context,
         vaultId: String,
         environment: String
-    ) : this(context, vaultId, environment.toVGSEnvironment())
+    ) : this(context, vaultId, environment.toVGSEnvironment(), null, null)
 
     /**
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
@@ -215,7 +222,7 @@ class VGSShow constructor(
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
-                handleTextViewSubscribtion(view)
+                handleTextViewSubscription(view)
             }
             view.onViewSubscribed()
         }
@@ -275,6 +282,13 @@ class VGSShow constructor(
     internal fun getViewsStore() = viewsStore
     //endregion
 
+    private fun buildBaseUrl(): String {
+        if (localhost != null && port != null) {
+            return buildLocalhostUrl(localhost!!, port!!)
+        }
+        return buildProxyUrl(vaultId, environment)
+    }
+
     /**
      * Sets the VGSShow instance to use the custom hostname.
      *
@@ -293,9 +307,9 @@ class VGSShow constructor(
         }
     }
 
-    private fun handleTextViewSubscribtion(view: VGSTextView) {
+    private fun handleTextViewSubscription(view: VGSTextView) {
         view.addOnCopyTextListener(onTextCopyListener)
-        view.setOnSecureTextRangeSetListener(onSecureTextRangeSetListener)
+        view.setOnSecureTextRangeSetListener(onSecureTextRangeListener)
     }
 
     @MainThread
@@ -336,8 +350,9 @@ class VGSShow constructor(
     class Builder constructor(private val context: Context, private val id: String) {
 
         private var environment: VGSEnvironment = VGSEnvironment.Sandbox()
-
         private var host: String? = null
+        private var port: Int? = null
+        private var isLocalHost: Boolean = false
 
         /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(environment: VGSEnvironment): Builder = this.apply {
@@ -348,16 +363,22 @@ class VGSShow constructor(
         fun setHostname(cname: String): Builder {
             if (cname.isValidUrl()) {
                 host = cname.toHost()
-                if (host != cname) {
-                    logDebug("Hostname will be normalized to the $host")
-                }
+                isLocalHost = host?.isValidIp() == true
+                if (host != cname) logDebug("Hostname will be normalized to the $host")
             }
             return this
         }
 
+        /** Sets the VGSCollect instance to use the custom hostname port. */
+        fun setPort(@IntRange(from = 1, to = 65353) port: Int): Builder = this.apply {
+            this.port = port
+        }
 
-        fun build() = VGSShow(context, id, environment).apply {
-            host?.let { setCname(it) }
+        fun build(): VGSShow {
+            if (isLocalHost && host != null && port != null) {
+                return VGSShow(context, id, environment, host!!, port!!)
+            }
+            return VGSShow(context, id, environment).apply { host?.let { setCname(it) } }
         }
     }
 }

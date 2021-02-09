@@ -47,6 +47,7 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
 
                 override fun onFailure(call: Call, e: IOException) {
                     callback.onFailure(e)
+                    logException(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -54,6 +55,7 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
                 }
             })
         } catch (e: Exception) {
+            logException(e)
             callback.onFailure(e)
         }
     }

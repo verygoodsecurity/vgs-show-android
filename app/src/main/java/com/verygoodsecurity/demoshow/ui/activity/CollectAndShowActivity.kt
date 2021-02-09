@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
+import com.verygoodsecurity.vgsshow.core.logs.VGSShowLogger
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -100,6 +101,8 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     private fun setupShow() {
+        VGSShowLogger.isEnabled = true
+        VGSShowLogger.level = VGSShowLogger.Level.DEBUG
         showVgs.addOnResponseListener(this)
         showVgs.subscribe(tvCardNumber)
         showVgs.subscribe(tvCardExpiration)

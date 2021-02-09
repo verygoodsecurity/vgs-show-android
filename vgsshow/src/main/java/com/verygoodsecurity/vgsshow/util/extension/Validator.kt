@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
+import android.util.Patterns
 import java.util.regex.Pattern
 
 private const val TENANT_ID_REGEX = "^[a-zA-Z0-9]+\$"
@@ -10,7 +11,14 @@ private const val URL_REGEX = "^(?:https?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\/.-]+)+[\\
 
 internal fun String.isValidUrl(): Boolean {
     return when {
-        isNullOrBlank() -> false
+        isBlank() -> false
         else -> Pattern.compile(URL_REGEX).matcher(this).matches()
+    }
+}
+
+internal fun String.isValidIp(): Boolean {
+    return when {
+        isBlank() -> false
+        else -> Patterns.IP_ADDRESS.matcher(this).matches()
     }
 }

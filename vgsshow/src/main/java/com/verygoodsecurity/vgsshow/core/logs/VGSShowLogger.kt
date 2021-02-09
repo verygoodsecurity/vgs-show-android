@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.logs
 
 import android.util.Log
-import com.verygoodsecurity.vgsshow.BuildConfig
 
 /**
  * This object is used to log messages in VGS Show SDK.
@@ -11,14 +10,14 @@ object VGSShowLogger {
     private const val TAG = "VGSShow"
 
     /**
-     * Current log level. Level.DEBUG in debug build by default.
+     * Current priority level for filtering debugging logs.
      */
-    var level: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE
+    var level: Level = Level.NONE
 
     /**
-     * Disable/enable printing logs. Enabled in debug build by default.
+     * Allows enable and disable debug-log printing. Disabled by default.
      */
-    var isEnabled: Boolean = BuildConfig.DEBUG
+    var isEnabled: Boolean = false
 
     /**
      *

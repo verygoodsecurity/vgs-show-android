@@ -90,11 +90,7 @@ internal class HttpRequestManager(
             if (!isSuccessful) {
                 return@with VGSResponse.Error.create(VGSException.Exception(code, message))
             }
-            VGSResponse.Success.create(
-                code,
-                parseResponseData(responseBody ?: "", format),
-                responseBody
-            )
+            VGSResponse.Success.create(code, parseResponseData(responseBody ?: "", format))
         }
     }
 

@@ -19,15 +19,14 @@ sealed class VGSResponse {
      */
     class Success private constructor(
         override val code: Int,
-        internal val data: ResponseData,
-        internal val raw: String?
+        internal val data: ResponseData
     ) : VGSResponse() {
 
         override fun toString() = "Code: $code"
 
         internal companion object {
 
-            fun create(code: Int, data: ResponseData, raw: String?) = Success(code, data, raw)
+            fun create(code: Int, data: ResponseData) = Success(code, data)
         }
     }
 
