@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = "1.4.21"
+    ext.kotlin_version = "1.4.30"
     ext.dokka_version = '1.4.20'
     ext.mockito_version = '3.6.0'
     ext.android_support_libraries = '1.2.0'
@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 
