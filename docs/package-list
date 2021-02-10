@@ -1,5 +1,6 @@
 $dokka.format:javadoc-v1
 $dokka.linkExtension:html
+$dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/logs/VGSShowLogger.Level.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSRequest.Builder///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.Builder.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSResponse.Error///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.Error.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSResponse.Success///PointingToDeclaration/com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.Success.html
@@ -19,9 +20,9 @@ $dokka.location:com.verygoodsecurity.vgsshow/VGSShow.Builder///PointingToDeclara
 com.verygoodsecurity.vgsshow
 com.verygoodsecurity.vgsshow.core
 com.verygoodsecurity.vgsshow.core.listener
+com.verygoodsecurity.vgsshow.core.logs
 com.verygoodsecurity.vgsshow.core.network.client
 com.verygoodsecurity.vgsshow.core.network.model
-com.verygoodsecurity.vgsshow.core.network.model.data.request
 com.verygoodsecurity.vgsshow.core.network.model.data.response
 com.verygoodsecurity.vgsshow.util.extension
 com.verygoodsecurity.vgsshow.widget
