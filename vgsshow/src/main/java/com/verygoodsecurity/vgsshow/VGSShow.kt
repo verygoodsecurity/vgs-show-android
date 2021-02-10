@@ -22,7 +22,6 @@ import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
-import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
@@ -58,7 +57,7 @@ class VGSShow constructor(
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: StaticHeadersStore
+    internal val headersStore: ProxyStaticHeadersStore
 
     private val proxyRequestManager: IHttpRequestManager
 
@@ -72,10 +71,10 @@ class VGSShow constructor(
     private val onSecureTextRangeSetListener: VGSTextView.OnSetSecureTextRangeSetListener
 
     init {
-        headersStore = ProxyStaticHeadersStore()
         connectionHelper = BaseNetworkConnectionHelper(context)
-        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
+        headersStore = ProxyStaticHeadersStore(analyticsManager.isEnabled)
+        proxyRequestManager = HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
         onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
@@ -250,6 +249,7 @@ class VGSShow constructor(
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         analyticsManager.isEnabled = isEnabled
+        headersStore.isAnalyticsEnabled = isEnabled
     }
 
     /**
@@ -314,7 +314,8 @@ class VGSShow constructor(
 
     private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
-        val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
+        val hasHeaders =
+            request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
                 hasFields,

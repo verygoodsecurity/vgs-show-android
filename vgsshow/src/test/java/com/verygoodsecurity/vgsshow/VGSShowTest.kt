@@ -115,7 +115,7 @@ class VGSShowTest {
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
         assertTrue(sut.getViewsStore().isEmpty())
-        assertFalse(sut.headersStore.containsUserHeaders())
+        assertFalse(sut.headersStore.getCustom().isNotEmpty())
     }
 
     companion object {
