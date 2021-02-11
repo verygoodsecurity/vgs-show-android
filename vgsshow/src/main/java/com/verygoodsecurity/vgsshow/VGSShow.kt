@@ -375,7 +375,6 @@ class VGSShow private constructor(
     }
 
     /**
-     *
      * Used to create VGSShow instances with default and overridden settings.
      *
      * @constructor create VGSShow instance builder.
@@ -388,11 +387,16 @@ class VGSShow private constructor(
         private var host: String? = null
         private var port: Int? = null
 
-        /** Specify Environment for the VGSCollect instance. */
+        /** Specify Environment for the VGSShow instance. */
         fun setEnvironment(environment: VGSEnvironment) =
             this.apply { this.environment = environment }
 
-        /** Sets the VGSCollect instance to use the custom hostname. */
+        /**
+         * Sets the VGSShow instance to use the custom hostname. Custom host name can be localhost ip
+         * for ex. to use show with VGS-Satellite or custom hostname configured in VGS Dashboard.
+         *
+         * @param host where VGSShow will send requests.
+         */
         fun setHostname(host: String) = this.also {
             if (!host.isValidUrl()) {
                 logWaring("A specified host($host) is not valid url.")
@@ -401,7 +405,12 @@ class VGSShow private constructor(
             this.host = host
         }
 
-        /** Sets the VGSCollect instance to use the custom hostname port. */
+        /**
+         * Sets the VGSShow instance to use the custom hostname port.
+         * Port cn be used only with localhost for ex. with VGS-Satellite, otherwise it will be ignored.
+         *
+         * @param port Integer value from 1 to 65353.
+         */
         fun setPort(
             @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int
         ) = this.apply { this.port = port }

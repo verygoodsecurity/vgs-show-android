@@ -18,7 +18,7 @@ internal object UrlHelper {
 
     fun buildLocalhostUrl(localhost: String, port: Int?): String {
         val prt = if (!port.isValidPort()) {
-            logWaring("Port is not specified, default HTTP port(80) will be selected")
+            logWaring("Port is not specified")
             EMPTY
         } else {
             port
