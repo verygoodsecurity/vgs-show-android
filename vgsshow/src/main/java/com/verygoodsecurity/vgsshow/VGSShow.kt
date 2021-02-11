@@ -9,6 +9,7 @@ import androidx.annotation.IntRange
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
+import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.analytics.event.*
 import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
@@ -61,9 +62,9 @@ class VGSShow private constructor(
 
     private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
 
-    private val proxyRequestManager: IHttpRequestManager = buildNetworkManager()
+    private val proxyRequestManager: IHttpRequestManager
 
-    private val analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
+    private val analyticsManager: IAnalyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
 
     private var hasCustomHostname: Boolean = false
 
@@ -84,6 +85,12 @@ class VGSShow private constructor(
                 )
             )
         }
+    }
+
+    init {
+
+        headersStore = ProxyStaticHeadersStore(analyticsManager.isEnabled)
+        proxyRequestManager = buildNetworkManager()
     }
 
     /**
