@@ -35,7 +35,7 @@ object VGSShowLogger {
 
     private fun log(level: Level, tag: String, message: String?) {
         if (isEnabled && level.ordinal >= this.level.ordinal) {
-            val msg = "$tag - $message"
+            val msg = "$tag: $message"
             when (level) {
                 Level.DEBUG -> Log.d(TAG, msg)
                 Level.WARN -> Log.w(TAG, msg)
