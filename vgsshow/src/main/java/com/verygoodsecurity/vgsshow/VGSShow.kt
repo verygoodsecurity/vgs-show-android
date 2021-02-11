@@ -393,7 +393,13 @@ class VGSShow private constructor(
             this.apply { this.environment = environment }
 
         /** Sets the VGSCollect instance to use the custom hostname. */
-        fun setHostname(host: String) = this.also { this.host = host }
+        fun setHostname(host: String) = this.also {
+            if (!host.isValidUrl()) {
+                logWaring("A specified host($host) is not valid url.")
+                return@also
+            }
+            this.host = host
+        }
 
         /** Sets the VGSCollect instance to use the custom hostname port. */
         fun setPort(
