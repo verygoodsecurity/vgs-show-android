@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.logs.VGSShowLogger
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
@@ -29,13 +30,15 @@ import org.json.JSONObject
 class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
+        VGSShow.Builder(this, TENANT_ID)
+            .setEnvironment(VGSEnvironment.Sandbox())
+            .setHostname("10.0.2.3")
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

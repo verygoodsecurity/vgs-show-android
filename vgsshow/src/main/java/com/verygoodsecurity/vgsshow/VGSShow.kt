@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
+import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
@@ -23,10 +24,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.isValidIp
-import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
-import com.verygoodsecurity.vgsshow.util.extension.toHost
+import com.verygoodsecurity.vgsshow.util.extension.*
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
@@ -42,14 +40,14 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  * @param context lifecycle owner context.
  * @param vaultId unique vault id.
  * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
- * @param localhost that will be used as base url. Use for testing.
+ * @param url that will be used as base url. Use for testing.
  * @param port localhost port.
  */
 class VGSShow private constructor(
     context: Context,
     private val vaultId: String,
     private val environment: VGSEnvironment,
-    private var localhost: String?,
+    private var url: String?,
     private var port: Int?
 ) {
 
@@ -64,7 +62,7 @@ class VGSShow private constructor(
 
     private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
 
-    private val proxyRequestManager = HttpRequestManager(buildBaseUrl(), headersStore)
+    private val proxyRequestManager: IHttpRequestManager = buildNetworkManager()
 
     private val analyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
 
@@ -282,20 +280,41 @@ class VGSShow private constructor(
     internal fun getViewsStore() = viewsStore
     //endregion
 
-    private fun buildBaseUrl(): String {
-        if (localhost != null && port != null) {
-            return buildLocalhostUrl(localhost!!, port!!)
+    private fun buildNetworkManager(): IHttpRequestManager {
+
+        fun printPortDenied() {
+            if (port.isValidPort()) {
+                logWaring("To protect your device we allow to use PORT only on localhost. PORT will be ignored")
+            }
         }
-        return buildProxyUrl(vaultId, environment)
+
+        return url?.takeIf { it.isValidUrl() }?.let { url ->
+            val host = getHost(url)
+            return if (host.isValidIp()) {
+                if (!host.isIpAllowed()) {
+                    logWaring("Current IP is not allowed, use localhost or private network IP.")
+                    return HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
+                }
+                HttpRequestManager(buildLocalhostUrl(host, port), headersStore)
+            } else {
+                HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore).also {
+                    printPortDenied()
+                    setCname(it, host)
+                }
+            }
+        } ?: HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore).also {
+            printPortDenied()
+        }
     }
 
-    /**
-     * Sets the VGSShow instance to use the custom hostname.
-     *
-     * @param cname Custom hostname.
-     */
-    private fun setCname(cname: String?) {
-        this.proxyRequestManager.setCname(vaultId, cname) { isSuccessful, latency ->
+    private fun getHost(url: String) = url.toHost().also {
+        if (it != url) {
+            logDebug("Hostname will be normalized to the $it")
+        }
+    }
+
+    private fun setCname(manager: IHttpRequestManager, cname: String?) {
+        manager.setCname(vaultId, cname) { isSuccessful, latency ->
             hasCustomHostname = isSuccessful
             analyticsManager.log(
                 if (isSuccessful) {
@@ -347,38 +366,33 @@ class VGSShow private constructor(
         )
     }
 
+    /**
+     *
+     * Used to create VGSShow instances with default and overridden settings.
+     *
+     * @constructor create VGSShow instance builder.
+     * @param context lifecycle owner context.
+     * @param id unique vault id.
+     */
     class Builder constructor(private val context: Context, private val id: String) {
 
         private var environment: VGSEnvironment = VGSEnvironment.Sandbox()
         private var host: String? = null
         private var port: Int? = null
-        private var isLocalHost: Boolean = false
 
         /** Specify Environment for the VGSCollect instance. */
-        fun setEnvironment(environment: VGSEnvironment): Builder = this.apply {
-            this.environment = environment
-        }
+        fun setEnvironment(environment: VGSEnvironment) =
+            this.apply { this.environment = environment }
 
         /** Sets the VGSCollect instance to use the custom hostname. */
-        fun setHostname(cname: String): Builder {
-            if (cname.isValidUrl()) {
-                host = cname.toHost()
-                isLocalHost = host?.isValidIp() == true
-                if (host != cname) logDebug("Hostname will be normalized to the $host")
-            }
-            return this
-        }
+        fun setHostname(host: String) = this.also { this.host = host }
 
         /** Sets the VGSCollect instance to use the custom hostname port. */
-        fun setPort(@IntRange(from = 1, to = 65353) port: Int): Builder = this.apply {
-            this.port = port
-        }
+        fun setPort(
+            @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int
+        ) = this.apply { this.port = port }
 
-        fun build(): VGSShow {
-            if (isLocalHost && host != null && port != null) {
-                return VGSShow(context, id, environment, host!!, port!!)
-            }
-            return VGSShow(context, id, environment).apply { host?.let { setCname(it) } }
-        }
+        /** Build VGSShow instance */
+        fun build() = VGSShow(context, id, environment, host, port)
     }
 }
