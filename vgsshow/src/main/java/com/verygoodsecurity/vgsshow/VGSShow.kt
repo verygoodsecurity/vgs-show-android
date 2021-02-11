@@ -19,7 +19,6 @@ import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.extension.toVGSResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
-import com.verygoodsecurity.vgsshow.core.network.headers.StaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
@@ -58,7 +57,7 @@ class VGSShow private constructor(
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: StaticHeadersStore = ProxyStaticHeadersStore()
+    internal val headersStore: ProxyStaticHeadersStore
 
     private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
 
@@ -255,6 +254,7 @@ class VGSShow private constructor(
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         analyticsManager.isEnabled = isEnabled
+        headersStore.isAnalyticsEnabled = isEnabled
     }
 
     /**
@@ -347,7 +347,8 @@ class VGSShow private constructor(
 
     private fun logRequestEvent(request: VGSRequest) {
         val hasFields = !viewsStore.isEmpty()
-        val hasHeaders = request.headers?.isNotEmpty() == true || headersStore.containsUserHeaders()
+        val hasHeaders =
+            request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
                 hasFields,

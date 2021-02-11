@@ -10,7 +10,7 @@ class ProxyStaticHeadersStoreTest {
 
     @Before
     fun setUp() {
-        sut = ProxyStaticHeadersStore()
+        sut = ProxyStaticHeadersStore(true)
     }
 
     @Test
@@ -64,7 +64,7 @@ class ProxyStaticHeadersStoreTest {
         // Act
         sut.add(TEST_HEADER_NAME, TEST_HEADER_VALUE)
         //Assert
-        assertTrue(sut.containsUserHeaders())
+        assertTrue(sut.getCustom().isNotEmpty())
     }
 
     @Test

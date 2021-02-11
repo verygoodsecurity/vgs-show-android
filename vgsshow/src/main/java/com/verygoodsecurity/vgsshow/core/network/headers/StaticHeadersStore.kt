@@ -23,14 +23,14 @@ internal interface StaticHeadersStore {
     fun remove(key: String)
 
     /**
-     * @return all custom headers.
+     * @return all headers.
      */
     fun getAll(): Map<String, String>
 
     /**
-     * @return true if user add any header
+     * @return all headers what user set.
      */
-    fun containsUserHeaders(): Boolean
+    fun getCustom(): Map<String, String>
 
     /**
      * Clear all headers.
