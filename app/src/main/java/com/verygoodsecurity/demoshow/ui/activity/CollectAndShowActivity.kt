@@ -32,7 +32,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
     private val showVgs: VGSShow by lazy {
         VGSShow.Builder(this, TENANT_ID)
             .setEnvironment(VGSEnvironment.Sandbox())
-            .setHostname("10.0.2.3")
+            .setHostname(COLLECT_CUSTOM_HOSTNAME)
             .build()
     }
 
