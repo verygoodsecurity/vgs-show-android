@@ -397,12 +397,12 @@ class VGSShow private constructor(
          *
          * @param host where VGSShow will send requests.
          */
-        fun setHostname(host: String) = this.also {
-            if (!host.isValidUrl()) {
+        fun setHostname(cname: String) = this.apply {
+            if (!cname.isValidUrl()) {
                 logWaring("A specified host($host) is not valid url.")
-                return@also
+                return@apply
             }
-            this.host = host
+            this.host = cname
         }
 
         /**
