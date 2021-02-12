@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import java.util.regex.Pattern
 
 private const val TENANT_ID_REGEX = "^[a-zA-Z0-9]+\$"
@@ -9,12 +9,12 @@ internal fun String.isValidTenantId() = Pattern.compile(TENANT_ID_REGEX).matcher
 
 internal fun String.isValidUrl(): Boolean = when {
     isBlank() -> false
-    else -> Patterns.WEB_URL.matcher(this).matches()
+    else -> PatternsCompat.WEB_URL.matcher(this).matches()
 }
 
 internal fun String.isValidIp(): Boolean = when {
     isNullOrEmpty() -> false
-    else -> Patterns.IP_ADDRESS.matcher(this).matches()
+    else -> PatternsCompat.IP_ADDRESS.matcher(this).matches()
 }
 
 private const val LOCALHOST_ALIAS = "10.0.2.2"
