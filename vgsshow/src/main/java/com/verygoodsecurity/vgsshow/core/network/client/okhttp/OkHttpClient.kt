@@ -7,7 +7,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
 import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
-import com.verygoodsecurity.vgsshow.core.network.client.extension.setMethod
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpRequest
 import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.client.okhttp.interceptor.CnameInterceptor
@@ -16,6 +15,8 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toHttpResponse
 import com.verygoodsecurity.vgsshow.util.extension.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.internal.EMPTY_REQUEST
 import okio.Buffer
 import java.io.IOException
 import java.util.*
@@ -68,14 +69,13 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
 
     @Throws(Exception::class)
     private fun buildOkHttpRequest(request: HttpRequest): Request {
+        val contentType = request.format.toContentType()
+        val mediaType = contentType.toMediaTypeOrNull()
+        val requestBody = request.data?.getData()?.toRequestBody(mediaType) ?: EMPTY_REQUEST
         return Request.Builder()
             .url((request.url concatWithSlash request.path).toURL())
-            .addHeaders(request.headers.plusItem(CONTENT_TYPE to request.format.toContentType()))
-            .setMethod(
-                request.method,
-                request.data?.getData(),
-                request.format.toContentType().toMediaTypeOrNull()
-            )
+            .addHeaders(request.headers.plusItem(CONTENT_TYPE to contentType))
+            .method(request.method.name, requestBody)
             .build()
     }
 
