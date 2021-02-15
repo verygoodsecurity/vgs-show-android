@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "908085229912",
-    "project_id": "vgs-show-test-lab",
-    "storage_bucket": "vgs-show-test-lab.appspot.com"
+    "project_number": "562744519177",
+    "project_id": "vgs-collect-show-mobile",
+    "storage_bucket": "vgs-collect-show-mobile.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:908085229912:android:ca6fdf7748414da38e0d2d",
+        "mobilesdk_app_id": "1:562744519177:android:6f3805cf56e8606498e6d8",
         "android_client_info": {
           "package_name": "com.verygoodsecurity.demoshow"
         }
       },
       "oauth_client": [
         {
-          "client_id": "908085229912-gqv0ubjhsmo3963h3gnhovg1kltgdgbk.apps.googleusercontent.com",
+          "client_id": "562744519177-nkkq796tgp357quqmi6cut67c3dn1s15.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBSRlX33iGqPvzEgE5OKQsBTpRuZm-1kyM"
+          "current_key": "AIzaSyDKfiuIW17Ojt6iX0FfOfElOV7p31rbYQY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "908085229912-gqv0ubjhsmo3963h3gnhovg1kltgdgbk.apps.googleusercontent.com",
+              "client_id": "562744519177-nkkq796tgp357quqmi6cut67c3dn1s15.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
