@@ -13,12 +13,8 @@ internal fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.
     return this
 }
 
-internal fun Request.Builder.setMethod(
-    method: VGSHttpMethod,
-    data: ByteArray?,
-    mediaType: MediaType?
-): Request.Builder {
-    return when (method) {
-        VGSHttpMethod.POST -> post(data?.toRequestBody(mediaType) ?: EMPTY_REQUEST)
+internal fun ByteArray?.toRequestBodyOrNull(mediaType: MediaType?, method: VGSHttpMethod) =
+    when (method) {
+        VGSHttpMethod.GET -> this?.toRequestBody(mediaType)
+        else -> this?.toRequestBody(mediaType) ?: EMPTY_REQUEST
     }
-}
