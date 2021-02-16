@@ -64,16 +64,17 @@ class VGSShow private constructor(
 
     private val proxyRequestManager: IHttpRequestManager
 
-    private val analyticsManager: IAnalyticsManager = AnalyticsManager(vaultId, environment, connectionHelper)
+    private val analyticsManager: IAnalyticsManager =
+        AnalyticsManager(vaultId, environment, connectionHelper)
 
     private var hasCustomHostname: Boolean = false
 
-    private var useSatellite: Boolean = false
+    private var isSatelliteMode: Boolean = false
 
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
         override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-            analyticsManager.log(CopyToClipboardEvent(format))
+            analyticsManager.log(CopyToClipboardEvent(isSatelliteMode, format))
         }
     }
 
@@ -82,6 +83,7 @@ class VGSShow private constructor(
         override fun onSecureTextRangeSet(view: VGSTextView) {
             analyticsManager.log(
                 SetSecureTextEvent(
+                    isSatelliteMode,
                     view.getContentPath(),
                     view.getFieldType().toAnalyticTag()
                 )
@@ -226,7 +228,7 @@ class VGSShow private constructor(
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
-            analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
+            analyticsManager.log(InitEvent(isSatelliteMode, view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 handleTextViewSubscription(view)
             }
@@ -241,7 +243,12 @@ class VGSShow private constructor(
      */
     fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
-            analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
+            analyticsManager.log(
+                UnsubscribeFieldEvent(
+                    isSatelliteMode,
+                    view.getFieldType().toAnalyticTag()
+                )
+            )
             if (view is VGSTextView) {
                 view.removeOnCopyTextListener(onTextCopyListener)
                 view.setOnSecureTextRangeSetListener(null)
@@ -308,7 +315,7 @@ class VGSShow private constructor(
                     logWaring("Custom local IP and PORT can be used only in a sandbox environment.")
                     return HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
                 }
-                useSatellite = true
+                isSatelliteMode = true
                 HttpRequestManager(buildLocalhostUrl(host, port), headersStore)
             } else {
                 HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore).also {
@@ -365,6 +372,7 @@ class VGSShow private constructor(
             request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
+                isSatelliteMode,
                 hasFields,
                 hasHeaders,
                 hasCustomHostname
@@ -375,8 +383,15 @@ class VGSShow private constructor(
     private fun logResponseEvent(response: VGSResponse) {
         analyticsManager.log(
             when (response) {
-                is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
-                is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
+                is VGSResponse.Success -> ResponseEvent.createSuccessful(
+                    isSatelliteMode,
+                    response.code
+                )
+                is VGSResponse.Error -> ResponseEvent.createFailed(
+                    isSatelliteMode,
+                    response.code,
+                    response.message
+                )
             }
         )
     }
@@ -418,9 +433,8 @@ class VGSShow private constructor(
          *
          * @param port Integer value from 1 to 65353.
          */
-        fun setPort(
-            @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int
-        ) = this.apply { this.port = port }
+        fun setPort(@IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int) =
+            this.apply { this.port = port }
 
         /** Build VGSShow instance */
         fun build() = VGSShow(context, id, environment, host, port)

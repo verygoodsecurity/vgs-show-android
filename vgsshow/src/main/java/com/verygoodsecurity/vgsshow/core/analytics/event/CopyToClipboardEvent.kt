@@ -4,9 +4,10 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import java.util.*
 
 internal data class CopyToClipboardEvent constructor(
-    private val format: VGSTextView.CopyTextFormat,
-    private val status: String = DEFAULT_STATUS
-) : Event() {
+    val isSatelliteMode: Boolean,
+    val format: VGSTextView.CopyTextFormat,
+    val status: String = DEFAULT_STATUS
+) : Event(isSatelliteMode) {
 
     override val type: String
         get() = TYPE

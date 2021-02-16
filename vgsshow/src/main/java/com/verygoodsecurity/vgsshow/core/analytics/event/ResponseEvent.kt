@@ -1,10 +1,11 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class ResponseEvent(
+    val isSatelliteMode: Boolean,
     val code: String,
     val status: Status,
     val errorMessage: String? = null
-) : Event() {
+) : Event(isSatelliteMode) {
 
     override val type: String
         get() = TYPE
@@ -27,9 +28,10 @@ internal data class ResponseEvent(
         private const val KEY_STATUS = "status"
         private const val KEY_ERROR_MESSAGE = "error"
 
-        fun createSuccessful(code: Int): ResponseEvent = ResponseEvent(code.toString(), Status.OK)
+        fun createSuccessful(isSatelliteMode: Boolean, code: Int): ResponseEvent =
+            ResponseEvent(isSatelliteMode, code.toString(), Status.OK)
 
-        fun createFailed(code: Int, message: String?): ResponseEvent =
-            ResponseEvent(code.toString(), Status.FAILED, message)
+        fun createFailed(isSatelliteMode: Boolean, code: Int, message: String?): ResponseEvent =
+            ResponseEvent(isSatelliteMode, code.toString(), Status.FAILED, message)
     }
 }
