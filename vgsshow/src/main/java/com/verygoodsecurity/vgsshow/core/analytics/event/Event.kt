@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.core.analytics.event
 
 import com.verygoodsecurity.vgsshow.util.extension.currentTimestamp
 
-internal abstract class Event constructor(private val isSatelliteMode: Boolean) {
+internal abstract class Event {
 
     abstract val type: String
 
@@ -12,7 +12,6 @@ internal abstract class Event constructor(private val isSatelliteMode: Boolean) 
         HashMap(customEventAttributes).apply {
             put(TYPE, type)
             put(TIMESTAMP, timestamp)
-            put(SATELLITE, isSatelliteMode)
         }
     }
 
@@ -22,6 +21,5 @@ internal abstract class Event constructor(private val isSatelliteMode: Boolean) 
 
         private const val TYPE = "type"
         private const val TIMESTAMP = "localTimestamp"
-        private const val SATELLITE = "vgsSatellite"
     }
 }

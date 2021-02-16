@@ -58,23 +58,22 @@ class VGSShow private constructor(
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: ProxyStaticHeadersStore
+    internal val headersStore: ProxyStaticHeadersStore = ProxyStaticHeadersStore()
 
     private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
 
-    private val proxyRequestManager: IHttpRequestManager
+    private val proxyRequestManager: IHttpRequestManager = buildNetworkManager()
 
-    private val analyticsManager: IAnalyticsManager =
-        AnalyticsManager(vaultId, environment, connectionHelper)
+    private var isSatelliteMode: Boolean = false
 
     private var hasCustomHostname: Boolean = false
 
-    private var isSatelliteMode: Boolean = false
+    private val analyticsManager: IAnalyticsManager = AnalyticsManager(vaultId, environment, isSatelliteMode, connectionHelper)
 
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
         override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-            analyticsManager.log(CopyToClipboardEvent(isSatelliteMode, format))
+            analyticsManager.log(CopyToClipboardEvent(format))
         }
     }
 
@@ -83,18 +82,11 @@ class VGSShow private constructor(
         override fun onSecureTextRangeSet(view: VGSTextView) {
             analyticsManager.log(
                 SetSecureTextEvent(
-                    isSatelliteMode,
                     view.getContentPath(),
                     view.getFieldType().toAnalyticTag()
                 )
             )
         }
-    }
-
-    init {
-
-        headersStore = ProxyStaticHeadersStore(analyticsManager.isEnabled)
-        proxyRequestManager = buildNetworkManager()
     }
 
     /**
@@ -228,7 +220,7 @@ class VGSShow private constructor(
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
-            analyticsManager.log(InitEvent(isSatelliteMode, view.getFieldType().toAnalyticTag()))
+            analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 handleTextViewSubscription(view)
             }
@@ -243,12 +235,7 @@ class VGSShow private constructor(
      */
     fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
-            analyticsManager.log(
-                UnsubscribeFieldEvent(
-                    isSatelliteMode,
-                    view.getFieldType().toAnalyticTag()
-                )
-            )
+            analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 view.removeOnCopyTextListener(onTextCopyListener)
                 view.setOnSecureTextRangeSetListener(null)
@@ -372,7 +359,6 @@ class VGSShow private constructor(
             request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
-                isSatelliteMode,
                 hasFields,
                 hasHeaders,
                 hasCustomHostname
@@ -383,15 +369,8 @@ class VGSShow private constructor(
     private fun logResponseEvent(response: VGSResponse) {
         analyticsManager.log(
             when (response) {
-                is VGSResponse.Success -> ResponseEvent.createSuccessful(
-                    isSatelliteMode,
-                    response.code
-                )
-                is VGSResponse.Error -> ResponseEvent.createFailed(
-                    isSatelliteMode,
-                    response.code,
-                    response.message
-                )
+                is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
+                is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
             }
         )
     }

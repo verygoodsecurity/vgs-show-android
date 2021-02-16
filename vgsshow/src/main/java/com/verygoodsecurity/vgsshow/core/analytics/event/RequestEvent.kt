@@ -1,13 +1,12 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class RequestEvent(
-    val isSatelliteMode: Boolean,
     val status: Status,
     val hasFields: Boolean,
     val hasHeaders: Boolean,
     val hasCustomHostname: Boolean,
     val code: String = DEFAULT_CODE
-) : Event(isSatelliteMode) {
+) : Event() {
 
     override val type: String
         get() = TYPE
@@ -38,10 +37,9 @@ internal data class RequestEvent(
         private const val HAS_CUSTOM_HOSTNAME = "customHostName"
 
         fun createSuccessful(
-            isSatelliteMode: Boolean,
             hasFields: Boolean,
             hasHeaders: Boolean,
             hasCustomHostname: Boolean
-        ) = RequestEvent(isSatelliteMode, Status.OK, hasFields, hasHeaders, hasCustomHostname)
+        ) = RequestEvent(Status.OK, hasFields, hasHeaders, hasCustomHostname)
     }
 }

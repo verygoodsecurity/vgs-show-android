@@ -1,9 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
-internal data class InitEvent constructor(
-    val isSatelliteMode: Boolean,
-    val field: String
-) : Event(isSatelliteMode) {
+internal data class InitEvent constructor(val field: String) : Event() {
 
     override val type: String
         get() = TYPE

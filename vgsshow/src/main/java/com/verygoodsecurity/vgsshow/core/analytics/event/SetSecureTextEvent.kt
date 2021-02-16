@@ -1,10 +1,9 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class SetSecureTextEvent constructor(
-    val isSatelliteMode: Boolean,
     val contentPath: String,
     val field: String
-) : Event(isSatelliteMode) {
+) : Event() {
 
     override val type: String
         get() = TYPE

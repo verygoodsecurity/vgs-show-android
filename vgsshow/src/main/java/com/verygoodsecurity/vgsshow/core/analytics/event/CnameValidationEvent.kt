@@ -4,7 +4,7 @@ internal data class CnameValidationEvent constructor(
     val status: Status,
     val host: String,
     val latency: Long
-) : Event(false) {
+) : Event() {
 
     override val type: String
         get() = TYPE
