@@ -302,6 +302,10 @@ class VGSShow private constructor(
                     logWaring("Current IP is not allowed, use localhost or private network IP.")
                     return HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
                 }
+                if (environment !is VGSEnvironment.Sandbox) {
+                    logWaring("Custom local IP and PORT can be used only in a sandbox environment.")
+                    return HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
+                }
                 HttpRequestManager(buildLocalhostUrl(host, port), headersStore)
             } else {
                 HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore).also {
@@ -395,7 +399,7 @@ class VGSShow private constructor(
          * Sets the VGSShow instance to use the custom hostname. Custom host name can be localhost ip
          * for ex. to use show with VGS-Satellite or custom hostname configured in VGS Dashboard.
          *
-         * @param host where VGSShow will send requests.
+         * @param cname where VGSShow will send requests.
          */
         fun setHostname(cname: String) = this.apply {
             if (!cname.isValidUrl()) {
