@@ -68,6 +68,8 @@ class VGSShow private constructor(
 
     private var hasCustomHostname: Boolean = false
 
+    private var useSatellite: Boolean = false
+
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
         override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
@@ -306,6 +308,7 @@ class VGSShow private constructor(
                     logWaring("Custom local IP and PORT can be used only in a sandbox environment.")
                     return HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore)
                 }
+                useSatellite = true
                 HttpRequestManager(buildLocalhostUrl(host, port), headersStore)
             } else {
                 HttpRequestManager(buildProxyUrl(vaultId, environment), headersStore).also {
