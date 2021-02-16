@@ -21,10 +21,10 @@ internal object UrlHelper {
             logWaring("Port is not specified")
             EMPTY
         } else {
-            port
+            "$PROXY_PORT_DIVIDER$port"
         }
         return StringBuilder(HTTP_SCHEME)
-            .append(localhost).append(PROXY_PORT_DIVIDER)
+            .append(localhost)
             .append(prt)
             .toString()
     }
