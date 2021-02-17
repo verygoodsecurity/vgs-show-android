@@ -393,8 +393,8 @@ class VGSShow private constructor(
             this.apply { this.environment = environment }
 
         /**
-         * Sets the VGSShow instance to use the custom hostname. Custom host name can be localhost ip
-         * for ex. to use show with VGS-Satellite or custom hostname configured in VGS Dashboard.
+         * Sets the VGSShow instance to use the custom hostname.
+         * Also, the localhost IP can be used for VGS-Satellite for local testing.
          *
          * @param cname where VGSShow will send requests.
          */
@@ -408,7 +408,7 @@ class VGSShow private constructor(
 
         /**
          * Sets the VGSShow instance to use the custom hostname port.
-         * Port cn be used only with localhost for ex. with VGS-Satellite, otherwise it will be ignored.
+         * Port can be used only with localhost with VGS-Satellite, otherwise, it will be ignored.
          *
          * @param port Integer value from 1 to 65353.
          */

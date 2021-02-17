@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgsshow.core.network.extension.toJsonOrNull
 import com.verygoodsecurity.vgsshow.core.network.headers.AnalyticsStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import java.util.*
 
 internal class AnalyticsManager constructor(
@@ -50,7 +49,6 @@ internal class AnalyticsManager constructor(
     override fun log(event: Event) {
         if (isEnabled && connectionHelper.isNetworkPermissionsGranted() && connectionHelper.isNetworkConnectionAvailable()) {
             val payload = (defaultInfo + event.attributes).toJsonOrNull().toString()
-            logDebug(payload)
             requestManager.enqueue(buildRequest(payload), null)
         }
     }
