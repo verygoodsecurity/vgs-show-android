@@ -38,6 +38,8 @@ class ValidatorKtTest {
     @Test
     fun isUrlValid_incorrectParams_falseReturned() {
         //Assert
+        assertFalse("htt://www.example.com".isValidUrl())
+        assertFalse("http:/www.example.com".isValidUrl())
         assertFalse("https://www.exam ple.com".isValidUrl())
     }
 }

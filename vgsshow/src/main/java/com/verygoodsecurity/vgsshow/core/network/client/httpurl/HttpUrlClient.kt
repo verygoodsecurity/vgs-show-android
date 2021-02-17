@@ -48,6 +48,7 @@ internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClien
             logResponse(requestId, connection)
             return readResponse(connection)
         } catch (e: Exception) {
+            logException(e)
             throw e
         } finally {
             connection?.disconnect()

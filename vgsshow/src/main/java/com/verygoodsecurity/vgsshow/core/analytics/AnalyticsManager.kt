@@ -19,6 +19,7 @@ import java.util.*
 internal class AnalyticsManager constructor(
     tenantId: String,
     environment: VGSEnvironment,
+    isSatelliteMode: Boolean,
     private val connectionHelper: NetworkConnectionHelper
 ) : IAnalyticsManager {
 
@@ -29,6 +30,7 @@ internal class AnalyticsManager constructor(
     }
 
     private val defaultInfo: Map<String, Any> = mapOf(
+        KEY_SATELLITE to isSatelliteMode,
         KEY_SESSION_ID to Session.id,
         KEY_FORM_ID to UUID.randomUUID().toString(),
         KEY_SOURCE to ANDROID_SDK,
@@ -67,6 +69,7 @@ internal class AnalyticsManager constructor(
         private const val BASE_URL = "https://vgs-collect-keeper.apps.verygood.systems"
         private const val PATH = "/vgs"
 
+        private const val KEY_SATELLITE = "vgsSatellite"
         private const val KEY_SESSION_ID = "vgsShowSessionId"
         private const val KEY_FORM_ID = "formId"
         private const val KEY_SOURCE = "source"

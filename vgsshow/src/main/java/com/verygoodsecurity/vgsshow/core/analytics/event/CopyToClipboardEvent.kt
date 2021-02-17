@@ -4,8 +4,8 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import java.util.*
 
 internal data class CopyToClipboardEvent constructor(
-    private val format: VGSTextView.CopyTextFormat,
-    private val status: String = DEFAULT_STATUS
+    val format: VGSTextView.CopyTextFormat,
+    val status: String = DEFAULT_STATUS
 ) : Event() {
 
     override val type: String

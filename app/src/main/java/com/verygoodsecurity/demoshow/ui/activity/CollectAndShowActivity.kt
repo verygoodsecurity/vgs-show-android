@@ -15,7 +15,9 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
+import com.verygoodsecurity.vgsshow.core.logs.VGSShowLogger
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
@@ -28,13 +30,15 @@ import org.json.JSONObject
 class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
+        VGSShow.Builder(this, TENANT_ID)
+            .setEnvironment(VGSEnvironment.Sandbox())
+            .setHostname(COLLECT_CUSTOM_HOSTNAME)
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +104,8 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
     }
 
     private fun setupShow() {
+        VGSShowLogger.isEnabled = true
+        VGSShowLogger.level = VGSShowLogger.Level.DEBUG
         showVgs.addOnResponseListener(this)
         showVgs.subscribe(tvCardNumber)
         showVgs.subscribe(tvCardExpiration)

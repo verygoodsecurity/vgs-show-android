@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 
 internal class ProxyStaticHeadersStore constructor(
-    var isAnalyticsEnabled: Boolean
+    var isAnalyticsEnabled: Boolean = true
 ) : BaseHeadersStore() {
 
     override val defaultStaticHeaders: Map<String, String>

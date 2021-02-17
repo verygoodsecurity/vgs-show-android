@@ -27,9 +27,9 @@ internal data class ResponseEvent(
         private const val KEY_STATUS = "status"
         private const val KEY_ERROR_MESSAGE = "error"
 
-        fun createSuccessful(code: Int): ResponseEvent = ResponseEvent(code.toString(), Status.OK)
+        fun createSuccessful(code: Int) = ResponseEvent(code.toString(), Status.OK)
 
-        fun createFailed(code: Int, message: String?): ResponseEvent =
+        fun createFailed(code: Int, message: String?) =
             ResponseEvent(code.toString(), Status.FAILED, message)
     }
 }

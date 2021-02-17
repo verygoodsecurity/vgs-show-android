@@ -41,12 +41,5 @@ internal data class RequestEvent(
             hasHeaders: Boolean,
             hasCustomHostname: Boolean
         ) = RequestEvent(Status.OK, hasFields, hasHeaders, hasCustomHostname)
-
-        fun createFailed(
-            hasFields: Boolean,
-            hasHeaders: Boolean,
-            hasCustomHostname: Boolean,
-            code: Int
-        ) = RequestEvent(Status.FAILED, hasFields, hasHeaders, hasCustomHostname, code.toString())
     }
 }
