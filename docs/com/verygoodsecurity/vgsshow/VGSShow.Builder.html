@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>Builder 1.0.4 API </title>
+    <title>Builder 1.1.0 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
@@ -110,7 +110,7 @@ var pathtoroot = "../../../";
 public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSShow.Builder</a></span>
 
                     </pre>
-                    <div class="block"></div>
+                    <div class="block"><p>Used to create VGSShow instances with default and overridden settings.</p></div>
                 </li>
             </ul>
         </div>
@@ -142,7 +142,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
                                                         href="#Builder(Context,String)">Builder</a></span>(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> id)</code></th>
-                                                <td class="colLast"></td>
+                                                <td class="colLast">create VGSShow instance builder.</td>
                                             </tr>
                                         
 
@@ -181,7 +181,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSShow.Builder.html#setEnvironment(VGSEnvironment)>setEnvironment</a>(<a href=../com/verygoodsecurity/vgsshow/core/VGSEnvironment.html>VGSEnvironment</a> environment) </code>
                                             </th>
-                                            <td class="colLast">Specify Environment for the VGSCollect instance.</td>
+                                            <td class="colLast">Specify Environment for the VGSShow instance.</td>
                                         </tr>
                                         
                                         <tr id="i1" class="rowColor">
@@ -189,15 +189,23 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSShow.Builder.html#setHostname(String)>setHostname</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> cname) </code>
                                             </th>
-                                            <td class="colLast">Sets the VGSCollect instance to use the custom hostname.</td>
+                                            <td class="colLast">Sets the VGSShow instance to use the custom hostname.</td>
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
+                                            <td class="colFirst"><code>final <a href=VGSShow.Builder.html>VGSShow.Builder</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.Builder.html#setPort(Integer)>setPort</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> port) </code>
+                                            </th>
+                                            <td class="colLast">Sets the VGSShow instance to use the custom hostname port.</td>
+                                        </tr>
+                                        
+                                        <tr id="i3" class="rowColor">
                                             <td class="colFirst"><code>final <a href=VGSShow.html>VGSShow</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSShow.Builder.html#build()>build</a>() </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">Build VGSShow instance</td>
                                         </tr>
                                         
                                         </tbody>
@@ -242,7 +250,20 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                     <li class="blockList">
                                         <h4>Builder</h4>
                                         <pre>Builder(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> id)</pre>
-                                        <div class="block"></div>
+                                        <div class="block">create VGSShow instance builder.</div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>context</code> - lifecycle owner context.</dd>
+                                            
+                                            
+                                            
+                                            <dd><code>id</code> - unique vault id.</dd>
+                                            
+                                            
+                                        </dl>
                                         
                                     </li>
                                 </ul>
@@ -269,7 +290,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                     <li class="blockList">
                                         <h4>setEnvironment</h4>
                                         <pre class="methodSignature"> final <a href=VGSShow.Builder.html>VGSShow.Builder</a> <a href=VGSShow.Builder.html#setEnvironment(VGSEnvironment)>setEnvironment</a>(<a href=../com/verygoodsecurity/vgsshow/core/VGSEnvironment.html>VGSEnvironment</a> environment)</pre>
-                                        <div class="block"><p>Specify Environment for the VGSCollect instance.</p></div>
+                                        <div class="block"><p>Specify Environment for the VGSShow instance.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -284,7 +305,40 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                     <li class="blockList">
                                         <h4>setHostname</h4>
                                         <pre class="methodSignature"> final <a href=VGSShow.Builder.html>VGSShow.Builder</a> <a href=VGSShow.Builder.html#setHostname(String)>setHostname</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> cname)</pre>
-                                        <div class="block"><p>Sets the VGSCollect instance to use the custom hostname.</p></div>
+                                        <div class="block"><p>Sets the VGSShow instance to use the custom hostname. Also, the localhost IP can be used for VGS-Satellite for local testing.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>cname</code> - where VGSShow will send requests.</dd>
+                                            
+                                            
+                                        </dl>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="setPort(Integer)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setPort</h4>
+                                        <pre class="methodSignature"> final <a href=VGSShow.Builder.html>VGSShow.Builder</a> <a href=VGSShow.Builder.html#setPort(Integer)>setPort</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> port)</pre>
+                                        <div class="block"><p>Sets the VGSShow instance to use the custom hostname port. Port can be used only with localhost with VGS-Satellite, otherwise, it will be ignored.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>port</code> - Integer value from 1 to 65353.</dd>
+                                            
+                                            
+                                        </dl>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -299,7 +353,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.Builder.html>VGSS
                                     <li class="blockList">
                                         <h4>build</h4>
                                         <pre class="methodSignature"> final <a href=VGSShow.html>VGSShow</a> <a href=VGSShow.Builder.html#build()>build</a>()</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>Build VGSShow instance</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
