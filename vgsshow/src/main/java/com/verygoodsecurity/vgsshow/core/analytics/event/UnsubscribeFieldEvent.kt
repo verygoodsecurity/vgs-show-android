@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
-internal data class UnsubscribeFieldEvent constructor(private val field: String) : Event() {
+internal data class UnsubscribeFieldEvent constructor(val field: String) : Event() {
 
     override val type: String
         get() = TYPE

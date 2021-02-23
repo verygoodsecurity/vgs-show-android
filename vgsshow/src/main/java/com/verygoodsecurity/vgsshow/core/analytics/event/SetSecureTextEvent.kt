@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class SetSecureTextEvent constructor(
-    private val contentPath: String,
-    private val field: String
+    val contentPath: String,
+    val field: String
 ) : Event() {
 
     override val type: String
