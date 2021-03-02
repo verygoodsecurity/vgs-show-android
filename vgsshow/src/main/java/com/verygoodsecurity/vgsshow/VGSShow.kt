@@ -68,7 +68,8 @@ class VGSShow private constructor(
 
     private var hasCustomHostname: Boolean = false
 
-    private val analyticsManager: IAnalyticsManager = AnalyticsManager(vaultId, environment, isSatelliteMode, connectionHelper)
+    private val analyticsManager: IAnalyticsManager =
+        AnalyticsManager(vaultId, environment, isSatelliteMode, connectionHelper)
 
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
@@ -123,9 +124,14 @@ class VGSShow private constructor(
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
      * @param payload key-value data
      */
+    @JvmOverloads
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
-    fun request(path: String, method: VGSHttpMethod, payload: Map<String, Any>): VGSResponse =
+    fun request(
+        path: String,
+        method: VGSHttpMethod,
+        payload: Map<String, Any>? = null
+    ): VGSResponse =
         request(VGSRequest.Builder(path, method).body(payload).build())
 
     /**
@@ -162,8 +168,9 @@ class VGSShow private constructor(
      * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
      * @param payload key-value data
      */
+    @JvmOverloads
     @AnyThread
-    fun requestAsync(path: String, method: VGSHttpMethod, payload: Map<String, Any>) {
+    fun requestAsync(path: String, method: VGSHttpMethod, payload: Map<String, Any>? = null) {
         requestAsync(VGSRequest.Builder(path, method).body(payload).build())
     }
 
