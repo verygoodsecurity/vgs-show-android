@@ -55,7 +55,6 @@ class VGSRequest private constructor(
          */
         fun body(payload: Map<String, Any>?): Builder = apply {
             this.payload = if (payload != null) JsonRequestData(payload) else null
-
         }
 
         /**
