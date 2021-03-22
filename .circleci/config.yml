@@ -63,18 +63,11 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=lt02wifi,version=19,locale=en,orientation=portrait \
-              --device model=hammerhead,version=21,locale=en,orientation=portrait \
               --device model=lv0,version=23,locale=en,orientation=portrait \
               --device model=capricorn,version=26,locale=en,orientation=portrait \
               --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
               --device model=flame,version=29,locale=en,orientation=portrait \
               --device model=flame,version=30,locale=en,orientation=portrait \
-      - run:
-          name: Install gsutil dependency and copy test results data
-          command: |
-            sudo pip install -U crcmod
-            sudo gsutil -m cp -r -U `sudo gsutil ls gs://test-lab-cqw7cy2hn179i-ikpi5m5q8mj9x | tail -1` ${CIRCLE_ARTIFACTS}/ | true
 
 workflows:
   main:
