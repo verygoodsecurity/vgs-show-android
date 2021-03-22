@@ -12,7 +12,7 @@ ext {
     siteUrl = 'https://github.com/verygoodsecurity/vgs-show-android'
     gitUrl = 'https://github.com/verygoodsecurity/vgs-show-android.git'
 
-    libraryVersion = POM_VERSION
+    libraryVersion = VERSION_NAME
 
     Properties properties = new Properties()
     if (rootProject.file("local.properties").exists()) {
