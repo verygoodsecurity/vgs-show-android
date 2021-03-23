@@ -46,8 +46,8 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
             client.newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
-                    callback.onFailure(e)
                     logException(e)
+                    callback.onFailure(e)
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -90,7 +90,8 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
                     it.url.toString(),
                     it.method,
                     it.headers.toMap(),
-                    getBody(it.body)
+                    getBody(it.body),
+                    it::class.java.simpleName
                 )
             }).also {
                 logResponse(
@@ -98,7 +99,8 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
                     it.request.url.toString(),
                     it.code,
                     it.message,
-                    it.headers.toMap()
+                    it.headers.toMap(),
+                    it::class.java.simpleName
                 )
             }
         }
