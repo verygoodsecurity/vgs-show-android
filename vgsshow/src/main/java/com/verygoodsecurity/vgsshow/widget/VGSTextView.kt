@@ -76,8 +76,6 @@ class VGSTextView @JvmOverloads constructor(
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
-            setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
-            setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
 
             setHint(getString(R.styleable.VGSTextView_hint))
             setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, Color.GRAY))
