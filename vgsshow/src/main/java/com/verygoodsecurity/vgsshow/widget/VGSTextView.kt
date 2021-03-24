@@ -69,9 +69,6 @@ class VGSTextView @JvmOverloads constructor(
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
             setGravity(getInt(R.styleable.VGSTextView_gravity, DEFAULT_GRAVITY))
 
-            setHint(getString(R.styleable.VGSTextView_hint))
-            setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, -1))
-
             setTextAppearance(getResourceId(R.styleable.VGSTextView_textAppearance, 0))
             setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
             setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
@@ -79,6 +76,11 @@ class VGSTextView @JvmOverloads constructor(
             setTypeface(getTypeface(), getInt(R.styleable.VGSTextView_textStyle, NORMAL))
             setInputType(getInt(R.styleable.VGSTextView_inputType, EditorInfo.TYPE_NULL))
             setSingleLine(getBoolean(R.styleable.VGSTextView_singleLine, false))
+            setTextSize(getDimension(R.styleable.VGSTextView_textSize, -1f))
+            setTextColor(getColor(R.styleable.VGSTextView_textColor, Color.BLACK))
+
+            setHint(getString(R.styleable.VGSTextView_hint))
+            setHintTextColor(getColor(R.styleable.VGSTextView_hintTextColor, Color.GRAY))
 
             val secureTextStart = getIntOrNull(R.styleable.VGSTextView_secureTextStart)
             val secureTextEnd = getIntOrNull(R.styleable.VGSTextView_secureTextEnd)
