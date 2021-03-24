@@ -147,9 +147,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the top padding in pixels
      */
-    override fun getPaddingTop(): Int {
-        return view.paddingTop
-    }
+    override fun getPaddingTop() = if (hasView()) view.paddingTop else super.getPaddingTop()
 
     /**
      * Returns the bottom padding of this view.
@@ -157,7 +155,8 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the bottom padding in pixels
      */
-    override fun getPaddingBottom() = view.paddingBottom
+    override fun getPaddingBottom() =
+        if (hasView()) view.paddingBottom else super.getPaddingBottom()
 
     /**
      * Returns the start padding of this view depending on its resolved layout direction.
@@ -165,9 +164,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the start padding in pixels
      */
-    override fun getPaddingStart(): Int {
-        return view.paddingStart
-    }
+    override fun getPaddingStart() = if (hasView()) view.paddingStart else super.getPaddingStart()
 
     /**
      * Returns the end padding of this view depending on its resolved layout direction.
@@ -175,7 +172,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the end padding in pixels
      */
-    override fun getPaddingEnd() = view.paddingEnd
+    override fun getPaddingEnd() = if (hasView()) view.paddingEnd else super.getPaddingEnd()
 
     /**
      * Returns the left padding of this view.
@@ -183,7 +180,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the left padding in pixels
      */
-    override fun getPaddingLeft() = view.paddingLeft
+    override fun getPaddingLeft() = if (hasView()) view.paddingLeft else super.getPaddingLeft()
 
     /**
      * Returns the right padding of this view.
@@ -191,7 +188,7 @@ class VGSTextView @JvmOverloads constructor(
      *
      * @return the right padding in pixels
      */
-    override fun getPaddingRight() = view.paddingRight
+    override fun getPaddingRight() = if (hasView()) view.paddingRight else super.getPaddingRight()
 
     /**
      * Returns the enabled status for this view. The interpretation of the enabled state varies by subclass.
