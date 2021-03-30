@@ -52,7 +52,7 @@ class VGSTextViewTest {
     @Test
     fun test_paddings() {
         view.setPadding(30, 20, 10, 0)
-
+        view.onAttachedToWindow()
         assertEquals(view.paddingLeft, 30)
         assertEquals(view.paddingTop, 20)
         assertEquals(view.paddingRight, 10)
