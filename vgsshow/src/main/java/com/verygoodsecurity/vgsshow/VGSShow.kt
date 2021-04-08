@@ -258,6 +258,20 @@ class VGSShow private constructor(
     }
 
     /**
+     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     */
+    fun removeCustomHeader(header: String) {
+        headersStore.remove(header)
+    }
+
+    /**
+     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     */
+    fun clearCustomHeaders() {
+        headersStore.clear()
+    }
+
+    /**
      * Used to enable/disable analytics events.
      *
      * @param isEnabled true if VGSShow should send analytics events.
