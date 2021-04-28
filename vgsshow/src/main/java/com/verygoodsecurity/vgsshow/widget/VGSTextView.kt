@@ -110,7 +110,7 @@ class VGSTextView @JvmOverloads constructor(
      */
     override fun getFieldType() = VGSFieldType.INFO
 
-    override fun onViewSubscribed() {
+    internal fun onViewSubscribed() {
         for (i in 0 until secureTextListenerCachedInvocationsCounter) {
             secureTextListener?.onSecureTextRangeSet(this)
         }

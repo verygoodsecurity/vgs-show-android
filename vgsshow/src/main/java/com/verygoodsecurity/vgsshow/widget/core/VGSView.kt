@@ -14,15 +14,13 @@ import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 
 @Suppress("LeakingThis")
-abstract class VGSView<T : View> @JvmOverloads internal constructor(
+abstract class VGSView<T : View> @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     abstract fun getFieldType(): VGSFieldType
-
-    internal abstract fun onViewSubscribed()
 
     protected abstract fun createChildView(): T
 
@@ -75,7 +73,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAddStatesFromChildren(true)
-        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         view.setOnClickListener { onChildClick(it) }
         view.setOnLongClickListener { onChildLongClick(it) }
         view.isLongClickable = false
