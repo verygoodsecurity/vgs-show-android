@@ -14,7 +14,7 @@ import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 
 @Suppress("LeakingThis")
-abstract class VGSView<T : View> @JvmOverloads constructor(
+abstract class VGSView<T : View> @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX) @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="VGSPDFView">
+
+        <!-- Default start page.-->
+        <attr name="defaultPage" format="integer" />
+
+        <!-- Enable/Disable changing pages using scrolling.-->
+        <attr name="isSwipeEnabled" format="boolean" />
+
+        <!-- Enable/Disable horizontal scrolling.-->
+        <attr name="isSwipeHorizontalEnabled" format="boolean" />
+
+        <!-- Enable/Disable double tap.-->
+        <attr name="isDoubleTapEnabled" format="boolean" />
+
+        <!-- Improve rendering on low-res screens.-->
+        <attr name="isAntialiasingEnabled" format="boolean" />
+
+        <!-- Spacing between pages in dp. -->
+        <attr name="spacing" format="integer" />
+    </declare-styleable>
+</resources>

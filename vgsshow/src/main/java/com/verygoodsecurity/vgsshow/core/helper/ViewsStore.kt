@@ -3,10 +3,10 @@ package com.verygoodsecurity.vgsshow.core.helper
 import android.util.Base64
 import androidx.annotation.MainThread
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
-//import com.verygoodsecurity.vgsshow.pdf.VGSPDFView
 import com.verygoodsecurity.vgsshow.util.extension.logStartViewsUpdate
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.core.VGSRenderView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 internal class ViewsStore {
@@ -40,7 +40,7 @@ internal class ViewsStore {
             } else {
                 when (view) {
                     is VGSTextView -> view.setText(revealedData)
-//                    is VGSPDFView -> view.render(Base64.decode(revealedData, Base64.NO_WRAP))
+                    is VGSRenderView<*> -> view.render(Base64.decode(revealedData, Base64.NO_WRAP))
                     else -> throw IllegalArgumentException("Not implemented yet!")
                 }
             }
