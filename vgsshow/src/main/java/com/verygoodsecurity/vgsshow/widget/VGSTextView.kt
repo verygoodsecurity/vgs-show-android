@@ -104,9 +104,9 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * Gets the current field type of the InputFieldView.
+     * Gets the current field type.
      *
-     * @return VGSFieldType
+     * @return [VGSFieldType]
      */
     override fun getFieldType() = VGSFieldType.INFO
 

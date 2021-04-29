@@ -20,6 +20,11 @@ abstract class VGSView<T : View> @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Gets the current field type.
+     *
+     * @return [VGSFieldType]
+     */
     abstract fun getFieldType(): VGSFieldType
 
     protected abstract fun createChildView(): T
