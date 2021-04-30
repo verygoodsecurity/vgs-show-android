@@ -1,10 +1,15 @@
 package com.verygoodsecurity.vgsshow.pdf
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Parcelable
 import android.util.AttributeSet
+import androidx.core.content.FileProvider
 import com.github.barteksc.pdfviewer.PDFView
 import com.verygoodsecurity.vgsshow.pdf.state.VGSPDFViewState
+import com.verygoodsecurity.vgsshow.pdf.utils.extensions.toFile
+import com.verygoodsecurity.vgsshow.pdf.utils.extensions.toShareIntent
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSRenderView
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
@@ -117,9 +122,19 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
-     * TODO: Add comment
+     * Share PDF file.
+     * TODO: Think about callbacks.
+     * TODO: File should be deleted.
      */
-    fun share(title: String = "", message: String = "") {}
+    fun share(activity: Activity, title: String = "", message: String = "") {
+        data.toFile(context.filesDir, DEFAULT_SHARE_FILE_NAME)?.let {
+            val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, it)
+            val shareIntent = documentUri.toShareIntent(activity, title, message, "application/pdf")
+            activity.startActivityForResult(Intent.createChooser(shareIntent, title), 1)
+            // TODO: Even we always receive RESULT_CANCELED, we can use this event as reason to delete file
+            // TODO: but unfortunately this does not give grantee that user return back to app
+        }
+    }
 
     companion object {
 
@@ -130,6 +145,10 @@ class VGSPDFView @JvmOverloads constructor(
         private const val DOUBLE_TAB_ENABLED = false
         private const val ANTIALIAS_ENABLED = true
         private const val SPACING = 0
+
+        private const val DEFAULT_SHARE_FILE_NAME = "share.pdf"
+
+        private const val FILE_PROVIDER_AUTHORITY = "com.verygoodsecurity.vgsshow.pdf.provider"
     }
 
     /**
