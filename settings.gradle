@@ -1,4 +1,3 @@
-include ':vgsshow-pdf'
 include ':vgsshow'
 include ':app'
 rootProject.name = "DemoShow"

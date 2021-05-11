@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.pdf
+package com.verygoodsecurity.vgsshow.widget.view.pdf
 
 import android.app.Activity
 import android.content.Context
@@ -7,21 +7,30 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.core.content.FileProvider
 import com.github.barteksc.pdfviewer.PDFView
-import com.verygoodsecurity.vgsshow.pdf.state.VGSPDFViewState
-import com.verygoodsecurity.vgsshow.pdf.utils.extensions.toFile
-import com.verygoodsecurity.vgsshow.pdf.utils.extensions.toShareIntent
+import com.verygoodsecurity.vgsshow.R
+import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
+import com.verygoodsecurity.vgsshow.widget.view.pdf.utils.extensions.toFile
+import com.verygoodsecurity.vgsshow.widget.view.pdf.utils.extensions.toShareIntent
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
-import com.verygoodsecurity.vgsshow.widget.core.VGSRenderView
+import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 
 /**
  * VGS basic View control that displays reviled PDF documents.
+ *
+ * This view depends on [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer).
+ * To be able to use it please add AndroidPdfViewer dependency into your app build.gradle:
+ *
+ *      dependencies {
+ *          implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+ *          ...
+ *      }
  */
 class VGSPDFView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : VGSRenderView<PDFView>(context, attrs, defStyleAttr) {
+) : VGSView<PDFView>(context, attrs, defStyleAttr) {
 
     /** Default start page. */
     var defaultPage: Int = DEFAULT_PAGE
@@ -100,7 +109,7 @@ class VGSPDFView @JvmOverloads constructor(
         }
     }
 
-    override fun render(bytes: ByteArray) {
+    internal fun render(bytes: ByteArray) {
         data = bytes
         view.fromBytes(bytes)
             .defaultPage(defaultPage)

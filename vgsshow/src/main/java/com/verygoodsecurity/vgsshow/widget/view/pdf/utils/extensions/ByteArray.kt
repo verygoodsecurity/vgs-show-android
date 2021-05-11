@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.pdf.utils.extensions
+package com.verygoodsecurity.vgsshow.widget.view.pdf.utils.extensions
 
 import java.io.File
 import java.io.FileOutputStream

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.pdf.state
+package com.verygoodsecurity.vgsshow.widget.view.pdf.state
 
 import android.os.Parcel
 import android.os.Parcelable
