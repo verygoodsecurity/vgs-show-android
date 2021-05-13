@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgsshow.widget.view.pdf
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
@@ -8,12 +7,13 @@ import android.util.AttributeSet
 import androidx.core.content.FileProvider
 import com.github.barteksc.pdfviewer.PDFView
 import com.verygoodsecurity.vgsshow.R
-import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
-import com.verygoodsecurity.vgsshow.widget.view.pdf.utils.extensions.toFile
-import com.verygoodsecurity.vgsshow.widget.view.pdf.utils.extensions.toShareIntent
+import com.verygoodsecurity.vgsshow.util.extension.toFile
+import com.verygoodsecurity.vgsshow.util.extension.toShareIntent
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
+import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
+import java.io.File
 
 /**
  * VGS basic View control that displays reviled PDF documents.
@@ -56,7 +56,7 @@ class VGSPDFView @JvmOverloads constructor(
     /** Register a callback to be invoked when documents loading failed. */
     var onErrorListener: OnErrorListener? = null
 
-    private var data: ByteArray? = null
+    private var isDocumentAdded: Boolean = false
 
     init {
 
@@ -75,17 +75,12 @@ class VGSPDFView @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Gets the current field type.
-     *
-     * @return [VGSFieldType]
-     */
     override fun getFieldType() = VGSFieldType.PDF
 
     override fun createChildView() = PDFView(context, null)
 
     override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
-        this.data = this@VGSPDFView.data
+        this.isDocumentAdded = this@VGSPDFView.isDocumentAdded
         this.defaultPage = this@VGSPDFView.defaultPage
         this.isSwipeEnabled = this@VGSPDFView.isSwipeEnabled
         this.isSwipeHorizontalEnabled = this@VGSPDFView.isSwipeHorizontalEnabled
@@ -97,7 +92,7 @@ class VGSPDFView @JvmOverloads constructor(
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSPDFViewState)?.let {
-            this@VGSPDFView.data = it.data
+            this@VGSPDFView.isDocumentAdded = it.isDocumentAdded
             this@VGSPDFView.defaultPage = it.defaultPage
             this@VGSPDFView.isSwipeEnabled = it.isSwipeEnabled
             this@VGSPDFView.isSwipeHorizontalEnabled = it.isSwipeHorizontalEnabled
@@ -109,9 +104,38 @@ class VGSPDFView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Should be called if document already rendered and any changes in setting are made.
+     */
+    fun refresh() {
+        if (isDocumentAdded) {
+            getDocumentFile()?.let { render(it) }
+        }
+    }
+
+    /**
+     * Share PDF file using system app chooser dialog.
+     *
+     * @param chooserTitle define system chooser dialog title.
+     * @param chooserMessage define system chooser dialog message.
+     */
+    fun shareDocument(chooserTitle: String = "", chooserMessage: String = "") {
+        getDocumentFile()?.let { file ->
+            val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, file)
+            val intent = documentUri.toShareIntent(chooserTitle, chooserMessage, PDF_MIME_TYPE)
+            context.startActivity(Intent.createChooser(intent, chooserTitle))
+        }
+    }
+
     internal fun render(bytes: ByteArray) {
-        data = bytes
-        view.fromBytes(bytes)
+        bytes.toFile(getVGSFilesDirectory(), PDF_FILE_NAME)?.let {
+            this.isDocumentAdded = true
+            render(it)
+        }
+    }
+
+    private fun render(file: File) {
+        view.fromFile(file)
             .defaultPage(defaultPage)
             .enableSwipe(isSwipeEnabled)
             .swipeHorizontal(isSwipeHorizontalEnabled)
@@ -123,31 +147,22 @@ class VGSPDFView @JvmOverloads constructor(
             .load()
     }
 
-    /**
-     * Should be called if document already rendered and any changes in setting are made.
-     */
-    fun refresh() {
-        data?.let { render(it) }
+    private fun getDocumentFile(): File? {
+        val file = File(getVGSFilesDirectory(), PDF_FILE_NAME)
+        return if (file.exists()) file else null
     }
 
-    /**
-     * Share PDF file.
-     * TODO: Think about callbacks.
-     * TODO: File should be deleted.
-     */
-    fun share(activity: Activity, title: String = "", message: String = "") {
-        data.toFile(context.filesDir, DEFAULT_SHARE_FILE_NAME)?.let {
-            val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, it)
-            val shareIntent = documentUri.toShareIntent(activity, title, message, "application/pdf")
-            activity.startActivityForResult(Intent.createChooser(shareIntent, title), 1)
-            // TODO: Even we always receive RESULT_CANCELED, we can use this event as reason to delete file
-            // TODO: but unfortunately this does not give grantee that user return back to app
+    private fun getVGSFilesDirectory(): File {
+        return File(context.filesDir, VGS_FILES_DIRECTORY).also {
+            if (!it.exists()) {
+                it.mkdir()
+            }
         }
     }
 
     companion object {
 
-        /** Default attributes */
+        // Default attributes
         private const val DEFAULT_PAGE = 0
         private const val SWIPE_ENABLED = true
         private const val SWIPE_HORIZONTAL_ENABLED = false
@@ -155,9 +170,11 @@ class VGSPDFView @JvmOverloads constructor(
         private const val ANTIALIAS_ENABLED = true
         private const val SPACING = 0
 
-        private const val DEFAULT_SHARE_FILE_NAME = "share.pdf"
-
-        private const val FILE_PROVIDER_AUTHORITY = "com.verygoodsecurity.vgsshow.pdf.provider"
+        // File constants
+        private const val VGS_FILES_DIRECTORY = "vgs"
+        private const val PDF_FILE_NAME = "document.pdf"
+        private const val PDF_MIME_TYPE = "application/pdf"
+        private const val FILE_PROVIDER_AUTHORITY = "com.verygoodsecurity.vgsshow.provider"
     }
 
     /**

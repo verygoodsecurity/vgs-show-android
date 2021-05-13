@@ -103,11 +103,6 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
-    /**
-     * Gets the current field type.
-     *
-     * @return [VGSFieldType]
-     */
     override fun getFieldType() = VGSFieldType.INFO
 
     internal fun onViewSubscribed() {

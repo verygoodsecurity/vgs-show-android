@@ -2,6 +2,6 @@
 <paths>
 
     <files-path
-        name="files"
-        path="." />
+        name="vgs"
+        path="vgs/" />
 </paths>
