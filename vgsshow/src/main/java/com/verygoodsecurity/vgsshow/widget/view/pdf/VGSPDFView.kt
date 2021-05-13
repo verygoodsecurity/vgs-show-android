@@ -56,7 +56,9 @@ class VGSPDFView @JvmOverloads constructor(
     /** Register a callback to be invoked when documents loading failed. */
     var onErrorListener: OnErrorListener? = null
 
-    private var isDocumentAdded: Boolean = false
+    /** Return true if document was revealed. */
+    var hasDocument: Boolean = false
+        private set
 
     init {
 
@@ -80,7 +82,7 @@ class VGSPDFView @JvmOverloads constructor(
     override fun createChildView() = PDFView(context, null)
 
     override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
-        this.isDocumentAdded = this@VGSPDFView.isDocumentAdded
+        this.hasDocument = this@VGSPDFView.hasDocument
         this.defaultPage = this@VGSPDFView.defaultPage
         this.isSwipeEnabled = this@VGSPDFView.isSwipeEnabled
         this.isSwipeHorizontalEnabled = this@VGSPDFView.isSwipeHorizontalEnabled
@@ -92,7 +94,7 @@ class VGSPDFView @JvmOverloads constructor(
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSPDFViewState)?.let {
-            this@VGSPDFView.isDocumentAdded = it.isDocumentAdded
+            this@VGSPDFView.hasDocument = it.hasDocument
             this@VGSPDFView.defaultPage = it.defaultPage
             this@VGSPDFView.isSwipeEnabled = it.isSwipeEnabled
             this@VGSPDFView.isSwipeHorizontalEnabled = it.isSwipeHorizontalEnabled
@@ -108,7 +110,7 @@ class VGSPDFView @JvmOverloads constructor(
      * Should be called if document already rendered and any changes in setting are made.
      */
     fun refresh() {
-        if (isDocumentAdded) {
+        if (hasDocument) {
             getDocumentFile()?.let { render(it) }
         }
     }
@@ -129,7 +131,7 @@ class VGSPDFView @JvmOverloads constructor(
 
     internal fun render(bytes: ByteArray) {
         bytes.toFile(getVGSFilesDirectory(), PDF_FILE_NAME)?.let {
-            this.isDocumentAdded = true
+            this.hasDocument = true
             render(it)
         }
     }

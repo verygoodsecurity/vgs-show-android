@@ -10,5 +10,6 @@ internal data class HttpRequest(
     val method: VGSHttpMethod,
     var headers: Map<String, String>? = null,
     var data: RequestData? = null,
-    val format: VGSHttpBodyFormat
+    val format: VGSHttpBodyFormat,
+    val requestTimeoutInterval: Long
 )
