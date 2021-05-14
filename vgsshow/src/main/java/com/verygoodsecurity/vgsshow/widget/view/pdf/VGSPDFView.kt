@@ -50,11 +50,11 @@ class VGSPDFView @JvmOverloads constructor(
     /** Spacing between pages in dp. */
     var spacing: Int = SPACING
 
-    /** Register a callback to be invoked when documents is loaded successfully. */
-    var onLoadCompleteListener: OnLoadCompleteListener? = null
+    /** Register a callback to be invoked when document rendering state changed. */
+    var onRenderStateChangeListener: OnRenderStateChangeListener? = null
 
-    /** Register a callback to be invoked when documents loading failed. */
-    var onErrorListener: OnErrorListener? = null
+    /** Register a callback to be invoked when document page changed. */
+    var onPageChangeListener: OnPageChangeListener? = null
 
     /** Return true if document was revealed. */
     var hasDocument: Boolean = false
@@ -107,7 +107,8 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
-     * Should be called if document already rendered and any changes in setting are made.
+     * Call this method when some configuration has been made after rendering PDF content.
+     * View will render content according to a new setup.
      */
     fun refresh() {
         if (hasDocument) {
@@ -144,8 +145,10 @@ class VGSPDFView @JvmOverloads constructor(
             .enableDoubletap(isDoubleTapEnabled)
             .defaultPage(defaultPage)
             .enableAntialiasing(isAntialiasingEnabled)
-            .onLoad { onLoadCompleteListener?.onLoadComplete(it) }
-            .onError { onErrorListener?.onError(it) }
+            .onLoad { onRenderStateChangeListener?.onStart(it) }
+            .onRender { pages, _, _ -> onRenderStateChangeListener?.onComplete(pages) }
+            .onError { onRenderStateChangeListener?.onError(it) }
+            .onPageChange { page, count -> onPageChangeListener?.onPageChanged(page, count) }
             .load()
     }
 
@@ -180,27 +183,43 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
-     * Interface definition for a callback to be invoked when documents is loaded successfully.
+     * Interface definition for a callback to be invoked when document rendering state changed.
      */
-    interface OnLoadCompleteListener {
+    interface OnRenderStateChangeListener {
 
         /**
          * Called after document is loaded and starts to be rendered.
-         * @param pages number pages that will be rendered.
+         *
+         * @param pages number of pages.
          */
-        fun onLoadComplete(pages: Int)
-    }
+        fun onStart(pages: Int)
 
-    /**
-     * Interface definition for a callback to be invoked when documents loading failed.
-     */
-    interface OnErrorListener {
-
+        /**
+         * Called when documents is rendered.
+         *
+         * @param pages number of pages.
+         */
+        fun onComplete(pages: Int)
 
         /**
          * Called if document is not loaded.
+         *
          * @param t reason.
          */
         fun onError(t: Throwable)
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when document page changed.
+     */
+    interface OnPageChangeListener {
+
+        /**
+         * Called if document page changed.
+         *
+         * @param position index of the new selected page.
+         * @param pageCount the total page count.
+         */
+        fun onPageChanged(position: Int, pageCount: Int)
     }
 }
