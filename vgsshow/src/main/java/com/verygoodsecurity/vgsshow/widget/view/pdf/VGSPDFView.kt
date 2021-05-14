@@ -56,6 +56,9 @@ class VGSPDFView @JvmOverloads constructor(
     /** Register a callback to be invoked when documents loading failed. */
     var onErrorListener: OnErrorListener? = null
 
+    /** Register a callback to be invoked when document page changed. */
+    var onPageChangeListener: OnPageChangeListener? = null
+
     /** Return true if document was revealed. */
     var hasDocument: Boolean = false
         private set
@@ -147,6 +150,7 @@ class VGSPDFView @JvmOverloads constructor(
             .enableAntialiasing(isAntialiasingEnabled)
             .onLoad { onLoadCompleteListener?.onLoadComplete(it) }
             .onError { onErrorListener?.onError(it) }
+            .onPageChange { page, count -> onPageChangeListener?.onPageChanged(page, count) }
             .load()
     }
 
@@ -187,6 +191,7 @@ class VGSPDFView @JvmOverloads constructor(
 
         /**
          * Called after document is loaded and starts to be rendered.
+         *
          * @param pages number pages that will be rendered.
          */
         fun onLoadComplete(pages: Int)
@@ -200,8 +205,23 @@ class VGSPDFView @JvmOverloads constructor(
 
         /**
          * Called if document is not loaded.
+         *
          * @param t reason.
          */
         fun onError(t: Throwable)
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when document page changed.
+     */
+    interface OnPageChangeListener {
+
+        /**
+         * Called if document page changed.
+         *
+         * @param position index of the new selected page.
+         * @param pageCount the total page count.
+         */
+        fun onPageChanged(position: Int, pageCount: Int)
     }
 }
