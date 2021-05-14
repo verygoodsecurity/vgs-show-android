@@ -16,15 +16,15 @@ import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
 import java.io.File
 
 /**
- * VGS basic View control that displays reviled PDF documents.
+ * A VGSPDFView can be used to display a PDF file.
  *
- * This view depends on [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer).
- * To be able to use it please add AndroidPdfViewer dependency into your app build.gradle:
+ * VGSPDFView depends on [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) library.
+ * When View is initialized without additional dependency, the View will throw Exception.
+ * Please add the dependency to your module gradle file before using this View:
  *
- *      dependencies {
- *          implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
- *          ...
- *      }
+ * implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+ *
+ * For more information please visit our [guide](). TODO: add guide link
  */
 class VGSPDFView @JvmOverloads constructor(
     context: Context,
