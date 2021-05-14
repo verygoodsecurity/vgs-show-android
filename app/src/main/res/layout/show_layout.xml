@@ -81,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Powered by VGS Show SDK"
+        android:text="VGS Show SDK"
         android:textColor="@android:color/black"
         android:textSize="10dp"
         android:textStyle="bold"

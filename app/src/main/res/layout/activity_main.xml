@@ -75,10 +75,25 @@
         android:layout_marginTop="16dp"
         android:text="Start with ViewPager"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartRevelPDF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStartFragmentMain"
+        app:rippleColor="@color/colorAccent"
+        app:strokeColor="@color/colorPrimaryDark"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartRevelPDF"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="PDF Reveal"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnStartViewPagerMain"
+        app:layout_constraintStart_toStartOf="@+id/btnStartViewPagerMain"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartViewPagerMain"
         app:rippleColor="@color/colorAccent"
         app:strokeColor="@color/colorPrimaryDark"
         tools:ignore="HardcodedText" />
