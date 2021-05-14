@@ -89,17 +89,18 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         show.subscribe(vgsPDFView)
         show.addOnResponseListener(this)
 
-        vgsPDFView?.onErrorListener = object : VGSPDFView.OnErrorListener {
+        vgsPDFView?.onRenderStateChangeListener = object : VGSPDFView.OnRenderStateChangeListener {
+
+            override fun onStart(pages: Int) {
+                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onStart, p = $pages")
+            }
+
+            override fun onComplete(pages: Int) {
+                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onComplete, p = $pages")
+            }
 
             override fun onError(t: Throwable) {
                 Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onError, t = $t")
-            }
-        }
-
-        vgsPDFView?.onLoadCompleteListener = object : VGSPDFView.OnLoadCompleteListener {
-
-            override fun onLoadComplete(pages: Int) {
-                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onLoadComplete, pages = $pages")
             }
         }
 
