@@ -107,7 +107,8 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
-     * Should be called if document already rendered and any changes in setting are made.
+     * Call this method when some configuration has been made after rendering PDF content.
+     * View will render content according to a new setup.
      */
     fun refresh() {
         if (hasDocument) {
