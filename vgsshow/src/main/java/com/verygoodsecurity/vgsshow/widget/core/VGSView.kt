@@ -21,7 +21,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     /**
-     * Gets the current field type.
+     * Returns type of the field.
      *
      * @return [VGSFieldType]
      */
