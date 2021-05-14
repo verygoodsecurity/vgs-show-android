@@ -122,7 +122,7 @@ class VGSPDFView @JvmOverloads constructor(
      * @param chooserTitle define system chooser dialog title.
      * @param chooserMessage define system chooser dialog message.
      */
-    fun sharePDF(chooserTitle: String = "", chooserMessage: String = "") {
+    fun sharePDF(chooserTitle: String = PDF_FILE_NAME, chooserMessage: String = "") {
         getDocumentFile()?.let { file ->
             val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, file)
             val intent = documentUri.toShareIntent(chooserTitle, chooserMessage, PDF_MIME_TYPE)
