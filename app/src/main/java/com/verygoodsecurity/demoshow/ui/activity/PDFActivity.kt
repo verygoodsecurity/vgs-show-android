@@ -32,8 +32,6 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
-    private var documentAlias: String = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pdf)
@@ -53,8 +51,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         (response as? CollectSuccessResponse)?.rawResponse?.let {
             try {
                 JSONObject(it).getJSONObject("json").getString("pdf").run {
-                    tvFileAlias.text = this
-                    documentAlias = this
+                    tvFileAlias?.text = this
                 }
             } catch (e: Exception) {
                 Log.d(PDFActivity::class.simpleName, e.message ?: "Invalid json or data not exist!")
@@ -108,7 +105,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
             flProgress?.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("payment_card_pdf" to documentAlias))
+                    .body(mapOf("payment_card_pdf" to (tvFileAlias?.text ?: "")))
                     .build()
             )
         }
