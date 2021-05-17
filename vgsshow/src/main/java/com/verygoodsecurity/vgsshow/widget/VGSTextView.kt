@@ -103,14 +103,9 @@ class VGSTextView @JvmOverloads constructor(
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 
-    /**
-     * Gets the current field type of the InputFieldView.
-     *
-     * @return VGSFieldType
-     */
     override fun getFieldType() = VGSFieldType.INFO
 
-    override fun onViewSubscribed() {
+    internal fun onViewSubscribed() {
         for (i in 0 until secureTextListenerCachedInvocationsCounter) {
             secureTextListener?.onSecureTextRangeSet(this)
         }

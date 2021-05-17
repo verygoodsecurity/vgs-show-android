@@ -17,7 +17,8 @@ internal fun VGSRequest.toHttpRequest(url: String, extraHeaders: Map<String, Str
         this.method,
         this.headers + extraHeaders,
         this.payload,
-        this.requestFormat
+        this.requestFormat,
+        this.requestTimeoutInterval
     )
 
 private const val APPLICATION_JSON = "application/json"

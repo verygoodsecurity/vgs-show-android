@@ -230,8 +230,8 @@ class VGSShow private constructor(
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 handleTextViewSubscription(view)
+                view.onViewSubscribed()
             }
-            view.onViewSubscribed()
         }
     }
 
