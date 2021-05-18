@@ -39,6 +39,12 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         setupShow()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+        show.onDestroy()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         collect.onActivityResult(requestCode, resultCode, data)
