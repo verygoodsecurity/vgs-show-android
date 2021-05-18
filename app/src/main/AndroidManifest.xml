@@ -30,5 +30,7 @@
         <activity android:name=".ui.activity.CollectAndShowFragmentActivity" />
 
         <activity android:name=".ui.activity.VGSShowViewPagerActivity" />
+
+        <activity android:name=".ui.activity.PDFActivity" />
     </application>
 </manifest>
