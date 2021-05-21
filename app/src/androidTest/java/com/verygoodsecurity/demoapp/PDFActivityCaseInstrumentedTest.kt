@@ -8,7 +8,7 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.utils.TestUtils
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.vgsshow.widget.view.pdf.VGSPDFView
+import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import junit.framework.AssertionFailedError
 import org.junit.Before
 import org.junit.Rule

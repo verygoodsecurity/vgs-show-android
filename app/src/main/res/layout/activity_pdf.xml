@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llCollectContainer" />
 
-    <com.verygoodsecurity.vgsshow.widget.view.pdf.VGSPDFView
+    <com.verygoodsecurity.vgsshow.widget.VGSPDFView
         android:id="@+id/vgsPDFView"
         android:layout_width="0dp"
         android:layout_height="0dp"

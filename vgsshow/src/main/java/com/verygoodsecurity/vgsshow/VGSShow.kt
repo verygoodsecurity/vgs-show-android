@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.*
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
+import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
@@ -87,6 +88,34 @@ class VGSShow private constructor(
                     view.getFieldType().toAnalyticTag()
                 )
             )
+        }
+    }
+
+    private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener by lazy {
+        object : VGSPDFView.OnRenderStateChangeListener {
+
+            override fun onStart(view: VGSPDFView, pages: Int) {}
+
+            override fun onComplete(view: VGSPDFView, pages: Int) {
+                analyticsManager.log(
+                    RenderContentEvent.createSuccessful(view.getFieldType().toAnalyticTag())
+                )
+            }
+
+            override fun onError(view: VGSPDFView, t: Throwable) {
+                analyticsManager.log(
+                    RenderContentEvent.createFailed(view.getFieldType().toAnalyticTag())
+                )
+            }
+        }
+    }
+
+    private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener by lazy {
+        object : VGSPDFView.OnShareDocumentListener {
+
+            override fun onShare(view: VGSPDFView) {
+                analyticsManager.log(ShareContentEvent(view.getFieldType().toAnalyticTag()))
+            }
         }
     }
 
@@ -223,14 +252,14 @@ class VGSShow private constructor(
     /**
      * Allows [VGSShow] to interact with VGS secure views.
      *
-     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
+     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView], [com.verygoodsecurity.vgsshow.widget.VGSPDFView]
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
             analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
-            if (view is VGSTextView) {
-                handleTextViewSubscription(view)
-                view.onViewSubscribed()
+            when (view) {
+                is VGSTextView -> handleTextViewSubscription(view)
+                is VGSPDFView -> handlePDFViewSubscription(view)
             }
         }
     }
@@ -290,7 +319,10 @@ class VGSShow private constructor(
         analyticsManager.cancelAll()
         listeners.clear()
         viewsStore.getViews().forEach {
-            (it as? VGSTextView)?.removeOnCopyTextListener(onTextCopyListener)
+            when (it) {
+                is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
+                is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
+            }
         }
         viewsStore.clear()
         headersStore.clear()
@@ -358,6 +390,12 @@ class VGSShow private constructor(
     private fun handleTextViewSubscription(view: VGSTextView) {
         view.addOnCopyTextListener(onTextCopyListener)
         view.setOnSecureTextRangeSetListener(onSecureTextRangeListener)
+        view.onViewSubscribed()
+    }
+
+    private fun handlePDFViewSubscription(view: VGSPDFView) {
+        view.addRenderingStateChangedListener(onRenderStateChangeListener)
+        view.onShareDocumentListener = onShareDocumentListener
     }
 
     @MainThread

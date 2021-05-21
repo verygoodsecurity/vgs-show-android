@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgsshow.util.extension.logStartViewsUpdate
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.view.pdf.VGSPDFView
+import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 
 internal class ViewsStore {
 
