@@ -155,6 +155,10 @@ class VGSPDFView @JvmOverloads constructor(
         }
     }
 
+    internal fun clearCachedDocuments() {
+        getDocumentFile()?.delete()
+    }
+
     private fun render(file: File) {
         view.fromFile(file)
             .defaultPage(defaultPage)

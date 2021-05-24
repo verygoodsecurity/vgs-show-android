@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow
 
+import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -45,7 +46,7 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  * @param port localhost port.
  */
 class VGSShow private constructor(
-    context: Context,
+    private val context: Context,
     private val vaultId: String,
     private val environment: VGSEnvironment,
     private var url: String?,
@@ -318,23 +319,17 @@ class VGSShow private constructor(
         proxyRequestManager.cancelAll()
         analyticsManager.cancelAll()
         listeners.clear()
-        viewsStore.getViews().forEach {
-            when (it) {
-                is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
-                is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
-            }
-        }
+        clearViewsListeners()
+        clearViewsCachedFiles()
         viewsStore.clear()
         headersStore.clear()
     }
 
-    //region Helper methods for testing
     @VisibleForTesting
     internal fun getResponseListeners() = listeners
 
     @VisibleForTesting
     internal fun getViewsStore() = viewsStore
-    //endregion
 
     private fun buildNetworkManager(): IHttpRequestManager {
 
@@ -445,6 +440,24 @@ class VGSShow private constructor(
                 )
             }
         )
+    }
+
+    private fun clearViewsListeners() {
+        viewsStore.getViews().forEach {
+            when (it) {
+                is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
+                is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
+            }
+        }
+    }
+
+    private fun clearViewsCachedFiles() {
+       if ((context as? Activity)?.isChangingConfigurations == true) {
+           return
+       }
+        viewsStore.getViews().forEach {
+            (it as? VGSPDFView)?.clearCachedDocuments()
+        }
     }
 
     /**
