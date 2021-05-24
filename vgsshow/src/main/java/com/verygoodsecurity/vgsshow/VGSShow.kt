@@ -85,8 +85,8 @@ class VGSShow private constructor(
         override fun onSecureTextRangeSet(view: VGSTextView) {
             analyticsManager.log(
                 SetSecureTextEvent(
-                    view.getContentPath(),
-                    view.getFieldType().toAnalyticTag()
+                    view.getFieldType().toAnalyticTag(),
+                    view.getContentPath()
                 )
             )
         }
