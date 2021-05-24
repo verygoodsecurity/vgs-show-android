@@ -28,9 +28,9 @@ import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.extension.*
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
+import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.view.pdf.VGSPDFView
 
 /**
  * VGS Show - Android SDK that enables you to securely display sensitive data.
@@ -76,7 +76,7 @@ class VGSShow private constructor(
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
         override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-            analyticsManager.log(CopyToClipboardEvent(format))
+            analyticsManager.log(CopyToClipboardEvent(view.getFieldType().toAnalyticTag(), format))
         }
     }
 
@@ -85,10 +85,38 @@ class VGSShow private constructor(
         override fun onSecureTextRangeSet(view: VGSTextView) {
             analyticsManager.log(
                 SetSecureTextEvent(
-                    view.getContentPath(),
-                    view.getFieldType().toAnalyticTag()
+                    view.getFieldType().toAnalyticTag(),
+                    view.getContentPath()
                 )
             )
+        }
+    }
+
+    private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener by lazy {
+        object : VGSPDFView.OnRenderStateChangeListener {
+
+            override fun onStart(view: VGSPDFView, pages: Int) {}
+
+            override fun onComplete(view: VGSPDFView, pages: Int) {
+                analyticsManager.log(
+                    RenderContentEvent.createSuccessful(view.getFieldType().toAnalyticTag())
+                )
+            }
+
+            override fun onError(view: VGSPDFView, t: Throwable) {
+                analyticsManager.log(
+                    RenderContentEvent.createFailed(view.getFieldType().toAnalyticTag())
+                )
+            }
+        }
+    }
+
+    private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener by lazy {
+        object : VGSPDFView.OnShareDocumentListener {
+
+            override fun onShare(view: VGSPDFView) {
+                analyticsManager.log(ShareContentEvent(view.getFieldType().toAnalyticTag()))
+            }
         }
     }
 
@@ -225,14 +253,19 @@ class VGSShow private constructor(
     /**
      * Allows [VGSShow] to interact with VGS secure views.
      *
-     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
+     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView], [com.verygoodsecurity.vgsshow.widget.VGSPDFView]
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
-            analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
-            if (view is VGSTextView) {
-                handleTextViewSubscription(view)
-                view.onViewSubscribed()
+            analyticsManager.log(
+                InitEvent(
+                    view.getFieldType().toAnalyticTag(),
+                    view.getContentPath()
+                )
+            )
+            when (view) {
+                is VGSTextView -> handleTextViewSubscription(view)
+                is VGSPDFView -> handlePDFViewSubscription(view)
             }
         }
     }
@@ -357,6 +390,12 @@ class VGSShow private constructor(
     private fun handleTextViewSubscription(view: VGSTextView) {
         view.addOnCopyTextListener(onTextCopyListener)
         view.setOnSecureTextRangeSetListener(onSecureTextRangeListener)
+        view.onViewSubscribed()
+    }
+
+    private fun handlePDFViewSubscription(view: VGSPDFView) {
+        view.addRenderingStateChangedListener(onRenderStateChangeListener)
+        view.onShareDocumentListener = onShareDocumentListener
     }
 
     @MainThread
@@ -374,37 +413,53 @@ class VGSShow private constructor(
     }
 
     private fun logRequestEvent(request: VGSRequest) {
-        val hasFields = !viewsStore.isEmpty()
-        val hasHeaders =
-            request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
+        val hasCustomData = request.payload != null
+        val hasCustomHeaders =
+            !request.headers.isNullOrEmpty() || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
-                hasFields,
-                hasHeaders,
-                hasCustomHostname
+                hasCustomData,
+                hasCustomHeaders,
+                hasCustomHostname,
+                viewsStore.getViews().any { it is VGSTextView },
+                viewsStore.getViews().any { it is VGSPDFView }
             )
         )
     }
 
     private fun logResponseEvent(response: VGSResponse) {
+        val textViewSubscribed = viewsStore.getViews().any { it is VGSTextView }
+        val pdfViewSubscribed = viewsStore.getViews().any { it is VGSPDFView }
         analyticsManager.log(
             when (response) {
-                is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
-                is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
+                is VGSResponse.Success -> ResponseEvent.createSuccessful(
+                    response.code,
+                    textViewSubscribed,
+                    pdfViewSubscribed
+                )
+                is VGSResponse.Error -> ResponseEvent.createFailed(
+                    response.code,
+                    textViewSubscribed,
+                    pdfViewSubscribed,
+                    response.message
+                )
             }
         )
     }
 
     private fun clearViewsListeners() {
         viewsStore.getViews().forEach {
-            (it as? VGSTextView)?.removeOnCopyTextListener(onTextCopyListener)
+            when (it) {
+                is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
+                is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
+            }
         }
     }
 
     private fun clearViewsCachedFiles() {
-       if ((context as? Activity)?.isChangingConfigurations == true) {
-           return
-       }
+        if ((context as? Activity)?.isChangingConfigurations == true) {
+            return
+        }
         viewsStore.getViews().forEach {
             (it as? VGSPDFView)?.clearCachedDocuments()
         }

@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
-import com.verygoodsecurity.vgsshow.widget.view.pdf.VGSPDFView
+import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import kotlinx.android.synthetic.main.activity_pdf.*
 import org.json.JSONObject
 
@@ -92,20 +92,21 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         show.subscribe(vgsPDFView)
         show.addOnResponseListener(this)
 
-        vgsPDFView?.onRenderStateChangeListener = object : VGSPDFView.OnRenderStateChangeListener {
+        vgsPDFView?.addRenderingStateChangedListener(object :
+            VGSPDFView.OnRenderStateChangeListener {
 
-            override fun onStart(pages: Int) {
+            override fun onStart(view: VGSPDFView, pages: Int) {
                 Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onStart, p = $pages")
             }
 
-            override fun onComplete(pages: Int) {
+            override fun onComplete(view: VGSPDFView, pages: Int) {
                 Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onComplete, p = $pages")
             }
 
-            override fun onError(t: Throwable) {
+            override fun onError(view: VGSPDFView, t: Throwable) {
                 Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onError, t = $t")
             }
-        }
+        })
 
         mbReveal?.setOnClickListener {
             flProgress?.visibility = View.VISIBLE

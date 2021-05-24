@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.view.pdf
+package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
 import android.content.Intent
@@ -50,15 +50,16 @@ class VGSPDFView @JvmOverloads constructor(
     /** Spacing between pages in dp. */
     var spacing: Int = SPACING
 
-    /** Register a callback to be invoked when document rendering state changed. */
-    var onRenderStateChangeListener: OnRenderStateChangeListener? = null
-
     /** Register a callback to be invoked when document page changed. */
     var onPageChangeListener: OnPageChangeListener? = null
 
     /** Return true if document was revealed. */
     var hasDocument: Boolean = false
         private set
+
+    internal var onShareDocumentListener: OnShareDocumentListener? = null
+
+    private val renderListeners = mutableListOf<OnRenderStateChangeListener>()
 
     init {
 
@@ -107,6 +108,22 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
+     * Register a callback to be invoked when document rendering state changed.
+     *
+     * @param listener @see [OnRenderStateChangeListener].
+     */
+    fun addRenderingStateChangedListener(listener: OnRenderStateChangeListener): Boolean =
+        renderListeners.add(listener)
+
+    /**
+     * Unregister a callback to be invoked when document rendering state changed.
+     *
+     * @param listener @see [OnRenderStateChangeListener].
+     */
+    fun removeRenderingStateChangedListener(listener: OnRenderStateChangeListener): Boolean =
+        renderListeners.remove(listener)
+
+    /**
      * Call this method when some configuration has been made after rendering PDF content.
      * View will render content according to a new setup.
      */
@@ -124,6 +141,7 @@ class VGSPDFView @JvmOverloads constructor(
      */
     fun sharePDF(chooserTitle: String = PDF_FILE_NAME, chooserMessage: String = "") {
         getDocumentFile()?.let { file ->
+            onShareDocumentListener?.onShare(this)
             val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, file)
             val intent = documentUri.toShareIntent(chooserTitle, chooserMessage, PDF_MIME_TYPE)
             context.startActivity(Intent.createChooser(intent, chooserTitle))
@@ -149,9 +167,9 @@ class VGSPDFView @JvmOverloads constructor(
             .enableDoubletap(isDoubleTapEnabled)
             .defaultPage(defaultPage)
             .enableAntialiasing(isAntialiasingEnabled)
-            .onLoad { onRenderStateChangeListener?.onStart(it) }
-            .onRender { pages, _, _ -> onRenderStateChangeListener?.onComplete(pages) }
-            .onError { onRenderStateChangeListener?.onError(it) }
+            .onLoad { renderListeners.forEach { l -> l.onStart(this, it) } }
+            .onRender { pages, _, _ -> renderListeners.forEach { l -> l.onComplete(this, pages) } }
+            .onError { renderListeners.forEach { l -> l.onError(this, it) } }
             .onPageChange { page, count -> onPageChangeListener?.onPageChanged(page, count) }
             .load()
     }
@@ -194,23 +212,26 @@ class VGSPDFView @JvmOverloads constructor(
         /**
          * Called after document is loaded and starts to be rendered.
          *
+         * @param view this view.
          * @param pages number of pages.
          */
-        fun onStart(pages: Int)
+        fun onStart(view: VGSPDFView, pages: Int)
 
         /**
          * Called when documents is rendered.
          *
+         * @param view this view.
          * @param pages number of pages.
          */
-        fun onComplete(pages: Int)
+        fun onComplete(view: VGSPDFView, pages: Int)
 
         /**
          * Called if document is not loaded.
          *
+         * @param view this view.
          * @param t reason.
          */
-        fun onError(t: Throwable)
+        fun onError(view: VGSPDFView, t: Throwable)
     }
 
     /**
@@ -225,5 +246,10 @@ class VGSPDFView @JvmOverloads constructor(
          * @param pageCount the total page count.
          */
         fun onPageChanged(position: Int, pageCount: Int)
+    }
+
+    internal interface OnShareDocumentListener {
+
+        fun onShare(view: VGSPDFView)
     }
 }

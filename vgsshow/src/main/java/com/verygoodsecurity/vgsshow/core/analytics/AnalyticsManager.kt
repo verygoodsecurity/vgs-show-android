@@ -81,7 +81,7 @@ internal class AnalyticsManager constructor(
         private const val KEY_USER_AGENT = "ua"
         private const val KEY_PLATFORM = "platform"
         private const val KEY_DEVICE = "device"
-        private const val KEY_DEVICE_MODEL = "device"
+        private const val KEY_DEVICE_MODEL = "deviceModel"
         private const val KEY_DEVICE_OS = "osVersion"
 
         private const val ANDROID = "android"
