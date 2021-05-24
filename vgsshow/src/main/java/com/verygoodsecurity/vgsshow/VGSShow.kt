@@ -76,7 +76,7 @@ class VGSShow private constructor(
     private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
         override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-            analyticsManager.log(CopyToClipboardEvent(format))
+            analyticsManager.log(CopyToClipboardEvent(view.getFieldType().toAnalyticTag(), format))
         }
     }
 
