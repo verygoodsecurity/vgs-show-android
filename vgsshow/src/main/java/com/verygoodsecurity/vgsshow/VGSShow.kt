@@ -452,9 +452,9 @@ class VGSShow private constructor(
     }
 
     private fun clearViewsCachedFiles() {
-       if ((context as? Activity)?.isChangingConfigurations == true) {
-           return
-       }
+        if ((context as? Activity)?.isChangingConfigurations == true) {
+            return
+        }
         viewsStore.getViews().forEach {
             (it as? VGSPDFView)?.clearCachedDocuments()
         }
