@@ -2,9 +2,11 @@ package com.verygoodsecurity.vgsshow.core.analytics.event
 
 internal data class RequestEvent(
     val status: Status,
-    val hasFields: Boolean,
-    val hasHeaders: Boolean,
+    val hasCustomData: Boolean,
+    val hasCustomHeaders: Boolean,
     val hasCustomHostname: Boolean,
+    val hasText: Boolean,
+    val hasPDF: Boolean,
     val code: String = DEFAULT_CODE
 ) : Event() {
 
@@ -16,9 +18,11 @@ internal data class RequestEvent(
             KEY_STATUS_CODE to code,
             KEY_STATUS to status.value,
             KEY_CONTENT to mutableListOf<String>().apply {
-                if (hasFields) add(HAS_FIELDS)
-                if (hasHeaders) add(HAS_HEADERS)
+                if (hasCustomData) add(HAS_CUSTOM_DATA)
+                if (hasCustomHeaders) add(HAS_CUSTOM_HEADER)
                 if (hasCustomHostname) add(HAS_CUSTOM_HOSTNAME)
+                if (hasText) add(HAS_TEXT_VIEW)
+                if (hasPDF) add(HAS_PDF_VIEW)
             }
         )
 
@@ -32,14 +36,25 @@ internal data class RequestEvent(
         private const val KEY_STATUS = "status"
         private const val KEY_CONTENT = "content"
 
-        private const val HAS_FIELDS = "fields"
-        private const val HAS_HEADERS = "customHeaders"
-        private const val HAS_CUSTOM_HOSTNAME = "customHostName"
+        private const val HAS_CUSTOM_DATA = "custom_data"
+        private const val HAS_CUSTOM_HEADER = "custom_header"
+        private const val HAS_CUSTOM_HOSTNAME = "custom_hostname"
+        private const val HAS_TEXT_VIEW = "text"
+        private const val HAS_PDF_VIEW = "pdf"
 
         fun createSuccessful(
-            hasFields: Boolean,
-            hasHeaders: Boolean,
-            hasCustomHostname: Boolean
-        ) = RequestEvent(Status.OK, hasFields, hasHeaders, hasCustomHostname)
+            hasCustomData: Boolean,
+            hasCustomHeaders: Boolean,
+            hasCustomHostname: Boolean,
+            hasText: Boolean,
+            hasPDF: Boolean,
+        ) = RequestEvent(
+            Status.OK,
+            hasCustomData,
+            hasCustomHeaders,
+            hasCustomHostname,
+            hasText,
+            hasPDF
+        )
     }
 }

@@ -413,23 +413,36 @@ class VGSShow private constructor(
     }
 
     private fun logRequestEvent(request: VGSRequest) {
-        val hasFields = !viewsStore.isEmpty()
-        val hasHeaders =
-            request.headers?.isNotEmpty() == true || headersStore.getCustom().isNotEmpty()
+        val hasCustomData = request.payload != null
+        val hasCustomHeaders =
+            !request.headers.isNullOrEmpty() || headersStore.getCustom().isNotEmpty()
         analyticsManager.log(
             RequestEvent.createSuccessful(
-                hasFields,
-                hasHeaders,
-                hasCustomHostname
+                hasCustomData,
+                hasCustomHeaders,
+                hasCustomHostname,
+                viewsStore.getViews().any { it is VGSTextView },
+                viewsStore.getViews().any { it is VGSPDFView }
             )
         )
     }
 
     private fun logResponseEvent(response: VGSResponse) {
+        val textViewSubscribed = viewsStore.getViews().any { it is VGSTextView }
+        val pdfViewSubscribed = viewsStore.getViews().any { it is VGSPDFView }
         analyticsManager.log(
             when (response) {
-                is VGSResponse.Success -> ResponseEvent.createSuccessful(response.code)
-                is VGSResponse.Error -> ResponseEvent.createFailed(response.code, response.message)
+                is VGSResponse.Success -> ResponseEvent.createSuccessful(
+                    response.code,
+                    textViewSubscribed,
+                    pdfViewSubscribed
+                )
+                is VGSResponse.Error -> ResponseEvent.createFailed(
+                    response.code,
+                    textViewSubscribed,
+                    pdfViewSubscribed,
+                    response.message
+                )
             }
         )
     }
