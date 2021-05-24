@@ -257,7 +257,12 @@ class VGSShow private constructor(
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
-            analyticsManager.log(InitEvent(view.getFieldType().toAnalyticTag()))
+            analyticsManager.log(
+                InitEvent(
+                    view.getFieldType().toAnalyticTag(),
+                    view.getContentPath()
+                )
+            )
             when (view) {
                 is VGSTextView -> handleTextViewSubscription(view)
                 is VGSPDFView -> handlePDFViewSubscription(view)
