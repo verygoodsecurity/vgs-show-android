@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
-import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.JsonRequestData
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.RequestData
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.UrlencodedData
+
+private const val DEFAULT_CONNECTION_TIME_OUT = 60000L
 
 /**
  * Request definition class for revealing data.
@@ -42,7 +43,7 @@ class VGSRequest private constructor(
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var payload: RequestData? = null
-        private var requestTimeoutInterval: Long = CONNECTION_TIME_OUT
+        private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
 
         /**
          * List of headers that will be added to this request.
