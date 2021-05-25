@@ -6,8 +6,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 
 internal const val CONTENT_TYPE = "Content-type"
 
-internal const val CONNECTION_TIME_OUT = 60000L
-
 internal interface IHttpClient {
 
     @WorkerThread
