@@ -4,9 +4,9 @@ buildscript {
     ext.mockito_version = '3.10.0'
 
     repositories {
-        mavenCentral()
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
     }
 
     dependencies {
@@ -25,7 +25,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
     }
 }
 
