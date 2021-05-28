@@ -532,6 +532,7 @@ class VGSTextView @JvmOverloads constructor(
 
         companion object {
 
+            @Suppress("unused")
             @JvmField
             val CREATOR = object : Parcelable.Creator<VGSTextViewState> {
                 override fun createFromParcel(source: Parcel): VGSTextViewState {

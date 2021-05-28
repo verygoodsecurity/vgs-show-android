@@ -45,6 +45,7 @@ class VGSPDFViewState : View.BaseSavedState {
 
     companion object {
 
+        @Suppress("unused")
         @JvmField
         val CREATOR = object : Parcelable.Creator<VGSPDFViewState> {
 

@@ -16,7 +16,7 @@ internal data class CopyToClipboardEvent constructor(
         get() = mapOf(
             KEY_FIELD to this.field,
             KEY_STATUS to status,
-            KEY_FORMAT to format.name.toLowerCase(Locale.US)
+            KEY_FORMAT to format.name.lowercase(Locale.US)
         )
 
     companion object {

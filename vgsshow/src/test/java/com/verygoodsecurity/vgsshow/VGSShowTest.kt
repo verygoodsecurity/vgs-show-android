@@ -8,14 +8,13 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 class VGSShowTest {
 
-    lateinit var sut: VGSShow
+    private lateinit var sut: VGSShow
 
     private val context = mockk<Context>(relaxed = true)
     private val looper = mockk<Looper>(relaxed = true)
@@ -37,7 +36,7 @@ class VGSShowTest {
         // Act
         sut.addOnResponseListener(testListenerOne)
         // Assert
-        assertThat(sut.getResponseListeners(), hasItem(testListenerOne))
+        assertTrue(sut.getResponseListeners().contains(testListenerOne))
     }
 
     @Test
@@ -83,7 +82,7 @@ class VGSShowTest {
         // Act
         sut.subscribe(testView)
         // Assert
-        assertThat(sut.getViewsStore().getViews(), hasItem(testView))
+        assertTrue(sut.getViewsStore().getViews().contains(testView))
     }
 
     @Test
