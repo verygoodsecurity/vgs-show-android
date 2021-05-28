@@ -4,9 +4,9 @@ buildscript {
     ext.mockito_version = '3.10.0'
 
     repositories {
-        mavenCentral()
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
     }
 
     dependencies {
@@ -15,7 +15,7 @@ buildscript {
 
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.14.2'
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
         classpath 'com.google.gms:google-services:4.3.8'
@@ -25,7 +25,14 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
+    }
+
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
     }
 }
 
