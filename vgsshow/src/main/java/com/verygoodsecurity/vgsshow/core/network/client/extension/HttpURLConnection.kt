@@ -47,7 +47,7 @@ internal fun HttpURLConnection.addHeader(key: String, value: String): HttpURLCon
 
 internal fun HttpURLConnection.addHeaders(headers: Map<String, String>?): HttpURLConnection {
     headers?.forEach {
-        setRequestProperty(it.key, it.value)
+        addHeader(it.key, it.value)
     }
     return this
 }

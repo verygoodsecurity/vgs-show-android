@@ -17,8 +17,7 @@ internal fun JSONObject.getValue(path: String): String? {
             when (this) {
                 is JSONObject -> this
                 is JSONArray -> this
-                is Any -> this
-                else -> null
+                else -> this
             }
         }
     }
