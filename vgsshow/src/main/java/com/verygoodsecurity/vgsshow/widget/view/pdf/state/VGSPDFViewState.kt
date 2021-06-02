@@ -6,8 +6,6 @@ import android.view.View
 
 class VGSPDFViewState : View.BaseSavedState {
 
-    var hasDocument: Boolean = false
-
     var defaultPage: Int = 0
 
     var isSwipeEnabled: Boolean = true
@@ -23,7 +21,6 @@ class VGSPDFViewState : View.BaseSavedState {
     constructor(superState: Parcelable?) : super(superState)
 
     constructor(`in`: Parcel) : super(`in`) {
-        hasDocument = `in`.readInt() == 1
         defaultPage = `in`.readInt()
         isSwipeEnabled = `in`.readInt() == 1
         isSwipeHorizontalEnabled = `in`.readInt() == 1
@@ -34,7 +31,6 @@ class VGSPDFViewState : View.BaseSavedState {
 
     override fun writeToParcel(out: Parcel, flags: Int) {
         super.writeToParcel(out, flags)
-        out.writeInt(if (hasDocument) 1 else 0)
         out.writeInt(defaultPage)
         out.writeInt(if (isSwipeEnabled) 1 else 0)
         out.writeInt(if (isSwipeHorizontalEnabled) 1 else 0)

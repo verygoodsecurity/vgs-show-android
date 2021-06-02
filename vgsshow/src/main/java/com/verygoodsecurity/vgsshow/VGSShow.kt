@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgsshow
 
-import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -325,7 +324,6 @@ class VGSShow private constructor(
         analyticsManager.cancelAll()
         listeners.clear()
         clearViewsListeners()
-        clearViewsCachedFiles()
         viewsStore.clear()
         headersStore.clear()
     }
@@ -453,15 +451,6 @@ class VGSShow private constructor(
                 is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
                 is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
             }
-        }
-    }
-
-    private fun clearViewsCachedFiles() {
-        if ((context as? Activity)?.isChangingConfigurations == true) {
-            return
-        }
-        viewsStore.getViews().forEach {
-            (it as? VGSPDFView)?.clearCachedDocuments()
         }
     }
 

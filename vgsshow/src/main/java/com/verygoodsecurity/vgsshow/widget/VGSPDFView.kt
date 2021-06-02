@@ -1,19 +1,14 @@
 package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
-import android.content.Intent
 import android.os.Parcelable
 import android.util.AttributeSet
-import androidx.core.content.FileProvider
 import com.github.barteksc.pdfviewer.PDFView
 import com.verygoodsecurity.vgsshow.R
-import com.verygoodsecurity.vgsshow.util.extension.toFile
-import com.verygoodsecurity.vgsshow.util.extension.toShareIntent
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
-import java.io.File
 
 /**
  * A VGSPDFView can be used to display a PDF file.
@@ -54,10 +49,12 @@ class VGSPDFView @JvmOverloads constructor(
     var onPageChangeListener: OnPageChangeListener? = null
 
     /** Return true if document was revealed. */
-    var hasDocument: Boolean = false
-        private set
+    val hasDocument: Boolean
+        get() = documentBytes != null
 
     internal var onShareDocumentListener: OnShareDocumentListener? = null
+
+    private var documentBytes: ByteArray? = null
 
     private val renderListeners = mutableListOf<OnRenderStateChangeListener>()
 
@@ -83,7 +80,6 @@ class VGSPDFView @JvmOverloads constructor(
     override fun createChildView() = PDFView(context, null)
 
     override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
-        this.hasDocument = this@VGSPDFView.hasDocument
         this.defaultPage = this@VGSPDFView.defaultPage
         this.isSwipeEnabled = this@VGSPDFView.isSwipeEnabled
         this.isSwipeHorizontalEnabled = this@VGSPDFView.isSwipeHorizontalEnabled
@@ -95,7 +91,6 @@ class VGSPDFView @JvmOverloads constructor(
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSPDFViewState)?.let {
-            this@VGSPDFView.hasDocument = it.hasDocument
             this@VGSPDFView.defaultPage = it.defaultPage
             this@VGSPDFView.isSwipeEnabled = it.isSwipeEnabled
             this@VGSPDFView.isSwipeHorizontalEnabled = it.isSwipeHorizontalEnabled
@@ -128,39 +123,12 @@ class VGSPDFView @JvmOverloads constructor(
      * View will render content according to a new setup.
      */
     fun refresh() {
-        if (hasDocument) {
-            getDocumentFile()?.let { render(it) }
-        }
-    }
-
-    /**
-     * Share PDF file using system app chooser dialog.
-     *
-     * @param chooserTitle define system chooser dialog title.
-     * @param chooserMessage define system chooser dialog message.
-     */
-    fun sharePDF(chooserTitle: String = PDF_FILE_NAME, chooserMessage: String = "") {
-        getDocumentFile()?.let { file ->
-            onShareDocumentListener?.onShare(this)
-            val documentUri = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, file)
-            val intent = documentUri.toShareIntent(chooserTitle, chooserMessage, PDF_MIME_TYPE)
-            context.startActivity(Intent.createChooser(intent, chooserTitle))
-        }
+        documentBytes?.let { render(it) }
     }
 
     internal fun render(bytes: ByteArray) {
-        bytes.toFile(getVGSFilesDirectory(), PDF_FILE_NAME)?.let {
-            this.hasDocument = true
-            render(it)
-        }
-    }
-
-    internal fun clearCachedDocuments() {
-        getDocumentFile()?.delete()
-    }
-
-    private fun render(file: File) {
-        view.fromFile(file)
+        documentBytes = bytes
+        view.fromBytes(bytes)
             .defaultPage(defaultPage)
             .enableSwipe(isSwipeEnabled)
             .swipeHorizontal(isSwipeHorizontalEnabled)
@@ -174,19 +142,6 @@ class VGSPDFView @JvmOverloads constructor(
             .load()
     }
 
-    private fun getDocumentFile(): File? {
-        val file = File(getVGSFilesDirectory(), PDF_FILE_NAME)
-        return if (file.exists()) file else null
-    }
-
-    private fun getVGSFilesDirectory(): File {
-        return File(context.filesDir, VGS_FILES_DIRECTORY).also {
-            if (!it.exists()) {
-                it.mkdir()
-            }
-        }
-    }
-
     companion object {
 
         // Default attributes
@@ -196,12 +151,6 @@ class VGSPDFView @JvmOverloads constructor(
         private const val DOUBLE_TAB_ENABLED = false
         private const val ANTIALIAS_ENABLED = true
         private const val SPACING = 0
-
-        // File constants
-        private const val VGS_FILES_DIRECTORY = "vgs"
-        private const val PDF_FILE_NAME = "document.pdf"
-        private const val PDF_MIME_TYPE = "application/pdf"
-        private const val FILE_PROVIDER_AUTHORITY = "com.verygoodsecurity.vgsshow.provider"
     }
 
     /**
