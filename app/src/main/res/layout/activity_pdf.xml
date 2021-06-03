@@ -87,21 +87,9 @@
         android:id="@+id/mbReveal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:minEms="8"
-        android:text="Reveal"
-        app:layout_constraintBottom_toTopOf="@+id/mbShare"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="HardcodedText" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mbShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:minEms="8"
-        android:text="Share"
+        android:text="Reveal"
         app:layout_constraintBottom_toTopOf="@+id/tvShowSDK"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
