@@ -22,7 +22,7 @@ import java.io.File
  * When View is initialized without additional dependency, the View will throw Exception.
  * Please add the dependency to your module gradle file before using this View:
  *
- * implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+ * implementation 'com.verygoodsecurity:android-pdf-viewer:<latest_version>'
  *
  * For more information please visit our [guide](). TODO: add guide link
  */
@@ -168,7 +168,7 @@ class VGSPDFView @JvmOverloads constructor(
             .defaultPage(defaultPage)
             .enableAntialiasing(isAntialiasingEnabled)
             .onLoad { renderListeners.forEach { l -> l.onStart(this, it) } }
-            .onRender { pages, _, _ -> renderListeners.forEach { l -> l.onComplete(this, pages) } }
+            .onRender { pages -> renderListeners.forEach { l -> l.onComplete(this, pages) } }
             .onError { renderListeners.forEach { l -> l.onError(this, it) } }
             .onPageChange { page, count -> onPageChangeListener?.onPageChanged(page, count) }
             .load()

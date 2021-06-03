@@ -50,7 +50,7 @@ dependencies {
 
     // PDF viewer.
     // NOTE: Used by VGSPDFView. Consumer should add this dependency by itself as it has big size.
-    compileOnly 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    compileOnly 'com.verygoodsecurity:android-pdf-viewer:1.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-core:$mockito_version"
