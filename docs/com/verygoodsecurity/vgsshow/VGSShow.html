@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>VGSShow 1.1.0 API </title>
+    <title>VGSShow 1.2.0 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
@@ -169,13 +169,13 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                         
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#VGSShow(Context,String,VGSEnvironment)">VGSShow</a></span>(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> vaultId, <a href=../com/verygoodsecurity/vgsshow/core/VGSEnvironment.html>VGSEnvironment</a> environment)</code></th>
+                                                        href="#VGSShow(Context,String,VGSEnvironment)">VGSShow</a></span>(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> vaultId, <a href=core/VGSEnvironment.html>VGSEnvironment</a> environment)</code></th>
                                                 <td class="colLast">Constructor that allows specify environment as object.</td>
                                             </tr>
                                         
                                             <tr class="rowColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#VGSShow(Context,String,String)">VGSShow</a></span>(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> vaultId, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> environment)</code></th>
+                                                        href="#VGSShow(Context,String,String)">VGSShow</a></span>(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> vaultId, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> environment)</code></th>
                                                 <td class="colLast">Constructor that allows specify environment as string.</td>
                                             </tr>
                                         
@@ -211,54 +211,70 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                         </tr>
                                         
                                         <tr id="i0" class="altColor">
-                                            <td class="colFirst"><code>final <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.html>VGSResponse</a></code>
+                                            <td class="colFirst"><code>final <a href=core/network/model/VGSResponse.html>VGSResponse</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=../com/verygoodsecurity/vgsshow/core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html>Object</a>&gt; payload) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://developer.android.com/reference/kotlin/java/util/Map.html>Map</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a>, <a href=https://developer.android.com/reference/kotlin/java/lang/Object.html>Object</a>&gt; payload) </code>
                                             </th>
                                             <td class="colLast">Synchronous request for reveal data.</td>
                                         </tr>
                                         
                                         <tr id="i1" class="rowColor">
-                                            <td class="colFirst"><code>final <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.html>VGSResponse</a></code>
+                                            <td class="colFirst"><code>final <a href=core/network/model/VGSResponse.html>VGSResponse</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#request(VGSRequest)>request</a>(<a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>VGSRequest</a> request) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method) </code>
                                             </th>
                                             <td class="colLast">Synchronous request for reveal data.</td>
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            <td class="colFirst"><code>final <a href=core/network/model/VGSResponse.html>VGSResponse</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=../com/verygoodsecurity/vgsshow/core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html>Object</a>&gt; payload) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#request(VGSRequest)>request</a>(<a href=core/network/model/VGSRequest.html>VGSRequest</a> request) </code>
                                             </th>
-                                            <td class="colLast">Asynchronous request for reveal data.</td>
+                                            <td class="colLast">Synchronous request for reveal data.</td>
                                         </tr>
                                         
                                         <tr id="i3" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#requestAsync(VGSRequest)>requestAsync</a>(<a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>VGSRequest</a> request) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://developer.android.com/reference/kotlin/java/util/Map.html>Map</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a>, <a href=https://developer.android.com/reference/kotlin/java/lang/Object.html>Object</a>&gt; payload) </code>
                                             </th>
-                                            <td class="colLast">Asynchronous request for reveal data</td>
+                                            <td class="colLast">Asynchronous request for reveal data.</td>
                                         </tr>
                                         
                                         <tr id="i4" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#addOnResponseListener(VGSOnResponseListener)>addOnResponseListener</a>(<a href=../com/verygoodsecurity/vgsshow/core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method) </code>
                                             </th>
-                                            <td class="colLast">Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.</td>
+                                            <td class="colLast">Asynchronous request for reveal data.</td>
                                         </tr>
                                         
                                         <tr id="i5" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#removeOnResponseListener(VGSOnResponseListener)>removeOnResponseListener</a>(<a href=../com/verygoodsecurity/vgsshow/core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#requestAsync(VGSRequest)>requestAsync</a>(<a href=core/network/model/VGSRequest.html>VGSRequest</a> request) </code>
+                                            </th>
+                                            <td class="colLast">Asynchronous request for reveal data</td>
+                                        </tr>
+                                        
+                                        <tr id="i6" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#addOnResponseListener(VGSOnResponseListener)>addOnResponseListener</a>(<a href=core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener) </code>
+                                            </th>
+                                            <td class="colLast">Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.</td>
+                                        </tr>
+                                        
+                                        <tr id="i7" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#removeOnResponseListener(VGSOnResponseListener)>removeOnResponseListener</a>(<a href=core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener) </code>
                                             </th>
                                             <td class="colLast">Clear specific listener attached before.</td>
                                         </tr>
                                         
-                                        <tr id="i6" class="altColor">
+                                        <tr id="i8" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSShow.html#clearResponseListeners()>clearResponseListeners</a>() </code>
@@ -266,39 +282,55 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                             <td class="colLast">Clear all response listeners.</td>
                                         </tr>
                                         
-                                        <tr id="i7" class="rowColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
-                                            </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#subscribe(VGSView)>subscribe</a>(<a href=../com/verygoodsecurity/vgsshow/widget/core/VGSView.html>VGSView</a>&lt;?&gt; view) </code>
-                                            </th>
-                                            <td class="colLast">Allows <a href=VGSShow.html>VGSShow</a> to interact with VGS secure views.</td>
-                                        </tr>
-                                        
-                                        <tr id="i8" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
-                                            </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#unsubscribe(VGSView)>unsubscribe</a>(<a href=../com/verygoodsecurity/vgsshow/widget/core/VGSView.html>VGSView</a>&lt;?&gt; view) </code>
-                                            </th>
-                                            <td class="colLast">Remove previously added VGS secure view</td>
-                                        </tr>
-                                        
                                         <tr id="i9" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#setCustomHeader(String,String)>setCustomHeader</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> header, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> value) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#subscribe(VGSView)>subscribe</a>(<a href=widget/core/VGSView.html>VGSView</a>&lt;?&gt; view) </code>
                                             </th>
-                                            <td class="colLast">Used to edit static request headers that will be added to all requests of this VGSShow instance.</td>
+                                            <td class="colLast">Allows <a href=VGSShow.html>VGSShow</a> to interact with VGS secure views.</td>
                                         </tr>
                                         
                                         <tr id="i10" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#setAnalyticsEnabled(Boolean)>setAnalyticsEnabled</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> isEnabled) </code>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#unsubscribe(VGSView)>unsubscribe</a>(<a href=widget/core/VGSView.html>VGSView</a>&lt;?&gt; view) </code>
+                                            </th>
+                                            <td class="colLast">Remove previously added VGS secure view</td>
+                                        </tr>
+                                        
+                                        <tr id="i11" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#setCustomHeader(String,String)>setCustomHeader</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> header, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> value) </code>
+                                            </th>
+                                            <td class="colLast">Used to edit static request headers that will be added to all requests of this VGSShow instance.</td>
+                                        </tr>
+                                        
+                                        <tr id="i12" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#removeCustomHeader(String)>removeCustomHeader</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> header) </code>
+                                            </th>
+                                            <td class="colLast">Used to edit static request headers that will be added to all requests of this VGSShow instance.</td>
+                                        </tr>
+                                        
+                                        <tr id="i13" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#clearCustomHeaders()>clearCustomHeaders</a>() </code>
+                                            </th>
+                                            <td class="colLast">Used to edit static request headers that will be added to all requests of this VGSShow instance.</td>
+                                        </tr>
+                                        
+                                        <tr id="i14" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSShow.html#setAnalyticsEnabled(Boolean)>setAnalyticsEnabled</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Boolean.html>Boolean</a> isEnabled) </code>
                                             </th>
                                             <td class="colLast">Used to enable/disable analytics events.</td>
                                         </tr>
                                         
-                                        <tr id="i11" class="rowColor">
+                                        <tr id="i15" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSShow.html#onDestroy()>onDestroy</a>() </code>
@@ -311,12 +343,6 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                 </div>
                                 <ul class="blockList">
                                 
-                                    <li class="blockList"><a id="methods.inherited.from.class.com.verygoodsecurity.vgsshow.VGSShow">
-                                            <!--   -->
-                                        </a>
-                                            <h3>Methods inherited from class&nbsp;com.verygoodsecurity.vgsshow.VGSShow</h3>
-                                            <code>equals, hashCode, toString</code></li>
-                                 
                                     <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
                                         <!--   -->
                                     </a>
@@ -347,7 +373,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>VGSShow</h4>
-                                        <pre>VGSShow(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> vaultId, <a href=../com/verygoodsecurity/vgsshow/core/VGSEnvironment.html>VGSEnvironment</a> environment)</pre>
+                                        <pre>VGSShow(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> vaultId, <a href=core/VGSEnvironment.html>VGSEnvironment</a> environment)</pre>
                                         <div class="block">Constructor that allows specify environment as object.</div>
                                         
                                         <dl>
@@ -374,7 +400,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>VGSShow</h4>
-                                        <pre>VGSShow(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> vaultId, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> environment)</pre>
+                                        <pre>VGSShow(<a href=https://developer.android.com/reference/kotlin/android/content/Context.html>Context</a> context, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> vaultId, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> environment)</pre>
                                         <div class="block">Constructor that allows specify environment as string.</div>
                                         
                                         <dl>
@@ -418,7 +444,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>request</h4>
-                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/WorkerThread.html>WorkerThread</a>() final <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.html>VGSResponse</a> <a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=../com/verygoodsecurity/vgsshow/core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html>Object</a>&gt; payload)</pre>
+                                        <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html>JvmOverloads</a>()@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/WorkerThread.html>WorkerThread</a>() final <a href=core/network/model/VGSResponse.html>VGSResponse</a> <a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://developer.android.com/reference/kotlin/java/util/Map.html>Map</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a>, <a href=https://developer.android.com/reference/kotlin/java/lang/Object.html>Object</a>&gt; payload)</pre>
                                         <div class="block"><p>Synchronous request for reveal data. Note: This function should be executed in background thread.</p></div>
                                         
                                         <dl>
@@ -442,6 +468,34 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                     </li>
                                 </ul>
                                 
+                                <a id="request(String,VGSHttpMethod)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>request</h4>
+                                        <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html>JvmOverloads</a>()@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/WorkerThread.html>WorkerThread</a>() final <a href=core/network/model/VGSResponse.html>VGSResponse</a> <a href=VGSShow.html#request(String,VGSHttpMethod,Map)>request</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method)</pre>
+                                        <div class="block"><p>Synchronous request for reveal data. Note: This function should be executed in background thread.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>path</code> - path for a request.</dd>
+                                            
+                                            
+                                            
+                                            <dd><code>method</code> - HTTP method of request.</dd>
+                                            
+                                            
+                                        </dl>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
                                 <a id="request(VGSRequest)">
                                     <!--   -->
                                 </a>
@@ -450,14 +504,14 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>request</h4>
-                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/WorkerThread.html>WorkerThread</a>() final <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSResponse.html>VGSResponse</a> <a href=VGSShow.html#request(VGSRequest)>request</a>(<a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>VGSRequest</a> request)</pre>
+                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/WorkerThread.html>WorkerThread</a>() final <a href=core/network/model/VGSResponse.html>VGSResponse</a> <a href=VGSShow.html#request(VGSRequest)>request</a>(<a href=core/network/model/VGSRequest.html>VGSRequest</a> request)</pre>
                                         <div class="block"><p>Synchronous request for reveal data. Note: This function should be executed in background thread.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
                                             
                                             
-                                            <dd><code>request</code> - @see <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>com.verygoodsecurity.vgsshow.core.network.model.VGSRequest</a></dd>
+                                            <dd><code>request</code> - @see <a href=core/network/model/VGSRequest.html>com.verygoodsecurity.vgsshow.core.network.model.VGSRequest</a></dd>
                                             
                                             
                                         </dl>
@@ -474,7 +528,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>requestAsync</h4>
-                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/AnyThread.html>AnyThread</a>() final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=../com/verygoodsecurity/vgsshow/core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html>Object</a>&gt; payload)</pre>
+                                        <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html>JvmOverloads</a>()@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/AnyThread.html>AnyThread</a>() final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method, <a href=https://developer.android.com/reference/kotlin/java/util/Map.html>Map</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a>, <a href=https://developer.android.com/reference/kotlin/java/lang/Object.html>Object</a>&gt; payload)</pre>
                                         <div class="block"><p>Asynchronous request for reveal data.</p></div>
                                         
                                         <dl>
@@ -498,6 +552,34 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                     </li>
                                 </ul>
                                 
+                                <a id="requestAsync(String,VGSHttpMethod)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>requestAsync</h4>
+                                        <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html>JvmOverloads</a>()@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/AnyThread.html>AnyThread</a>() final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#requestAsync(String,VGSHttpMethod,Map)>requestAsync</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> path, <a href=core/network/client/VGSHttpMethod.html>VGSHttpMethod</a> method)</pre>
+                                        <div class="block"><p>Asynchronous request for reveal data.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>path</code> - path for a request.</dd>
+                                            
+                                            
+                                            
+                                            <dd><code>method</code> - HTTP method of request.</dd>
+                                            
+                                            
+                                        </dl>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
                                 <a id="requestAsync(VGSRequest)">
                                     <!--   -->
                                 </a>
@@ -506,14 +588,14 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>requestAsync</h4>
-                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/AnyThread.html>AnyThread</a>() final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#requestAsync(VGSRequest)>requestAsync</a>(<a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>VGSRequest</a> request)</pre>
+                                        <pre class="methodSignature">@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/AnyThread.html>AnyThread</a>() final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#requestAsync(VGSRequest)>requestAsync</a>(<a href=core/network/model/VGSRequest.html>VGSRequest</a> request)</pre>
                                         <div class="block"><p>Asynchronous request for reveal data</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
                                             
                                             
-                                            <dd><code>request</code> - @see <a href=../com/verygoodsecurity/vgsshow/core/network/model/VGSRequest.html>com.verygoodsecurity.vgsshow.core.network.model.VGSRequest</a></dd>
+                                            <dd><code>request</code> - @see <a href=core/network/model/VGSRequest.html>com.verygoodsecurity.vgsshow.core.network.model.VGSRequest</a></dd>
                                             
                                             
                                         </dl>
@@ -530,7 +612,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>addOnResponseListener</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#addOnResponseListener(VGSOnResponseListener)>addOnResponseListener</a>(<a href=../com/verygoodsecurity/vgsshow/core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#addOnResponseListener(VGSOnResponseListener)>addOnResponseListener</a>(<a href=core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener)</pre>
                                         <div class="block"><p>Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.</p></div>
                                         
                                         <dl>
@@ -554,7 +636,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>removeOnResponseListener</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#removeOnResponseListener(VGSOnResponseListener)>removeOnResponseListener</a>(<a href=../com/verygoodsecurity/vgsshow/core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#removeOnResponseListener(VGSOnResponseListener)>removeOnResponseListener</a>(<a href=core/listener/VGSOnResponseListener.html>VGSOnResponseListener</a> listener)</pre>
                                         <div class="block"><p>Clear specific listener attached before.</p></div>
                                         
                                         <dl>
@@ -593,7 +675,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>subscribe</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#subscribe(VGSView)>subscribe</a>(<a href=../com/verygoodsecurity/vgsshow/widget/core/VGSView.html>VGSView</a>&lt;?&gt; view)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#subscribe(VGSView)>subscribe</a>(<a href=widget/core/VGSView.html>VGSView</a>&lt;?&gt; view)</pre>
                                         <div class="block"><p>Allows <a href=VGSShow.html>VGSShow</a> to interact with VGS secure views.</p></div>
                                         
                                         <dl>
@@ -617,7 +699,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>unsubscribe</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#unsubscribe(VGSView)>unsubscribe</a>(<a href=../com/verygoodsecurity/vgsshow/widget/core/VGSView.html>VGSView</a>&lt;?&gt; view)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#unsubscribe(VGSView)>unsubscribe</a>(<a href=widget/core/VGSView.html>VGSView</a>&lt;?&gt; view)</pre>
                                         <div class="block"><p>Remove previously added VGS secure view</p></div>
                                         
                                         <dl>
@@ -641,7 +723,37 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>setCustomHeader</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#setCustomHeader(String,String)>setCustomHeader</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> header, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> value)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#setCustomHeader(String,String)>setCustomHeader</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> header, <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> value)</pre>
+                                        <div class="block"><p>Used to edit static request headers that will be added to all requests of this VGSShow instance.</p></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="removeCustomHeader(String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>removeCustomHeader</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#removeCustomHeader(String)>removeCustomHeader</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> header)</pre>
+                                        <div class="block"><p>Used to edit static request headers that will be added to all requests of this VGSShow instance.</p></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="clearCustomHeaders()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>clearCustomHeaders</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#clearCustomHeaders()>clearCustomHeaders</a>()</pre>
                                         <div class="block"><p>Used to edit static request headers that will be added to all requests of this VGSShow instance.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
@@ -656,7 +768,7 @@ public final class <span class="typeNameLabel"><a href=VGSShow.html>VGSShow</a><
                                           >
                                     <li class="blockList">
                                         <h4>setAnalyticsEnabled</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#setAnalyticsEnabled(Boolean)>setAnalyticsEnabled</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> isEnabled)</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSShow.html#setAnalyticsEnabled(Boolean)>setAnalyticsEnabled</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Boolean.html>Boolean</a> isEnabled)</pre>
                                         <div class="block"><p>Used to enable/disable analytics events.</p></div>
                                         
                                         <dl>
