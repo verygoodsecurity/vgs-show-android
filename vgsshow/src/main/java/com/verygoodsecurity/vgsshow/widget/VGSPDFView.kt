@@ -50,7 +50,7 @@ class VGSPDFView @JvmOverloads constructor(
 
     /** Return true if document was revealed. */
     val hasDocument: Boolean
-        get() = documentBytes != null
+        get() = documentBytes != null && documentBytes?.isNotEmpty() == true
 
     internal var onShareDocumentListener: OnShareDocumentListener? = null
 
