@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
+import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
 import com.verygoodsecurity.demoshow.ui.activity.VGSShowViewPagerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         btnStartViewPagerMain?.setOnClickListener {
             startActivity(Intent(this, VGSShowViewPagerActivity::class.java))
         }
+        btnStartRevelPDF?.setOnClickListener {
+            startActivity(Intent(this, PDFActivity::class.java))
+        }
     }
 
     companion object {
@@ -38,5 +42,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+typealias ShowResponse = com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 typealias CollectResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse?
 typealias CollectSuccessResponse = com.verygoodsecurity.vgscollect.core.model.network.VGSResponse.SuccessResponse?

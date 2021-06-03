@@ -36,19 +36,19 @@ internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClien
             connection = (generateBaseUrl(request) concatWithSlash request.path).toURL().toString()
                 .openConnection()
                 .setSSLSocketFactory(TLSSocketFactory())
-                .callTimeout(CONNECTION_TIME_OUT)
-                .readTimeout(CONNECTION_TIME_OUT)
+                .callTimeout(request.requestTimeoutInterval)
+                .readTimeout(request.requestTimeoutInterval)
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
                 .addHeaders(requestHeaders)
                 .setMethod(request.method)
-            logRequest(requestId, request, requestHeaders, connection)
+            logRequestIfNeeded(requestId, request, requestHeaders, connection)
             writeData(connection, request.data?.getData())
-            logResponse(requestId, connection)
+            logResponseIfNeeded(requestId, connection)
             return readResponse(connection)
         } catch (e: Exception) {
-            logException(e)
+            logExceptionIfNeeded(e)
             throw e
         } finally {
             connection?.disconnect()
@@ -148,7 +148,7 @@ internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClien
         }
     }
 
-    private fun logRequest(
+    private fun logRequestIfNeeded(
         requestId: String,
         request: HttpRequest,
         requestHeaders: Map<String, String>,
@@ -166,7 +166,7 @@ internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClien
         )
     }
 
-    private fun logResponse(requestId: String, connection: HttpURLConnection) {
+    private fun logResponseIfNeeded(requestId: String, connection: HttpURLConnection) {
         if (!isLogsEnabled) {
             return
         }
@@ -177,5 +177,12 @@ internal class HttpUrlClient constructor(isLogsEnabled: Boolean) : BaseHttpClien
             connection.responseMessage,
             connection.getHeaders()
         )
+    }
+
+    private fun logExceptionIfNeeded(e: Exception) {
+        if (!isLogsEnabled) {
+            return
+        }
+        logException(e)
     }
 }

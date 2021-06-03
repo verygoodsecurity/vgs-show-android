@@ -6,7 +6,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.model.HttpResponse
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonResponseData
-import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import io.mockk.mockk
 import org.json.JSONException
 import org.junit.Assert.assertTrue

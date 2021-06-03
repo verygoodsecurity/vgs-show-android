@@ -1,6 +1,5 @@
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-show-android/blob/master/LICENSE)
-[ ![Download](https://api.bintray.com/packages/vg/vgs-collect-android/vgsshow/images/download.svg) ](https://bintray.com/vg/vgs-collect-android/vgsshow/_latestVersion)
 <img src="./ZeroDataLogo.png" width="55" hspace="8">
 
 VGS Show Android SDK allows you to securely reveal data for your users without having to have that data pass through your systems. It provides customizable UI elements for showing users' sensitive data securely on Android devices.

@@ -20,9 +20,12 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Returns type of the field.
+     *
+     * @return [VGSFieldType]
+     */
     abstract fun getFieldType(): VGSFieldType
-
-    internal abstract fun onViewSubscribed()
 
     protected abstract fun createChildView(): T
 
@@ -75,7 +78,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     public override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         setAddStatesFromChildren(true)
-        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+        super.addView(view, -1, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         view.setOnClickListener { onChildClick(it) }
         view.setOnLongClickListener { onChildLongClick(it) }
         view.isLongClickable = false

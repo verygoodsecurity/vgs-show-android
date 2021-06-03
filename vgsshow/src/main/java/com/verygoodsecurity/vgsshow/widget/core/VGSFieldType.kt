@@ -11,5 +11,10 @@ enum class VGSFieldType {
      * VGS basic View control that displays reviled content to the user.
      * The input field has no limitations.
      */
-    INFO
+    INFO,
+
+    /**
+     * User interface element to display reviled PDF content.
+     */
+    PDF
 }

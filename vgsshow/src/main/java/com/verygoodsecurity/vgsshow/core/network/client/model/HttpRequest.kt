@@ -8,7 +8,8 @@ internal data class HttpRequest(
     val url: String,
     val path: String,
     val method: VGSHttpMethod,
-    var headers: Map<String, String>? = null,
-    var data: RequestData? = null,
-    val format: VGSHttpBodyFormat
+    var headers: Map<String, String>?,
+    var data: RequestData?,
+    val format: VGSHttpBodyFormat,
+    val requestTimeoutInterval: Long
 )

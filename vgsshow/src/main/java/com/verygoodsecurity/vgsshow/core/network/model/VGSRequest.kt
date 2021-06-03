@@ -6,16 +6,19 @@ import com.verygoodsecurity.vgsshow.core.network.model.data.request.JsonRequestD
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.RequestData
 import com.verygoodsecurity.vgsshow.core.network.model.data.request.UrlencodedData
 
+private const val DEFAULT_CONNECTION_TIME_OUT = 60000L
+
 /**
  * Request definition class for revealing data.
  */
 class VGSRequest private constructor(
     val path: String,
     val method: VGSHttpMethod,
-    val headers: Map<String, String>? = null,
-    val requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
-    val responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
-    internal val payload: RequestData? = null
+    val headers: Map<String, String>?,
+    val requestFormat: VGSHttpBodyFormat,
+    val responseFormat: VGSHttpBodyFormat,
+    val requestTimeoutInterval: Long,
+    internal val payload: RequestData?,
 ) {
 
     /**
@@ -40,6 +43,7 @@ class VGSRequest private constructor(
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var payload: RequestData? = null
+        private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
 
         /**
          * List of headers that will be added to this request.
@@ -53,8 +57,8 @@ class VGSRequest private constructor(
          * Body that will send with this request.
          *
          */
-        fun body(payload: Map<String, Any>): Builder = apply {
-            this.payload = JsonRequestData(payload)
+        fun body(payload: Map<String, Any>?): Builder = apply {
+            this.payload = if (payload != null) JsonRequestData(payload) else null
         }
 
         /**
@@ -78,10 +82,25 @@ class VGSRequest private constructor(
         fun responseFormat(format: VGSHttpBodyFormat) = apply { this.responseFormat = format }
 
         /**
+         * Specifies request timeout interval in milliseconds.
+         *
+         * @param timeout interval in milliseconds.
+         */
+        fun requestTimeoutInterval(timeout: Long) = apply { this.requestTimeoutInterval = timeout }
+
+        /**
          * Build VGSRequest object.
          *
          * @return configured VGSRequest.
          */
-        fun build() = VGSRequest(path, method, headers, requestFormat, responseFormat, payload)
+        fun build() = VGSRequest(
+            path,
+            method,
+            headers,
+            requestFormat,
+            responseFormat,
+            requestTimeoutInterval,
+            payload
+        )
     }
 }

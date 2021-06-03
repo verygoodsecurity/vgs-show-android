@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.core.network.client.okhttp
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgsshow.core.network.client.BaseHttpClient
-import com.verygoodsecurity.vgsshow.core.network.client.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
 import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
 import com.verygoodsecurity.vgsshow.core.network.client.extension.addHeaders
@@ -30,30 +29,37 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
     private val client: OkHttp3Client by lazy {
         OkHttp3Client().newBuilder()
             .addInterceptor(cnameInterceptor)
-            .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS).also {
-                if (isLogsEnabled) it.addInterceptor(LoggingInterceptor())
-            }.build()
+            .also { if (isLogsEnabled) it.addInterceptor(LoggingInterceptor()) }
+            .build()
     }
 
     override fun execute(request: HttpRequest): HttpResponse {
-        return client.newCall(buildOkHttpRequest(request)).execute().toHttpResponse()
+        return client.newBuilder()
+            .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+            .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+            .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+            .build()
+            .newCall(buildOkHttpRequest(request)).execute().toHttpResponse()
     }
 
     override fun enqueue(request: HttpRequest, callback: HttpRequestCallback) {
         try {
-            client.newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
+            client.newBuilder()
+                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .build()
+                .newCall(buildOkHttpRequest(request)).enqueue(object : Callback {
 
-                override fun onFailure(call: Call, e: IOException) {
-                    callback.onFailure(e)
-                    logException(e)
-                }
+                    override fun onFailure(call: Call, e: IOException) {
+                        logException(e)
+                        callback.onFailure(e)
+                    }
 
-                override fun onResponse(call: Call, response: Response) {
-                    callback.onResponse(response.toHttpResponse())
-                }
-            })
+                    override fun onResponse(call: Call, response: Response) {
+                        callback.onResponse(response.toHttpResponse())
+                    }
+                })
         } catch (e: Exception) {
             logException(e)
             callback.onFailure(e)
@@ -90,7 +96,8 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
                     it.url.toString(),
                     it.method,
                     it.headers.toMap(),
-                    getBody(it.body)
+                    getBody(it.body),
+                    it::class.java.simpleName
                 )
             }).also {
                 logResponse(
@@ -98,7 +105,8 @@ internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient
                     it.request.url.toString(),
                     it.code,
                     it.message,
-                    it.headers.toMap()
+                    it.headers.toMap(),
+                    it::class.java.simpleName
                 )
             }
         }
