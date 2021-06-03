@@ -116,8 +116,5 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
                     .build()
             )
         }
-        mbShare?.setOnClickListener {
-            vgsPDFView.sharePDF()
-        }
     }
 }
