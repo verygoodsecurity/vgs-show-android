@@ -6,7 +6,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
     }
 
     dependencies {
@@ -26,7 +25,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // TODO: Remove when AndroidPDFViewer wrapper released
     }
 
     plugins.withId("com.vanniktech.maven.publish") {
