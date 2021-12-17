@@ -23,7 +23,6 @@ class ShowFragment : Fragment(R.layout.show_layout), OnCardAliasChangeListener {
 
     private val show: VGSShow by lazy {
         VGSShow.Builder(requireContext(), MainActivity.TENANT_ID)
-            .setHostname(MainActivity.COLLECT_CUSTOM_HOSTNAME)
             .build()
     }
 

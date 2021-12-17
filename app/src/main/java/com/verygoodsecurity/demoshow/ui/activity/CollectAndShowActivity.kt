@@ -9,7 +9,6 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -32,7 +31,6 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
     private val showVgs: VGSShow by lazy {
         VGSShow.Builder(this, TENANT_ID)
             .setEnvironment(VGSEnvironment.Sandbox())
-            .setHostname(COLLECT_CUSTOM_HOSTNAME)
             .build()
     }
 
