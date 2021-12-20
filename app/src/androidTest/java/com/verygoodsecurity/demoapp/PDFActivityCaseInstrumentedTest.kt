@@ -38,7 +38,7 @@ class PDFActivityCaseInstrumentedTest {
         val pdfView = TestUtils.interactWithDisplayedView(R.id.vgsPDFView)
         // Act
         TestUtils.performClick(revealBtn)
-        TestUtils.pauseTestFor(5000)
+        TestUtils.pauseTestFor(10_000)
         // Assert
         pdfView.check { view, _ ->
             if (!(view as VGSPDFView).hasDocument) {

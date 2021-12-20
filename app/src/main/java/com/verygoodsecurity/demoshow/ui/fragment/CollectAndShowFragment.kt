@@ -10,7 +10,6 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.ENVIRONMENT
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
@@ -31,7 +30,7 @@ import org.json.JSONObject
 class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
 
     private val show: VGSShow by lazy {
-        VGSShow.Builder(requireContext(), TENANT_ID).setHostname(COLLECT_CUSTOM_HOSTNAME).build()
+        VGSShow.Builder(requireContext(), TENANT_ID).build()
     }
 
     private val collect: VGSCollect by lazy {

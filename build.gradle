@@ -17,7 +17,6 @@ buildscript {
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
-        classpath 'com.google.gms:google-services:4.3.8'
     }
 }
 
