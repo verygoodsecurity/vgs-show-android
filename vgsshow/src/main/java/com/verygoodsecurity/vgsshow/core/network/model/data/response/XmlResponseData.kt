@@ -32,7 +32,7 @@ internal class XmlResponseData : ResponseData {
                     if (parser.eventType == XmlPullParser.START_TAG && parser.name == it) {
                         parser.next()
                         result = parser.text
-                        log("Find key, try to read text and call break, current result = $result")
+                        log("Found key, try to read text and move to next iteration, current result = $result")
                         break
                     }
                 }
