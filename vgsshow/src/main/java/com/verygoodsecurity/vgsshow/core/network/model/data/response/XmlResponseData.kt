@@ -6,7 +6,7 @@ import org.xmlpull.v1.XmlPullParser
 import java.io.StringReader
 import kotlin.system.measureTimeMillis
 
-internal class XmlResponseData : ResponseData {
+internal class XmlResponseData constructor(private val data: String = TEST_DATA) : ResponseData {
 
     override fun getValue(key: String): String? {
         var result: String?
@@ -46,9 +46,10 @@ internal class XmlResponseData : ResponseData {
 
     private fun createParser(): XmlPullParser = Xml.newPullParser().apply {
         setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-        setInput(StringReader(TEST_DATA))
+        setInput(StringReader(data))
     }
 
+    //region TODO: Delete
     private fun logParser(parser: XmlPullParser) {
         log("Type = ${getType(parser)}, name = ${parser.name}, depth = ${parser.depth}, text = ${parser.text}")
     }
@@ -98,4 +99,5 @@ internal class XmlResponseData : ResponseData {
                 "  <url>https://echo.apps.verygood.systems/post</url>\n" +
                 "</root>"
     }
+    //endregion
 }
