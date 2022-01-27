@@ -50,12 +50,10 @@ internal class XmlResponseData : ResponseData {
     }
 
     private fun logParser(parser: XmlPullParser) {
-        return
         log("Type = ${getType(parser)}, name = ${parser.name}, depth = ${parser.depth}, text = ${parser.text}")
     }
 
     private fun log(message: String) {
-        return
         Log.d("XmlResponseData", message)
     }
 
