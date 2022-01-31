@@ -2,27 +2,31 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>VGSResponse</title>
-<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>  </head>
   <body>
+    <div class="navigation-wrapper" id="navigation-wrapper">
+      <div id="leftToggler"><span class="icon-toggler"></span></div>
+      <div class="library-name"><a href="../../../index.html">vgsshow</a></div>
+      <div>1.2.0</div>
+      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+      </div>
+    </div>
     <div id="container">
-      <div id="leftColumn"><a href="../../../index.html">
-          <div id="logo"></div>
-        </a>
-        <div id="paneSearch"></div>
+      <div id="leftColumn">
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="vgsshow::com.verygoodsecurity.vgsshow.core.network.model/VGSResponse///PointingToDeclaration//1431401535">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../../index.html">vgsshow</a>/<a href="../index.html">com.verygoodsecurity.vgsshow.core.network.model</a>/<a href="index.html">VGSResponse</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
+        <div class="main-content" id="content" pageIds="vgsshow::com.verygoodsecurity.vgsshow.core.network.model/VGSResponse///PointingToDeclaration//1431401535">
+          <div class="breadcrumbs"><a href="../../../index.html">vgsshow</a>/<a href="../index.html">com.verygoodsecurity.vgsshow.core.network.model</a>/<a href="index.html">VGSResponse</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>V</span><wbr></wbr><span>G</span><wbr></wbr><span>S</span><wbr></wbr><span>Response</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">sealed class <a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The base class definition for a VGSShow response states.</p></div></div>
+            <h1 class="cover"><span><span>VGSResponse</span></span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The base class definition for a VGSShow response states.</p></div></div>
           </div>
           <div class="tabbedcontent">
             <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
@@ -31,34 +35,30 @@
               <div class="table" data-togglable="Types"><a data-name="-734880500%2FClasslikes%2F1431401535" anchor-label="Error" id="-734880500%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-error/index.html">Error</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-734880500%2FClasslikes%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-error/index.html"><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-734880500%2FClasslikes%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">class <a href="-error/index.html">Error</a> : <a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="-734880500%2FClasslikes%2F1431401535" anchor-label="Error" id="-734880500%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="brief "><a data-name="-734880500%2FClasslikes%2F1431401535" anchor-label="Error" id="-734880500%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>The class definition for an error response state.</div></div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-error/index.html">Error</a> : <a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The class definition for an error response state.</p></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
 <a data-name="1948967601%2FClasslikes%2F1431401535" anchor-label="Success" id="1948967601%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-success/index.html">Success</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1948967601%2FClasslikes%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-success/index.html"><span><span>Success</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1948967601%2FClasslikes%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">class <a href="-success/index.html">Success</a> : <a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<a data-name="1948967601%2FClasslikes%2F1431401535" anchor-label="Success" id="1948967601%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="brief "><a data-name="1948967601%2FClasslikes%2F1431401535" anchor-label="Success" id="1948967601%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>The class definition for a success response state.</div></div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-success/index.html">Success</a> : <a href="index.html">VGSResponse</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">The class definition for a success response state.</p></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -67,31 +67,37 @@
               <div class="table" data-togglable="Properties"><a data-name="1098218988%2FProperties%2F1431401535" anchor-label="code" id="1098218988%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="code.html">code</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1098218988%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="code.html">code</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1098218988%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1098218988%2FProperties%2F1431401535" anchor-label="code" id="1098218988%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">abstract val <a href="code.html">code</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1098218988%2FProperties%2F1431401535" anchor-label="code" id="1098218988%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>The response code from server.</div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1098218988%2FProperties%2F1431401535" anchor-label="code" id="1098218988%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="code.html">code</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1098218988%2FProperties%2F1431401535" anchor-label="code" id="1098218988%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><p class="paragraph">The response code from server.</p></div></div></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <h2 class="">Inheritors</h2>
-              <div class="table" data-togglable="Inheritors"><a data-name="1948967601%2FInheritors%2F1431401535" anchor-label="VGSResponse" id="1948967601%2FInheritors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
+              <div class="table" data-togglable="Inheritors"><a data-name="1948967601%2FInheritors%2F1431401535" anchor-label="Success" id="1948967601%2FInheritors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-success/index.html">VGSResponse</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1948967601%2FInheritors%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-success/index.html">Success</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1948967601%2FInheritors%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div></div>
                   </div>
                 </div>
-<a data-name="-734880500%2FInheritors%2F1431401535" anchor-label="VGSResponse" id="-734880500%2FInheritors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
+<a data-name="-734880500%2FInheritors%2F1431401535" anchor-label="Error" id="-734880500%2FInheritors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-error/index.html">VGSResponse</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-734880500%2FInheritors%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-error/index.html">Error</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-734880500%2FInheritors%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div></div>
@@ -101,7 +107,7 @@
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   </body>

@@ -2,27 +2,31 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>VGSPDFViewState</title>
-<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><link href="../../../styles/prism.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>  </head>
   <body>
+    <div class="navigation-wrapper" id="navigation-wrapper">
+      <div id="leftToggler"><span class="icon-toggler"></span></div>
+      <div class="library-name"><a href="../../../index.html">vgsshow</a></div>
+      <div>1.2.0</div>
+      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+      </div>
+    </div>
     <div id="container">
-      <div id="leftColumn"><a href="../../../index.html">
-          <div id="logo"></div>
-        </a>
-        <div id="paneSearch"></div>
+      <div id="leftColumn">
         <div id="sideMenu"></div>
       </div>
       <div id="main">
-        <div id="leftToggler"><span class="icon-toggler"></span></div>
-<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="vgsshow::com.verygoodsecurity.vgsshow.widget.view.pdf.state/VGSPDFViewState///PointingToDeclaration//1431401535">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../../index.html">vgsshow</a>/<a href="../index.html">com.verygoodsecurity.vgsshow.widget.view.pdf.state</a>/<a href="index.html">VGSPDFViewState</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
+        <div class="main-content" id="content" pageIds="vgsshow::com.verygoodsecurity.vgsshow.widget.view.pdf.state/VGSPDFViewState///PointingToDeclaration//1431401535">
+          <div class="breadcrumbs"><a href="../../../index.html">vgsshow</a>/<a href="../index.html">com.verygoodsecurity.vgsshow.widget.view.pdf.state</a>/<a href="index.html">VGSPDFViewState</a></div>
           <div class="cover ">
-            <h1 class="cover"><span>V</span><wbr></wbr><span>G</span><wbr></wbr><span>S</span><wbr></wbr><span>P</span><wbr></wbr><span>D</span><wbr></wbr><span>F</span><wbr></wbr><span>View</span><wbr></wbr><span>State</span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">class <a href="index.html">VGSPDFViewState</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.BaseSavedState.html">View.BaseSavedState</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+            <h1 class="cover"><span>VGSPDFView</span><wbr></wbr><span><span>State</span></span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">VGSPDFViewState</a> : <a href="https://developer.android.com/reference/kotlin/android/view/View.BaseSavedState.html">View.BaseSavedState</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
           </div>
           <div class="tabbedcontent">
             <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
@@ -31,12 +35,14 @@
               <div class="table" data-togglable="Constructors"><a data-name="-2124254663%2FConstructors%2F1431401535" anchor-label="VGSPDFViewState" id="-2124254663%2FConstructors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-v-g-s-p-d-f-view-state.html">VGSPDFViewState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2124254663%2FConstructors%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-v-g-s-p-d-f-view-state.html"><span>VGSPDFView</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2124254663%2FConstructors%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">fun <a href="-v-g-s-p-d-f-view-state.html">VGSPDFViewState</a>(superState: <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a>?)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-v-g-s-p-d-f-view-state.html"><span class="token function">VGSPDFViewState</span></a><span class="token punctuation">(</span>superState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a><span class="token operator">?</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -44,12 +50,14 @@
 <a data-name="1993215492%2FConstructors%2F1431401535" anchor-label="VGSPDFViewState" id="1993215492%2FConstructors%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-v-g-s-p-d-f-view-state.html">VGSPDFViewState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1993215492%2FConstructors%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-v-g-s-p-d-f-view-state.html"><span>VGSPDFView</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1993215492%2FConstructors%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">fun <a href="-v-g-s-p-d-f-view-state.html">VGSPDFViewState</a>(in: <a href="https://developer.android.com/reference/kotlin/android/os/Parcel.html">Parcel</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-v-g-s-p-d-f-view-state.html"><span class="token function">VGSPDFViewState</span></a><span class="token punctuation">(</span>in<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcel.html">Parcel</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -59,17 +67,15 @@
               <div class="table" data-togglable="Types"><a data-name="-1514114163%2FClasslikes%2F1431401535" anchor-label="Companion" id="-1514114163%2FClasslikes%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-companion/index.html">Companion</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1514114163%2FClasslikes%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1514114163%2FClasslikes%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">object <a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -78,51 +84,45 @@
               <div class="table" data-togglable="Functions"><a data-name="988963834%2FFunctions%2F1431401535" anchor-label="describeContents" id="988963834%2FFunctions%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#988963834%2FFunctions%2F1431401535">describeContents</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="988963834%2FFunctions%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="index.html#988963834%2FFunctions%2F1431401535"><span>describe</span><wbr></wbr><span><span>Contents</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="988963834%2FFunctions%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="index.html#988963834%2FFunctions%2F1431401535">describeContents</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#988963834%2FFunctions%2F1431401535"><span class="token function">describeContents</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
 <a data-name="-392124657%2FFunctions%2F1431401535" anchor-label="getSuperState" id="-392124657%2FFunctions%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-392124657%2FFunctions%2F1431401535">getSuperState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-392124657%2FFunctions%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="index.html#-392124657%2FFunctions%2F1431401535"><span>get</span><wbr></wbr><span>Super</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-392124657%2FFunctions%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">fun <a href="index.html#-392124657%2FFunctions%2F1431401535">getSuperState</a>(): <a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-392124657%2FFunctions%2F1431401535"><span class="token function">getSuperState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcelable.html">Parcelable</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
 <a data-name="665755410%2FFunctions%2F1431401535" anchor-label="writeToParcel" id="665755410%2FFunctions%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="write-to-parcel.html">writeToParcel</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="665755410%2FFunctions%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="write-to-parcel.html"><span>write</span><wbr></wbr><span>To</span><wbr></wbr><span><span>Parcel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="665755410%2FFunctions%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace">open override fun <a href="write-to-parcel.html">writeToParcel</a>(out: <a href="https://developer.android.com/reference/kotlin/android/os/Parcel.html">Parcel</a>, flags: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="write-to-parcel.html"><span class="token function">writeToParcel</span></a><span class="token punctuation">(</span>out<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Parcel.html">Parcel</a><span class="token punctuation">, </span>flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -131,12 +131,14 @@
               <div class="table" data-togglable="Properties"><a data-name="1222663574%2FProperties%2F1431401535" anchor-label="defaultPage" id="1222663574%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="default-page.html">defaultPage</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1222663574%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="default-page.html">defaultPage</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1222663574%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1222663574%2FProperties%2F1431401535" anchor-label="defaultPage" id="1222663574%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="default-page.html">defaultPage</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a> = 0<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1222663574%2FProperties%2F1431401535" anchor-label="defaultPage" id="1222663574%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="default-page.html">defaultPage</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -144,12 +146,14 @@
 <a data-name="-1285919741%2FProperties%2F1431401535" anchor-label="isAntialiasingEnabled" id="-1285919741%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="is-antialiasing-enabled.html">isAntialiasingEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1285919741%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="is-antialiasing-enabled.html">isAntialiasingEnabled</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1285919741%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="-1285919741%2FProperties%2F1431401535" anchor-label="isAntialiasingEnabled" id="-1285919741%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="is-antialiasing-enabled.html">isAntialiasingEnabled</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = true<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="-1285919741%2FProperties%2F1431401535" anchor-label="isAntialiasingEnabled" id="-1285919741%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-antialiasing-enabled.html">isAntialiasingEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -157,12 +161,14 @@
 <a data-name="1369305947%2FProperties%2F1431401535" anchor-label="isDoubleTapEnabled" id="1369305947%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="is-double-tap-enabled.html">isDoubleTapEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1369305947%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="is-double-tap-enabled.html">isDoubleTapEnabled</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1369305947%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1369305947%2FProperties%2F1431401535" anchor-label="isDoubleTapEnabled" id="1369305947%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="is-double-tap-enabled.html">isDoubleTapEnabled</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = false<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1369305947%2FProperties%2F1431401535" anchor-label="isDoubleTapEnabled" id="1369305947%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-double-tap-enabled.html">isDoubleTapEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -170,12 +176,14 @@
 <a data-name="1079210755%2FProperties%2F1431401535" anchor-label="isSwipeEnabled" id="1079210755%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="is-swipe-enabled.html">isSwipeEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1079210755%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="is-swipe-enabled.html">isSwipeEnabled</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1079210755%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1079210755%2FProperties%2F1431401535" anchor-label="isSwipeEnabled" id="1079210755%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="is-swipe-enabled.html">isSwipeEnabled</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = true<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1079210755%2FProperties%2F1431401535" anchor-label="isSwipeEnabled" id="1079210755%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-swipe-enabled.html">isSwipeEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -183,12 +191,14 @@
 <a data-name="1566613127%2FProperties%2F1431401535" anchor-label="isSwipeHorizontalEnabled" id="1566613127%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="is-swipe-horizontal-enabled.html">isSwipeHorizontalEnabled</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1566613127%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="is-swipe-horizontal-enabled.html">isSwipeHorizontalEnabled</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1566613127%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1566613127%2FProperties%2F1431401535" anchor-label="isSwipeHorizontalEnabled" id="1566613127%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="is-swipe-horizontal-enabled.html">isSwipeHorizontalEnabled</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a> = false<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1566613127%2FProperties%2F1431401535" anchor-label="isSwipeHorizontalEnabled" id="1566613127%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-swipe-horizontal-enabled.html">isSwipeHorizontalEnabled</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -196,12 +206,14 @@
 <a data-name="1877740963%2FProperties%2F1431401535" anchor-label="spacing" id="1877740963%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a>
                 <div class="table-row" data-filterable-current=":vgsshow:dokkaHtml/release" data-filterable-set=":vgsshow:dokkaHtml/release">
                   <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="spacing.html">spacing</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1877740963%2FProperties%2F1431401535"></span>
+                    <div class=""><span class="inline-flex">
+                        <div><a href="spacing.html">spacing</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1877740963%2FProperties%2F1431401535"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1877740963%2FProperties%2F1431401535" anchor-label="spacing" id="1877740963%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace">var <a href="spacing.html">spacing</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a> = 0<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgsshow:dokkaHtml/release"><a data-name="1877740963%2FProperties%2F1431401535" anchor-label="spacing" id="1877740963%2FProperties%2F1431401535" data-filterable-set=":vgsshow:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="spacing.html">spacing</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -210,7 +222,7 @@
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
       </div>
     </div>
   </body>
