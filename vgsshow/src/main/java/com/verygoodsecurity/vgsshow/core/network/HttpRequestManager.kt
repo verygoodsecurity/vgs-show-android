@@ -94,13 +94,12 @@ internal class HttpRequestManager(
         }
     }
 
-    // TODO: Fix
     @VisibleForTesting
     @Throws(Exception::class)
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): ResponseData {
-        return when (VGSHttpBodyFormat.X_WWW_FORM_URLENCODED) {
+        return when (format) {
             VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
-            VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> XmlResponseData()
+            VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> XmlResponseData(data)
         }
     }
 
