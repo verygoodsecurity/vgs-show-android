@@ -25,14 +25,14 @@ internal class XmlResponseData constructor(private val data: String = TEST_DATA)
             var result: String? = null
             val parser = createParser()
             logParser(parser)
-            key.split(".").forEach {
-                log("Searching for key = $it")
+            key.split(".").forEachIndexed { index, keyPart ->
+                log("Searching for key = $keyPart, index = $index")
                 while (parser.next() != XmlPullParser.END_DOCUMENT) {
                     logParser(parser)
-                    if (parser.eventType == XmlPullParser.START_TAG && parser.name == it) {
+                    if (isKeyFound(parser, keyPart, index)) {
                         parser.next()
                         result = parser.text
-                        log("Found key, try to read text and move to next iteration, current result = $result")
+                        log("Found key, try to read text and move to next iteration, current result = $result, depth = ${parser.depth}")
                         break
                     }
                 }
@@ -47,6 +47,14 @@ internal class XmlResponseData constructor(private val data: String = TEST_DATA)
     private fun createParser(): XmlPullParser = Xml.newPullParser().apply {
         setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
         setInput(StringReader(data))
+    }
+
+    private fun isKeyFound(
+        parser: XmlPullParser,
+        keyPart: String,
+        keyPartIndex: Int
+    ): Boolean {
+        return parser.eventType == XmlPullParser.START_TAG && keyPartIndex.inc() == parser.depth && parser.name == keyPart
     }
 
     //region TODO: Delete
