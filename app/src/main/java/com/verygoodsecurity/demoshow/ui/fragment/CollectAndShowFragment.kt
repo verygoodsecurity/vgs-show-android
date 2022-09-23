@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -17,14 +20,14 @@ import com.verygoodsecurity.demoshow.utils.extension.setVisible
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.collect_layout.*
-import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONObject
 
 class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
@@ -40,21 +43,48 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
     private var cardNumberAlias: String = ""
     private var expirationDateAlias: String = ""
 
+    private lateinit var pbSubmit: ProgressBar
+    private lateinit var mbSubmit: MaterialButton
+    private lateinit var etCardNumber: VGSCardNumberEditText
+    private lateinit var etExpDate: ExpirationDateEditText
+    private lateinit var tvCardNumberAlias: TextView
+    private lateinit var tvExpDateAlias: TextView
+    private lateinit var pbReveal: ProgressBar
+    private lateinit var tvCardNumber: VGSTextView
+    private lateinit var tvCardExpiration: VGSTextView
+    private lateinit var mbRequest: MaterialButton
+    private lateinit var mbSetSecureText: MaterialButton
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews(view)
         setupCollect()
         setupShow()
+    }
+
+    private fun initViews(view: View) {
+        pbSubmit = view.findViewById(R.id.pbSubmit)
+        mbSubmit = view.findViewById(R.id.mbSubmit)
+        etCardNumber = view.findViewById(R.id.etCardNumber)
+        etExpDate = view.findViewById(R.id.etExpDate)
+        tvCardNumberAlias = view.findViewById(R.id.tvCardNumberAlias)
+        tvExpDateAlias = view.findViewById(R.id.tvExpDateAlias)
+        pbReveal = view.findViewById(R.id.pbReveal)
+        tvCardNumber = view.findViewById(R.id.tvCardNumber)
+        tvCardExpiration = view.findViewById(R.id.tvCardExpiration)
+        mbRequest = view.findViewById(R.id.mbRequest)
+        mbSetSecureText = view.findViewById(R.id.mbSetSecureText)
     }
 
     private fun setupCollect() {
 
         fun setLoading(isLoading: Boolean) {
-            pbSubmit?.setVisible(isLoading)
-            etCardNumber?.isEnabled = !isLoading
-            etExpDate?.isEnabled = !isLoading
+            pbSubmit.setVisible(isLoading)
+            etCardNumber.isEnabled = !isLoading
+            etExpDate.isEnabled = !isLoading
         }
 
-        mbSubmit?.setOnClickListener {
+        mbSubmit.setOnClickListener {
             setLoading(true)
             collect.asyncSubmit("/post", HTTPMethod.POST)
         }
@@ -67,8 +97,8 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
                     with(JSONObject((response as? CollectSuccessResponse)?.rawResponse ?: "")) {
                         cardNumberAlias = parseAlias(this, "cardNumber")
                         expirationDateAlias = parseAlias(this, "expDate")
-                        tvCardNumberAlias?.text = cardNumberAlias
-                        tvExpDateAlias?.text = expirationDateAlias
+                        tvCardNumberAlias.text = cardNumberAlias
+                        tvExpDateAlias.text = expirationDateAlias
                     }
                 } catch (e: Exception) {
                     Log.e(CollectAndShowFragment::class.java.simpleName, e.message ?: "")
@@ -85,26 +115,26 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
         show.addOnResponseListener(object : VGSOnResponseListener {
 
             override fun onResponse(response: VGSResponse) {
-                pbReveal?.setVisible(false)
+                pbReveal.setVisible(false)
                 Log.d(CollectAndShowActivity::class.simpleName, response.toString())
             }
         })
         show.subscribe(tvCardNumber)
         show.subscribe(tvCardExpiration)
 
-        tvCardNumber?.addTransformationRegex(
+        tvCardNumber.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        tvCardNumber?.addTransformationRegex("-".toRegex(), " - ")
+        tvCardNumber.addTransformationRegex("-".toRegex(), " - ")
 
-        tvCardNumber?.setOnTextChangeListener(object :
+        tvCardNumber.setOnTextChangeListener(object :
             VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
-        tvCardNumber?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        tvCardNumber.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(
@@ -114,10 +144,10 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
                 ).show()
             }
         })
-        tvCardNumber?.setOnClickListener {
+        tvCardNumber.setOnClickListener {
             tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
-        mbRequest?.setOnClickListener {
+        mbRequest.setOnClickListener {
             pbReveal?.setVisible(true)
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST).body(
@@ -128,13 +158,13 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
                 ).build()
             )
         }
-        mbSetSecureText?.setOnClickListener {
-            if (tvCardNumber?.isSecureText == true) {
-                tvCardNumber?.isSecureText = false
-                mbSetSecureText?.text = "Set secure"
+        mbSetSecureText.setOnClickListener {
+            if (tvCardNumber.isSecureText) {
+                tvCardNumber.isSecureText = false
+                mbSetSecureText.text = "Set secure"
             } else {
-                tvCardNumber?.isSecureText = true
-                mbSetSecureText?.text = "Reset secure"
+                tvCardNumber.isSecureText = true
+                mbSetSecureText.text = "Reset secure"
             }
         }
     }
