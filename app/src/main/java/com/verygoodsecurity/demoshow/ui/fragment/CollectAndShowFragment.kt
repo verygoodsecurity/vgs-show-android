@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -18,14 +21,14 @@ import com.verygoodsecurity.demoshow.utils.extension.setVisible
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.collect_layout.*
-import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONObject
 
 class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
@@ -37,6 +40,18 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
     private val collect: VGSCollect by lazy {
         VGSCollect(requireContext(), TENANT_ID, ENVIRONMENT)
     }
+
+    private val tvCardNumber: VGSTextView? by lazy { view?.findViewById(R.id.tvCardNumber) }
+    private val tvCardExpiration: VGSTextView? by lazy { view?.findViewById(R.id.tvCardExpiration) }
+    private val tvExpDateAlias: TextView? by lazy { view?.findViewById(R.id.tvExpDateAlias) }
+    private val tvCardNumberAlias: TextView? by lazy { view?.findViewById(R.id.tvCardNumberAlias) }
+    private val pbReveal: ProgressBar? by lazy { view?.findViewById(R.id.pbReveal) }
+    private val mbRequest: MaterialButton? by lazy { view?.findViewById(R.id.mbRequest) }
+    private val mbSetSecureText: MaterialButton? by lazy { view?.findViewById(R.id.mbSetSecureText) }
+    private val etCardNumber: VGSCardNumberEditText? by lazy { view?.findViewById(R.id.etCardNumber) }
+    private val etExpDate: ExpirationDateEditText? by lazy { view?.findViewById(R.id.etExpDate) }
+    private val pbSubmit: ProgressBar? by lazy { view?.findViewById(R.id.pbReveal) }
+    private val mbSubmit: MaterialButton? by lazy { view?.findViewById(R.id.mbSubmit) }
 
     private var cardNumberAlias: String = ""
     private var expirationDateAlias: String = ""
@@ -90,8 +105,8 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
                 Log.d(CollectAndShowActivity::class.simpleName, response.toString())
             }
         })
-        show.subscribe(tvCardNumber)
-        show.subscribe(tvCardExpiration)
+        tvCardNumber?.let { show.subscribe(it) }
+        tvCardExpiration?.let { show.subscribe(it) }
 
         tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
@@ -116,7 +131,7 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
             }
         })
         tvCardNumber?.setOnClickListener {
-            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+            tvCardNumber?.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
         mbRequest?.setOnClickListener {
             pbReveal?.setVisible(true)

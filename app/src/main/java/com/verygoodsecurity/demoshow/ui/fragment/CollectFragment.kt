@@ -4,7 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -14,7 +17,8 @@ import com.verygoodsecurity.demoshow.utils.extension.setVisible
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import kotlinx.android.synthetic.main.collect_layout.*
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.json.JSONObject
 
 class CollectFragment : Fragment(R.layout.collect_layout) {
@@ -22,6 +26,13 @@ class CollectFragment : Fragment(R.layout.collect_layout) {
     private val collect: VGSCollect by lazy {
         VGSCollect(requireContext(), MainActivity.TENANT_ID, MainActivity.ENVIRONMENT)
     }
+
+    private val etCardNumber: VGSCardNumberEditText? by lazy { view?.findViewById(R.id.etCardNumber) }
+    private val tvExpDateAlias: TextView? by lazy { view?.findViewById(R.id.tvExpDateAlias) }
+    private val etExpDate: ExpirationDateEditText? by lazy { view?.findViewById(R.id.etExpDate) }
+    private val tvCardNumberAlias: TextView? by lazy { view?.findViewById(R.id.tvCardNumberAlias) }
+    private val pbSubmit: ProgressBar? by lazy { view?.findViewById(R.id.pbReveal) }
+    private val mbSubmit: MaterialButton? by lazy { view?.findViewById(R.id.mbSubmit) }
 
     private var aliasChangeListener: OnCardAliasChangeListener? = null
 

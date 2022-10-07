@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -19,10 +22,10 @@ import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
-import kotlinx.android.synthetic.main.activity_pdf.*
 import org.json.JSONObject
 
-class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnResponseListener {
+class PDFActivity : AppCompatActivity(R.layout.activity_pdf), VgsCollectResponseListener,
+    VGSOnResponseListener {
 
     private val show: VGSShow by lazy {
         VGSShow.Builder(this, TENANT_ID).build()
@@ -32,9 +35,16 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
+    private val flProgress: FrameLayout? by lazy { findViewById(R.id.flProgress) }
+    private val tvFileAlias: TextView? by lazy { findViewById(R.id.tvFileAlias) }
+    private val tvFileName: TextView? by lazy { findViewById(R.id.tvFileName) }
+    private val vgsPDFView: VGSPDFView? by lazy { findViewById(R.id.vgsPDFView) }
+    private val mbAttachFile: MaterialButton? by lazy { findViewById(R.id.mbAttachFile) }
+    private val mbSubmit: MaterialButton? by lazy { findViewById(R.id.mbSubmit) }
+    private val mbReveal: MaterialButton? by lazy { findViewById(R.id.mbReveal) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pdf)
         setupCollect()
         setupShow()
     }
@@ -45,6 +55,8 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         super.onDestroy()
     }
 
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         collect.onActivityResult(requestCode, resultCode, data)
@@ -74,7 +86,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         collect.addOnResponseListeners(this)
 
         mbAttachFile?.setOnClickListener {
-            collect.getFileProvider().attachFile("pdf")
+            collect.getFileProvider().attachFile(this, "pdf")
         }
         mbSubmit?.setOnClickListener {
             flProgress?.visibility = View.VISIBLE
@@ -89,7 +101,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
     }
 
     private fun setupShow() {
-        show.subscribe(vgsPDFView)
+        vgsPDFView?.let { show.subscribe(it) }
         show.addOnResponseListener(this)
 
         vgsPDFView?.addRenderingStateChangedListener(object :

@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.MainActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
@@ -17,7 +19,6 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.show_layout.*
 
 class ShowFragment : Fragment(R.layout.show_layout), OnCardAliasChangeListener {
 
@@ -29,6 +30,12 @@ class ShowFragment : Fragment(R.layout.show_layout), OnCardAliasChangeListener {
 
     private var cardNumberAlias: String = ""
     private var expirationDateAlias: String = ""
+
+    private val tvCardNumber: VGSTextView? by lazy { view?.findViewById(R.id.tvCardNumber) }
+    private val tvCardExpiration: VGSTextView? by lazy { view?.findViewById(R.id.tvCardExpiration) }
+    private val pbReveal: ProgressBar? by lazy { view?.findViewById(R.id.pbReveal) }
+    private val mbRequest: MaterialButton? by lazy { view?.findViewById(R.id.mbRequest) }
+    private val mbSetSecureText: MaterialButton? by lazy { view?.findViewById(R.id.mbSetSecureText) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,8 +56,8 @@ class ShowFragment : Fragment(R.layout.show_layout), OnCardAliasChangeListener {
                 Log.d(CollectAndShowActivity::class.simpleName, response.toString())
             }
         })
-        show.subscribe(tvCardNumber)
-        show.subscribe(tvCardExpiration)
+        tvCardNumber?.let { show.subscribe(it) }
+        tvCardExpiration?.let { show.subscribe(it) }
 
         tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
@@ -75,7 +82,7 @@ class ShowFragment : Fragment(R.layout.show_layout), OnCardAliasChangeListener {
             }
         })
         tvCardNumber?.setOnClickListener {
-            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+            tvCardNumber?.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
         mbRequest?.setOnClickListener {
             pbReveal?.setVisible(true)

@@ -3,8 +3,11 @@ package com.verygoodsecurity.demoshow.ui.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -14,6 +17,8 @@ import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
@@ -22,27 +27,35 @@ import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import kotlinx.android.synthetic.main.collect_layout.*
-import kotlinx.android.synthetic.main.show_layout.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
+class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_show),
+    VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID)
-            .setEnvironment(VGSEnvironment.Sandbox())
-            .setHostname(COLLECT_CUSTOM_HOSTNAME)
-            .build()
+        VGSShow.Builder(this, TENANT_ID).setEnvironment(VGSEnvironment.Sandbox())
+            .setHostname(COLLECT_CUSTOM_HOSTNAME).build()
     }
 
     private val vgsForm: VGSCollect by lazy {
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
+    private val tvCardNumber: VGSTextView? by lazy { findViewById(R.id.tvCardNumber) }
+    private val tvCardExpiration: VGSTextView? by lazy { findViewById(R.id.tvCardExpiration) }
+    private val tvExpDateAlias: TextView? by lazy { findViewById(R.id.tvExpDateAlias) }
+    private val tvCardNumberAlias: TextView? by lazy { findViewById(R.id.tvCardNumberAlias) }
+    private val pbReveal: ProgressBar? by lazy { findViewById(R.id.pbReveal) }
+    private val mbRequest: MaterialButton? by lazy { findViewById(R.id.mbRequest) }
+    private val mbSetSecureText: MaterialButton? by lazy { findViewById(R.id.mbSetSecureText) }
+    private val etCardNumber: VGSCardNumberEditText? by lazy { findViewById(R.id.etCardNumber) }
+    private val etExpDate: ExpirationDateEditText? by lazy { findViewById(R.id.etExpDate) }
+    private val pbSubmit: ProgressBar? by lazy { findViewById(R.id.pbReveal) }
+    private val mbSubmit: MaterialButton? by lazy { findViewById(R.id.mbSubmit) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_collect_and_show)
         setupCollect()
         setupShow()
     }
@@ -107,8 +120,8 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
         VGSShowLogger.isEnabled = true
         VGSShowLogger.level = VGSShowLogger.Level.DEBUG
         showVgs.addOnResponseListener(this)
-        showVgs.subscribe(tvCardNumber)
-        showVgs.subscribe(tvCardExpiration)
+        tvCardNumber?.let { showVgs.subscribe(it) }
+        tvCardExpiration?.let { showVgs.subscribe(it) }
 
         tvCardNumber?.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
@@ -132,7 +145,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
             }
         })
         tvCardNumber?.setOnClickListener {
-            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+            tvCardNumber?.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
         mbRequest?.setOnClickListener {
             revealData()
