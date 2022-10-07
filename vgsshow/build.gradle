@@ -51,8 +51,8 @@ dependencies {
     compileOnly 'com.verygoodsecurity:android-pdf-viewer:1.0.0'
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation "org.mockito:mockito-core:3.10.0"
+    testImplementation "org.mockito:mockito-inline:3.10.0"
     testImplementation 'org.json:json:20210307'
     testImplementation "org.robolectric:robolectric:4.5.1"
     testImplementation "io.mockk:mockk:1.10.0"
