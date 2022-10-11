@@ -27,13 +27,6 @@ class CollectFragment : Fragment(R.layout.collect_layout) {
         VGSCollect(requireContext(), MainActivity.TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
-    private val etCardNumber: VGSCardNumberEditText? by lazy { view?.findViewById(R.id.etCardNumber) }
-    private val tvExpDateAlias: TextView? by lazy { view?.findViewById(R.id.tvExpDateAlias) }
-    private val etExpDate: ExpirationDateEditText? by lazy { view?.findViewById(R.id.etExpDate) }
-    private val tvCardNumberAlias: TextView? by lazy { view?.findViewById(R.id.tvCardNumberAlias) }
-    private val pbSubmit: ProgressBar? by lazy { view?.findViewById(R.id.pbReveal) }
-    private val mbSubmit: MaterialButton? by lazy { view?.findViewById(R.id.mbSubmit) }
-
     private var aliasChangeListener: OnCardAliasChangeListener? = null
 
     private lateinit var pbSubmit: ProgressBar
