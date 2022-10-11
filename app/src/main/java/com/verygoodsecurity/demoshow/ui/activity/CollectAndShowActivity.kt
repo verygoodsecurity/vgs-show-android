@@ -12,7 +12,6 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.COLLECT_CUSTOM_HOSTNAME
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -30,32 +29,33 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import org.json.JSONException
 import org.json.JSONObject
 
-class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_show),
-    VGSOnResponseListener {
+class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID).setEnvironment(VGSEnvironment.Sandbox())
-            .setHostname(COLLECT_CUSTOM_HOSTNAME).build()
+        VGSShow.Builder(this, TENANT_ID)
+            .setEnvironment(VGSEnvironment.Sandbox())
+            .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
-    private val tvCardNumber: VGSTextView? by lazy { findViewById(R.id.tvCardNumber) }
-    private val tvCardExpiration: VGSTextView? by lazy { findViewById(R.id.tvCardExpiration) }
-    private val tvExpDateAlias: TextView? by lazy { findViewById(R.id.tvExpDateAlias) }
-    private val tvCardNumberAlias: TextView? by lazy { findViewById(R.id.tvCardNumberAlias) }
-    private val pbReveal: ProgressBar? by lazy { findViewById(R.id.pbReveal) }
-    private val mbRequest: MaterialButton? by lazy { findViewById(R.id.mbRequest) }
-    private val mbSetSecureText: MaterialButton? by lazy { findViewById(R.id.mbSetSecureText) }
-    private val etCardNumber: VGSCardNumberEditText? by lazy { findViewById(R.id.etCardNumber) }
-    private val etExpDate: ExpirationDateEditText? by lazy { findViewById(R.id.etExpDate) }
-    private val pbSubmit: ProgressBar? by lazy { findViewById(R.id.pbReveal) }
-    private val mbSubmit: MaterialButton? by lazy { findViewById(R.id.mbSubmit) }
+    private val tvCardNumber: VGSTextView by lazy { findViewById(R.id.tvCardNumber) }
+    private val tvCardExpiration: VGSTextView by lazy { findViewById(R.id.tvCardExpiration) }
+    private val etCardNumber: VGSCardNumberEditText by lazy { findViewById(R.id.etCardNumber) }
+    private val tvCardNumberAlias: TextView by lazy { findViewById(R.id.tvCardNumberAlias) }
+    private val tvExpDateAlias: TextView by lazy { findViewById(R.id.tvExpDateAlias) }
+    private val etExpDate: ExpirationDateEditText by lazy { findViewById(R.id.etExpDate) }
+    private val pbReveal: ProgressBar by lazy { findViewById(R.id.pbReveal) }
+    private val pbSubmit: ProgressBar by lazy { findViewById(R.id.pbSubmit) }
+    private val mbSubmit: MaterialButton by lazy { findViewById(R.id.mbSubmit) }
+    private val mbRequest: MaterialButton by lazy { findViewById(R.id.mbRequest) }
+    private val mbSetSecureText: MaterialButton by lazy { findViewById(R.id.mbSetSecureText) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_collect_and_show)
         setupCollect()
         setupShow()
     }
@@ -67,7 +67,7 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
     }
 
     private fun revealData() {
-        pbReveal?.visibility = View.VISIBLE
+        pbReveal.visibility = View.VISIBLE
         showVgs.requestAsync(
             VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                 mapOf(
@@ -79,7 +79,7 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
     }
 
     override fun onResponse(response: VGSResponse) {
-        pbReveal?.visibility = View.GONE
+        pbReveal.visibility = View.GONE
         Log.d(CollectAndShowActivity::class.simpleName, response.toString())
     }
 
@@ -87,18 +87,18 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
     private var revealAlias2: String = ""
 
     private fun setupCollect() {
-        mbSubmit?.setOnClickListener {
-            pbSubmit?.visibility = View.VISIBLE
-            etCardNumber?.isEnabled = false
-            etExpDate?.isEnabled = false
+        mbSubmit.setOnClickListener {
+            pbSubmit.visibility = View.VISIBLE
+            etCardNumber.isEnabled = false
+            etExpDate.isEnabled = false
             vgsForm.asyncSubmit("/post", HTTPMethod.POST)
         }
 
         vgsForm.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
-                pbSubmit?.visibility = View.GONE
-                etCardNumber?.isEnabled = true
-                etExpDate?.isEnabled = true
+                pbSubmit.visibility = View.GONE
+                etCardNumber.isEnabled = true
+                etExpDate.isEnabled = true
 
                 try {
                     val json = when (response) {
@@ -120,21 +120,21 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
         VGSShowLogger.isEnabled = true
         VGSShowLogger.level = VGSShowLogger.Level.DEBUG
         showVgs.addOnResponseListener(this)
-        tvCardNumber?.let { showVgs.subscribe(it) }
-        tvCardExpiration?.let { showVgs.subscribe(it) }
+        showVgs.subscribe(tvCardNumber)
+        showVgs.subscribe(tvCardExpiration)
 
-        tvCardNumber?.addTransformationRegex(
+        tvCardNumber.addTransformationRegex(
             "(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(),
             "\$1-\$2-\$3-\$4"
         )
-        tvCardNumber?.addTransformationRegex("-".toRegex(), " - ")
+        tvCardNumber.addTransformationRegex("-".toRegex(), " - ")
 
-        tvCardNumber?.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
+        tvCardNumber.setOnTextChangeListener(object : VGSTextView.OnTextChangedListener {
             override fun onTextChange(view: VGSTextView, isEmpty: Boolean) {
                 Log.d(MainActivity::class.simpleName, "textIsEmpty: $isEmpty")
             }
         })
-        tvCardNumber?.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
+        tvCardNumber.addOnCopyTextListener(object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 Toast.makeText(
@@ -144,19 +144,19 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
                 ).show()
             }
         })
-        tvCardNumber?.setOnClickListener {
-            tvCardNumber?.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+        tvCardNumber.setOnClickListener {
+            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
-        mbRequest?.setOnClickListener {
+        mbRequest.setOnClickListener {
             revealData()
         }
-        mbSetSecureText?.setOnClickListener {
-            if (tvCardNumber?.isSecureText == true) {
-                tvCardNumber?.isSecureText = false
-                mbSetSecureText?.text = "Set secure"
+        mbSetSecureText.setOnClickListener {
+            if (tvCardNumber.isSecureText) {
+                tvCardNumber.isSecureText = false
+                mbSetSecureText.text = "Set secure"
             } else {
-                tvCardNumber?.isSecureText = true
-                mbSetSecureText?.text = "Reset secure"
+                tvCardNumber.isSecureText = true
+                mbSetSecureText.text = "Reset secure"
             }
         }
     }
@@ -165,7 +165,7 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("expDate")) {
                 it.getJSONObject("json").getString("expDate").let { date ->
-                    tvExpDateAlias?.text = date
+                    tvExpDateAlias.text = date
                     revealAlias2 = date
                 }
             }
@@ -176,7 +176,7 @@ class CollectAndShowActivity : AppCompatActivity(R.layout.activity_collect_and_s
         json?.let {
             if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
                 it.getJSONObject("json").getString("cardNumber").let { number ->
-                    tvCardNumberAlias?.text = number
+                    tvCardNumberAlias.text = number
                     revealAlias = number
                 }
             }

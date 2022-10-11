@@ -20,15 +20,13 @@ class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_c
     private var cardNumberAlias: String = ""
     private var expirationDateAlias: String = ""
 
-    private val vpVGSViewPagerActivity: ViewPager2? by lazy { findViewById(R.id.vpVGSViewPagerActivity) }
+    private val vpVGSViewPagerActivity: ViewPager2 by lazy { findViewById(R.id.vpVGSViewPagerActivity) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewPager()
     }
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Deprecated in Java")
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
         if (fragment is OnCardAliasChangeListener) {
@@ -44,7 +42,7 @@ class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_c
     }
 
     private fun initViewPager() {
-        vpVGSViewPagerActivity?.adapter = VGSShowFragmentsAdapter(this)
+        vpVGSViewPagerActivity.adapter = VGSShowFragmentsAdapter(this)
     }
 
     private inner class VGSShowFragmentsAdapter constructor(fa: FragmentActivity) :

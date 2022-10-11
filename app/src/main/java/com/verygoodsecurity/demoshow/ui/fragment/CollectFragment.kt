@@ -36,6 +36,13 @@ class CollectFragment : Fragment(R.layout.collect_layout) {
 
     private var aliasChangeListener: OnCardAliasChangeListener? = null
 
+    private lateinit var pbSubmit: ProgressBar
+    private lateinit var mbSubmit: MaterialButton
+    private lateinit var etCardNumber: VGSCardNumberEditText
+    private lateinit var etExpDate: ExpirationDateEditText
+    private lateinit var tvCardNumberAlias: TextView
+    private lateinit var tvExpDateAlias: TextView
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is OnCardAliasChangeListener) {
@@ -45,18 +52,28 @@ class CollectFragment : Fragment(R.layout.collect_layout) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews(view)
         setupCollect()
+    }
+
+    private fun initViews(view: View) {
+        pbSubmit = view.findViewById(R.id.pbSubmit)
+        mbSubmit = view.findViewById(R.id.mbSubmit)
+        etCardNumber = view.findViewById(R.id.etCardNumber)
+        etExpDate = view.findViewById(R.id.etExpDate)
+        tvCardNumberAlias = view.findViewById(R.id.tvCardNumberAlias)
+        tvExpDateAlias = view.findViewById(R.id.tvExpDateAlias)
     }
 
     private fun setupCollect() {
 
         fun setLoading(isLoading: Boolean) {
-            pbSubmit?.setVisible(isLoading)
-            etCardNumber?.isEnabled = !isLoading
-            etExpDate?.isEnabled = !isLoading
+            pbSubmit.setVisible(isLoading)
+            etCardNumber.isEnabled = !isLoading
+            etExpDate.isEnabled = !isLoading
         }
 
-        mbSubmit?.setOnClickListener {
+        mbSubmit.setOnClickListener {
             setLoading(true)
             collect.asyncSubmit("/post", HTTPMethod.POST)
         }
@@ -69,8 +86,8 @@ class CollectFragment : Fragment(R.layout.collect_layout) {
                     with(JSONObject((response as? CollectSuccessResponse)?.rawResponse ?: "")) {
                         val cardNumberAlias = parseAlias(this, "cardNumber")
                         val expirationDateAlias = parseAlias(this, "expDate")
-                        tvCardNumberAlias?.text = cardNumberAlias
-                        tvExpDateAlias?.text = expirationDateAlias
+                        tvCardNumberAlias.text = cardNumberAlias
+                        tvExpDateAlias.text = expirationDateAlias
                         aliasChangeListener?.onAliasChange(cardNumberAlias, expirationDateAlias)
                     }
                 } catch (e: Exception) {

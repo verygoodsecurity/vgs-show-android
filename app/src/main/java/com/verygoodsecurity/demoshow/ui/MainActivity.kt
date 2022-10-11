@@ -20,25 +20,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        findViewById<MaterialButton>(R.id.btnStartActivityMain)?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartActivityMain).setOnClickListener {
             startActivity(Intent(this, CollectAndShowActivity::class.java))
         }
-        findViewById<MaterialButton>(R.id.btnStartFragmentMain)?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartFragmentMain).setOnClickListener {
             startActivity(Intent(this, CollectAndShowFragmentActivity::class.java))
         }
-        findViewById<MaterialButton>(R.id.btnStartViewPagerMain)?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartViewPagerMain).setOnClickListener {
             startActivity(Intent(this, VGSShowViewPagerActivity::class.java))
         }
-        findViewById<MaterialButton>(R.id.btnStartRevelPDF)?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartRevelPDF).setOnClickListener {
             startActivity(Intent(this, PDFActivity::class.java))
         }
     }
 
     companion object {
 
-        const val TENANT_ID = "tntpszqgikn"
+        const val TENANT_ID = "<TENANT_ID>"
         const val ENVIRONMENT = "sandbox"
-        const val COLLECT_CUSTOM_HOSTNAME = "collect-android-testing.verygoodsecurity.io/test"
     }
 }
 
