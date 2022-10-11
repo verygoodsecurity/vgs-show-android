@@ -1,7 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+}
 
 android {
     compileSdkVersion 33
@@ -40,25 +42,26 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
     // Http
-    api 'com.squareup.okhttp3:okhttp:4.10.0'
+    api libs.okHttp
 
     // PDF viewer.
     // NOTE: Used by VGSPDFView. Consumer should add this dependency by itself as it has big size.
-    compileOnly 'com.verygoodsecurity:android-pdf-viewer:1.0.0'
+    compileOnly libs.pdf.viewer
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:4.8.0"
-    testImplementation "org.mockito:mockito-inline:4.8.0"
-    testImplementation 'org.json:json:20220924'
-    testImplementation "org.robolectric:robolectric:4.8.2"
-    testImplementation "io.mockk:mockk:1.12.4"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
+    testImplementation testLibs.junit
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.mockito.inline
+    testImplementation testLibs.json
+    testImplementation testLibs.robolectric
+    testImplementation testLibs.mockk
+    testImplementation testLibs.mockk
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.espresso.core
+    androidTestImplementation androidTestLibs.androidx.runner
 }
 
 tasks.named("dokkaHtml") {
