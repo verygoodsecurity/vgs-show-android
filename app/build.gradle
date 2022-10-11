@@ -1,14 +1,16 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoshow"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -35,26 +37,25 @@ android {
 dependencies {
     implementation project(":vgsshow")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.constraintlayout
 
-    implementation 'com.verygoodsecurity:vgscollect:1.6.6'
+    implementation libs.verygoodsecurity.collect
 
-    implementation 'com.verygoodsecurity:android-pdf-viewer:1.0.0'
+    implementation libs.pdf.viewer
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test:rules:1.3.0'
-    androidTestImplementation 'androidx.test:core-ktx:1.3.0'
-    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
-    androidTestImplementation 'org.hamcrest:hamcrest-integration:1.3'
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
+    testImplementation testLibs.junit
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.junit.ext.ktx
+    androidTestImplementation androidTestLibs.androidx.runner
+    androidTestImplementation androidTestLibs.androidx.rules
+    androidTestImplementation androidTestLibs.androidx.core.ktx
+    androidTestImplementation androidTestLibs.androidx.uiautomator
+    androidTestImplementation androidTestLibs.androidx.espresso.intents
+    androidTestImplementation androidTestLibs.androidx.espresso.core
+    androidTestImplementation androidTestLibs.hamcrest.integration
+    androidTestImplementation(androidTestLibs.support.espresso.contrib) {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude module: 'support-annotations'
         exclude module: 'support-v4'
