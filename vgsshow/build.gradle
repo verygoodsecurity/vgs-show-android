@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'org.jetbrains.dokka'
     id 'com.vanniktech.maven.publish'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -39,6 +40,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.circleci/detekt.yml")
 }
 
 dependencies {
