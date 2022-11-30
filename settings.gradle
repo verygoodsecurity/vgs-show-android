@@ -11,7 +11,7 @@ dependencyResolutionManagement {
             library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.22.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.7.10')
-            library('detect', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0')
+            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0')
         }
         libs {
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.1')
