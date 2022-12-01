@@ -45,7 +45,7 @@ android {
 detekt {
     buildUponDefaultConfig = false
     allRules = false
-    config = files("$project.rootDir/.circleci/detekt.yml")
+    config = files("$project.rootDir/.detect/config.yml")
 }
 
 dependencies {
