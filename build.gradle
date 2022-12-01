@@ -8,6 +8,7 @@ buildscript {
         classpath gradlePlugins.kotlin
         classpath gradlePlugins.maven.publish
         classpath gradlePlugins.dokka
+        classpath gradlePlugins.detekt
     }
 }
 
