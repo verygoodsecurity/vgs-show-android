@@ -38,7 +38,7 @@ android {
 detekt {
     buildUponDefaultConfig = false
     allRules = false
-    config = files("$project.rootDir/.detect/config.yml")
+    config = files("$project.rootDir/.detekt/config.yml")
 }
 
 dependencies {
