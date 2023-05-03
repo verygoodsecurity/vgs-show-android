@@ -89,6 +89,8 @@ class ShowRecyclerViewActivity : AppCompatActivity(R.layout.activity_show_recycl
         for (i in 1..10) {
             add(OtherItem(i, "Test text"))
         }
+        // Only one ShowItem can be added to RecyclerView at this moment, because currently there is no
+        // possibility to reset text in view after recycling.
         add(ShowItem(11, "tok_sandbox_jRQAuK76GMGu3d5Q78JuJP"))
         for (i in 12..100) {
             add(OtherItem(i, "Test text"))
