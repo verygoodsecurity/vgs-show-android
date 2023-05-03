@@ -168,8 +168,8 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private fun parseDateAlias(json: JSONObject?) {
         json?.let {
-            if (it.has("json") && it.getJSONObject("json").has("expDate")) {
-                it.getJSONObject("json").getString("expDate").let { date ->
+            if (it.has("json") && it.getJSONObject("json").has("card_expirationDate")) {
+                it.getJSONObject("json").getString("card_expirationDate").let { date ->
                     tvExpDateAlias.text = date
                     revealAlias2 = date
                 }
@@ -179,8 +179,8 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private fun parseNumberAlias(json: JSONObject?) {
         json?.let {
-            if (it.has("json") && it.getJSONObject("json").has("cardNumber")) {
-                it.getJSONObject("json").getString("cardNumber").let { number ->
+            if (it.has("json") && it.getJSONObject("json").has("card_number")) {
+                it.getJSONObject("json").getString("card_number").let { number ->
                     tvCardNumberAlias.text = number
                     revealAlias = number
                 }
