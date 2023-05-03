@@ -12,7 +12,7 @@ import com.verygoodsecurity.demoshow.ui.fragment.ShowFragment
 
 private const val PAGES_COUNT = 2
 
-class VGSShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_collect_and_show),
+class ShowViewPagerActivity : AppCompatActivity(R.layout.activity_viewpager_collect_and_show),
     OnCardAliasChangeListener {
 
     private var aliasChangeListener: OnCardAliasChangeListener? = null
