@@ -227,6 +227,7 @@ class VGSShow private constructor(
     /**
      * Apply previously stored [VGSResponse.Success]. This function interact with UI and should bu called from main thread.
      */
+    @MainThread
     fun applyResponse(response: VGSResponse.Success) {
         updateViews(response)
     }
