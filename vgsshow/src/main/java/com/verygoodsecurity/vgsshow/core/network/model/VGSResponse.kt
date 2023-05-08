@@ -1,22 +1,25 @@
 package com.verygoodsecurity.vgsshow.core.network.model
 
+import android.os.Parcelable
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
+import kotlinx.parcelize.Parcelize
 
 /**
  * The base class definition for a VGSShow response states.
  *
  * @property code The response code from server.
  *
- * @version 1.0.0
+ * @version 1.0.1
  */
-sealed class VGSResponse {
+sealed class VGSResponse : Parcelable {
 
     abstract val code: Int
 
     /**
      * The class definition for a success response state.
      */
+    @Parcelize
     class Success private constructor(
         override val code: Int,
         internal val data: ResponseData
@@ -33,6 +36,7 @@ sealed class VGSResponse {
     /**
      * The class definition for an error response state.
      */
+    @Parcelize
     class Error private constructor(
         override val code: Int,
         val message: String?

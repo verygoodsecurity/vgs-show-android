@@ -225,6 +225,13 @@ class VGSShow private constructor(
     }
 
     /**
+     * Apply previously stored [VGSResponse.Success]. This function interact with UI and should bu called from main thread.
+     */
+    fun applyResponse(response: VGSResponse.Success) {
+        updateViews(response)
+    }
+
+    /**
      * Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.
      *
      * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
@@ -405,9 +412,13 @@ class VGSShow private constructor(
 
     private fun handleResponse(response: VGSResponse) {
         mainHandler.post {
-            viewsStore.update((response as? VGSResponse.Success)?.data)
+            updateViews(response)
             notifyResponseListeners(response)
         }
+    }
+
+    private fun updateViews(response: VGSResponse) {
+        viewsStore.update((response as? VGSResponse.Success)?.data)
     }
 
     private fun logRequestEvent(request: VGSRequest) {
