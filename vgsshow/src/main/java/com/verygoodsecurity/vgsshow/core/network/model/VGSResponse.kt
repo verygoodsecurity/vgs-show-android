@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
  *
  * @version 1.0.1
  */
-sealed class VGSResponse : Parcelable {
+sealed class VGSResponse {
 
     abstract val code: Int
 
@@ -23,7 +23,7 @@ sealed class VGSResponse : Parcelable {
     class Success private constructor(
         override val code: Int,
         internal val data: ResponseData
-    ) : VGSResponse() {
+    ) : VGSResponse(), Parcelable {
 
         override fun toString() = "Code: $code"
 
@@ -36,7 +36,6 @@ sealed class VGSResponse : Parcelable {
     /**
      * The class definition for an error response state.
      */
-    @Parcelize
     class Error private constructor(
         override val code: Int,
         val message: String?
