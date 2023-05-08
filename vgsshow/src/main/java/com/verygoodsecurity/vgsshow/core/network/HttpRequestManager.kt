@@ -19,7 +19,6 @@ import com.verygoodsecurity.vgsshow.core.network.model.data.response.JsonRespons
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import org.json.JSONException
-import org.json.JSONObject
 import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
@@ -98,7 +97,7 @@ internal class HttpRequestManager(
     @Throws(Exception::class)
     internal fun parseResponseData(data: String, format: VGSHttpBodyFormat): ResponseData {
         return when (format) {
-            VGSHttpBodyFormat.JSON -> JsonResponseData(JSONObject(data))
+            VGSHttpBodyFormat.JSON -> JsonResponseData(data)
             VGSHttpBodyFormat.X_WWW_FORM_URLENCODED -> EmptyResponseData()
         }
     }

@@ -17,7 +17,9 @@
 
         <activity
             android:name="com.verygoodsecurity.demoshow.ui.MainActivity"
-            android:theme="@style/Splash">
+            android:theme="@style/Splash"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +31,7 @@
 
         <activity android:name=".ui.activity.CollectAndShowFragmentActivity" />
 
-        <activity android:name=".ui.activity.VGSShowViewPagerActivity" />
+        <activity android:name=".ui.activity.apply_response_demo.ApplyResponseDemoActivity" />
 
         <activity android:name=".ui.activity.PDFActivity" />
     </application>

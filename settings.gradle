@@ -1,3 +1,46 @@
 include ':vgsshow'
 include ':app'
-rootProject.name = "DemoShow"
+rootProject.name = "vgs-show-android"
+
+// Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
+// Currently dependabot doesn't recognize toml files and doesn't support versions references.
+dependencyResolutionManagement {
+    versionCatalogs {
+        gradlePlugins {
+            library('tools', 'com.android.tools.build:gradle:7.3.0')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10')
+            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.22.0')
+            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.7.10')
+            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0')
+        }
+        libs {
+            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.1')
+            library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
+            library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
+            library('okHttp', 'com.squareup.okhttp3:okhttp:4.10.0')
+            library('pdf-viewer', 'com.verygoodsecurity:android-pdf-viewer:1.0.0')
+            library('verygoodsecurity-collect', 'com.verygoodsecurity:vgscollect:1.7.3')
+        }
+        testLibs {
+            library('junit', 'junit:junit:4.13.2')
+            library('mockito-core', 'org.mockito:mockito-core:4.8.0')
+            library('mockito-inline', 'org.mockito:mockito-inline:4.8.0')
+            library('json', 'org.json:json:20220924')
+            library('robolectric', 'org.robolectric:robolectric:4.8.2')
+            library('mockk', 'io.mockk:mockk:1.12.4')
+        }
+        androidTestLibs {
+            library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.3')
+            library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.3')
+            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.4.0')
+            library('androidx-runner', 'androidx.test:runner:1.4.0')
+            library('androidx-rules', 'androidx.test:rules:1.4.0')
+            library('androidx-core-ktx', 'androidx.test:core-ktx:1.4.0')
+            library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
+            library('androidx-espresso-intents', 'androidx.test.espresso:espresso-intents:3.4.0')
+            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.4.0')
+            library('hamcrest-integration', 'org.hamcrest:hamcrest-integration:1.3')
+            library('support-espresso-contrib', 'com.android.support.test.espresso:espresso-contrib:3.0.2')
+        }
+    }
+}

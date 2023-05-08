@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="Sensitive data">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/editText"
+            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="sensitive_data" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/actionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:text="Collect"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

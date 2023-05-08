@@ -1,15 +1,18 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+    id 'io.gitlab.arturbosch.detekt'
+}
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -40,25 +43,35 @@ android {
     }
 }
 
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
+}
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
     // Http
-    api 'com.squareup.okhttp3:okhttp:4.9.1'
+    api libs.okHttp
 
     // PDF viewer.
     // NOTE: Used by VGSPDFView. Consumer should add this dependency by itself as it has big size.
-    compileOnly 'com.verygoodsecurity:android-pdf-viewer:1.0.0'
+    compileOnly libs.pdf.viewer
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.mockito:mockito-inline:$mockito_version"
-    testImplementation 'org.json:json:20210307'
-    testImplementation "org.robolectric:robolectric:4.5.1"
-    testImplementation "io.mockk:mockk:1.10.0"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
+    testImplementation testLibs.junit
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.mockito.inline
+    testImplementation testLibs.json
+    testImplementation testLibs.robolectric
+    testImplementation testLibs.mockk
+    testImplementation testLibs.mockk
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.espresso.core
+    androidTestImplementation androidTestLibs.androidx.runner
+}
+
+tasks.named("dokkaHtml") {
+    outputDirectory.set(rootProject.file('docs'))
 }

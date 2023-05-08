@@ -3,12 +3,12 @@ package com.verygoodsecurity.demoshow.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
 import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
-import com.verygoodsecurity.demoshow.ui.activity.VGSShowViewPagerActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,25 +20,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        btnStartActivityMain?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartActivityMain).setOnClickListener {
             startActivity(Intent(this, CollectAndShowActivity::class.java))
         }
-        btnStartFragmentMain?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartFragmentMain).setOnClickListener {
             startActivity(Intent(this, CollectAndShowFragmentActivity::class.java))
         }
-        btnStartViewPagerMain?.setOnClickListener {
-            startActivity(Intent(this, VGSShowViewPagerActivity::class.java))
+        findViewById<MaterialButton>(R.id.btnApplyResponseDemo).setOnClickListener {
+            startActivity(Intent(this, ApplyResponseDemoActivity::class.java))
         }
-        btnStartRevelPDF?.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnStartRevelPDF).setOnClickListener {
             startActivity(Intent(this, PDFActivity::class.java))
         }
     }
 
     companion object {
 
-        const val TENANT_ID = "tntpszqgikn"
+        const val TENANT_ID = "<TENANT_ID>"
         const val ENVIRONMENT = "sandbox"
-        const val COLLECT_CUSTOM_HOSTNAME = "collect-android-testing.verygoodsecurity.io/test"
     }
 }
 

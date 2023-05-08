@@ -1,23 +1,14 @@
 buildscript {
-    ext.kotlin_version = "1.5.10"
-    ext.dokka_version = '1.4.32'
-    ext.mockito_version = '3.10.0'
-
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
-        classpath 'com.google.gms:google-services:4.3.8'
+        classpath gradlePlugins.tools
+        classpath gradlePlugins.kotlin
+        classpath gradlePlugins.maven.publish
+        classpath gradlePlugins.dokka
+        classpath gradlePlugins.detekt
     }
 }
 
@@ -25,12 +16,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublish {
-            sonatypeHost = "S01"
-        }
     }
 }
 
