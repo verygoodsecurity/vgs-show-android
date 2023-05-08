@@ -1,11 +1,20 @@
+@file:Suppress("CanBeParameter")
+
 package com.verygoodsecurity.vgsshow.core.network.model.data.response
 
 import com.verygoodsecurity.vgsshow.util.extension.getValue
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+import org.json.JSONException
 import org.json.JSONObject
 
-internal class JsonResponseData constructor(
-    private val data: JSONObject
+@Parcelize
+internal class JsonResponseData @Throws(JSONException::class) constructor(
+    private val data: String
 ) : ResponseData {
 
-    override fun getValue(key: String) = data.getValue(key)
+    @IgnoredOnParcel
+    private val json = JSONObject(data)
+
+    override fun getValue(key: String) = json.getValue(key)
 }

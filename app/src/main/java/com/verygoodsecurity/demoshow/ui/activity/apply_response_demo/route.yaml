@@ -1,0 +1,76 @@
+data:
+  - attributes:
+      created_at: '2023-05-05T11:54:50'
+      destination_override_endpoint: 'https://echo.apps.verygood.systems'
+      entries:
+        - classifiers: {}
+          config:
+            condition: AND
+            rules:
+              - expression:
+                  field: PathInfo
+                  operator: matches
+                  type: string
+                  values:
+                    - /post
+              - expression:
+                  field: ContentType
+                  operator: equals
+                  type: string
+                  values:
+                    - application/json
+          id: 70f74cb6-ef83-4c78-a7a7-41d44ec55949
+          id_selector: null
+          operation: REDACT
+          operations: null
+          phase: REQUEST
+          public_token_generator: UUID
+          targets:
+            - body
+          token_manager: PERSISTENT
+          transformer: JSON_PATH
+          transformer_config:
+            - $.sensitive_data
+          transformer_config_map: null
+        - classifiers: {}
+          config:
+            condition: AND
+            rules:
+              - expression:
+                  field: PathInfo
+                  operator: matches
+                  type: string
+                  values:
+                    - /post
+              - expression:
+                  field: ContentType
+                  operator: equals
+                  type: string
+                  values:
+                    - application/json
+          id: 28ce6c72-90a7-4980-a7ee-7a00d0af4a45
+          id_selector: null
+          operation: ENRICH
+          operations: null
+          phase: REQUEST
+          public_token_generator: UUID
+          targets:
+            - body
+          token_manager: PERSISTENT
+          transformer: JSON_PATH
+          transformer_config:
+            - $.raw_sensitive_data
+          transformer_config_map: null
+      host_endpoint: (.*)\.verygoodproxy\.com
+      id: 7deb1544-54dc-4f8d-b915-6fa97c2649b5
+      ordinal: null
+      port: 80
+      protocol: http
+      source_endpoint: '*'
+      tags:
+        name: Redact-Reveal
+        source: RouteContainer
+      updated_at: '2023-05-05T11:54:50'
+    id: 7deb1544-54dc-4f8d-b915-6fa97c2649b5
+    type: rule_chain
+version: 1

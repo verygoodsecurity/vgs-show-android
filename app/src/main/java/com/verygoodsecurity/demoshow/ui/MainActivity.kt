@@ -8,7 +8,7 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
 import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
-import com.verygoodsecurity.demoshow.ui.activity.VGSShowViewPagerActivity
+import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btnStartFragmentMain).setOnClickListener {
             startActivity(Intent(this, CollectAndShowFragmentActivity::class.java))
         }
-        findViewById<MaterialButton>(R.id.btnStartViewPagerMain).setOnClickListener {
-            startActivity(Intent(this, VGSShowViewPagerActivity::class.java))
+        findViewById<MaterialButton>(R.id.btnApplyResponseDemo).setOnClickListener {
+            startActivity(Intent(this, ApplyResponseDemoActivity::class.java))
         }
         findViewById<MaterialButton>(R.id.btnStartRevelPDF).setOnClickListener {
             startActivity(Intent(this, PDFActivity::class.java))
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        const val TENANT_ID = "<TENANT_ID>"
+        const val TENANT_ID = "tntbc1s1nqj"
         const val ENVIRONMENT = "sandbox"
     }
 }

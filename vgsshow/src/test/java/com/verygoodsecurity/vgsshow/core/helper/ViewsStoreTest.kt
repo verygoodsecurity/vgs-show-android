@@ -6,7 +6,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers
-import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -19,12 +18,12 @@ class ViewsStoreTest {
     private val testView2 = mockk<VGSTextView>(relaxed = true)
 
     private val testResponseData = JsonResponseData(
-        JSONObject(
-            mapOf(
-                "number" to "1111",
-                "date" to "0000",
-            )
-        )
+           """
+               {
+                   "number": "1111",
+                   "date": "0000"
+               }
+           """.trimIndent()
     )
 
     @Before
