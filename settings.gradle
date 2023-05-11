@@ -15,7 +15,7 @@ dependencyResolutionManagement {
         }
         libs {
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.1')
-            library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
+            library('androidx-core-ktx', 'androidx.core:core-ktx:1.10.1')
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
             library('okHttp', 'com.squareup.okhttp3:okhttp:4.10.0')
             library('pdf-viewer', 'com.verygoodsecurity:android-pdf-viewer:1.0.0')
