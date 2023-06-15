@@ -16,5 +16,10 @@ enum class VGSFieldType {
     /**
      * User interface element to display reviled PDF content.
      */
-    PDF
+    PDF,
+
+    /**
+     * User interface element to display reviled images.
+     */
+    IMAGE
 }

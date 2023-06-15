@@ -111,7 +111,10 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    override fun createChildView() = AppCompatTextView(context)
+    override fun createChildView(
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) = AppCompatTextView(context)
 
     override fun saveState(state: Parcelable?) = VGSTextViewState(state).apply {
         this.text = view.text?.toString()

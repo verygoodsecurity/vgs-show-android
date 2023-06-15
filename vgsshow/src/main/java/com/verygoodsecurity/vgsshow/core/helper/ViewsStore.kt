@@ -5,6 +5,7 @@ import androidx.annotation.MainThread
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
 import com.verygoodsecurity.vgsshow.util.extension.logStartViewsUpdate
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
+import com.verygoodsecurity.vgsshow.widget.VGSImageView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
@@ -41,6 +42,7 @@ internal class ViewsStore {
                 when (view) {
                     is VGSTextView -> view.setText(revealedData)
                     is VGSPDFView -> view.render(Base64.decode(revealedData, Base64.NO_WRAP))
+                    is VGSImageView -> view.setImageByteArray(Base64.decode(revealedData, Base64.NO_WRAP))
                     else -> throw IllegalArgumentException("Not implemented yet!")
                 }
             }

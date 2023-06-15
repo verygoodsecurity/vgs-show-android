@@ -7,7 +7,7 @@
     <!-- Hint text color. -->
     <attr name="hintTextColor" format="color" />
 
-    <!--    Sets the text to be used for data transfer to VGS proxy.
+    <!-- Sets the text to be used for data transfer to VGS proxy.
          Usually, it is similar to field-name in JSON path in your inbound route filters.
          It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="contentPath" format="string" localization="suggested" />
@@ -32,7 +32,6 @@
     <!-- Color of text (usually same as colorForeground). -->
     <attr name="textColor" format="color" />
 
-
     <!-- Constrains the text to a single horizontally scrolling line
          instead of letting it wrap onto multiple lines, and advances
          focus instead of inserting a newline when you press the
@@ -47,51 +46,66 @@
          are supplied, the inputType flags will override the value of singleLine). } -->
     <attr name="singleLine" format="boolean" />
 
-
     <!-- Specifies how an object should position its content, on both the X and Y axes,
          within its own bounds.  -->
     <attr name="gravity">
+
         <!-- Push object to the top of its container, not changing its size. -->
         <flag name="top" value="0x30" />
+
         <!-- Push object to the bottom of its container, not changing its size. -->
         <flag name="bottom" value="0x50" />
+
         <!-- Push object to the left of its container, not changing its size. -->
         <flag name="left" value="0x03" />
+
         <!-- Push object to the right of its container, not changing its size. -->
         <flag name="right" value="0x05" />
+
         <!-- Place object in the vertical center of its container, not changing its size. -->
         <flag name="center_vertical" value="0x10" />
+
         <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
         <flag name="fill_vertical" value="0x70" />
+
         <!-- Place object in the horizontal center of its container, not changing its size. -->
         <flag name="center_horizontal" value="0x01" />
+
         <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
         <flag name="fill_horizontal" value="0x07" />
+
         <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
         <flag name="center" value="0x11" />
+
         <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
         <flag name="fill" value="0x77" />
+
         <!-- Additional option that can be set to have the top and/or bottom edges of
              the child clipped to its container's bounds.
              The clip will be based on the vertical gravity: a top gravity will clip the bottom
              edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
         <flag name="clip_vertical" value="0x80" />
+
         <!-- Additional option that can be set to have the left and/or right edges of
              the child clipped to its container's bounds.
              The clip will be based on the horizontal gravity: a left gravity will clip the right
              edge, a right gravity will clip the left edge, and neither will clip both edges. -->
         <flag name="clip_horizontal" value="0x08" />
+
         <!-- Push object to the beginning of its container, not changing its size. -->
         <flag name="start" value="0x00800003" />
+
         <!-- Push object to the end of its container, not changing its size. -->
         <flag name="end" value="0x00800005" />
     </attr>
 
-
     <!-- Default text typeface style. -->
     <attr name="textStyle">
+
         <flag name="normal" value="0" />
+
         <flag name="bold" value="1" />
+
         <flag name="italic" value="2" />
     </attr>
 
@@ -109,8 +123,10 @@
          indicated.  Setting this attribute to anything besides
          <var>none</var> also implies that the text is editable. -->
     <attr name="inputType">
+
         <!-- There is no content type.  The text is not editable. -->
         <enum name="none" value="0" />
+
         <!-- Just plain old text.  Corresponds to
              {@link android.text.InputType#TYPE_CLASS_TEXT} |
              {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
@@ -155,28 +171,44 @@
     <declare-styleable name="VGSView">
 
         <attr name="contentPath" />
+
         <attr name="ignoreField" />
     </declare-styleable>
 
     <declare-styleable name="VGSTextView">
 
         <attr name="hint" />
+
         <attr name="hintTextColor" />
+
         <attr name="contentPath" />
+
         <attr name="gravity" />
+
         <attr name="singleLine" />
+
         <attr name="textSize" />
+
         <attr name="enabled" />
+
         <attr name="textColor" />
+
         <attr name="textStyle" />
+
         <attr name="fontFamily" />
+
         <attr name="letterSpacing" />
+
         <attr name="inputType" />
+
         <attr name="textAppearance" />
 
         <attr name="isSecureText"/>
+
         <attr name="secureTextStart"/>
+
         <attr name="secureTextEnd"/>
+
         <attr name="secureTextSymbol"/>
     </declare-styleable>
 
@@ -199,5 +231,45 @@
 
         <!-- Spacing between pages in dp. -->
         <attr name="spacing" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="VGSImageView">
+
+        <!-- Controls how the image should be resized or moved to match the size
+             of this ImageView.  See {@link android.widget.ImageView.ScaleType} -->
+        <attr name="android:scaleType"/>
+
+        <!-- Set this to true if you want the ImageView to adjust its bounds
+             to preserve the aspect ratio of its drawable. -->
+        <attr name="android:adjustViewBounds"/>
+
+        <!-- An optional argument to supply a maximum width for this view.
+             See {see android.widget.ImageView#setMaxWidth} for details. -->
+        <attr name="android:maxWidth"/>
+
+        <!-- An optional argument to supply a maximum height for this view.
+             See {see android.widget.ImageView#setMaxHeight} for details. -->
+        <attr name="android:maxHeight"/>
+
+        <!-- If true, the image will be cropped to fit within its padding. -->
+        <attr name="android:cropToPadding"/>
+
+        <!-- The offset of the baseline within this view. See {see android.view.View#getBaseline}
+             for details -->
+        <attr name="android:baseline"/>
+
+        <!-- If true, the image view will be baseline aligned with based on its
+             bottom edge. -->
+        <attr name="android:baselineAlignBottom"/>
+
+        <!-- The tinting color for the image. By default, the tint will blend using SRC_ATOP mode.
+             Please note that for compatibility reasons, this is NOT consistent with the default
+             SRC_IN tint mode used by {@link android.widget.ImageView#setImageTintList} and by
+             similar tint attributes on other views. -->
+        <attr name="android:tint"/>
+
+        <!-- When a tint color is set, specifies its Porter-Duff blending mode. The
+             default value is src_in, which treats the drawable as an alpha mask. -->
+        <attr name="android:tintMode" />
     </declare-styleable>
 </resources>

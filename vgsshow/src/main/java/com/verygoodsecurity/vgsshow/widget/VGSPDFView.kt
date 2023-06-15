@@ -77,7 +77,10 @@ class VGSPDFView @JvmOverloads constructor(
 
     override fun getFieldType() = VGSFieldType.PDF
 
-    override fun createChildView() = PDFView(context, null)
+    override fun createChildView(
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) = PDFView(context, null)
 
     override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
         this.defaultPage = this@VGSPDFView.defaultPage
