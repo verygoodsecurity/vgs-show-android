@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,17 +68,19 @@
         android:id="@+id/viewDivider"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:visibility="visible"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llCollectContainer" />
 
-    <com.verygoodsecurity.vgsshow.widget.VGSPDFView
-        android:id="@+id/vgsPDFView"
+    <com.verygoodsecurity.vgsshow.widget.VGSImageView
+        android:id="@+id/vgsImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:contentPath="json.revealed_pdf"
+        android:src="@drawable/ic_amex_dark"
+        app:contentPath="json.revealed_image"
         app:layout_constraintBottom_toTopOf="@+id/mbReveal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
