@@ -15,7 +15,7 @@
     <!-- Ignore certain fields directly before revealing data. If true, revealed data will not be set in this field. -->
     <attr name="ignoreField" format="boolean" />
 
-   <!-- Font family (named by string or as a font resource reference) for the text. -->
+    <!-- Font family (named by string or as a font resource reference) for the text. -->
     <attr name="fontFamily" format="string" />
 
     <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
@@ -157,16 +157,16 @@
     <attr name="textAppearance" format="reference" />
 
     <!-- Determinate should text be replaced with special symbols. For ex. : 4111••••11111111-->
-    <attr name="isSecureText" format="boolean"/>
+    <attr name="isSecureText" format="boolean" />
 
     <!-- Start of text that should be replaced with special symbols.-->
-    <attr name="secureTextStart" format="integer"/>
+    <attr name="secureTextStart" format="integer" />
 
     <!-- End of text that should be replaced with special symbols.-->
-    <attr name="secureTextEnd" format="integer"/>
+    <attr name="secureTextEnd" format="integer" />
 
     <!-- Symbol that will be used as replacement for secured text.-->
-    <attr name="secureTextSymbol" format="string"/>
+    <attr name="secureTextSymbol" format="string" />
 
     <declare-styleable name="VGSView">
 
@@ -203,13 +203,13 @@
 
         <attr name="textAppearance" />
 
-        <attr name="isSecureText"/>
+        <attr name="isSecureText" />
 
-        <attr name="secureTextStart"/>
+        <attr name="secureTextStart" />
 
-        <attr name="secureTextEnd"/>
+        <attr name="secureTextEnd" />
 
-        <attr name="secureTextSymbol"/>
+        <attr name="secureTextSymbol" />
     </declare-styleable>
 
     <declare-styleable name="VGSPDFView">
@@ -237,36 +237,36 @@
 
         <!-- Controls how the image should be resized or moved to match the size
              of this ImageView.  See {@link android.widget.ImageView.ScaleType} -->
-        <attr name="android:scaleType"/>
+        <attr name="android:scaleType" />
 
         <!-- Set this to true if you want the ImageView to adjust its bounds
              to preserve the aspect ratio of its drawable. -->
-        <attr name="android:adjustViewBounds"/>
+        <attr name="android:adjustViewBounds" />
 
         <!-- An optional argument to supply a maximum width for this view.
              See {see android.widget.ImageView#setMaxWidth} for details. -->
-        <attr name="android:maxWidth"/>
+        <attr name="android:maxWidth" />
 
         <!-- An optional argument to supply a maximum height for this view.
              See {see android.widget.ImageView#setMaxHeight} for details. -->
-        <attr name="android:maxHeight"/>
+        <attr name="android:maxHeight" />
 
         <!-- If true, the image will be cropped to fit within its padding. -->
-        <attr name="android:cropToPadding"/>
+        <attr name="android:cropToPadding" />
 
         <!-- The offset of the baseline within this view. See {see android.view.View#getBaseline}
              for details -->
-        <attr name="android:baseline"/>
+        <attr name="android:baseline" />
 
         <!-- If true, the image view will be baseline aligned with based on its
              bottom edge. -->
-        <attr name="android:baselineAlignBottom"/>
+        <attr name="android:baselineAlignBottom" />
 
         <!-- The tinting color for the image. By default, the tint will blend using SRC_ATOP mode.
              Please note that for compatibility reasons, this is NOT consistent with the default
              SRC_IN tint mode used by {@link android.widget.ImageView#setImageTintList} and by
              similar tint attributes on other views. -->
-        <attr name="android:tint"/>
+        <attr name="android:tint" />
 
         <!-- When a tint color is set, specifies its Porter-Duff blending mode. The
              default value is src_in, which treats the drawable as an alpha mask. -->
