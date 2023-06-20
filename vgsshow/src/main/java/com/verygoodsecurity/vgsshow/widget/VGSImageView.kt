@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 /**
- * VGS basic View control that displays reviled images to the user.
+ * VGS basic View control that displays revealed images to the user.
  */
 class VGSImageView @JvmOverloads constructor(
     context: Context,

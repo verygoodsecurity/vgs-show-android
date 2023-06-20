@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransforma
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 /**
- * VGS basic View control that displays reviled content to the user.
+ * VGS basic View control that displays revealed content to the user.
  */
 class VGSTextView @JvmOverloads constructor(
     context: Context,
