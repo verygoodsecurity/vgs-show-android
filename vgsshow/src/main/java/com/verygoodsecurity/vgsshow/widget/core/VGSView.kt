@@ -115,7 +115,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * Sets the text to be used for data transfer between field and VGS proxy. Usually,
      * it is similar to field-name in JSON path in your inbound route filters.
      *
-     * @param name the name of the field
+     * @param name The name of the field.
      */
     fun setContentPath(name: String?) {
         this.contentPath = name
@@ -125,7 +125,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * Sets the text to be used for data transfer between field and VGS proxy. Usually,
      * it is similar to field-name in JSON path in your inbound route filters.
      *
-     * @param id the resource identifier of the field name
+     * @param id The resource identifier of the field name.
      */
     @Throws(Resources.NotFoundException::class)
     fun setContentPath(@StringRes id: Int) {

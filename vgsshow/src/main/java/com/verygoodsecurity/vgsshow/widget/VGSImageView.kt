@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -27,7 +28,7 @@ class VGSImageView @JvmOverloads constructor(
 
     init {
 
-        view.setImageBitmap(null)
+        clear()
     }
 
     override fun getFieldType() = VGSFieldType.IMAGE
@@ -261,8 +262,24 @@ class VGSImageView @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getImageTinMode(): PorterDuff.Mode? = view.imageTintMode
 
-    internal fun setImageByteArray(image: ByteArray) {
-        image.decodeBitmap()?.let { view.setImageBitmap(it) }
+    /**
+     * Check if image reveled.
+     *
+     * @return True if image reveled, false otherwise.
+     */
+    fun hasImage(): Boolean {
+        return (view.drawable as? BitmapDrawable)?.bitmap != null
+    }
+
+    /**
+     * Remove previously reveled image.
+     */
+    fun clear() {
+        view.setImageBitmap(null)
+    }
+
+    internal fun setImageByteArray(array: ByteArray) {
+        array.decodeBitmap()?.let { view.setImageBitmap(it) }
             ?: logWaring("Image is not valid!")
     }
 }
