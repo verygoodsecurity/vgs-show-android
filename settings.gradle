@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.5')
             library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.5')
             library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.4.0')
-            library('androidx-runner', 'androidx.test:runner:1.4.0')
+            library('androidx-runner', 'androidx.test:runner:1.5.2')
             library('androidx-rules', 'androidx.test:rules:1.4.0')
             library('androidx-core-ktx', 'androidx.test:core-ktx:1.4.0')
             library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
