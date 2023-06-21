@@ -14,7 +14,7 @@ dependencyResolutionManagement {
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0')
         }
         libs {
-            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.1')
+            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
             library('okHttp', 'com.squareup.okhttp3:okhttp:4.10.0')
