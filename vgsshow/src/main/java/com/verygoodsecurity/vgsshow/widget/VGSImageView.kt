@@ -260,7 +260,7 @@ class VGSImageView @JvmOverloads constructor(
      * @attr [R.styleable.VGSImageView_android_tintMode]
      */
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun getImageTinMode(): PorterDuff.Mode? = view.imageTintMode
+    fun getImageTintMode(): PorterDuff.Mode? = view.imageTintMode
 
     /**
      * Check if image reveled.
