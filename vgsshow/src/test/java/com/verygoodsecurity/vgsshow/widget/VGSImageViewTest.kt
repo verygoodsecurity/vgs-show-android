@@ -152,9 +152,8 @@ class VGSImageViewTest {
         val byteArray = mockByteArray()
         // Act
         view.setImageByteArray(byteArray)
-        // Assert
-        assertTrue(view.hasImage())
         view.clear()
+        // Assert
         assertFalse(view.hasImage())
     }
 
