@@ -236,10 +236,10 @@
     <declare-styleable name="VGSImageView">
 
         <!-- Controls how the image should be resized or moved to match the size
-             of this ImageView.  See {@link android.widget.ImageView.ScaleType} -->
+             of this view.  See {@link android.widget.ImageView.ScaleType} -->
         <attr name="android:scaleType" />
 
-        <!-- Set this to true if you want the ImageView to adjust its bounds
+        <!-- Set this to true if you want the view to adjust its bounds
              to preserve the aspect ratio of its drawable. -->
         <attr name="android:adjustViewBounds" />
 

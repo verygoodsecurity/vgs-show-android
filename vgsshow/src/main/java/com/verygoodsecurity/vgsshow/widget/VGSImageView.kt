@@ -11,14 +11,14 @@ import android.widget.ImageView.ScaleType
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import com.verygoodsecurity.vgsshow.R
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.util.extension.decodeBitmap
-import com.verygoodsecurity.vgsshow.util.extension.logWaring
+import com.verygoodsecurity.vgsshow.util.extension.logException
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 /**
- * VGS basic View control that displays revealed images to the user.
+ * VGS basic view control that displays revealed images to the user.
  */
 class VGSImageView @JvmOverloads constructor(
     context: Context,
@@ -30,6 +30,11 @@ class VGSImageView @JvmOverloads constructor(
 
         clear()
     }
+
+    /**
+     * @see OnLoadStateChangeListener
+     */
+    var onLoadStateChangeListener: OnLoadStateChangeListener? = null
 
     override fun getFieldType() = VGSFieldType.IMAGE
 
@@ -279,7 +284,41 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     internal fun setImageByteArray(array: ByteArray) {
-        array.decodeBitmap()?.let { view.setImageBitmap(it) }
-            ?: logWaring("Image is not valid!")
+        onLoadStateChangeListener?.onStart(this)
+        try {
+            view.setImageBitmap(array.decodeBitmap())
+            onLoadStateChangeListener?.onComplete(this)
+        } catch (e: VGSException.ImageNotValid) {
+            logException(e)
+            onLoadStateChangeListener?.onError(this, e)
+        }
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when image loading state changed.
+     */
+    interface OnLoadStateChangeListener {
+
+        /**
+         * Called when new image loading started.
+         *
+         * @param view This view.
+         */
+        fun onStart(view: VGSImageView)
+
+        /**
+         * Called when image loading completed.
+         *
+         * @param view This view.
+         */
+        fun onComplete(view: VGSImageView)
+
+        /**
+         * Called if image is not loaded.
+         *
+         * @param view This view.
+         * @param exception Reason why image is not loaded.
+         */
+        fun onError(view: VGSImageView, exception: VGSException)
     }
 }

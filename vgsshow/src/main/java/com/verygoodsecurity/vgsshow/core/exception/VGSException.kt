@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.core.exception
 
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 
-internal sealed class VGSException : Exception() {
+sealed class VGSException : Exception() {
 
     abstract val code: Int
 
@@ -11,12 +11,12 @@ internal sealed class VGSException : Exception() {
     override val message: String?
         get() = errorMessage
 
-    class Exception constructor(
+    internal class Custom constructor(
         override val code: Int = -1,
         override val errorMessage: String?
     ) : VGSException()
 
-    class UrlNotValid : VGSException() {
+    internal class UrlNotValid : VGSException() {
 
         override val code: Int
             get() = 1480
@@ -24,7 +24,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "URL Error: Not valid organization parameters"
     }
 
-    class NoInternetPermission : VGSException() {
+    internal class NoInternetPermission : VGSException() {
 
         override val code: Int
             get() = 1481
@@ -32,7 +32,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "Permission denied (missing INTERNET permission?)"
     }
 
-    class NoInternetConnection : VGSException() {
+    internal class NoInternetConnection : VGSException() {
 
         override val code: Int
             get() = 1482
@@ -40,7 +40,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "No Internet connection"
     }
 
-    class RequestTimeout : VGSException() {
+    internal class RequestTimeout : VGSException() {
 
         override val code: Int
             get() = 1483
@@ -48,7 +48,7 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "TimeoutException"
     }
 
-    class ResponsePayloadException : VGSException() {
+    internal class ResponsePayload : VGSException() {
 
         override val code: Int
             get() = 1401
@@ -56,11 +56,20 @@ internal sealed class VGSException : Exception() {
         override val errorMessage: String = "Unexpected Response Data Format"
     }
 
-    class RequestPayloadException constructor(httpPayloadFormat: VGSHttpBodyFormat): VGSException() {
+    internal class RequestPayload constructor(httpPayloadFormat: VGSHttpBodyFormat) :
+        VGSException() {
 
         override val code: Int
             get() = 1404
 
-        override val errorMessage: String = "${httpPayloadFormat.name} payload is invalid!"
+        override val errorMessage: String = "Payload is not valid  ${httpPayloadFormat.name}"
+    }
+
+    class ImageNotValid : VGSException() {
+
+        override val code: Int
+            get() = 1407
+
+        override val errorMessage: String = "Base64 data is not valid image"
     }
 }
