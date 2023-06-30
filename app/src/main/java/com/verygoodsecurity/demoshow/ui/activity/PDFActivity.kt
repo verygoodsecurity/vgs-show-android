@@ -122,7 +122,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
             flProgress.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("revealed_pdf" to "tok_sandbox_axTwt7EZLMHnTTFd8Ttaqe"))
+                    .body(mapOf("revealed_pdf" to ""))
                     .build()
             )
         }

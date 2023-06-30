@@ -94,7 +94,7 @@ class ImageActivity : AppCompatActivity(R.layout.activity_image),
             flProgress.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("revealed_image" to (tvFileAlias.text ?: "tok_sandbox_9tXw3pQdLUq25Lm4bVpMkC")))
+                    .body(mapOf("revealed_image" to (tvFileAlias.text ?: "")))
                     .build()
             )
         }
