@@ -4,7 +4,7 @@ aliases:
   - &environment
     working_directory: ~/code
     docker:
-      - image: cimg/android:2023.03.1
+      - image: cimg/android:2023.06.1
     environment:
       JVM_OPTS: -Xmx3200m
 
