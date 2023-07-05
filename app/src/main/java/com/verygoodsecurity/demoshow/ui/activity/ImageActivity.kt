@@ -12,7 +12,6 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
 import com.verygoodsecurity.demoshow.ui.ShowResponse
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -21,20 +20,21 @@ import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
-import com.verygoodsecurity.vgsshow.widget.VGSPDFView
+import com.verygoodsecurity.vgsshow.widget.VGSImageView
 import org.json.JSONObject
 
-class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnResponseListener {
+class ImageActivity : AppCompatActivity(R.layout.activity_image),
+    VgsCollectResponseListener, VGSOnResponseListener {
 
     private val show: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID).build()
+        VGSShow.Builder(this, MainActivity.TENANT_ID).build()
     }
 
     private val collect: VGSCollect by lazy {
-        VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
+        VGSCollect(this, MainActivity.TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
-    private val vgsPDFView: VGSPDFView by lazy { findViewById(R.id.vgsPDFView) }
+    private val vgsImageView: VGSImageView by lazy { findViewById(R.id.vgsImageView) }
     private val flProgress: FrameLayout by lazy { findViewById(R.id.flProgress) }
     private val tvFileAlias: TextView by lazy { findViewById(R.id.tvFileAlias) }
     private val tvFileName: TextView by lazy { findViewById(R.id.tvFileName) }
@@ -44,17 +44,11 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pdf)
         setupCollect()
         setupShow()
     }
 
-    override fun onDestroy() {
-        collect.onDestroy()
-        show.onDestroy()
-        super.onDestroy()
-    }
-
+    @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         collect.onActivityResult(requestCode, resultCode, data)
@@ -66,11 +60,11 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         flProgress.visibility = View.GONE
         (response as? CollectSuccessResponse)?.rawResponse?.let {
             try {
-                JSONObject(it).getJSONObject("json").getString("pdf").run {
+                JSONObject(it).getJSONObject("json").getString("image").run {
                     tvFileAlias.text = this
                 }
             } catch (e: Exception) {
-                Log.d(PDFActivity::class.simpleName, e.message ?: "Invalid json or data not exist!")
+                Log.d(ImageActivity::class.simpleName, e.message ?: "Invalid json or data not exist!")
             }
         }
     }
@@ -84,7 +78,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         collect.addOnResponseListeners(this)
 
         mbAttachFile.setOnClickListener {
-            collect.getFileProvider().attachFile("pdf")
+            collect.getFileProvider().attachFile(this, "image")
         }
         mbSubmit.setOnClickListener {
             flProgress.visibility = View.VISIBLE
@@ -92,39 +86,23 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         }
     }
 
-    private fun updateAttachedFileName() {
-        collect.getFileProvider().getAttachedFiles().firstOrNull()?.let {
-            tvFileName.text = it.name
-        }
-    }
-
     private fun setupShow() {
-        show.subscribe(vgsPDFView)
+        show.subscribe(vgsImageView)
         show.addOnResponseListener(this)
-
-        vgsPDFView.addRenderingStateChangedListener(object :
-            VGSPDFView.OnRenderStateChangeListener {
-
-            override fun onStart(view: VGSPDFView, pages: Int) {
-                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onStart, p = $pages")
-            }
-
-            override fun onComplete(view: VGSPDFView, pages: Int) {
-                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onComplete, p = $pages")
-            }
-
-            override fun onError(view: VGSPDFView, t: Throwable) {
-                Log.d(PDFActivity::class.java.simpleName, "VGSPDFView::onError, t = $t")
-            }
-        })
 
         mbReveal.setOnClickListener {
             flProgress.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("revealed_pdf" to ""))
+                    .body(mapOf("revealed_image" to (tvFileAlias.text ?: "")))
                     .build()
             )
+        }
+    }
+
+    private fun updateAttachedFileName() {
+        collect.getFileProvider().getAttachedFiles().firstOrNull()?.let {
+            tvFileName.text = it.name
         }
     }
 }

@@ -54,7 +54,7 @@ class HttpRequestManagerTest {
         try {
             sut.parseResponse(testResponse, VGSHttpBodyFormat.JSON)
         } catch (e: Exception) {
-            assertTrue(e is VGSException.ResponsePayloadException)
+            assertTrue(e is VGSException.ResponsePayload)
         }
     }
 
@@ -115,6 +115,6 @@ class HttpRequestManagerTest {
         // Act
         val result = sut.parseException(exception)
         //Assert
-        assertTrue((result as VGSResponse.Error).code == VGSException.ResponsePayloadException().code)
+        assertTrue((result as VGSResponse.Error).code == VGSException.ResponsePayload().code)
     }
 }
