@@ -6,7 +6,8 @@ plugins {
 
 
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.demoshow'
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoshow"
