@@ -8,7 +8,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.vgsshow'
+    compileSdk 33
 
     defaultConfig {
         minSdkVersion 19
@@ -40,6 +41,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
