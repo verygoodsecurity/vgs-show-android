@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Hint text to display when the text is empty. -->
     <attr name="hint" format="string" localization="suggested" />
@@ -45,6 +45,21 @@
          inputType attribute instead for editable text views (if both singleLine and inputType
          are supplied, the inputType flags will override the value of singleLine). } -->
     <attr name="singleLine" format="boolean" />
+
+    <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
+    <attr name="contentDescription" format="string" localization="suggested" tools:override="true" />
+
+    <!-- Describes whether or not this view is important for accessibility. -->
+    <attr name="importantForAccessibility" format="integer">
+        <!-- The system determines whether the view is important for accessibility - default (recommended). -->
+        <enum name="auto" value="0" />
+        <!-- The view is important for accessibility. -->
+        <enum name="yes" value="1" />
+        <!-- The view is not important for accessibility. -->
+        <enum name="no" value="2" />
+        <!-- The view is not important for accessibility, nor are any of its descendant views. -->
+        <enum name="noHideDescendants" value="4" />
+    </attr>
 
     <!-- Specifies how an object should position its content, on both the X and Y axes,
          within its own bounds.  -->
@@ -173,6 +188,11 @@
         <attr name="contentPath" />
 
         <attr name="ignoreField" />
+
+        <attr name="contentDescription" />
+
+        <attr name="importantForAccessibility" />
+
     </declare-styleable>
 
     <declare-styleable name="VGSTextView">

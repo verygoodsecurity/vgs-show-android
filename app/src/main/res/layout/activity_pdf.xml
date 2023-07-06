@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,15 +52,6 @@
             android:text="Submit"
             tools:ignore="HardcodedText" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="VGS Collect SDK"
-            android:textColor="@android:color/black"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText,SpUsage" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View

@@ -147,6 +147,10 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
         tvCardNumber.setOnClickListener {
             tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
+
+        // Setup accessibility
+        tvCardNumber.contentDescription = "Revealed"
+
         mbRequest.setOnClickListener {
             revealData()
         }

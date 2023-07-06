@@ -45,6 +45,10 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         context.obtainStyledAttributes(attrs, R.styleable.VGSView).use {
             contentPath = it.getString(R.styleable.VGSView_contentPath)
             ignoreField = it.getBoolean(R.styleable.VGSView_ignoreField, false)
+
+            // Set accessibility properties
+            importantForAccessibility = it.getInteger(R.styleable.VGSView_importantForAccessibility, 0)
+            contentDescription = it.getString(R.styleable.VGSView_contentDescription)
         }
     }
 
@@ -138,6 +142,39 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * @return The text used by the field.
      */
     fun getContentPath(): String = contentPath ?: ""
+
+    /**
+     * Describes how to determinate if this input field is important for accessibility.
+     *
+     * @param mode Accessibility mode.
+     *
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+     *
+     * @attr [R.styleable.VGSView_importantForAccessibility]
+     */
+    override fun setImportantForAccessibility(mode: Int) {
+        // Update the value in the text view itself
+        view.importantForAccessibility = mode
+        // Disable accessibility in the container view
+        super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
+    }
+
+    /**
+     * Set the description of the purpose of the field. This is used for TalkBack and accessibility.
+     *
+     * @param contentDescription Content description.
+     *
+     * @see View.getContentDescription()
+     *
+     * @attr [R.styleable.VGSView_contentDescription]
+     */
+    override fun setContentDescription(contentDescription: CharSequence?) {
+        view.contentDescription = contentDescription
+        super.setContentDescription(contentDescription)
+    }
 
     companion object {
 
