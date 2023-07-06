@@ -149,7 +149,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
         }
 
         // Setup accessibility
-        tvCardNumber.contentDescription = "Revealed"
+        tvCardNumber.contentDescription = getString(R.string.card_number_desc)
 
         mbRequest.setOnClickListener {
             revealData()

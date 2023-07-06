@@ -46,21 +46,6 @@
          are supplied, the inputType flags will override the value of singleLine). } -->
     <attr name="singleLine" format="boolean" />
 
-    <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
-    <attr name="contentDescription" format="string" localization="suggested" tools:override="true" />
-
-    <!-- Describes whether or not this view is important for accessibility. -->
-    <attr name="importantForAccessibility" format="integer">
-        <!-- The system determines whether the view is important for accessibility - default (recommended). -->
-        <enum name="auto" value="0" />
-        <!-- The view is important for accessibility. -->
-        <enum name="yes" value="1" />
-        <!-- The view is not important for accessibility. -->
-        <enum name="no" value="2" />
-        <!-- The view is not important for accessibility, nor are any of its descendant views. -->
-        <enum name="noHideDescendants" value="4" />
-    </attr>
-
     <!-- Specifies how an object should position its content, on both the X and Y axes,
          within its own bounds.  -->
     <attr name="gravity">
@@ -189,9 +174,11 @@
 
         <attr name="ignoreField" />
 
-        <attr name="contentDescription" />
+        <!-- Describes whether or not this view is important for accessibility. -->
+        <attr name="android:importantForAccessibility"/>
 
-        <attr name="importantForAccessibility" />
+        <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
+        <attr name="android:contentDescription"/>
 
     </declare-styleable>
 

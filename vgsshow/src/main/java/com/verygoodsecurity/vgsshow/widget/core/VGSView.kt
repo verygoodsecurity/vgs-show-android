@@ -37,6 +37,9 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         this.id = View.generateViewId()
     }
 
+    protected var fieldImportantForAccessibilityMode: Int = 0
+    protected var fieldContentDescription: CharSequence? = null
+
     private var contentPath: String? = null
 
     var ignoreField: Boolean = false
@@ -45,10 +48,6 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         context.obtainStyledAttributes(attrs, R.styleable.VGSView).use {
             contentPath = it.getString(R.styleable.VGSView_contentPath)
             ignoreField = it.getBoolean(R.styleable.VGSView_ignoreField, false)
-
-            // Set accessibility properties
-            importantForAccessibility = it.getInteger(R.styleable.VGSView_importantForAccessibility, 0)
-            contentDescription = it.getString(R.styleable.VGSView_contentDescription)
         }
     }
 
@@ -153,12 +152,15 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
      *
-     * @attr [R.styleable.VGSView_importantForAccessibility]
+     * @attr [R.styleable.VGSView_android_importantForAccessibility]
      */
     override fun setImportantForAccessibility(mode: Int) {
-        // Update the value in the text view itself
-        view.importantForAccessibility = mode
-        // Disable accessibility in the container view
+        try {
+            view.importantForAccessibility = mode
+        } catch (e: Exception) {
+            // Do nothing since it is expected the view is null if the property is setup in layout
+        }
+        fieldImportantForAccessibilityMode = mode
         super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
     }
 
@@ -169,10 +171,15 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      *
      * @see View.getContentDescription()
      *
-     * @attr [R.styleable.VGSView_contentDescription]
+     * @attr [R.styleable.VGSView_android_contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
-        view.contentDescription = contentDescription
+        try {
+            view.contentDescription = contentDescription
+        } catch (e: Exception) {
+            // Do nothing since it is expected the view is null if the property is setup in layout
+        }
+        fieldContentDescription = contentDescription
         super.setContentDescription(contentDescription)
     }
 

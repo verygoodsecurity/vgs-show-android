@@ -100,7 +100,7 @@ class ImageActivity : AppCompatActivity(R.layout.activity_image),
         }
 
         // Setup accessibility
-        vgsImageView.contentDescription = "Image revealed"
+        vgsImageView.contentDescription = getString(R.string.image_desc)
     }
 
     private fun updateAttachedFileName() {

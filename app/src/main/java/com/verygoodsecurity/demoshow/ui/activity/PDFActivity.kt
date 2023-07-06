@@ -103,7 +103,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         show.addOnResponseListener(this)
 
         // Setup accessibility
-        vgsPDFView.contentDescription = "PDF revealed"
+        vgsPDFView.contentDescription = getString(R.string.pdf_desc)
 
         vgsPDFView.addRenderingStateChangedListener(object :
             VGSPDFView.OnRenderStateChangeListener {

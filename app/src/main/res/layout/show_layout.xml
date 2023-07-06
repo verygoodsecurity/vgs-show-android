@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="58dp"
-        app:contentDescription="Revealed"
+        android:contentDescription="@string/expiration_date_desc"
         app:contentPath="json.payment_card_expiration_date"
         app:hint="Expiration date"
         app:hintTextColor="@color/colorPrimary"
