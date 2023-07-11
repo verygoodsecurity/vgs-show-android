@@ -36,7 +36,7 @@ internal class HttpRequestManager(
     override fun execute(request: VGSRequest): VGSResponse {
         return try {
             if (request.isInvalidPayload()) {
-                return VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
+                return VGSException.RequestPayload(request.requestFormat).toVGSResponse()
             }
             val response = client.execute(request.toHttpRequest(baseUrl, headersStore.getAll()))
             parseResponse(response, request.responseFormat)
@@ -50,7 +50,7 @@ internal class HttpRequestManager(
     override fun enqueue(request: VGSRequest, callback: ((VGSResponse) -> Unit)?) {
         if (request.isInvalidPayload()) {
             callback?.invoke(
-                VGSException.RequestPayloadException(request.requestFormat).toVGSResponse()
+                VGSException.RequestPayload(request.requestFormat).toVGSResponse()
             )
             return
         }
@@ -87,7 +87,7 @@ internal class HttpRequestManager(
     internal fun parseResponse(response: HttpResponse, format: VGSHttpBodyFormat): VGSResponse {
         return with(response) {
             if (!isSuccessful) {
-                return@with VGSResponse.Error.create(VGSException.Exception(code, message))
+                return@with VGSResponse.Error.create(VGSException.Custom(code, message))
             }
             VGSResponse.Success.create(code, parseResponseData(responseBody ?: "", format))
         }
@@ -106,7 +106,7 @@ internal class HttpRequestManager(
     internal fun parseException(e: Exception): VGSResponse = (when (e) {
         is MalformedURLException -> VGSException.UrlNotValid()
         is InterruptedIOException, is TimeoutException -> VGSException.RequestTimeout()
-        is JSONException -> VGSException.ResponsePayloadException()
-        else -> VGSException.Exception(errorMessage = e.message)
+        is JSONException -> VGSException.ResponsePayload()
+        else -> VGSException.Custom(errorMessage = e.message)
     }).toVGSResponse()
 }

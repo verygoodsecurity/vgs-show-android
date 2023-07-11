@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransforma
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 /**
- * VGS basic View control that displays reviled content to the user.
+ * VGS basic View control that displays revealed content to the user.
  */
 class VGSTextView @JvmOverloads constructor(
     context: Context,
@@ -111,7 +111,10 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    override fun createChildView() = AppCompatTextView(context)
+    override fun createChildView(
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) = AppCompatTextView(context)
 
     override fun saveState(state: Parcelable?) = VGSTextViewState(state).apply {
         this.text = view.text?.toString()

@@ -27,13 +27,15 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      */
     abstract fun getFieldType(): VGSFieldType
 
-    protected abstract fun createChildView(): T
+    protected abstract fun createChildView(attrs: AttributeSet?, defStyleAttr: Int): T
 
     protected abstract fun saveState(state: Parcelable?): BaseSavedState?
 
     protected abstract fun restoreState(state: BaseSavedState)
 
-    protected val view: T = createChildView().apply { this.id = View.generateViewId() }
+    protected val view: T = createChildView(attrs, defStyleAttr).apply {
+        this.id = View.generateViewId()
+    }
 
     private var contentPath: String? = null
 
@@ -113,7 +115,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * Sets the text to be used for data transfer between field and VGS proxy. Usually,
      * it is similar to field-name in JSON path in your inbound route filters.
      *
-     * @param name the name of the field
+     * @param name The name of the field.
      */
     fun setContentPath(name: String?) {
         this.contentPath = name
@@ -123,7 +125,7 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * Sets the text to be used for data transfer between field and VGS proxy. Usually,
      * it is similar to field-name in JSON path in your inbound route filters.
      *
-     * @param id the resource identifier of the field name
+     * @param id The resource identifier of the field name.
      */
     @Throws(Resources.NotFoundException::class)
     fun setContentPath(@StringRes id: Int) {

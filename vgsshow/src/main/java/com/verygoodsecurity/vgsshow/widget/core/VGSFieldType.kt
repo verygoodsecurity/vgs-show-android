@@ -8,13 +8,18 @@ package com.verygoodsecurity.vgsshow.widget.core
 enum class VGSFieldType {
 
     /**
-     * VGS basic View control that displays reviled content to the user.
+     * VGS basic View control that displays revealed content to the user.
      * The input field has no limitations.
      */
     INFO,
 
     /**
-     * User interface element to display reviled PDF content.
+     * User interface element to display revealed PDF content.
      */
-    PDF
+    PDF,
+
+    /**
+     * User interface element to display revealed images.
+     */
+    IMAGE
 }

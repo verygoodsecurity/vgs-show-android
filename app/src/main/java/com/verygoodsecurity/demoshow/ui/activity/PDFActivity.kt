@@ -122,7 +122,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
             flProgress.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("payment_card_pdf" to (tvFileAlias.text ?: "")))
+                    .body(mapOf("revealed_pdf" to ""))
                     .build()
             )
         }
