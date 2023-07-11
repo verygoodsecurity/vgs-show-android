@@ -1,5 +1,12 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException.ImageNotValid///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/-image-not-valid/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException.ImageNotValid/ImageNotValid/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/-image-not-valid/-image-not-valid.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException.ImageNotValid/code/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/-image-not-valid/code.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException/code/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/code.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.exception/VGSException/message/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.exception/-v-g-s-exception/message.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.listener////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.listener/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.listener/VGSOnResponseListener///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.listener/-v-g-s-on-response-listener/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.listener/VGSOnResponseListener/onResponse/#com.verygoodsecurity.vgsshow.core.network.model.VGSResponse/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.listener/-v-g-s-on-response-listener/on-response.html
@@ -8,6 +15,8 @@ $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level.DEBUG
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level.NONE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/-level/-n-o-n-e/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level.WARN///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/-level/-w-a-r-n/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/-level/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level/valueOf/#kotlin.String/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/-level/value-of.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger.Level/values/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/-level/values.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger/isDebugEnabled/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/is-debug-enabled.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.logs/VGSShowLogger/isEnabled/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.logs/-v-g-s-show-logger/is-enabled.html
@@ -18,12 +27,16 @@ $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/BaseHttpClient/
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpBodyFormat.JSON///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-body-format/-j-s-o-n/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpBodyFormat.X_WWW_FORM_URLENCODED///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-body-format/-x_-w-w-w_-f-o-r-m_-u-r-l-e-n-c-o-d-e-d/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpBodyFormat///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-body-format/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpBodyFormat/valueOf/#kotlin.String/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-body-format/value-of.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpBodyFormat/values/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-body-format/values.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod.DELETE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/-d-e-l-e-t-e/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod.GET///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/-g-e-t/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod.PATCH///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/-p-a-t-c-h/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod.POST///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/-p-o-s-t/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod.PUT///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/-p-u-t/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod/valueOf/#kotlin.String/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/value-of.html
+$dokka.location:com.verygoodsecurity.vgsshow.core.network.client/VGSHttpMethod/values/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.client/-v-g-s-http-method/values.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.model/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSRequest.Builder///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.model/-v-g-s-request/-builder/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.core.network.model/VGSRequest.Builder/Builder/#kotlin.String#com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.core.network.model/-v-g-s-request/-builder/-builder.html
@@ -73,9 +86,12 @@ $dokka.location:com.verygoodsecurity.vgsshow.util.extension////PointingToDeclara
 $dokka.location:com.verygoodsecurity.vgsshow.util.extension//currentTimestamp/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.util.extension/current-timestamp.html
 $dokka.location:com.verygoodsecurity.vgsshow.util.extension//toURL/kotlin.String#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.util.extension/to-u-r-l.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType.IMAGE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/-i-m-a-g-e/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType.INFO///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/-i-n-f-o/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType.PDF///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/-p-d-f/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType/valueOf/#kotlin.String/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/value-of.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSFieldType/values/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-field-type/values.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView.Companion///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/-companion/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/addView/#android.view.View?#android.view.ViewGroup.LayoutParams?/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/add-view.html
@@ -112,6 +128,34 @@ $dokka.location:com.verygoodsecurity.vgsshow.widget.view.textview.model/VGSTextR
 $dokka.location:com.verygoodsecurity.vgsshow.widget.view.textview.model/VGSTextRange/isValid/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.view.textview.model/-v-g-s-text-range/is-valid.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.view.textview.model/VGSTextRange/start/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.view.textview.model/-v-g-s-text-range/start.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView.OnLoadStateChangeListener///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/-on-load-state-change-listener/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView.OnLoadStateChangeListener/onComplete/#com.verygoodsecurity.vgsshow.widget.VGSImageView/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/-on-load-state-change-listener/on-complete.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView.OnLoadStateChangeListener/onError/#com.verygoodsecurity.vgsshow.widget.VGSImageView#com.verygoodsecurity.vgsshow.core.exception.VGSException/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/-on-load-state-change-listener/on-error.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView.OnLoadStateChangeListener/onStart/#com.verygoodsecurity.vgsshow.widget.VGSImageView/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/-on-load-state-change-listener/on-start.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/VGSImageView/#android.content.Context#android.util.AttributeSet?#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/-v-g-s-image-view.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/clear/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/clear.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getAdjustViewBounds/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-adjust-view-bounds.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getBaselineAlignBottom/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-baseline-align-bottom.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getCropToPadding/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-crop-to-padding.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getFieldType/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-field-type.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getImageTintList/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-image-tint-list.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getImageTintMode/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-image-tint-mode.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getImageViewBaseline/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-image-view-baseline.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getMaxHeight/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-max-height.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getMaxWidth/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-max-width.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/getScaleType/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/get-scale-type.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/hasImage/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/has-image.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/onLoadStateChangeListener/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/on-load-state-change-listener.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setAdjustViewBounds/#kotlin.Boolean/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-adjust-view-bounds.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setBaselineAlignBottom/#kotlin.Boolean/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-baseline-align-bottom.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setCropToPadding/#kotlin.Boolean/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-crop-to-padding.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setImageTintList/#android.content.res.ColorStateList/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-image-tint-list.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setImageTintMode/#android.graphics.PorterDuff.Mode/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-image-tint-mode.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setImageViewBaseline/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-image-view-baseline.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setMaxHeight/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-max-height.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setMaxWidth/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-max-width.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSImageView/setScaleType/#android.widget.ImageView.ScaleType/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-image-view/set-scale-type.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSPDFView.Companion///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-p-d-f-view/-companion/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSPDFView.OnPageChangeListener///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-p-d-f-view/-on-page-change-listener/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSPDFView.OnPageChangeListener/onPageChanged/#kotlin.Int#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-p-d-f-view/-on-page-change-listener/on-page-changed.html
@@ -138,6 +182,8 @@ $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.Companion/SECURE
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat.FORMATTED///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-copy-text-format/-f-o-r-m-a-t-t-e-d/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat.RAW///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-copy-text-format/-r-a-w/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-copy-text-format/index.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat/valueOf/#kotlin.String/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-copy-text-format/value-of.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.CopyTextFormat/values/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-copy-text-format/values.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.OnTextChangedListener///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-on-text-changed-listener/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.OnTextChangedListener/onTextChange/#com.verygoodsecurity.vgsshow.widget.VGSTextView#kotlin.Boolean/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-on-text-changed-listener/on-text-change.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget/VGSTextView.OnTextCopyListener///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget/-v-g-s-text-view/-on-text-copy-listener/index.html
@@ -214,6 +260,7 @@ $dokka.location:com.verygoodsecurity.vgsshow/VGSShow/subscribe/#com.verygoodsecu
 $dokka.location:com.verygoodsecurity.vgsshow/VGSShow/unsubscribe/#com.verygoodsecurity.vgsshow.widget.core.VGSView[*]/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow/-v-g-s-show/unsubscribe.html
 com.verygoodsecurity.vgsshow
 com.verygoodsecurity.vgsshow.core
+com.verygoodsecurity.vgsshow.core.exception
 com.verygoodsecurity.vgsshow.core.listener
 com.verygoodsecurity.vgsshow.core.logs
 com.verygoodsecurity.vgsshow.core.network.client
