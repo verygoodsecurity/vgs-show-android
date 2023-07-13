@@ -41,10 +41,7 @@ class VGSImageView @JvmOverloads constructor(
     override fun createChildView(
         attrs: AttributeSet?,
         defStyleAttr: Int
-    ) = AppCompatImageView(context, attrs, defStyleAttr).also {
-        it.contentDescription = fieldContentDescription
-        it.importantForAccessibility = fieldImportantForAccessibilityMode
-    }
+    ) = AppCompatImageView(context, attrs, defStyleAttr)
 
     override fun saveState(state: Parcelable?): BaseSavedState? = null
 

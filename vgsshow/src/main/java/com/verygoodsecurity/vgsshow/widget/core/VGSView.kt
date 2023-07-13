@@ -12,6 +12,7 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.StringRes
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
+import com.verygoodsecurity.vgsshow.widget.extension.hasView
 
 @Suppress("LeakingThis")
 abstract class VGSView<T : View> @JvmOverloads internal constructor(
@@ -36,9 +37,6 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     protected val view: T = createChildView(attrs, defStyleAttr).apply {
         this.id = View.generateViewId()
     }
-
-    protected var fieldImportantForAccessibilityMode: Int = 0
-    protected var fieldContentDescription: CharSequence? = null
 
     private var contentPath: String? = null
 
@@ -87,6 +85,9 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         view.setOnClickListener { onChildClick(it) }
         view.setOnLongClickListener { onChildLongClick(it) }
         view.isLongClickable = false
+        view.contentDescription = this.contentDescription
+        view.importantForAccessibility = this.importantForAccessibility
+        super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
     }
 
     override fun onDetachedFromWindow() {
@@ -143,43 +144,42 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
     fun getContentPath(): String = contentPath ?: ""
 
     /**
-     * Describes how to determinate if this input field is important for accessibility.
+     * Sets how to determine whether this view is important for accessibility
+     * which is if it fires accessibility events and if it is reported to
+     * accessibility services that query the screen.
      *
-     * @param mode Accessibility mode.
+     * @param mode How to determine whether this view is important for accessibility.
+     *
+     * @attr [android.R.attr.importantForAccessibility]
      *
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
-     *
-     * @attr [R.styleable.VGSView_android_importantForAccessibility]
      */
     override fun setImportantForAccessibility(mode: Int) {
-        try {
-            view.importantForAccessibility = mode
-        } catch (e: Exception) {
-            // Do nothing since it is expected the view is null if the property is setup in layout
-        }
-        fieldImportantForAccessibilityMode = mode
-        super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
+        if (hasView()) this.view.importantForAccessibility = mode
+        super.setImportantForAccessibility(mode)
     }
 
     /**
-     * Set the description of the purpose of the field. This is used for TalkBack and accessibility.
+     * Sets the [View]'s content description.
+     * <p>
+     * A content description briefly describes the view and is primarily used
+     * for accessibility support to determine how a view should be presented to
+     * the user. In the case of a view with no textual representation, such as
+     * [android.widget.ImageButton], a useful content description
+     * explains what the view does. For example, an image button with a phone
+     * icon that is used to place a call may use "Call" as its content
+     * description. An image of a floppy disk that is used to save a file may
+     * use "Save".
      *
-     * @param contentDescription Content description.
-     *
-     * @see View.getContentDescription()
-     *
-     * @attr [R.styleable.VGSView_android_contentDescription]
+     * @param contentDescription The content description.
+     * @see getContentDescription
+     * @attr [android.R.attr.contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
-        try {
-            view.contentDescription = contentDescription
-        } catch (e: Exception) {
-            // Do nothing since it is expected the view is null if the property is setup in layout
-        }
-        fieldContentDescription = contentDescription
+        if (hasView()) this.view.contentDescription = contentDescription
         super.setContentDescription(contentDescription)
     }
 
