@@ -158,8 +158,12 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
      */
     override fun setImportantForAccessibility(mode: Int) {
-        if (hasView()) this.view.importantForAccessibility = mode
-        super.setImportantForAccessibility(mode)
+        if (hasView()) {
+            this.view.importantForAccessibility = mode
+            super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
+        } else {
+            super.setImportantForAccessibility(mode)
+        }
     }
 
     /**
