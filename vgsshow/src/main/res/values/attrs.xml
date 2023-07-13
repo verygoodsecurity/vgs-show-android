@@ -173,7 +173,6 @@
         <attr name="contentPath" />
 
         <attr name="ignoreField" />
-
     </declare-styleable>
 
     <declare-styleable name="VGSTextView">
