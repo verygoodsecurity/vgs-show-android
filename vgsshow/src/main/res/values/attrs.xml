@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Hint text to display when the text is empty. -->
     <attr name="hint" format="string" localization="suggested" />
@@ -173,12 +173,6 @@
         <attr name="contentPath" />
 
         <attr name="ignoreField" />
-
-        <!-- Describes whether or not this view is important for accessibility. -->
-        <attr name="android:importantForAccessibility"/>
-
-        <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
-        <attr name="android:contentDescription"/>
 
     </declare-styleable>
 
