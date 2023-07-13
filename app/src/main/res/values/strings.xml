@@ -5,5 +5,5 @@
     <string name="card_number_desc">Card number description</string>
     <string name="expiration_date_desc">Expiration date description</string>
     <string name="image_desc">Image description</string>
-    <string name="pdf_desc">Image description</string>
+    <string name="pdf_desc">PDF description</string>
 </resources>
