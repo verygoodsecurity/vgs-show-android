@@ -102,6 +102,9 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
         show.subscribe(vgsPDFView)
         show.addOnResponseListener(this)
 
+        // Setup accessibility
+        vgsPDFView.contentDescription = getString(R.string.pdf_desc)
+
         vgsPDFView.addRenderingStateChangedListener(object :
             VGSPDFView.OnRenderStateChangeListener {
 
@@ -122,7 +125,7 @@ class PDFActivity : AppCompatActivity(), VgsCollectResponseListener, VGSOnRespon
             flProgress.visibility = View.VISIBLE
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST)
-                    .body(mapOf("revealed_pdf" to ""))
+                    .body(mapOf("revealed_pdf" to (tvFileAlias.text ?: "")))
                     .build()
             )
         }

@@ -245,4 +245,10 @@ class VGSTextViewTest {
 
         verify(listener, times(3)).onSecureTextRangeSet(view)
     }
+
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "text"
+        assertEquals(view.contentDescription, "text")
+    }
 }
