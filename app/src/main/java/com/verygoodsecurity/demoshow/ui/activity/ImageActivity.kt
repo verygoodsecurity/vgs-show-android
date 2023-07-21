@@ -56,7 +56,7 @@ class ImageActivity : AppCompatActivity(R.layout.activity_image),
     }
 
     override fun onResponse(response: CollectResponse) {
-        Log.d(PDFActivity::class.java.simpleName, response.toString())
+        Log.d(ImageActivity::class.java.simpleName, response.toString())
         flProgress.visibility = View.GONE
         (response as? CollectSuccessResponse)?.rawResponse?.let {
             try {
@@ -70,7 +70,7 @@ class ImageActivity : AppCompatActivity(R.layout.activity_image),
     }
 
     override fun onResponse(response: ShowResponse) {
-        Log.d(PDFActivity::class.java.simpleName, response.toString())
+        Log.d(ImageActivity::class.java.simpleName, response.toString())
         flProgress.visibility = View.GONE
     }
 
@@ -98,6 +98,9 @@ class ImageActivity : AppCompatActivity(R.layout.activity_image),
                     .build()
             )
         }
+
+        // Setup accessibility
+        vgsImageView.contentDescription = getString(R.string.image_desc)
     }
 
     private fun updateAttachedFileName() {
