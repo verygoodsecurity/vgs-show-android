@@ -104,8 +104,10 @@ $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/getContentPath/
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/getFieldType/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/get-field-type.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/ignoreField/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/ignore-field.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/onAttachedToWindow/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/on-attached-to-window.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/setContentDescription/#kotlin.CharSequence?/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/set-content-description.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/setContentPath/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/set-content-path.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/setContentPath/#kotlin.String?/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/set-content-path.html
+$dokka.location:com.verygoodsecurity.vgsshow.widget.core/VGSView/setImportantForAccessibility/#kotlin.Int/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.core/-v-g-s-view/set-important-for-accessibility.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.view.pdf.state////PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.view.pdf.state/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.view.pdf.state/VGSPDFViewState.Companion///PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.view.pdf.state/-v-g-s-p-d-f-view-state/-companion/index.html
 $dokka.location:com.verygoodsecurity.vgsshow.widget.view.pdf.state/VGSPDFViewState.Companion/CREATOR/#/PointingToDeclaration/vgsshow/com.verygoodsecurity.vgsshow.widget.view.pdf.state/-v-g-s-p-d-f-view-state/-companion/-c-r-e-a-t-o-r.html

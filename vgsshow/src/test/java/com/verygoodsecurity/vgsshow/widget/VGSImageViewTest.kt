@@ -163,4 +163,10 @@ class VGSImageViewTest {
         every { result.decodeBitmap() } returns Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
         return result
     }
+
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "image"
+        assertEquals(view.contentDescription, "image")
+    }
 }
