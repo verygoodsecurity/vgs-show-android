@@ -32,7 +32,23 @@ jobs:
           command: ./gradlew app:detekt vgsshow:detekt --continue --parallel
       - run:
           name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew app:testDebugUnitTest vgsshow:testDebugUnitTest --continue --parallel
+      - run:
+          name: Generate Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
+              ./gradlew koverHtmlReportDebug
+            else
+              echo "Code coverage will only be generated on the main branch."
+            fi
+      - run:
+          name: Publish Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
+              ./script/publish-code-coverage.sh
+            else
+              echo "Code coverage will only be pushed to compass on the main branch."
+            fi
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
@@ -48,8 +64,8 @@ jobs:
       - run:
           name: Check if release branch
           command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]]; then
-              echo "Skipped, reason: UI tests should be running only on release branches!"
+            if [ "<< pipeline.git.branch >>" != "main" ]; then
+              echo "UI tests should be running only on release branches!"
               circleci-agent step halt
             fi
       - run:
