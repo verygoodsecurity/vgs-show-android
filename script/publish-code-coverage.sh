@@ -1,7 +1,5 @@
 METRIC_VALUE=$(sed -n '51p' ../vgsshow/build/reports/kover/htmlDebug/index.html)
 
-echo "Script executed, value $METRIC_VALUE"
-
 curl --request POST \
 --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics \
 --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
