@@ -45,7 +45,9 @@ jobs:
           name: Publish Code Coverage Report
           command: |
             if [ "<< pipeline.git.branch >>" != "main" ]; then
-              chmod +x ./script/publish-code-coverage.sh
+              TEST = ./script/publish-code-coverage.sh
+              echo "$TEST"
+              chmod +x TEST
             else
               echo "Code coverage will only be pushed to compass on the main branch."
             fi
