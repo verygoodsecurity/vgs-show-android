@@ -56,7 +56,7 @@ jobs:
                 --header "Content-Type: application/json" \
                 --data "{
                   \"metricSourceId\": \"$COMPASS_COMPONENT_URL\",
-                  \"value\": $METRIC_VALUE | sed 's/.$//',
+                  \"value\": 56.1',
                   \"timestamp\": \"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"
                 }"
             else
