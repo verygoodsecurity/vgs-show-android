@@ -72,7 +72,7 @@ jobs:
       - attach_workspace:
           at: ~/code
       - run:
-          name: Check if release branch
+          name: Check if main branch
           command: |
             if [ "<< pipeline.git.branch >>" != "main" ]; then
               echo "UI tests should be running only on main branch!"
