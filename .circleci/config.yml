@@ -30,9 +30,9 @@ jobs:
 #      - run:
 #          name: Run Detekt
 #          command: ./gradlew app:detekt vgsshow:detekt --continue --parallel
-#      - run:
-#          name: Run Unit tests
-#          command: ./gradlew app:testDebugUnitTest vgsshow:testDebugUnitTest --continue --parallel
+      - run:
+          name: Run Unit tests
+          command: ./gradlew app:testDebugUnitTest vgsshow:testDebugUnitTest --continue --parallel
       - run:
           name: Generate Code Coverage Report
           command: |
@@ -45,9 +45,9 @@ jobs:
           name: Publish Code Coverage Report
           command: |
             if [ "<< pipeline.git.branch >>" != "main" ]; then
-              METRIC_VALUE=$(sed -n '51p' ../vgsshow/build/reports/kover/htmlDebug/index.html)
+              METRIC_VALUE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
             
-            echo "$METRIC_VALUE"
+              echo "$METRIC_VALUE"
             
               curl --request POST
                 --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics
