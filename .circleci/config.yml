@@ -32,7 +32,33 @@ jobs:
           command: ./gradlew app:detekt vgsshow:detekt --continue --parallel
       - run:
           name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+          command: ./gradlew app:testDebugUnitTest vgsshow:testDebugUnitTest --continue --parallel
+      - run:
+          name: Generate Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
+              ./gradlew koverHtmlReportDebug
+            else
+              echo "Code coverage will only be generated on the main branch."
+            fi
+      - run:
+          name: Publish Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
+              COVERAGE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
+              METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
+            
+              echo "$METRIC_VALUE"
+            
+              curl --request POST \
+                --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics \
+                --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
+                --header "Accept: application/json" \
+                --header "Content-Type: application/json" \
+                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
+            else
+              echo "Code coverage will only be pushed to compass on the main branch."
+            fi
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
@@ -46,10 +72,10 @@ jobs:
       - attach_workspace:
           at: ~/code
       - run:
-          name: Check if release branch
+          name: Check if main branch
           command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]]; then
-              echo "Skipped, reason: UI tests should be running only on release branches!"
+            if [ "<< pipeline.git.branch >>" != "main" ]; then
+              echo "UI tests should be running only on main branch!"
               circleci-agent step halt
             fi
       - run:

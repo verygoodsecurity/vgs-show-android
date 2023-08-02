@@ -12,6 +12,7 @@ dependencyResolutionManagement {
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.3')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.8.20')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.0')
+            library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.3')
         }
         libs {
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
