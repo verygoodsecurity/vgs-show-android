@@ -45,7 +45,8 @@ jobs:
           name: Publish Code Coverage Report
           command: |
             if [ "<< pipeline.git.branch >>" != "main" ]; then
-              METRIC_VALUE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
+              COVERAGE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
+              VALUE=COVERAGE | sed 's/.$//'
             
               echo "$METRIC_VALUE"
             
@@ -54,7 +55,7 @@ jobs:
                 --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
                 --header "Accept: application/json" \
                 --header "Content-Type: application/json" \
-                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
+                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"${METRIC_VALUE:4:4}"\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
             else
               echo "Code coverage will only be pushed to compass on the main branch."
             fi
