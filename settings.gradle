@@ -20,7 +20,7 @@ dependencyResolutionManagement {
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
             library('okHttp', 'com.squareup.okhttp3:okhttp:4.11.0')
             library('pdf-viewer', 'com.verygoodsecurity:android-pdf-viewer:1.0.0')
-            library('verygoodsecurity-collect', 'com.verygoodsecurity:vgscollect:1.8.0')
+            library('verygoodsecurity-collect', 'com.verygoodsecurity:vgscollect:1.8.1')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
