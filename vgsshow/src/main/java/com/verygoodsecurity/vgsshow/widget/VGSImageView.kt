@@ -227,7 +227,6 @@ class VGSImageView @JvmOverloads constructor(
      *
      * @attr [R.styleable.VGSImageView_android_tint]
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setImageTintList(tint: ColorStateList) {
         view.imageTintList = tint
     }
@@ -239,7 +238,6 @@ class VGSImageView @JvmOverloads constructor(
      *
      * @attr [R.styleable.VGSImageView_android_tint]
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getImageTintList(): ColorStateList? = view.imageTintList
 
     /**
@@ -250,7 +248,6 @@ class VGSImageView @JvmOverloads constructor(
      *
      * @attr [R.styleable.VGSImageView_android_tintMode]
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setImageTintMode(tintMode: PorterDuff.Mode) {
         view.imageTintMode = tintMode
     }
@@ -264,7 +261,6 @@ class VGSImageView @JvmOverloads constructor(
      *
      * @attr [R.styleable.VGSImageView_android_tintMode]
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getImageTintMode(): PorterDuff.Mode? = view.imageTintMode
 
     /**

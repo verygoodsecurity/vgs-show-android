@@ -21,7 +21,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient(isLogsEnabled) {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
