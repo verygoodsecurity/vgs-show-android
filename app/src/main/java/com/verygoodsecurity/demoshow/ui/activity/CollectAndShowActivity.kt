@@ -109,6 +109,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
                     parseNumberAlias(json)
                     parseDateAlias(json)
                 } catch (e: JSONException) {
+                    Log.d(MainActivity::class.simpleName, "error: $e")
                 }
             }
         })
@@ -157,10 +158,10 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
         mbSetSecureText.setOnClickListener {
             if (tvCardNumber.isSecureText) {
                 tvCardNumber.isSecureText = false
-                mbSetSecureText.text = "Set secure"
+                mbSetSecureText.text = getString(R.string.set_secure_title)
             } else {
                 tvCardNumber.isSecureText = true
-                mbSetSecureText.text = "Reset secure"
+                mbSetSecureText.text = getString(R.string.reset_secure_title)
             }
         }
     }

@@ -148,7 +148,7 @@ class CollectAndShowFragment : Fragment(R.layout.fragment_collect_and_show) {
             tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
         }
         mbRequest.setOnClickListener {
-            pbReveal?.setVisible(true)
+            pbReveal.setVisible(true)
             show.requestAsync(
                 VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                     mapOf(
