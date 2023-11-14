@@ -67,15 +67,10 @@ dependencies {
     compileOnly libs.pdf.viewer
 
     testImplementation testLibs.junit
-    testImplementation testLibs.mockito.core
-    testImplementation testLibs.mockito.inline
     testImplementation testLibs.json
     testImplementation testLibs.robolectric
     testImplementation testLibs.mockk
     testImplementation testLibs.mockk
-    androidTestImplementation androidTestLibs.androidx.junit.ext
-    androidTestImplementation androidTestLibs.androidx.espresso.core
-    androidTestImplementation androidTestLibs.androidx.runner
 }
 
 tasks.named("dokkaHtml") {

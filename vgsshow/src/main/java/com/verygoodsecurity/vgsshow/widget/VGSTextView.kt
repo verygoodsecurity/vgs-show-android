@@ -251,7 +251,6 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    @Suppress("DEPRECATION")
     fun setTextAppearance(@StyleRes styleId: Int) {
         if (isMarshmallowOrGreater) {
             view.setTextAppearance(styleId)
@@ -260,6 +259,7 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
+    // TODO: Add getTextSize function
     /**
      * Set the default text size to the given value, interpreted as "scaled pixel" units.
      * This size is adjusted based on the current density and user font size preference.
@@ -281,6 +281,7 @@ class VGSTextView @JvmOverloads constructor(
         view.textSize = TypedValue.applyDimension(unit, size, resources.displayMetrics)
     }
 
+    // TODO: Add getTextColors function
     /**
      * Sets the text color for all the states (normal, selected, focused) to be this color.
      *
@@ -290,6 +291,7 @@ class VGSTextView @JvmOverloads constructor(
         view.setTextColor(color)
     }
 
+    // TODO: Add isSingleLine function
     /**
      * If true, sets the properties of this field
      * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
@@ -299,13 +301,6 @@ class VGSTextView @JvmOverloads constructor(
     fun setSingleLine(singleLine: Boolean) {
         view.isSingleLine = singleLine
     }
-
-    /**
-     * Gets the current Typeface that is used to style the text.
-     *
-     * @return The current Typeface.
-     */
-    fun getTypeface(): Typeface? = view.typeface
 
     /**
      * Sets the typeface and style in which the text should be displayed.
@@ -330,6 +325,13 @@ class VGSTextView @JvmOverloads constructor(
             else -> setTypeface(DEFAULT_BOLD)
         }
     }
+
+    /**
+     * Gets the current Typeface that is used to style the text.
+     *
+     * @return The current Typeface.
+     */
+    fun getTypeface(): Typeface? = view.typeface
 
     /**
      * Sets text letter-spacing in em units.  Typical values
