@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         gradlePlugins {
             library('tools', 'com.android.tools.build:gradle:8.1.2')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.3')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.1')
