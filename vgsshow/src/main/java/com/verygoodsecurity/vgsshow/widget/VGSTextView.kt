@@ -475,9 +475,6 @@ class VGSTextView @JvmOverloads constructor(
         view.setText(formattedText, type)
     }
 
-    @VisibleForTesting
-    internal fun getChildView() = view
-
     internal fun setOnSecureTextRangeSetListener(listener: OnSetSecureTextRangeSetListener?) {
         secureTextListener = listener
     }
