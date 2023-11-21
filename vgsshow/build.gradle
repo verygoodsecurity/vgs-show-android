@@ -71,6 +71,7 @@ dependencies {
     testImplementation testLibs.robolectric
     testImplementation testLibs.mockk
     testImplementation testLibs.mockk
+    testImplementation libs.pdf.viewer
 }
 
 tasks.named("dokkaHtml") {
