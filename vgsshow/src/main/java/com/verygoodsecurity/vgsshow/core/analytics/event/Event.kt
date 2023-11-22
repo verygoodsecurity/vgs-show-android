@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.core.analytics.event
 
-import com.verygoodsecurity.vgsshow.util.extension.currentTimestamp
+import com.verygoodsecurity.vgsshow.util.extension.LocalTimestamp
 
 internal abstract class Event {
 
@@ -15,7 +15,7 @@ internal abstract class Event {
         }
     }
 
-    private val timestamp = currentTimestamp
+    private val timestamp = LocalTimestamp.get()
 
     companion object {
 
