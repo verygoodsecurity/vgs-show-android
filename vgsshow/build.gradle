@@ -5,15 +5,16 @@ plugins {
     id 'org.jetbrains.dokka'
     id 'com.vanniktech.maven.publish'
     id 'io.gitlab.arturbosch.detekt'
+    id 'org.jetbrains.kotlinx.kover'
 }
 
 android {
     namespace 'com.verygoodsecurity.vgsshow'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -66,15 +67,11 @@ dependencies {
     compileOnly libs.pdf.viewer
 
     testImplementation testLibs.junit
-    testImplementation testLibs.mockito.core
-    testImplementation testLibs.mockito.inline
     testImplementation testLibs.json
     testImplementation testLibs.robolectric
     testImplementation testLibs.mockk
     testImplementation testLibs.mockk
-    androidTestImplementation androidTestLibs.androidx.junit.ext
-    androidTestImplementation androidTestLibs.androidx.espresso.core
-    androidTestImplementation androidTestLibs.androidx.runner
+    testImplementation libs.pdf.viewer
 }
 
 tasks.named("dokkaHtml") {

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RestrictTo
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.res.use
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.widget.extension.hasView
@@ -186,6 +187,9 @@ abstract class VGSView<T : View> @JvmOverloads internal constructor(
         if (hasView()) this.view.contentDescription = contentDescription
         super.setContentDescription(contentDescription)
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getChildView() = view
 
     companion object {
 
