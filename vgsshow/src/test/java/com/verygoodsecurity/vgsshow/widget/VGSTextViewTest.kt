@@ -434,4 +434,10 @@ class VGSTextViewTest {
         // Assert
         assertTrue(view.isEmpty())
     }
+
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "text"
+        assertEquals(view.contentDescription, "text")
+    }
 }
