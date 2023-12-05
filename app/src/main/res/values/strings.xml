@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">DemoShow</string>
 
+    <!-- Titles -->
+    <string name="set_secure_title">Set secure</string>
+    <string name="reset_secure_title">Reset secure</string>
+
     <!-- Accessibility -->
     <string name="card_number_desc">Card number description</string>
     <string name="expiration_date_desc">Expiration date description</string>
