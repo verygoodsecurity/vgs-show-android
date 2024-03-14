@@ -9,7 +9,7 @@ dependencyResolutionManagement {
         gradlePlugins {
             library('tools', 'com.android.tools.build:gradle:8.2.2')
             library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22')
-            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.27.0')
+            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.28.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.5')
             library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.6')
