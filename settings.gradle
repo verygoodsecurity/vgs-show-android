@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             library('verygoodsecurity-collect', 'com.verygoodsecurity:vgscollect:1.9.0')
             library('compose-activity', 'androidx.activity:activity-compose:1.8.2')
             library('compose-material', 'androidx.compose.material:material:1.6.2')
-            library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.6.2')
+            library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.6.3')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
