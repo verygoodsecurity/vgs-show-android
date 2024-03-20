@@ -105,10 +105,25 @@
         android:layout_marginTop="16dp"
         android:text="Image Reveal"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartCompose"
         app:layout_constraintEnd_toEndOf="@+id/btnStartRevelPDF"
         app:layout_constraintStart_toStartOf="@+id/btnStartRevelPDF"
         app:layout_constraintTop_toBottomOf="@+id/btnStartRevelPDF"
+        app:rippleColor="@color/colorAccent"
+        app:strokeColor="@color/colorPrimaryDark"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartCompose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Compose"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btnStartRevelImage"
+        app:layout_constraintStart_toStartOf="@+id/btnStartRevelImage"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartRevelImage"
         app:rippleColor="@color/colorAccent"
         app:strokeColor="@color/colorPrimaryDark"
         tools:ignore="HardcodedText" />

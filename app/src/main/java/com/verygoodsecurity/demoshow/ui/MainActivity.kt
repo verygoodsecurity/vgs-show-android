@@ -7,6 +7,7 @@ import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
+import com.verygoodsecurity.demoshow.ui.activity.ComposeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ImageActivity
 import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
 import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<MaterialButton>(R.id.btnStartRevelImage).setOnClickListener {
             startActivity(Intent(this, ImageActivity::class.java))
+        }
+        findViewById<MaterialButton>(R.id.btnStartCompose).setOnClickListener {
+            startActivity(Intent(this, ComposeActivity::class.java))
         }
     }
 

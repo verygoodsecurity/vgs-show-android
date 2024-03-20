@@ -35,5 +35,7 @@
         <activity android:name=".ui.activity.PDFActivity" />
 
         <activity android:name=".ui.activity.ImageActivity" />
+
+        <activity android:name=".ui.activity.ComposeActivity" />
     </application>
 </manifest>
