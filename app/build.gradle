@@ -28,11 +28,20 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildFeatures {
+        buildConfig true
+        compose true
     }
 }
 
@@ -45,6 +54,8 @@ detekt {
 dependencies {
     implementation project(":vgsshow")
 
+    implementation platform('androidx.compose:compose-bom:2024.02.02')
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
     implementation libs.androidx.constraintlayout
@@ -52,6 +63,12 @@ dependencies {
     implementation libs.verygoodsecurity.collect
 
     implementation libs.pdf.viewer
+
+    implementation libs.compose.activity
+    implementation libs.compose.material
+    implementation libs.compose.ui.tooling.preview
+
+    debugImplementation debugLibs.compose.ui.tooling
 
     testImplementation testLibs.junit
     androidTestImplementation androidTestLibs.androidx.junit.ext
