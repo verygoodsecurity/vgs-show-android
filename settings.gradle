@@ -7,7 +7,7 @@ rootProject.name = "vgs-show-android"
 dependencyResolutionManagement {
     versionCatalogs {
         gradlePlugins {
-            library('tools', 'com.android.tools.build:gradle:8.2.2')
+            library('tools', 'com.android.tools.build:gradle:8.3.1')
             library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.28.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
