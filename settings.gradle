@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             library('pdf-viewer', 'com.verygoodsecurity:android-pdf-viewer:1.0.0')
             library('verygoodsecurity-collect', 'com.verygoodsecurity:vgscollect:1.9.1')
             library('compose-activity', 'androidx.activity:activity-compose:1.8.2')
-            library('compose-material', 'androidx.compose.material:material:1.6.3')
+            library('compose-material', 'androidx.compose.material:material:1.6.5')
             library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.6.3')
         }
         testLibs {
