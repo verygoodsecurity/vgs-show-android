@@ -21,11 +21,11 @@ Table of contents
 
 | Dependency | Version |
 | :--- |:-------:|
-| Min SDK |   19    |
-| Target SDK |   33    |
-| org.jetbrains.kotlin:kotlin-gradle-plugin |  1.9.0  |
+| Min SDK |   21    |
+| Target SDK |   34    |
+| org.jetbrains.kotlin:kotlin-gradle-plugin |  1.9.22 |
 | androidx.appcompat:appcompat |  1.6.1  |
-| com.squareup.okhttp3:okhttp | 4.11.0  |
+| com.squareup.okhttp3:okhttp | 4.12.0  |
 
 ## Structure
 * **VGSShow SDK** - provides an API for interacting with the VGS Vault
