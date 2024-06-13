@@ -34,7 +34,7 @@ dependencyResolutionManagement {
             library('mockk', 'io.mockk:mockk:1.13.10')
         }
         debugLibs {
-            library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.6.2')
+            library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.6.8')
         }
         androidTestLibs {
             library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.5')
