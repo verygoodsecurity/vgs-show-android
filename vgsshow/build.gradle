@@ -19,6 +19,7 @@ android {
         versionName VERSION_NAME
 
         buildConfigField "String", "VERSION_NAME", "\"${VERSION_NAME}\""
+        buildConfigField "String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

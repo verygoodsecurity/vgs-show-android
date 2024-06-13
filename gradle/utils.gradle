@@ -1,0 +1,35 @@
+//file:noinspection UnnecessaryQualifiedReference
+ext {
+
+    getLocalProperty = { name ->
+        this.getLocalProperty(name)
+    }
+
+    getLocalProperties = {
+        this.getLocalProperties()
+    }
+}
+
+static def getLocalProperty(String name) {
+    def properties = getLocalProperties()
+    if (properties == null) {
+        return ""
+    }
+    def value = properties[name]
+    if (value == null) {
+        return ""
+    } else {
+        return value
+    }
+}
+
+static def getLocalProperties() {
+    def properties = new Properties()
+    def localPropertiesFile = new File('local.properties')
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.newDataInputStream())
+    } else {
+        return null
+    }
+    return properties
+}
