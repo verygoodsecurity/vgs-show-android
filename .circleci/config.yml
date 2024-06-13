@@ -19,6 +19,7 @@ jobs:
     <<: *environment
     steps:
       - checkout
+      - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
       - run:
           name: Create google-services.json
           command: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
