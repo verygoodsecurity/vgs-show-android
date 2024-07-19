@@ -4,7 +4,7 @@ aliases:
   - &environment
     working_directory: ~/code
     docker:
-      - image: cimg/android:2023.06.1
+      - image: cimg/android:2024.01
     environment:
       JVM_OPTS: -Xmx3200m
 
@@ -153,7 +153,9 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+\.\d+(?:-\w+){0,1}$/
-      - "Run_Unit_Test_And_Build"
+      - "Run_Unit_Test_And_Build":
+          context:
+            - circleci
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
