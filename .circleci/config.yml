@@ -4,7 +4,9 @@ aliases:
   - &environment
     working_directory: ~/code
     docker:
-      - image: cimg/android:2023.06.1
+      - image: cimg/android:2024.01
+    environment:
+      JVM_OPTS: -Xmx3200m
 
 # === Scheduled Pipeline Parameters ===
 parameters:
