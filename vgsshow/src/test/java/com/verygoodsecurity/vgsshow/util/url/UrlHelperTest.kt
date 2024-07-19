@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgsshow.util.url
 
 import android.util.Log
-import com.verygoodsecurity.vgsshow.Constants
+import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
@@ -54,7 +54,7 @@ class UrlHelperTest {
         val environment = VGSEnvironment.Sandbox()
 
         // Act
-        val result = UrlHelper.buildProxyUrl(Constants.TENANT, environment)
+        val result = UrlHelper.buildProxyUrl(BuildConfig.VAULT_ID, environment)
 
         // Assert
         assertTrue(result.isValidUrl())
@@ -79,7 +79,7 @@ class UrlHelperTest {
         val environment = "sandbox-eu-".toVGSEnvironment()
 
         // Act
-        val result = UrlHelper.buildProxyUrl(Constants.TENANT, environment)
+        val result = UrlHelper.buildProxyUrl(BuildConfig.VAULT_ID, environment)
 
         // Assert
         assertFalse(result.isValidUrl())
@@ -91,7 +91,7 @@ class UrlHelperTest {
         val environment = VGSEnvironment.Empty
 
         // Act
-        val result = UrlHelper.buildProxyUrl(Constants.TENANT, environment)
+        val result = UrlHelper.buildProxyUrl(BuildConfig.VAULT_ID, environment)
 
         // Assert
         assertFalse(result.isValidUrl())

@@ -83,6 +83,7 @@ class VGSPDFView @JvmOverloads constructor(
     ) = PDFView(context, null)
 
     override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
+        this.documentBytes = this@VGSPDFView.documentBytes
         this.defaultPage = this@VGSPDFView.defaultPage
         this.isSwipeEnabled = this@VGSPDFView.isSwipeEnabled
         this.isSwipeHorizontalEnabled = this@VGSPDFView.isSwipeHorizontalEnabled
@@ -94,6 +95,7 @@ class VGSPDFView @JvmOverloads constructor(
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSPDFViewState)?.let {
+            this@VGSPDFView.documentBytes = it.documentBytes
             this@VGSPDFView.defaultPage = it.defaultPage
             this@VGSPDFView.isSwipeEnabled = it.isSwipeEnabled
             this@VGSPDFView.isSwipeHorizontalEnabled = it.isSwipeHorizontalEnabled

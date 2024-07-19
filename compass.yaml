@@ -1,0 +1,27 @@
+name: VGS Show Android
+id: 'ari:cloud:compass:83673fa7-fd28-4f4a-9738-f584064570a7:component/db43f86d-85fe-42e1-954d-457f5a4082b8/444114a1-5d6c-4c2e-96c6-5895cd094e6a'
+description: |-
+  This SDK allows our customers to show PCI data to end-users. For example, credit card number, CVC.
+configVersion: 1
+typeId: LIBRARY
+ownerId: 'ari:cloud:teams::team/61e34c25-3af2-4d60-bfed-39429d934c8b'
+fields:
+  lifecycle: Active
+  tier: 1
+links:
+  - name: null
+    type: REPOSITORY
+    url: 'https://github.com/verygoodsecurity/vgs-show-android'
+  - name: Public Docs
+    type: DOCUMENT
+    url: 'https://www.verygoodsecurity.com/docs/vgs-show/android-sdk'
+  - name: CircleCI
+    type: PROJECT
+    url: 'https://app.circleci.com/pipelines/github/verygoodsecurity/vgs-show-android'
+  - name: Jira
+    type: PROJECT
+    url: 'https://verygoodsecurity.atlassian.net/browse/DEVX'
+relationships: {}
+labels:
+  - 'language:kotlin'
+customFields: null
