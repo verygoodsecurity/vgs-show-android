@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Generate Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" != "main" ]; then
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
               ./gradlew koverHtmlReportDebug
             else
               echo "Code coverage will only be generated on the main branch."
@@ -50,7 +50,7 @@ jobs:
       - run:
           name: Publish Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" != "main" ]; then
+            if [ "<< pipeline.git.branch >>" == "main" ]; then
               COVERAGE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
               METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
             
