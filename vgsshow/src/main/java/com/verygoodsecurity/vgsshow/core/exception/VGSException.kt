@@ -11,7 +11,7 @@ sealed class VGSException : Exception() {
     override val message: String?
         get() = errorMessage
 
-    internal class Custom constructor(
+    internal class Custom(
         override val code: Int = -1,
         override val errorMessage: String?
     ) : VGSException()
@@ -56,7 +56,7 @@ sealed class VGSException : Exception() {
         override val errorMessage: String = "Unexpected Response Data Format"
     }
 
-    internal class RequestPayload constructor(httpPayloadFormat: VGSHttpBodyFormat) :
+    internal class RequestPayload(httpPayloadFormat: VGSHttpBodyFormat) :
         VGSException() {
 
         override val code: Int
