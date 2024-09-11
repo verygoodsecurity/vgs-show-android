@@ -12,7 +12,7 @@ import org.json.JSONObject
 
 internal fun VGSRequest.toHttpRequest(url: String, extraHeaders: Map<String, String>?) =
     HttpRequest(
-        url,
+        addRouteId(url, this.routeId),
         this.path,
         this.method,
         this.headers + extraHeaders,
@@ -20,6 +20,18 @@ internal fun VGSRequest.toHttpRequest(url: String, extraHeaders: Map<String, Str
         this.requestFormat,
         this.requestTimeoutInterval
     )
+
+private fun addRouteId(url: String, routeId: String?): String {
+    val position = url.indexOf(".")
+    return if (position < 0 || routeId.isNullOrEmpty()) {
+        url
+    } else {
+        StringBuilder(url)
+            .insert(position, routeId)
+            .insert(position, "-")
+            .toString()
+    }
+}
 
 private const val APPLICATION_JSON = "application/json"
 private const val APPLICATION_URLENCODED = "application/x-www-form-urlencoded"

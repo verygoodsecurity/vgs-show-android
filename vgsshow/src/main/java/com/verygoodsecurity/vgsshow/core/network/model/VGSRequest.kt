@@ -12,6 +12,7 @@ private const val DEFAULT_CONNECTION_TIME_OUT = 60000L
  * Request definition class for revealing data.
  */
 class VGSRequest private constructor(
+    val routeId: String?,
     val path: String,
     val method: VGSHttpMethod,
     val headers: Map<String, String>?,
@@ -39,11 +40,19 @@ class VGSRequest private constructor(
         private val method: VGSHttpMethod
     ) {
 
+        private var routeId: String? = null
         private var headers: Map<String, String>? = null
         private var requestFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var responseFormat: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var payload: RequestData? = null
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
+
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param id A vault route id
+         */
+        fun routeId(id: String?) = apply { this.routeId = id }
 
         /**
          * List of headers that will be added to this request.
@@ -94,6 +103,7 @@ class VGSRequest private constructor(
          * @return configured VGSRequest.
          */
         fun build() = VGSRequest(
+            routeId,
             path,
             method,
             headers,
