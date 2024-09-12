@@ -13,7 +13,8 @@ class MapperKtTest {
 
     @Test
     fun toHttpRequest_successfullyMapped() {
-        val url = "URL"
+        val url = "tenant.sandbox.verygoodsecurity.com"
+        val routeId = "routeId"
         val path = "path"
         val method = VGSHttpMethod.POST
         val headers = mapOf("header" to "value")
@@ -22,6 +23,7 @@ class MapperKtTest {
         val timeoutInterval = 100L
 
         val request = VGSRequest.Builder(path, method)
+            .routeId(routeId)
             .headers(headers)
             .body(body)
             .requestTimeoutInterval(timeoutInterval)
@@ -29,7 +31,7 @@ class MapperKtTest {
 
         val result = request.toHttpRequest(url, extraHeaders)
 
-        assertEquals(url, result.url)
+        assertEquals("tenant-routeId.sandbox.verygoodsecurity.com", result.url)
         assertEquals(path, result.path)
         assertEquals(method, result.method)
         assertEquals(headers + extraHeaders, result.headers)
