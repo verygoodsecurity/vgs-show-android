@@ -1,27 +1,12 @@
-buildscript {
-    apply from: 'gradle/utils.gradle'
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath gradlePlugins.tools
-        classpath gradlePlugins.kotlin
-        classpath gradlePlugins.maven.publish
-        classpath gradlePlugins.dokka
-        classpath gradlePlugins.detekt
-        classpath gradlePlugins.kover
-    }
+plugins {
+    alias(libs.plugins.android.application).apply(false)
+    alias(libs.plugins.android.library).apply(false)
+    alias(libs.plugins.kotlin.android).apply(false)
+    alias(libs.plugins.kotlin.parcelize).apply(false)
+    alias(libs.plugins.dokka).apply(false)
+    alias(libs.plugins.kover).apply(false)
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

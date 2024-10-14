@@ -1,0 +1,36 @@
+[versions]
+agp = '8.2.2'
+kotlin = '1.9.22'
+mavenPublish = '0.27.0'
+dokka = '1.9.20'
+detekt = '1.23.5'
+kover = '0.8.3'
+appcompat = '1.6.1'
+core-ktx = '1.12.0'
+okhttp = '4.12.0'
+verygoodsecurity-collect = "1.9.1"
+verygoodsecurity-pdf-viewer = "1.0.0"
+activity-compose = '1.8.2'
+androidx-compose = '1.6.2'
+constraintlayout = '2.1.4'
+
+[plugins]
+android-application = { id = 'com.android.application', version.ref = 'agp' }
+android-library = { id = 'com.android.library', version.ref = 'agp' }
+kotlin-android = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
+kotlin-parcelize = { id = 'org.jetbrains.kotlin.plugin.parcelize', version.ref = 'kotlin' }
+maven-publish = { id = 'com.vanniktech.maven.publish', version.ref = 'mavenPublish' }
+dokka = { id = 'org.jetbrains.dokka', version.ref = 'dokka' }
+detekt = { id = 'io.gitlab.arturbosch.detekt', version.ref = 'detekt' }
+kover = { id = 'org.jetbrains.kotlinx.kover', version.ref = 'kover' }
+
+[libraries]
+verygoodsecurity-collect = { group = 'com.verygoodsecurity', name = 'vgscollect', version.ref = 'verygoodsecurity-collect' }
+verygoodsecurity-pdf-viewer = { group = 'com.verygoodsecurity', name = 'android-pdf-viewer', version.ref = 'verygoodsecurity-pdf-viewer' }
+androidx-appcompat = { group = 'androidx.appcompat', name = 'appcompat', version.ref = 'appcompat' }
+androidx-core-ktx = { group = 'androidx.core', name = 'core-ktx', version.ref = 'core-ktx' }
+androidx-constraintlayout = { group = 'androidx.constraintlayout', name = 'constraintlayout', version.ref = 'constraintlayout' }
+okhttp = { group = 'com.squareup.okhttp3', name = 'okhttp', version.ref = 'okhttp' }
+activity-compose = { group = 'androidx.activity', name = 'activity-compose', version.ref = 'activity-compose' }
+compose-material = { group = 'androidx.compose.material', name = 'material', version.ref = 'androidx-compose' }
+compose-ui-tooling-preview = { group = 'androidx.compose.ui', name = 'ui-tooling-preview', version.ref = 'androidx-compose' }

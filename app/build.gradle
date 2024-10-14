@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'io.gitlab.arturbosch.detekt'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.detekt)
 }
 
 
@@ -61,10 +61,9 @@ dependencies {
     implementation libs.androidx.constraintlayout
 
     implementation libs.verygoodsecurity.collect
+    implementation libs.verygoodsecurity.pdf.viewer
 
-    implementation libs.pdf.viewer
-
-    implementation libs.compose.activity
+    implementation libs.activity.compose
     implementation libs.compose.material
     implementation libs.compose.ui.tooling.preview
 
@@ -75,12 +74,11 @@ dependencies {
     androidTestImplementation androidTestLibs.androidx.junit.ext.ktx
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
-    androidTestImplementation androidTestLibs.androidx.core.ktx
     androidTestImplementation androidTestLibs.androidx.uiautomator
     androidTestImplementation androidTestLibs.androidx.espresso.intents
     androidTestImplementation androidTestLibs.androidx.espresso.core
     androidTestImplementation androidTestLibs.hamcrest.integration
-    androidTestImplementation(androidTestLibs.support.espresso.contrib) {
+    androidTestImplementation(androidTestLibs.espresso.contrib) {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude module: 'support-annotations'
         exclude module: 'support-v4'
