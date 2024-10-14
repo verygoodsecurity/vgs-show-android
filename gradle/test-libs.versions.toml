@@ -1,0 +1,11 @@
+[versions]
+junit = '4.13.2'
+robolectric = '4.11.1'
+mockk = '1.12.4'
+json = '20240303'
+
+[libraries]
+junit = { group = 'junit', name = 'junit', version.ref = 'junit' }
+robolectric = { group = 'org.robolectric', name = 'robolectric', version.ref = 'robolectric' }
+mockk = { group = 'io.mockk', name = 'mockk', version.ref = 'mockk' }
+json = { group = 'org.json', name = 'json', version.ref = 'json' }
