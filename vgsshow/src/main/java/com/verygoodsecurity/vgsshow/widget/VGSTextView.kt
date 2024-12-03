@@ -413,7 +413,7 @@ class VGSTextView @JvmOverloads constructor(
             FORMATTED -> view.text?.toString()
         }
         if (!textToCopy.isNullOrEmpty()) {
-            context.copyToClipboard(textToCopy)
+            context.copyToClipboard(textToCopy, isSensitive = isSecureText)
             copyListeners.forEach { it.onTextCopied(this, format) }
         }
     }
