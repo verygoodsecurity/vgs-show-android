@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
     alias(libs.plugins.detekt)
@@ -52,10 +53,6 @@ android {
         buildConfig = true
         compose true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 }
 
 detekt {
@@ -65,10 +62,11 @@ detekt {
 }
 
 dependencies {
+    implementation project(':vgs-sdk-analytics:analytics')
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
 
-    implementation platform('androidx.compose:compose-bom:2024.02.02')
     implementation libs.compose.material
 
     // Http

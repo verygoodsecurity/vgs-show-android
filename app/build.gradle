@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.detekt)
 }
 
@@ -28,10 +29,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -54,7 +51,6 @@ detekt {
 dependencies {
     implementation project(":vgsshow")
 
-    implementation platform('androidx.compose:compose-bom:2024.02.02')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx

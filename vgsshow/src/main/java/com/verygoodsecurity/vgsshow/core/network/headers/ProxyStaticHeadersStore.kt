@@ -3,9 +3,7 @@ package com.verygoodsecurity.vgsshow.core.network.headers
 import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 
-internal class ProxyStaticHeadersStore constructor(
-    var isAnalyticsEnabled: Boolean = true
-) : BaseHeadersStore() {
+internal class ProxyStaticHeadersStore(var isAnalyticsEnabled: Boolean = true) : BaseHeadersStore() {
 
     override val defaultStaticHeaders: Map<String, String>
         get() = mapOf(
