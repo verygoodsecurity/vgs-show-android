@@ -137,26 +137,20 @@ class VGSShow {
 
             override fun onComplete(view: VGSPDFView, pages: Int) {
                 capture(
-                    Event.ContentRendering(
-                        view.getFieldType().toAnalyticTag(),
-                        Status.OK
-                    )
+                    Event.ContentRendering(Status.OK)
                 )
             }
 
             override fun onError(view: VGSPDFView, t: Throwable) {
                 capture(
-                    Event.ContentRendering(
-                        view.getFieldType().toAnalyticTag(),
-                        Status.FAILED
-                    )
+                    Event.ContentRendering(Status.FAILED)
                 )
             }
         }
         this.onShareDocumentListener = object : VGSPDFView.OnShareDocumentListener {
 
             override fun onShare(view: VGSPDFView) {
-                capture(Event.ContentSharing(view.getFieldType().toAnalyticTag()))
+                capture(Event.ContentSharing())
             }
         }
     }
