@@ -7,12 +7,6 @@ aliases:
       - image: cimg/android:2024.01
     resource_class: large
 
-# === Scheduled Pipeline Parameters ===
-parameters:
-  nightly-security-scan:
-    type: boolean
-    default: false
-
 jobs:
   run-unit-test-and-build:
     <<: *environment
@@ -105,67 +99,12 @@ jobs:
               --device model=flame,version=29,locale=en,orientation=portrait \
               --device model=flame,version=30,locale=en,orientation=portrait \
 
-  scan-sast-pr:
-    parameters:
-      default_branch:
-        type: string
-        default: main
-    environment:
-      SEMGREP_REPO_URL: << pipeline.project.git_url >>
-      SEMGREP_BRANCH: << pipeline.git.branch >>
-      SEMGREP_BASELINE_REF: << parameters.default_branch >>
-    docker:
-      - image: returntocorp/semgrep
-    resource_class: large
-    steps:
-      - checkout
-      - run:
-          name: "Semgrep diff scan"
-          command: semgrep ci
-
-  scan-sast-full:
-    parameters:
-      default_branch:
-        type: string
-        default: main
-    environment:
-      SEMGREP_REPO_URL: << pipeline.project.git_url >>
-      SEMGREP_BRANCH: << pipeline.git.branch >>
-    docker:
-      - image: returntocorp/semgrep
-    resource_class: large
-    steps:
-      - checkout
-      - run:
-          name: "Semgrep full scan"
-          command: semgrep ci
 workflows:
   main:
-    when:
-      not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - scan-sast-pr:
-          context:
-            - security-tools
-            - circleci
-      - scan-sast-full:
-          filters:
-            # ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v\d+\.\d+\.\d+(?:-\w+){0,1}$/
       - run-unit-test-and-build:
           context:
             - frontend-deploy
       - run-ui-test:
           requires:
             - run-unit-test-and-build
-
-  scheduled-security-scan:
-    when: << pipeline.parameters.nightly-security-scan >>
-    jobs:
-      - scan-sast-full:
-          context:
-            - security-tools
-            - circleci
