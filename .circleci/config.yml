@@ -24,11 +24,11 @@ jobs:
           command: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Download Dependencies
-          command: |
-            sudo chmod +x gradlew
-            ./gradlew androidDependencies
+#      - run:
+#          name: Download Dependencies
+#          command: |
+#            sudo chmod +x gradlew
+#            ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
