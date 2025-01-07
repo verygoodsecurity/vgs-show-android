@@ -6,12 +6,11 @@ import android.os.Looper
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.*
 import androidx.annotation.IntRange
+import com.verygoodsecurity.sdk.analytics.AnalyticsManager
+import com.verygoodsecurity.sdk.analytics.model.Event
+import com.verygoodsecurity.sdk.analytics.model.Status
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
-import com.verygoodsecurity.vgsshow.core.analytics.AnalyticsManager
-import com.verygoodsecurity.vgsshow.core.analytics.IAnalyticsManager
-import com.verygoodsecurity.vgsshow.core.analytics.event.*
-import com.verygoodsecurity.vgsshow.core.analytics.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
@@ -31,93 +30,35 @@ import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
+private const val SOURCE_TAG = "show-androidSDK"
+
 /**
  * VGS Show - Android SDK that enables you to securely display sensitive data.
  * @see <a href="https://www.verygoodsecurity.com/docs/vgs-show">www.verygoodsecurity.com</a>
  *
  * Allows reveal secure data into secure views. Entry-point into Show SDK.
- *
- * @constructor create configured, ready to use entry-point into Show SDK.
- * @param context lifecycle owner context.
- * @param vaultId unique vault id.
- * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
- * @param url that will be used as base url. Use for testing.
- * @param port localhost port.
  */
-class VGSShow private constructor(
-    private val context: Context,
-    private val vaultId: String,
-    private val environment: VGSEnvironment,
-    private var url: String?,
+class VGSShow {
+
+    private val context: Context
+    private val vaultId: String
+    private val environment: VGSEnvironment
+    private var url: String?
     private var port: Int?
-) {
-
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
-
     private val viewsStore = ViewsStore()
-
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val headersStore: ProxyStaticHeadersStore = ProxyStaticHeadersStore()
-
-    private val connectionHelper: NetworkConnectionHelper = BaseNetworkConnectionHelper(context)
-
-    private val proxyRequestManager: IHttpRequestManager = buildNetworkManager()
-
+    private val headersStore: ProxyStaticHeadersStore
+    private val connectionHelper: NetworkConnectionHelper
+    private val proxyRequestManager: IHttpRequestManager
     private var isSatelliteMode: Boolean = false
-
     private var hasCustomHostname: Boolean = false
-
-    private val analyticsManager: IAnalyticsManager =
-        AnalyticsManager(vaultId, environment, isSatelliteMode, connectionHelper)
-
-    private val onTextCopyListener = object : VGSTextView.OnTextCopyListener {
-
-        override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-            analyticsManager.log(CopyToClipboardEvent(view.getFieldType().toAnalyticTag(), format))
-        }
-    }
-
-    private val onSecureTextRangeListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
-
-        override fun onSecureTextRangeSet(view: VGSTextView) {
-            analyticsManager.log(
-                SetSecureTextEvent(
-                    view.getFieldType().toAnalyticTag(),
-                    view.getContentPath()
-                )
-            )
-        }
-    }
-
-    private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener by lazy {
-        object : VGSPDFView.OnRenderStateChangeListener {
-
-            override fun onStart(view: VGSPDFView, pages: Int) {}
-
-            override fun onComplete(view: VGSPDFView, pages: Int) {
-                analyticsManager.log(
-                    RenderContentEvent.createSuccessful(view.getFieldType().toAnalyticTag())
-                )
-            }
-
-            override fun onError(view: VGSPDFView, t: Throwable) {
-                analyticsManager.log(
-                    RenderContentEvent.createFailed(view.getFieldType().toAnalyticTag())
-                )
-            }
-        }
-    }
-
-    private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener by lazy {
-        object : VGSPDFView.OnShareDocumentListener {
-
-            override fun onShare(view: VGSPDFView) {
-                analyticsManager.log(ShareContentEvent(view.getFieldType().toAnalyticTag()))
-            }
-        }
-    }
+    private val analyticsManager: AnalyticsManager
+    private var isAnalyticsEnabled: Boolean = true
+    private val onTextCopyListener: VGSTextView.OnTextCopyListener
+    private val onSecureTextRangeListener: VGSTextView.OnSetSecureTextRangeSetListener
+    private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener
+    private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener
 
     /**
      * Constructor that allows specify environment as object.
@@ -130,7 +71,7 @@ class VGSShow private constructor(
         context: Context,
         vaultId: String,
         environment: VGSEnvironment
-    ) : this(context, vaultId, environment, null, null)
+    ) : this(context, vaultId, environment, null, null, null, null)
 
     /**
      * Constructor that allows specify environment as string.
@@ -143,7 +84,76 @@ class VGSShow private constructor(
         context: Context,
         vaultId: String,
         environment: String
-    ) : this(context, vaultId, environment.toVGSEnvironment(), null, null)
+    ) : this(context, vaultId, environment.toVGSEnvironment(), null, null, null, null)
+
+    internal constructor(
+        context: Context,
+        vaultId: String,
+        environment: VGSEnvironment,
+        url: String?,
+        port: Int?,
+        headerStore: ProxyStaticHeadersStore?,
+        analyticsManager: AnalyticsManager?
+    ) {
+        this.context = context
+        this.vaultId = vaultId
+        this.environment = environment
+        this.url = url
+        this.port = port
+        this.connectionHelper = BaseNetworkConnectionHelper(context)
+        this.headersStore = headerStore ?: ProxyStaticHeadersStore()
+        this.analyticsManager = analyticsManager ?: AnalyticsManager(
+            vault = vaultId,
+            environment = environment.value,
+            source = SOURCE_TAG,
+            sourceVersion = BuildConfig.VERSION_NAME
+        )
+        this.proxyRequestManager = buildNetworkManager()
+        this.onTextCopyListener = object : VGSTextView.OnTextCopyListener {
+
+            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
+                capture(
+                    Event.CopyToClipboard(
+                        view.getFieldType().toAnalyticTag(),
+                        format.toAnalyticsFormat()
+                    )
+                )
+            }
+        }
+        this.onSecureTextRangeListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
+
+            override fun onSecureTextRangeSet(view: VGSTextView) {
+                capture(
+                    Event.SecureTextRange(
+                        view.getFieldType().toAnalyticTag(),
+                        view.getContentPath()
+                    )
+                )
+            }
+        }
+        this.onRenderStateChangeListener = object : VGSPDFView.OnRenderStateChangeListener {
+
+            override fun onStart(view: VGSPDFView, pages: Int) {}
+
+            override fun onComplete(view: VGSPDFView, pages: Int) {
+                capture(
+                    Event.ContentRendering(Status.OK)
+                )
+            }
+
+            override fun onError(view: VGSPDFView, t: Throwable) {
+                capture(
+                    Event.ContentRendering(Status.FAILED)
+                )
+            }
+        }
+        this.onShareDocumentListener = object : VGSPDFView.OnShareDocumentListener {
+
+            override fun onShare(view: VGSPDFView) {
+                capture(Event.ContentSharing())
+            }
+        }
+    }
 
     /**
      * Synchronous request for reveal data. Note: This function should be executed in background thread.
@@ -176,9 +186,11 @@ class VGSShow private constructor(
             !connectionHelper.isNetworkPermissionsGranted() -> {
                 VGSException.NoInternetPermission().toVGSResponse()
             }
+
             !connectionHelper.isNetworkConnectionAvailable() -> {
                 VGSException.NoInternetConnection().toVGSResponse()
             }
+
             else -> {
                 logRequestEvent(request)
                 with(proxyRequestManager.execute(request)) {
@@ -264,8 +276,8 @@ class VGSShow private constructor(
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
-            analyticsManager.log(
-                InitEvent(
+            capture(
+                Event.FieldAttach(
                     view.getFieldType().toAnalyticTag(),
                     view.getContentPath()
                 )
@@ -284,7 +296,7 @@ class VGSShow private constructor(
      */
     fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
-            analyticsManager.log(UnsubscribeFieldEvent(view.getFieldType().toAnalyticTag()))
+            capture(Event.FieldDetach(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 view.removeOnCopyTextListener(onTextCopyListener)
                 view.setOnSecureTextRangeSetListener(null)
@@ -319,7 +331,7 @@ class VGSShow private constructor(
      * @param isEnabled true if VGSShow should send analytics events.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        analyticsManager.isEnabled = isEnabled
+        isAnalyticsEnabled = isEnabled
         headersStore.isAnalyticsEnabled = isEnabled
     }
 
@@ -383,12 +395,12 @@ class VGSShow private constructor(
     private fun setCname(manager: IHttpRequestManager, cname: String?) {
         manager.setCname(vaultId, cname) { isSuccessful, latency ->
             hasCustomHostname = isSuccessful
-            analyticsManager.log(
-                if (isSuccessful) {
-                    CnameValidationEvent.createSuccessful(cname, latency)
-                } else {
-                    CnameValidationEvent.createFailed(cname, latency)
-                }
+            capture(
+                Event.Cname(
+                    status = if (isSuccessful) Status.OK else Status.FAILED,
+                    hostname = cname ?: "",
+                    latency = latency
+                )
             )
         }
     }
@@ -423,37 +435,32 @@ class VGSShow private constructor(
     }
 
     private fun logRequestEvent(request: VGSRequest) {
-        val hasCustomData = request.payload != null
-        val hasCustomHeaders =
-            !request.headers.isNullOrEmpty() || headersStore.getCustom().isNotEmpty()
-        analyticsManager.log(
-            RequestEvent.createSuccessful(
-                hasCustomData,
-                hasCustomHeaders,
-                hasCustomHostname,
-                viewsStore.getViews().any { it is VGSTextView },
-                viewsStore.getViews().any { it is VGSPDFView }
-            )
-        )
+        val eventBuilder = Event.Request.Builder(Status.OK, code = 200)
+        if (viewsStore.getViews().any { it is VGSTextView }) {
+            eventBuilder.fields()
+        }
+        if (viewsStore.getViews().any { it is VGSPDFView }) {
+            eventBuilder.pdf()
+        }
+        if (request.payload != null) {
+            eventBuilder.customData()
+        }
+        if (!request.headers.isNullOrEmpty() || headersStore.getCustom().isNotEmpty()) {
+            eventBuilder.customHeader()
+        }
+        if (hasCustomHostname) {
+            eventBuilder.customHostname()
+        }
+        capture(eventBuilder.build())
     }
 
     private fun logResponseEvent(response: VGSResponse) {
-        val textViewSubscribed = viewsStore.getViews().any { it is VGSTextView }
-        val pdfViewSubscribed = viewsStore.getViews().any { it is VGSPDFView }
-        analyticsManager.log(
-            when (response) {
-                is VGSResponse.Success -> ResponseEvent.createSuccessful(
-                    response.code,
-                    textViewSubscribed,
-                    pdfViewSubscribed
-                )
-                is VGSResponse.Error -> ResponseEvent.createFailed(
-                    response.code,
-                    textViewSubscribed,
-                    pdfViewSubscribed,
-                    response.message
-                )
-            }
+        capture(
+            Event.Response(
+                status = if (response is VGSResponse.Success) Status.OK else Status.FAILED,
+                code = response.code,
+                errorMessage = (response as? VGSResponse.Error)?.message
+            )
         )
     }
 
@@ -463,6 +470,12 @@ class VGSShow private constructor(
                 is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
                 is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
             }
+        }
+    }
+
+    private fun capture(event: Event) {
+        if (isAnalyticsEnabled) {
+            analyticsManager.capture(event)
         }
     }
 
@@ -507,6 +520,6 @@ class VGSShow private constructor(
             this.apply { this.port = port }
 
         /** Build VGSShow instance */
-        fun build() = VGSShow(context, id, environment, host, port)
+        fun build() = VGSShow(context, id, environment, host, port, null, null)
     }
 }

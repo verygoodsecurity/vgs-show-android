@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 version: 2.1
 
 aliases:
@@ -18,10 +19,12 @@ jobs:
     <<: *environment
     steps:
       - checkout
-      - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
       - run:
-          name: Create google-services.json
-          command: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
+          name: Fetch analytics submodule
+          command: git submodule init && git submodule update
+      - run:
+          name: Setup local variables
+          command: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -38,7 +41,7 @@ jobs:
           command: ./gradlew app:detekt vgsshow:detekt --continue --parallel
       - run:
           name: Run Unit tests
-          command: ./gradlew app:testDebugUnitTest vgsshow:testDebugUnitTest --continue --parallel
+          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate Code Coverage Report
           command: |
