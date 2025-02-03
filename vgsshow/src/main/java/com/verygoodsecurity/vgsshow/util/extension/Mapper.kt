@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
-import com.verygoodsecurity.sdk.analytics.model.CopyFormat
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 
@@ -15,6 +15,6 @@ internal fun VGSFieldType.toAnalyticTag(): String = when (this) {
 }
 
 fun VGSTextView.CopyTextFormat.toAnalyticsFormat() = when(this) {
-    VGSTextView.CopyTextFormat.RAW -> CopyFormat.RAW
-    VGSTextView.CopyTextFormat.FORMATTED -> CopyFormat.FORMATTED
+    VGSTextView.CopyTextFormat.RAW -> VGSAnalyticsCopyFormat.RAW
+    VGSTextView.CopyTextFormat.FORMATTED -> VGSAnalyticsCopyFormat.FORMATTED
 }
