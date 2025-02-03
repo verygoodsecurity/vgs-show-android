@@ -6,9 +6,9 @@ import android.os.Looper
 import android.os.NetworkOnMainThreadException
 import androidx.annotation.*
 import androidx.annotation.IntRange
-import com.verygoodsecurity.sdk.analytics.AnalyticsManager
-import com.verygoodsecurity.sdk.analytics.model.Event
-import com.verygoodsecurity.sdk.analytics.model.Status
+import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsStatus
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
@@ -29,8 +29,10 @@ import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
+import java.util.UUID
 
 private const val SOURCE_TAG = "show-androidSDK"
+private const val DEPENDENCY_MANAGER = "maven"
 
 /**
  * VGS Show - Android SDK that enables you to securely display sensitive data.
@@ -43,6 +45,7 @@ class VGSShow {
     private val context: Context
     private val vaultId: String
     private val environment: VGSEnvironment
+    private val formId: String = UUID.randomUUID().toString()
     private var url: String?
     private var port: Int?
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
@@ -53,8 +56,7 @@ class VGSShow {
     private val proxyRequestManager: IHttpRequestManager
     private var isSatelliteMode: Boolean = false
     private var hasCustomHostname: Boolean = false
-    private val analyticsManager: AnalyticsManager
-    private var isAnalyticsEnabled: Boolean = true
+    private val analyticsManager: VGSSharedAnalyticsManager
     private val onTextCopyListener: VGSTextView.OnTextCopyListener
     private val onSecureTextRangeListener: VGSTextView.OnSetSecureTextRangeSetListener
     private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener
@@ -93,7 +95,7 @@ class VGSShow {
         url: String?,
         port: Int?,
         headerStore: ProxyStaticHeadersStore?,
-        analyticsManager: AnalyticsManager?
+        analyticsManager: VGSSharedAnalyticsManager?
     ) {
         this.context = context
         this.vaultId = vaultId
@@ -102,19 +104,19 @@ class VGSShow {
         this.port = port
         this.connectionHelper = BaseNetworkConnectionHelper(context)
         this.headersStore = headerStore ?: ProxyStaticHeadersStore()
-        this.analyticsManager = analyticsManager ?: AnalyticsManager(
-            vault = vaultId,
-            environment = environment.value,
+        this.analyticsManager = analyticsManager ?: VGSSharedAnalyticsManager(
             source = SOURCE_TAG,
-            sourceVersion = BuildConfig.VERSION_NAME
+            sourceVersion = BuildConfig.VERSION_NAME,
+            dependencyManager = DEPENDENCY_MANAGER
         )
         this.proxyRequestManager = buildNetworkManager()
         this.onTextCopyListener = object : VGSTextView.OnTextCopyListener {
 
             override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
                 capture(
-                    Event.CopyToClipboard(
+                    VGSAnalyticsEvent.CopyToClipboard(
                         view.getFieldType().toAnalyticTag(),
+                        view.getContentPath(),
                         format.toAnalyticsFormat()
                     )
                 )
@@ -124,7 +126,7 @@ class VGSShow {
 
             override fun onSecureTextRangeSet(view: VGSTextView) {
                 capture(
-                    Event.SecureTextRange(
+                    VGSAnalyticsEvent.SecureTextRange(
                         view.getFieldType().toAnalyticTag(),
                         view.getContentPath()
                     )
@@ -137,20 +139,28 @@ class VGSShow {
 
             override fun onComplete(view: VGSPDFView, pages: Int) {
                 capture(
-                    Event.ContentRendering(Status.OK)
+                    VGSAnalyticsEvent.ContentRendering(
+                        VGSAnalyticsStatus.OK,
+                        view.getFieldType().toAnalyticTag(),
+                        view.getContentPath()
+                    )
                 )
             }
 
             override fun onError(view: VGSPDFView, t: Throwable) {
                 capture(
-                    Event.ContentRendering(Status.FAILED)
+                    VGSAnalyticsEvent.ContentRendering(
+                        VGSAnalyticsStatus.FAILED,
+                        view.getFieldType().toAnalyticTag(),
+                        view.getContentPath()
+                    )
                 )
             }
         }
         this.onShareDocumentListener = object : VGSPDFView.OnShareDocumentListener {
 
             override fun onShare(view: VGSPDFView) {
-                capture(Event.ContentSharing())
+                capture(VGSAnalyticsEvent.ContentSharing(view.getContentPath()))
             }
         }
     }
@@ -277,7 +287,7 @@ class VGSShow {
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
             capture(
-                Event.FieldAttach(
+                VGSAnalyticsEvent.FieldAttach(
                     view.getFieldType().toAnalyticTag(),
                     view.getContentPath()
                 )
@@ -296,7 +306,7 @@ class VGSShow {
      */
     fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
-            capture(Event.FieldDetach(view.getFieldType().toAnalyticTag()))
+            capture(VGSAnalyticsEvent.FieldDetach(view.getFieldType().toAnalyticTag()))
             if (view is VGSTextView) {
                 view.removeOnCopyTextListener(onTextCopyListener)
                 view.setOnSecureTextRangeSetListener(null)
@@ -331,9 +341,16 @@ class VGSShow {
      * @param isEnabled true if VGSShow should send analytics events.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        isAnalyticsEnabled = isEnabled
+        analyticsManager.setIsEnabled(isEnabled)
         headersStore.isAnalyticsEnabled = isEnabled
     }
+
+    /**
+     * Used to determine if analytics enabled/disabled.
+     *
+     * @return true if VGSShow analytics enabled, false otherwise.
+     */
+    fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
 
     /**
      * Clear all information collected before by VGSShow, cancel all network requests.
@@ -396,8 +413,8 @@ class VGSShow {
         manager.setCname(vaultId, cname) { isSuccessful, latency ->
             hasCustomHostname = isSuccessful
             capture(
-                Event.Cname(
-                    status = if (isSuccessful) Status.OK else Status.FAILED,
+                VGSAnalyticsEvent.Cname(
+                    status = if (isSuccessful) VGSAnalyticsStatus.OK else VGSAnalyticsStatus.FAILED,
                     hostname = cname ?: "",
                     latency = latency
                 )
@@ -435,7 +452,7 @@ class VGSShow {
     }
 
     private fun logRequestEvent(request: VGSRequest) {
-        val eventBuilder = Event.Request.Builder(Status.OK, code = 200)
+        val eventBuilder = VGSAnalyticsEvent.Request.Builder(VGSAnalyticsStatus.OK, code = 200)
         if (viewsStore.getViews().any { it is VGSTextView }) {
             eventBuilder.fields()
         }
@@ -456,8 +473,8 @@ class VGSShow {
 
     private fun logResponseEvent(response: VGSResponse) {
         capture(
-            Event.Response(
-                status = if (response is VGSResponse.Success) Status.OK else Status.FAILED,
+            VGSAnalyticsEvent.Response(
+                status = if (response is VGSResponse.Success) VGSAnalyticsStatus.OK else VGSAnalyticsStatus.FAILED,
                 code = response.code,
                 errorMessage = (response as? VGSResponse.Error)?.message
             )
@@ -473,10 +490,13 @@ class VGSShow {
         }
     }
 
-    private fun capture(event: Event) {
-        if (isAnalyticsEnabled) {
-            analyticsManager.capture(event)
-        }
+    private fun capture(event: VGSAnalyticsEvent) {
+        analyticsManager.capture(
+            vault = vaultId,
+            environment = environment.value,
+            formId = formId,
+            event = event
+        )
     }
 
     /**

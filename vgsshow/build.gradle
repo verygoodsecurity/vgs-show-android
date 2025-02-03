@@ -62,7 +62,7 @@ detekt {
 }
 
 dependencies {
-    implementation project(':vgs-sdk-analytics:analytics')
+    implementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx

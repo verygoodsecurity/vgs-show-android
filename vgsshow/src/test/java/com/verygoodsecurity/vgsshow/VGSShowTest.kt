@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow
 import android.content.Context
 import android.os.Looper
 import android.util.Log
-import com.verygoodsecurity.sdk.analytics.AnalyticsManager
+import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
@@ -25,7 +25,7 @@ class VGSShowTest {
     private val testListenerTwo = mockk<VGSOnResponseListener>(relaxed = true)
     private val testView = mockk<VGSTextView>(relaxed = true)
     private val headersStore = ProxyStaticHeadersStore()
-    private val analyticsManager = mockk<AnalyticsManager>(relaxed = true)
+    private val analyticsManager = mockk<VGSSharedAnalyticsManager>(relaxed = true)
 
     @Before
     fun setUp() {

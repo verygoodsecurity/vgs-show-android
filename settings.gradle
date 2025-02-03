@@ -25,4 +25,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "vgs-show-android"
-include ':app', ':vgsshow', ':vgs-sdk-analytics:analytics'
+include ':app', ':vgsshow', ':vgs-sdk-analytics:VGSClientSDKAnalytics'
