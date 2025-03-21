@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.demoshow'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoshow"
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
