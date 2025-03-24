@@ -1,10 +1,14 @@
 package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.Typeface.*
-import android.os.Build
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.DEFAULT_BOLD
+import android.graphics.Typeface.ITALIC
+import android.graphics.Typeface.NORMAL
+import android.graphics.Typeface.create
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
@@ -14,17 +18,24 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.annotation.*
+import androidx.annotation.ColorInt
+import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.verygoodsecurity.vgsshow.R
-import com.verygoodsecurity.vgsshow.util.extension.isLollipopOrGreater
 import com.verygoodsecurity.vgsshow.util.extension.isMarshmallowOrGreater
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.FORMATTED
 import com.verygoodsecurity.vgsshow.widget.VGSTextView.CopyTextFormat.RAW
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
-import com.verygoodsecurity.vgsshow.widget.extension.*
+import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
+import com.verygoodsecurity.vgsshow.widget.extension.getChar
+import com.verygoodsecurity.vgsshow.widget.extension.getFloatOrNull
+import com.verygoodsecurity.vgsshow.widget.extension.getFontOrNull
+import com.verygoodsecurity.vgsshow.widget.extension.getIntOrNull
+import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
+import com.verygoodsecurity.vgsshow.widget.extension.hasView
 import com.verygoodsecurity.vgsshow.widget.view.textview.extension.updateTransformationMethod
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
@@ -94,10 +105,8 @@ class VGSTextView @JvmOverloads constructor(
             isSecureText = getBoolean(R.styleable.VGSTextView_isSecureText, false)
             isEnabled = getBoolean(R.styleable.VGSTextView_enabled, true)
 
-            if (isLollipopOrGreater) {
-                getFloatOrNull(R.styleable.VGSTextView_letterSpacing)?.let {
-                    setLetterSpacing(it)
-                }
+            getFloatOrNull(R.styleable.VGSTextView_letterSpacing)?.let {
+                setLetterSpacing(it)
             }
         }
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
@@ -259,7 +268,6 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
-    // TODO: Add getTextSize function
     /**
      * Set the default text size to the given value, interpreted as "scaled pixel" units.
      * This size is adjusted based on the current density and user font size preference.
@@ -269,6 +277,11 @@ class VGSTextView @JvmOverloads constructor(
     fun setTextSize(size: Float) {
         view.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
     }
+
+    /**
+     * @return the size (in pixels) of the default text size in this TextView.
+     */
+    fun getTextSize() = view.textSize
 
     /**
      * Set the default text size to a given unit and value.
@@ -281,7 +294,6 @@ class VGSTextView @JvmOverloads constructor(
         view.textSize = TypedValue.applyDimension(unit, size, resources.displayMetrics)
     }
 
-    // TODO: Add getTextColors function
     /**
      * Sets the text color for all the states (normal, selected, focused) to be this color.
      *
@@ -291,7 +303,20 @@ class VGSTextView @JvmOverloads constructor(
         view.setTextColor(color)
     }
 
-    // TODO: Add isSingleLine function
+    /**
+     * Sets the text color.
+     *
+     * @param colors A colors value that will be applied
+     */
+    fun setTextColor(colors: ColorStateList) {
+        view.setTextColor(colors)
+    }
+
+    /**
+     * Gets the text colors for the different states (normal, selected, focused) of the TextView.
+     */
+    fun getTextColors() = view.textColors
+
     /**
      * If true, sets the properties of this field
      * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
@@ -337,7 +362,6 @@ class VGSTextView @JvmOverloads constructor(
      * Sets text letter-spacing in em units.  Typical values
      * for slight expansion will be around 0.05.  Negative values tighten text.
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setLetterSpacing(spacing: Float) {
         view.letterSpacing = spacing
     }
@@ -406,14 +430,17 @@ class VGSTextView @JvmOverloads constructor(
 
     /**
      * Copy data to the clipboard from current View. After copying, text trigger [OnTextCopyListener].
+     *
+     *  @param format define in which format text should be copied.
+     *  @param isSensitive prevents sensitive content from appearing in the visual confirmation of copied content in Android 13 and higher.
      */
-    fun copyToClipboard(format: CopyTextFormat = RAW) {
+    fun copyToClipboard(format: CopyTextFormat = RAW, isSensitive: Boolean = false) {
         val textToCopy = when (format) {
             RAW -> rawText
             FORMATTED -> view.text?.toString()
         }
         if (!textToCopy.isNullOrEmpty()) {
-            context.copyToClipboard(textToCopy)
+            context.copyToClipboard(textToCopy, isSensitive)
             copyListeners.forEach { it.onTextCopied(this, format) }
         }
     }

@@ -146,7 +146,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
             }
         })
         tvCardNumber.setOnClickListener {
-            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW)
+            tvCardNumber.copyToClipboard(VGSTextView.CopyTextFormat.RAW, true)
         }
 
         // Setup accessibility

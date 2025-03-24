@@ -1,20 +1,23 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-parcelize'
-    id 'org.jetbrains.dokka'
-    id 'com.vanniktech.maven.publish'
-    id 'io.gitlab.arturbosch.detekt'
-    id 'org.jetbrains.kotlinx.kover'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
+
+apply from: "$rootDir/gradle/utils.gradle"
 
 android {
     namespace 'com.verygoodsecurity.vgsshow'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -50,10 +53,6 @@ android {
         buildConfig = true
         compose true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
-    }
 }
 
 detekt {
@@ -63,25 +62,27 @@ detekt {
 }
 
 dependencies {
+    debugImplementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
+    releaseImplementation(libs.vgs.sdk.analytics.android)
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
 
-    implementation platform('androidx.compose:compose-bom:2024.02.02')
     implementation libs.compose.material
 
     // Http
-    api libs.okHttp
+    api libs.okhttp
 
     // PDF viewer.
     // NOTE: Used by VGSPDFView. Consumer should add this dependency by itself as it has big size.
-    compileOnly libs.pdf.viewer
+    compileOnly libs.verygoodsecurity.pdf.viewer
 
     testImplementation testLibs.junit
     testImplementation testLibs.json
     testImplementation testLibs.robolectric
     testImplementation testLibs.mockk
     testImplementation testLibs.mockk
-    testImplementation libs.pdf.viewer
+    testImplementation libs.verygoodsecurity.pdf.viewer
 }
 
 tasks.named("dokkaHtml") {

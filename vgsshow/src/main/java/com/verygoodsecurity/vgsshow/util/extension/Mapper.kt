@@ -1,5 +1,7 @@
-package com.verygoodsecurity.vgsshow.core.analytics.extension
+package com.verygoodsecurity.vgsshow.util.extension
 
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 
 private const val ANALYTIC_TAG_TEXT = "text"
@@ -10,4 +12,9 @@ internal fun VGSFieldType.toAnalyticTag(): String = when (this) {
     VGSFieldType.INFO -> ANALYTIC_TAG_TEXT
     VGSFieldType.PDF -> ANALYTIC_TAG_PDF
     VGSFieldType.IMAGE -> ANALYTIC_TAG_IMAGE
+}
+
+fun VGSTextView.CopyTextFormat.toAnalyticsFormat() = when(this) {
+    VGSTextView.CopyTextFormat.RAW -> VGSAnalyticsCopyFormat.RAW
+    VGSTextView.CopyTextFormat.FORMATTED -> VGSAnalyticsCopyFormat.FORMATTED
 }

@@ -3,7 +3,10 @@ package com.verygoodsecurity.vgsshow
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
+import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
+import com.verygoodsecurity.vgsshow.core.network.headers.ProxyStaticHeadersStore
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
@@ -21,6 +24,8 @@ class VGSShowTest {
     private val testListenerOne = mockk<VGSOnResponseListener>(relaxed = true)
     private val testListenerTwo = mockk<VGSOnResponseListener>(relaxed = true)
     private val testView = mockk<VGSTextView>(relaxed = true)
+    private val headersStore = ProxyStaticHeadersStore()
+    private val analyticsManager = mockk<VGSSharedAnalyticsManager>(relaxed = true)
 
     @Before
     fun setUp() {
@@ -28,7 +33,15 @@ class VGSShowTest {
         mockkStatic(Looper::class)
         every { Log.d(any(), any()) } returns 0
         every { Looper.getMainLooper() } returns looper
-        sut = VGSShow(context, DEFAULT_TENANT_ID, DEFAULT_ENVIRONMENT)
+        sut = VGSShow(
+            context = context,
+            vaultId = BuildConfig.VAULT_ID,
+            environment = DEFAULT_ENVIRONMENT.toVGSEnvironment(),
+            url = null,
+            port = null,
+            headerStore = headersStore,
+            analyticsManager = analyticsManager
+        )
     }
 
     @Test
@@ -114,12 +127,12 @@ class VGSShowTest {
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
         assertTrue(sut.getViewsStore().isEmpty())
-        assertFalse(sut.headersStore.getCustom().isNotEmpty())
+        assertFalse(headersStore.getCustom().isNotEmpty())
     }
 
     companion object {
 
-        private const val DEFAULT_TENANT_ID = ""
-        private const val DEFAULT_ENVIRONMENT = ""
+        private const val DEFAULT_TENANT_ID = "test_tenant"
+        private const val DEFAULT_ENVIRONMENT = "test_env"
     }
 }

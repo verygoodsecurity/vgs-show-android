@@ -1,18 +1,19 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'io.gitlab.arturbosch.detekt'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.detekt)
 }
 
 
 android {
     namespace 'com.verygoodsecurity.demoshow'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoshow"
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -26,10 +27,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
     }
 
     buildTypes {
@@ -54,17 +51,15 @@ detekt {
 dependencies {
     implementation project(":vgsshow")
 
-    implementation platform('androidx.compose:compose-bom:2024.02.02')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
     implementation libs.androidx.constraintlayout
 
     implementation libs.verygoodsecurity.collect
+    implementation libs.verygoodsecurity.pdf.viewer
 
-    implementation libs.pdf.viewer
-
-    implementation libs.compose.activity
+    implementation libs.activity.compose
     implementation libs.compose.material
     implementation libs.compose.ui.tooling.preview
 
@@ -75,12 +70,11 @@ dependencies {
     androidTestImplementation androidTestLibs.androidx.junit.ext.ktx
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
-    androidTestImplementation androidTestLibs.androidx.core.ktx
     androidTestImplementation androidTestLibs.androidx.uiautomator
     androidTestImplementation androidTestLibs.androidx.espresso.intents
     androidTestImplementation androidTestLibs.androidx.espresso.core
     androidTestImplementation androidTestLibs.hamcrest.integration
-    androidTestImplementation(androidTestLibs.support.espresso.contrib) {
+    androidTestImplementation(androidTestLibs.espresso.contrib) {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude module: 'support-annotations'
         exclude module: 'support-v4'
