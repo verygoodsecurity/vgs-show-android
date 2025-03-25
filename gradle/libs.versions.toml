@@ -1,7 +1,7 @@
 [versions]
-agp = '8.2.2'
-kotlin = '2.0.0'
-mokkery = "2.5.1"
+agp = '8.7.3'
+kotlin = '2.1.10'
+mokkery = "2.7.2"
 mavenPublish = '0.27.0'
 dokka = '1.9.20'
 detekt = '1.23.5'
