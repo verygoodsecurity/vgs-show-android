@@ -102,12 +102,8 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=lv0,version=23,locale=en,orientation=portrait \
-              --device model=capricorn,version=26,locale=en,orientation=portrait \
-              --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
-              --device model=flame,version=29,locale=en,orientation=portrait \
-              --device model=flame,version=30,locale=en,orientation=portrait \
-
+              --device model=caiman,version=35,locale=en,orientation=portrait \
+              --device model=bluejay,version=32,locale=en,orientation=portrait \
   scan-sast-pr:
     parameters:
       default_branch:
