@@ -58,3 +58,4 @@ proguard/
 /captures
 .externalNativeBuild
 .cxx
+/.kotlin/
