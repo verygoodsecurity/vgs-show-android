@@ -104,8 +104,6 @@ jobs:
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --device model=caiman,version=35,locale=en,orientation=portrait \
               --device model=bluejay,version=32,locale=en,orientation=portrait \
-              --device model=blueline,version=28,locale=en,orientation=portrait \
-
   scan-sast-pr:
     parameters:
       default_branch:
