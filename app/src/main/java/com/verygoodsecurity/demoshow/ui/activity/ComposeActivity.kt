@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -68,6 +69,7 @@ private fun Content(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .safeContentPadding()
                 .padding(16.dp)
         ) {
             VGSTextViewWrapper(
