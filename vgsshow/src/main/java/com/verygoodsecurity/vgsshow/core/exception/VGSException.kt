@@ -2,6 +2,9 @@ package com.verygoodsecurity.vgsshow.core.exception
 
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat
 
+/**
+ * The base class for all exceptions thrown by the VGS Show SDK.
+ */
 sealed class VGSException : Exception() {
 
     abstract val code: Int
@@ -65,6 +68,9 @@ sealed class VGSException : Exception() {
         override val errorMessage: String = "Payload is not valid  ${httpPayloadFormat.name}"
     }
 
+    /**
+     * Thrown when the revealed image data is not a valid image.
+     */
     class ImageNotValid : VGSException() {
 
         override val code: Int

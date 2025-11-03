@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 /**
- * VGS basic view control that displays revealed images to the user.
+ * A `VGSImageView` is used to display revealed images.
  */
 class VGSImageView @JvmOverloads constructor(
     context: Context,
@@ -48,7 +48,7 @@ class VGSImageView @JvmOverloads constructor(
     override fun restoreState(state: BaseSavedState) {}
 
     /**
-     * Controls how the image should be resized or moved to match the size of this image view.
+     * Controls how the image should be resized or moved to match the size of this `ImageView`.
      *
      * @param scaleType The desired scaling mode.
      *
@@ -61,34 +61,26 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the current [ScaleType] that is used to scale the bounds of an image to the bounds of the image view.
+     * Returns the current `ScaleType` used to scale the bounds of an image to the bounds of this `ImageView`.
      *
-     * @return The [ScaleType] used to scale the image.
-     *
-     * @attr [R.styleable.VGSImageView_android_scaleType]
+     * @return The `ScaleType` used to scale the image.
      */
     fun getScaleType(): ScaleType = view.scaleType
 
     /**
-     * Set this to true if you want the image view to adjust its bounds
-     * to preserve the aspect ratio of its drawable.
+     * If set to `true`, this `ImageView` will adjust its bounds to preserve the aspect ratio of its drawable.
      *
-     * @param adjustViewBounds Whether to adjust the bounds of this view
-     * to preserve the original aspect ratio of the drawable.
-     *
-     * @attr [R.styleable.VGSImageView_android_adjustViewBounds]
+     * @param adjustViewBounds `true` to adjust the bounds of this view to preserve the original aspect ratio
+     * of the drawable.
      */
     fun setAdjustViewBounds(adjustViewBounds: Boolean) {
         view.adjustViewBounds = adjustViewBounds
     }
 
     /**
-     * True when image view is adjusting its bounds to preserve the aspect ratio of its drawable.
+     * Returns `true` if this `ImageView` is adjusting its bounds to preserve the aspect ratio of its drawable.
      *
-     * @return Whether to adjust the bounds of this view to preserve the original aspect ratio
-     * of the drawable.
-     *
-     * @attr [R.styleable.VGSImageView_android_adjustViewBounds]
+     * @return `true` if this `ImageView` is adjusting its bounds, `false` otherwise.
      */
     fun getAdjustViewBounds(): Boolean = view.adjustViewBounds
 
@@ -106,16 +98,14 @@ class VGSImageView @JvmOverloads constructor(
      * then use [setScaleType] to determine how to fit the image within the bounds.
      * </p>
      *
-     * @param maxWidth Maximum width for this view.
-     *
-     * @attr [R.styleable.VGSImageView_android_maxWidth]
+     * @param maxWidth The maximum width for this view.
      */
     fun setMaxWidth(maxWidth: Int) {
         view.maxWidth = maxWidth
     }
 
     /**
-     * The maximum width of this view.
+     * Returns the maximum width of this view.
      *
      * @return The maximum width of this view.
      *
@@ -146,59 +136,46 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     /**
-     * The maximum height of this view.
+     * Returns the maximum height of this view.
      *
      * @return The maximum height of this view.
-     *
-     * @attr [R.styleable.VGSImageView_android_maxHeight]
      */
     fun getMaxHeight(): Int = view.maxHeight
 
     /**
-     * Sets whether this image view will crop to padding.
+     * Sets whether this `ImageView` will crop to its padding.
      *
-     * @param cropToPadding Whether this image view will crop to padding.
-     *
-     * @attr [R.styleable.VGSImageView_android_cropToPadding]
+     * @param cropToPadding `true` to crop to padding, `false` otherwise.
      */
     fun setCropToPadding(cropToPadding: Boolean) {
         view.cropToPadding = cropToPadding
     }
 
     /**
-     * Return whether this image view crops to padding.
+     * Returns whether this `ImageView` is cropping to its padding.
      *
-     * @return Whether this image view crops to padding.
-     *
-     * @attr [R.styleable.VGSImageView_android_cropToPadding]
+     * @return `true` if this `ImageView` is cropping to its padding, `false` otherwise.
      */
     fun getCropToPadding(): Boolean = view.cropToPadding
 
     /**
-     * Set the offset of the widget's text baseline from the widget's top
-     * boundary. This value is overridden by the [setBaselineAlignBottom] property.
+     * Sets the baseline of this view to the specified value.
      *
-     * @param baseline The baseline to use, or -1 if none is to be provided.
-     *
-     * @attr [R.styleable.VGSImageView_android_baseline]
+     * @param baseline The baseline to use.
      */
     fun setImageViewBaseline(baseline: Int) {
         view.baseline = baseline
     }
 
     /**
-     * Return the offset of the widget's text baseline from the widget's top boundary.
+     * Returns the baseline of this view.
      *
-     * @return The offset of the baseline within the widget's bounds or -1 if baseline alignment
-     * is not supported.
-     *
-     * @attr [R.styleable.VGSImageView_android_baseline]
+     * @return The baseline of this view.
      */
     fun getImageViewBaseline(): Int = view.baseline
 
     /**
-     * Sets whether the baseline of this view to the bottom of the view.
-     * Setting this value overrides any calls to setBaseline.
+     * Sets whether the baseline of this view is aligned with the bottom of the view.
      *
      * @param aligned If true, the image view will be baseline aligned by its bottom edge.
      *
@@ -209,19 +186,14 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     /**
-     * Checks whether this view's baseline is considered the bottom of the view.
+     * Returns `true` if this view's baseline is aligned with the bottom of the view, `false` otherwise.
      *
-     * @return True if the image view's baseline is considered the bottom of the view, false if otherwise.
-     *
-     * @attr [R.styleable.VGSImageView_android_baselineAlignBottom]
+     * @return `true` if this view's baseline is aligned with the bottom, `false` otherwise.
      */
     fun getBaselineAlignBottom(): Boolean = view.baselineAlignBottom
 
     /**
-     * Applies a tint to the image drawable. Does not modify the current tint mode,
-     * which is [PorterDuff.Mode.SRC_IN] by default.
-     *
-     * @param tint The tint to apply, may be {@code null} to clear tint.
+     * Applies a tint to the image drawable.
      *
      * @see ColorStateList
      *
@@ -232,7 +204,7 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     /**
-     * Get the current [ColorStateList] used to tint the image Drawable, or null if no tint is applied.
+     * Returns the `ColorStateList` used to tint the image drawable.
      *
      * @return The tint applied to the image drawable.
      *
@@ -241,8 +213,7 @@ class VGSImageView @JvmOverloads constructor(
     fun getImageTintList(): ColorStateList? = view.imageTintList
 
     /**
-     * Specifies the blending mode used to apply the tint specified by [setImageTintList] to the
-     * image drawable. The default mode is [PorterDuff.Mode.SRC_IN].
+     * Specifies the blending mode used to apply the tint to the image drawable.
      *
      * @param tintMode The blending mode used to apply the tint, may be null to clear tint.
      *
@@ -253,9 +224,7 @@ class VGSImageView @JvmOverloads constructor(
     }
 
     /**
-     * Gets the blending mode used to apply the tint to the image Drawable.
-     *
-     * @return The blending mode used to apply the tint to the image Drawable.
+     * Returns the blending mode used to apply the tint to the image drawable.
      *
      * @see PorterDuff.Mode
      *
@@ -264,16 +233,16 @@ class VGSImageView @JvmOverloads constructor(
     fun getImageTintMode(): PorterDuff.Mode? = view.imageTintMode
 
     /**
-     * Check if image reveled.
+     * Returns `true` if an image has been revealed and is ready to be displayed.
      *
-     * @return True if image reveled, false otherwise.
+     * @return `true` if an image is available, `false` otherwise.
      */
     fun hasImage(): Boolean {
         return (view.drawable as? BitmapDrawable)?.bitmap != null
     }
 
     /**
-     * Remove previously reveled image.
+     * Removes the previously revealed image.
      */
     fun clear() {
         view.setImageBitmap(null)

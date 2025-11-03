@@ -14,6 +14,9 @@ internal fun VGSFieldType.toAnalyticTag(): String = when (this) {
     VGSFieldType.IMAGE -> ANALYTIC_TAG_IMAGE
 }
 
+/**
+ * Maps a `VGSTextView.CopyTextFormat` to a `VGSAnalyticsCopyFormat`.
+ */
 fun VGSTextView.CopyTextFormat.toAnalyticsFormat() = when(this) {
     VGSTextView.CopyTextFormat.RAW -> VGSAnalyticsCopyFormat.RAW
     VGSTextView.CopyTextFormat.FORMATTED -> VGSAnalyticsCopyFormat.FORMATTED
