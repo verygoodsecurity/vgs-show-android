@@ -16,6 +16,7 @@ Table of contents
    * [License](#license)
 <!--te-->
 
+---
 
 ## Dependencies
 
@@ -27,10 +28,34 @@ Table of contents
 | androidx.appcompat:appcompat |  1.6.1  |
 | com.squareup.okhttp3:okhttp | 4.12.0  |
 
+---
+
 ## Structure
 * **VGSShow SDK** - provides an API for interacting with the VGS Vault
 * **app** - sample application to act as the host app for testing the SDK during development
+---
 
+## AI Agent Integration
+Use AGENTS.md as the single authoritative context for autonomous coding agents integrating or maintaining VGSShowSDK.
+
+### Minimal System Prompt Example:
+
+You are an autonomous engineering agent integrating the VGS Show Android SDK into an existing Kotlin app.
+Use the full contents of AGENTS.md as the authoritative policy.
+
+**Constraints:**
+- Only public, non-deprecated APIs.
+- No raw sensitive data in logs/tests.
+- Securely display sensitive data.
+
+**Goals:**
+1. Add a secure `VGSTextView` to display sensitive data and a `VGSImageView` to display a sensitive image.
+2. Add redacted logging for all revealed data.
+3. Provide unit tests for revealing and displaying data.
+
+**Return:** Modified Kotlin source files only, no secrets.
+
+---
 
 ## Integration
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
