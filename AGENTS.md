@@ -117,7 +117,7 @@ lifecycleScope.launch {
 ### Developer Prompt (Inline Example for a Single Task):
 
 **Task:** Add a `VGSTextView` to display a credit card number with a custom redaction format.
-Follow AGENTS.md Section 4.
+Follow AGENTS.md
 
 Do not break existing secure views; add tests for redaction and display.
 

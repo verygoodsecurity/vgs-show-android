@@ -1,5 +1,6 @@
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-show-android/blob/master/LICENSE)
+[![AI Agent Ready](https://img.shields.io/badge/AI%20Agent-Ready-blue)]()
 <img src="./ZeroDataLogo.png" width="55" hspace="8">
 
 VGS Show Android SDK allows you to securely reveal data for your users without having to have that data pass through your systems. It provides customizable UI elements for showing users' sensitive data securely on Android devices.
@@ -8,8 +9,8 @@ Table of contents
 =================
 
 <!--ts-->
-   * [Dependencies](#dependencies)Ï
-   * [Structure](#structure)Ï
+   * [Dependencies](#dependencies)
+   * [Structure](#structure)
    * [Integration](#integration)
    * [Next steps](#next-steps)
    * [Releases](#releases)
