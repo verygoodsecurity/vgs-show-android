@@ -85,8 +85,8 @@ vgsShow.addOnResponseListener(object : VGSOnResponseListener {
     override fun onResponse(response: VGSResponse) {
         // Handle response
         when(response) {
-            is VGSResponse.Success -> // Handle success
-            is VGSResponse.Error -> // Handle error
+            is VGSResponse.Success -> {}// Handle success
+            is VGSResponse.Error -> {}// Handle error
         }
     }
 })
