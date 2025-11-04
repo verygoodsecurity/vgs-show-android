@@ -315,30 +315,35 @@ class VGSShow {
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Sets a custom HTTP header for all requests made by this `VGSShow` instance.
+     *
+     * @param header The name of the header.
+     * @param value The value of the header.
      */
     fun setCustomHeader(header: String, value: String) {
         headersStore.add(header, value)
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Removes a custom HTTP header.
+     *
+     * @param header The name of the header to remove.
      */
     fun removeCustomHeader(header: String) {
         headersStore.remove(header)
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Clears all custom HTTP headers.
      */
     fun clearCustomHeaders() {
         headersStore.clear()
     }
 
     /**
-     * Used to enable/disable analytics events.
+     * Enables or disables analytics events for this `VGSShow` instance.
      *
-     * @param isEnabled true if VGSShow should send analytics events.
+     * @param isEnabled `true` to enable analytics, `false` to disable.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         analyticsManager.setIsEnabled(isEnabled)
@@ -346,15 +351,15 @@ class VGSShow {
     }
 
     /**
-     * Used to determine if analytics enabled/disabled.
+     * Returns whether analytics are enabled for this `VGSShow` instance.
      *
-     * @return true if VGSShow analytics enabled, false otherwise.
+     * @return `true` if analytics are enabled, `false` otherwise.
      */
     fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
 
     /**
-     * Clear all information collected before by VGSShow, cancel all network requests.
-     * Preferably call it inside onDestroy system's callback.
+     * Clears all collected data, cancels network requests, and releases resources. This method
+     * should be called in your `Activity` or `Fragment`'s `onDestroy` method.
      */
     fun onDestroy() {
         proxyRequestManager.cancelAll()

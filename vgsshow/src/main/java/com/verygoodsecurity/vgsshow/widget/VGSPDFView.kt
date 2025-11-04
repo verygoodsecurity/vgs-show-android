@@ -11,15 +11,17 @@ import com.verygoodsecurity.vgsshow.widget.extension.getStyledAttributes
 import com.verygoodsecurity.vgsshow.widget.view.pdf.state.VGSPDFViewState
 
 /**
- * A VGSPDFView can be used to display a PDF file.
+ * A `VGSPDFView` is used to display a PDF file.
  *
- * VGSPDFView depends on [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) library.
- * When View is initialized without additional dependency, the View will throw Exception.
- * Please add the dependency to your module gradle file before using this View:
+ * `VGSPDFView` depends on the [AndroidPdfViewer](https://github.com/barteksc/AndroidPdfViewer) library.
+ * If this dependency is not included, the view will throw an exception.
+ * Please add the dependency to your module's `build.gradle` file before using this view:
  *
+ * ```gradle
  * implementation 'com.verygoodsecurity:android-pdf-viewer:<latest_version>'
+ * ```
  *
- * For more information please visit our [guide](). TODO: add guide link
+ * For more information, please see our [documentation](https://www.verygoodsecurity.com/docs/vgs-show/android-sdk/pdf-view). 
  */
 class VGSPDFView @JvmOverloads constructor(
     context: Context,
@@ -27,28 +29,28 @@ class VGSPDFView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : VGSView<PDFView>(context, attrs, defStyleAttr) {
 
-    /** Default start page. */
+    /** The default page to display, indexed from 0. */
     var defaultPage: Int = DEFAULT_PAGE
 
-    /** Enable/Disable changing pages using scrolling. */
+    /** If `true`, the user can scroll to change pages. */
     var isSwipeEnabled: Boolean = SWIPE_ENABLED
 
-    /** Enable/Disable horizontal scrolling. */
+    /** If `true`, horizontal scrolling is enabled. */
     var isSwipeHorizontalEnabled: Boolean = SWIPE_HORIZONTAL_ENABLED
 
-    /** Enable/Disable double tap. */
+    /** If `true`, double-tapping zooms in on the PDF. */
     var isDoubleTapEnabled: Boolean = DOUBLE_TAB_ENABLED
 
-    /** Improve rendering on low-res screens. */
+    /** If `true`, anti-aliasing is used for rendering, which can improve rendering on low-resolution screens. */
     var isAntialiasingEnabled: Boolean = ANTIALIAS_ENABLED
 
-    /** Spacing between pages in dp. */
+    /** The spacing between pages in dp. */
     var spacing: Int = SPACING
 
-    /** Register a callback to be invoked when document page changed. */
+    /** A callback to be invoked when the displayed page changes. */
     var onPageChangeListener: OnPageChangeListener? = null
 
-    /** Return true if document was revealed. */
+    /** Returns `true` if a document has been revealed and is ready to be displayed. */
     val hasDocument: Boolean
         get() = documentBytes != null && documentBytes?.isNotEmpty() == true
 
@@ -108,7 +110,7 @@ class VGSPDFView @JvmOverloads constructor(
     }
 
     /**
-     * Register a callback to be invoked when document rendering state changed.
+     * Registers a callback to be invoked when the document rendering state changes.
      *
      * @param listener @see [OnRenderStateChangeListener].
      */
@@ -116,7 +118,7 @@ class VGSPDFView @JvmOverloads constructor(
         renderListeners.add(listener)
 
     /**
-     * Unregister a callback to be invoked when document rendering state changed.
+     * Unregisters a callback so it will no longer be invoked.
      *
      * @param listener @see [OnRenderStateChangeListener].
      */
