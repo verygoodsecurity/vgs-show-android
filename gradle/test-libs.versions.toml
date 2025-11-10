@@ -1,6 +1,6 @@
 [versions]
 junit = '4.13.2'
-robolectric = '4.11.1'
+robolectric = '4.16'
 mockk = '1.12.4'
 json = '20240303'
 
