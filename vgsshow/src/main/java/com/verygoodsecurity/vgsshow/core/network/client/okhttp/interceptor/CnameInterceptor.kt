@@ -10,6 +10,10 @@ import okhttp3.Request
 import okhttp3.Response
 import kotlin.system.measureTimeMillis
 
+/**
+ * An OkHttp interceptor for handling CNAME resolution.
+ * @suppress Not for public use.
+ */
 internal class CnameInterceptor : Interceptor {
 
     private var cname: String? = null
@@ -17,6 +21,14 @@ internal class CnameInterceptor : Interceptor {
     private var isCnameValid: Boolean? = null
     private var cnameResult: ((Boolean, Long) -> Unit)? = null
 
+    /**
+     * Sets the CNAME and vault ID for the interceptor.
+     *
+     * @param vaultId The ID of the vault.
+     * @param cname The CNAME to use.
+     * @param cnameResult A callback to be invoked with the result of the CNAME validation.
+     * The callback receives a boolean indicating success and a long for the latency.
+     */
     fun setCname(vaultId: String, cname: String?, cnameResult: (Boolean, Long) -> Unit) {
         this.cname = cname
         this.vaultId = vaultId

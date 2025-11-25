@@ -6,6 +6,10 @@ import com.verygoodsecurity.vgsshow.util.extension.isValidPort
 import com.verygoodsecurity.vgsshow.util.extension.isValidTenantId
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 
+/**
+ * A helper object for building URLs.
+ * @suppress Not for public use.
+ */
 internal object UrlHelper {
 
     private const val HTTPS_SCHEME = "https://"
@@ -16,6 +20,13 @@ internal object UrlHelper {
     private const val PROXY_PORT_DIVIDER = ":"
     private const val EMPTY = ""
 
+    /**
+     * Builds a localhost URL with the given host and port.
+     *
+     * @param localhost The localhost address.
+     * @param port The port number.
+     * @return The constructed localhost URL.
+     */
     fun buildLocalhostUrl(localhost: String, port: Int?): String {
         val prt = if (!port.isValidPort()) {
             logWaring("Port is not specified")
@@ -29,6 +40,13 @@ internal object UrlHelper {
             .toString()
     }
 
+    /**
+     * Builds a VGS proxy URL with the given vault ID and environment.
+     *
+     * @param vaultId The vault ID.
+     * @param environment The VGS environment.
+     * @return The constructed proxy URL.
+     */
     fun buildProxyUrl(vaultId: String, environment: VGSEnvironment): String = when {
         !vaultId.isValidTenantId() -> {
             logWaring("VaultId($vaultId) is not valid")

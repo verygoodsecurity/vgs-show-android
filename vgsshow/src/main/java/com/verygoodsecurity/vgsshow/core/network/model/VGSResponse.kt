@@ -18,6 +18,7 @@ sealed class VGSResponse {
      * A successful response from the VGS proxy.
      *
      * @property code The HTTP response code.
+     * @property data The response data.
      */
     @Parcelize
     class Success private constructor(

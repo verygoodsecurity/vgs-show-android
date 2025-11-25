@@ -21,6 +21,14 @@ import java.io.InterruptedIOException
 import java.net.MalformedURLException
 import java.util.concurrent.TimeoutException
 
+/**
+ * An implementation of [IHttpRequestManager] that uses [OkHttpClient] to make requests.
+ * @suppress Not for public use.
+ *
+ * @param baseUrl The base URL for all requests.
+ * @param headersStore The store for static headers.
+ * @param isLogsEnabled Whether or not to enable logging.
+ */
 internal class HttpRequestManager(
     private val baseUrl: String,
     private val headersStore: StaticHeadersStore,

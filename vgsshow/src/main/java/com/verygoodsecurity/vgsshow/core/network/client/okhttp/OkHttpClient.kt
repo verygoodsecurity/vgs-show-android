@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgsshow.core.network.client.okhttp
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgsshow.core.network.client.BaseHttpClient
 import com.verygoodsecurity.vgsshow.core.network.client.CONTENT_TYPE
 import com.verygoodsecurity.vgsshow.core.network.client.HttpRequestCallback
@@ -21,6 +19,12 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient as OkHttp3Client
 
+/**
+ * An implementation of [BaseHttpClient] that uses OkHttp to make requests.
+ * @suppress Not for public use.
+ *
+ * @param isLogsEnabled Whether or not to enable logging.
+ */
 internal class OkHttpClient constructor(isLogsEnabled: Boolean) : BaseHttpClient(isLogsEnabled) {
 
     private val cnameInterceptor: CnameInterceptor by lazy { CnameInterceptor() }
