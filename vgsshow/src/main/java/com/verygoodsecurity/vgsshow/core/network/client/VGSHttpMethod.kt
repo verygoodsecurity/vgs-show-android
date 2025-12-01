@@ -1,34 +1,32 @@
 package com.verygoodsecurity.vgsshow.core.network.client
 
 /**
- * Set of common HTTP methods that used in Show SDK.
- *
- * @since 1.0.0
+ * The set of common HTTP methods used in the Show SDK.
  */
 enum class VGSHttpMethod {
 
     /**
-     *  HTTP GET method
+     *  HTTP GET method.
      */
     GET,
 
     /**
-     *  HTTP POST method
+     *  HTTP POST method.
      */
     POST,
 
     /**
-     *  HTTP PUT method
+     *  HTTP PUT method.
      */
     PUT,
 
     /**
-     *  HTTP PATCH method
+     *  HTTP PATCH method.
      */
     PATCH,
 
     /**
-     *  HTTP DELETE method
+     *  HTTP DELETE method.
      */
     DELETE
 }

@@ -9,7 +9,16 @@ import com.verygoodsecurity.vgsshow.core.network.model.data.request.UrlencodedDa
 private const val DEFAULT_CONNECTION_TIME_OUT = 60000L
 
 /**
- * Request definition class for revealing data.
+ * Represents a request to the VGS proxy.
+ *
+ * @property routeId The route ID for the request.
+ * @property path The path for the request.
+ * @property method The HTTP method for the request.
+ * @property headers The headers for the request.
+ * @property requestFormat The format of the request body.
+ * @property responseFormat The expected format of the response body.
+ * @property requestTimeoutInterval The timeout interval for the request, in milliseconds.
+ * @property payload The payload for the request.
  */
 class VGSRequest private constructor(
     val routeId: String?,
@@ -23,17 +32,15 @@ class VGSRequest private constructor(
 ) {
 
     /**
-     * Check if payload is valid
-     *
-     * @return true if payload valid
+     * Returns `true` if the request payload is valid, `false` otherwise.
      */
     fun isPayloadValid(): Boolean = payload?.isValid() == true
 
     /**
-     * VGSRequest builder helper.
+     * A builder for creating [VGSRequest]s.
      *
-     * @param path path for a request.
-     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
+     * @param path The path for the request.
+     * @param method The HTTP method for the request.
      */
     data class Builder(
         private val path: String,
@@ -48,31 +55,37 @@ class VGSRequest private constructor(
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
 
         /**
-         * Defines route id for submitting data.
+         * Sets the route ID for the request.
          *
-         * @param id A vault route id
+         * @param id The route ID.
+         * @return This builder.
          */
         fun routeId(id: String?) = apply { this.routeId = id }
 
         /**
-         * List of headers that will be added to this request.
+         * Sets the headers for the request.
          *
-         * @param headers key-value headers store, where key - header name and value - header value.
-         * (ex. key = "Authorization", value = "authorization_token")
+         * @param headers The headers.
+         * @return This builder.
          */
         fun headers(headers: Map<String, String>) = apply { this.headers = headers }
 
         /**
-         * Body that will send with this request.
+         * Sets the body of the request as a [Map].
          *
+         * @param payload The request body.
+         * @return This builder.
          */
         fun body(payload: Map<String, Any>?): Builder = apply {
             this.payload = if (payload != null) JsonRequestData(payload) else null
         }
 
         /**
-         * Body that will send with this request.
+         * Sets the body of the request as a [String] with the specified format.
          *
+         * @param payload The request body.
+         * @param format The format of the request body.
+         * @return This builder.
          */
         fun body(payload: String, format: VGSHttpBodyFormat): Builder = apply {
             this.requestFormat = format
@@ -84,23 +97,25 @@ class VGSRequest private constructor(
         }
 
         /**
-         * Specifies expected response body format.
+         * Sets the expected response body format.
          *
-         * @param format @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpBodyFormat]
+         * @param format The response body format.
+         * @return This builder.
          */
         fun responseFormat(format: VGSHttpBodyFormat) = apply { this.responseFormat = format }
 
         /**
-         * Specifies request timeout interval in milliseconds.
+         * Sets the request timeout interval.
          *
-         * @param timeout interval in milliseconds.
+         * @param timeout The timeout interval, in milliseconds.
+         * @return This builder.
          */
         fun requestTimeoutInterval(timeout: Long) = apply { this.requestTimeoutInterval = timeout }
 
         /**
-         * Build VGSRequest object.
+         * Builds the [VGSRequest].
          *
-         * @return configured VGSRequest.
+         * @return The built [VGSRequest].
          */
         fun build() = VGSRequest(
             routeId,

@@ -1,39 +1,42 @@
 package com.verygoodsecurity.vgsshow.core.network.headers
 
 /**
- * Interface for static headers store that will be added to all requests.
- *
- * @since 1.0.0
+ * An interface for a store of static headers that will be added to all requests.
+ * @suppress Not for public use.
  */
 internal interface StaticHeadersStore {
 
     /**
-     * Add custom header. Does not allow duplication.
+     * Adds a custom header.
      *
-     * @param key http request header name, ex. "Authorization".
-     * @param value http request header name, ex. "authorization_token".
+     * @param key The name of the header.
+     * @param value The value of the header.
      */
     fun add(key: String, value: String)
 
     /**
-     * Remove custom header.
+     * Removes a custom header.
      *
-     * @param key http request header name, ex. "Authorization".
+     * @param key The name of the header to remove.
      */
     fun remove(key: String)
 
     /**
-     * @return all headers.
+     * Returns all headers, including default and custom ones.
+     *
+     * @return A map of all headers.
      */
     fun getAll(): Map<String, String>
 
     /**
-     * @return all headers what user set.
+     * Returns only the custom headers set by the user.
+     *
+     * @return A map of custom headers.
      */
     fun getCustom(): Map<String, String>
 
     /**
-     * Clear all headers.
+     * Clears all custom headers.
      */
     fun clear()
 }

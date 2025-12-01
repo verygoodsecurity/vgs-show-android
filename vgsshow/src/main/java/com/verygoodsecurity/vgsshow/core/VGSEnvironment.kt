@@ -15,7 +15,8 @@ sealed class VGSEnvironment {
 
     /**
      *  Connects to the live environment.
-     *  
+     *  The live environment is used for production applications.
+     *
      *  @param suffix The suffix for the environment, e.g., "eu-2" for "live-eu-2".
      */
     data class Live(val suffix: String = "") : VGSEnvironment() {
@@ -34,6 +35,7 @@ sealed class VGSEnvironment {
 
     /**
      *  Connects to the sandbox environment.
+     *  The sandbox environment is used for testing and development.
      *
      *  @param suffix The suffix for the environment, e.g., "eu-2" for "sandbox-eu-2".
      */
