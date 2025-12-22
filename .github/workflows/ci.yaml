@@ -38,3 +38,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+
+      - name: Run Detekt
+        run: ./gradlew app:detekt vgsshow:detekt --continue --parallel
+
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --continue --stacktrace
