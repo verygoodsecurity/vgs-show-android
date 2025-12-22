@@ -46,7 +46,7 @@ jobs:
           key: gradle-${{ hashFiles('build.gradle', 'app/build.gradle') }}
 
       - name: Run Detekt
-        run: ./gradlew app:detekt vgsshow:detekt --continue --parallel
+        run: ./gradlew app:detekt vgsshow:detekt --continue --no-daemon --parallel --configure-on-demand
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --continue --stacktrace
