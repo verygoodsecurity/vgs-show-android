@@ -39,6 +39,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
+      - name: Restore Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle
+          key: gradle-${{ hashFiles('build.gradle', 'app/build.gradle') }}
+
       - name: Run Detekt
         run: ./gradlew app:detekt vgsshow:detekt --continue --parallel
 
