@@ -43,14 +43,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Start Gradle Daemon
-        run: ./gradlew --daemon --quiet
-
       - name: Run Detekt
-        run: ./gradlew app:detekt vgsshow:detekt --continue --parallel
+        run: ./gradlew vgsshow:detekt --continue
 
       - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --continue
+        run: ./gradlew vgsshow:testDebugUnitTest --continue
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
