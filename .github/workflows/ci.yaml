@@ -40,7 +40,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Start Gradle Daemon
-        run: ./gradlew --daemon --quiet help &
+        run: ./gradlew --daemon --quiet
 
       - name: Run Detekt
         run: ./gradlew app:detekt vgsshow:detekt --continue --parallel
