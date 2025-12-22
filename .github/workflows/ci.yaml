@@ -31,6 +31,9 @@ jobs:
         with:
           submodules: true
 
+      - name: Setup local variables
+        run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
