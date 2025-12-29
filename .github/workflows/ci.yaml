@@ -55,13 +55,13 @@ jobs:
           
           echo "metric_value=$METRIC_VALUE" >> $GITHUB_OUTPUT
 
-      - name: (Compass) Publish code coverage
-        if: github.ref == 'refs/heads/main'
-        uses: verygood-ops/cicd-shared/.github/actions/compass@compass-action-v1.0.0
-        with:
-          metric_source_id: 'ari:cloud:compass:83673fa7-fd28-4f4a-9738-f584064570a7:component/db43f86d-85fe-42e1-954d-457f5a4082b8/444114a1-5d6c-4c2e-96c6-5895cd094e6a'
-          metric_value: ${{ steps.coverage.outputs.metric_value }}
-          api_key: ${{ secrets.COMPASS_API_KEY }}
+#      - name: (Compass) Publish code coverage
+#        if: github.ref == 'refs/heads/main'
+#        uses: verygood-ops/cicd-shared/.github/actions/compass@compass-action-v1.0.0
+#        with:
+#          metric_source_id: 'ari:cloud:compass:83673fa7-fd28-4f4a-9738-f584064570a7:component/db43f86d-85fe-42e1-954d-457f5a4082b8/444114a1-5d6c-4c2e-96c6-5895cd094e6a'
+#          metric_value: ${{ steps.coverage.outputs.metric_value }}
+#          api_key: ${{ secrets.COMPASS_API_KEY }}
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
