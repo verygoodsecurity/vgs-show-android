@@ -1,5 +1,5 @@
 ---
-name: 'CI: Tests'
+name: 'CI'
 
 on:
   pull_request:
@@ -31,26 +31,33 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup local variables
-        run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        env:
+          VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
 
       - name: Run Detekt
         run: ./gradlew vgsshow:detekt --continue
 
       - name: Run Unit Tests
         run: ./gradlew vgsshow:testDebugUnitTest --continue
+
+      - name: (Compass) Generate Code Coverage Report
+        if: github.ref == 'refs/heads/main'
+        run: ./gradlew vgsshow:koverHtmlReportDebug
+
+      - name: (Compass) Extract Code Coverage
+        if: github.ref == 'refs/heads/main'
+        run: |
+          COVERAGE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
+          METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
+          
+          echo "metric_value=$METRIC_VALUE" >> $GITHUB_OUTPUT
+
+      - name: (Compass) Publish code coverage
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Implement"
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -69,3 +76,39 @@ jobs:
           report_paths: '**/build/test-results/**/TEST-*.xml'
           check_name: 'Unit Test Results'
           fail_on_failure: true
+
+  run-ui-tests:
+    name: 'Run UI Tests'
+    runs-on: macos-14  # macOS M1 runner
+    if: ${{ startsWith(github.head_ref, 'release/') }} # Change to release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        env:
+          VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
+
+      - name: Auth Google Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Assemble debug & test APK
+        run: ./gradlew assembleDebug assembleAndroidTest
+
+      - name: Run UI tests
+        run: |
+          gcloud firebase test android run \
+          --type instrumentation \
+          --app app/build/outputs/apk/debug/app-debug.apk \
+          --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+          --device model=oriole,version=31,locale=en,orientation=portrait \
+          --device model=blazer,version=36,locale=en,orientation=portrait
