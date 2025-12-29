@@ -22,7 +22,7 @@ permissions:
 jobs:
   run-unit-tests:
     name: 'Run Unit Tests'
-    runs-on: macos-14  # macOS M1 runner
+    runs-on: macos-14
     timeout-minutes: 10
 
     steps:
@@ -83,8 +83,8 @@ jobs:
 
   run-ui-tests:
     name: 'Run UI Tests'
-    runs-on: macos-14  # macOS M1 runner
-    if: ${{ startsWith(github.head_ref, 'release/') }} # Change to release
+    runs-on: macos-14
+    if: ${{ startsWith(github.head_ref, 'release/') }}
 
     steps:
       - name: Checkout code
