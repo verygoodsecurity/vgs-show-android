@@ -3,8 +3,6 @@ name: 'CI'
 
 on:
   pull_request:
-    branches:
-      - '**'
   push:
     branches:
       - 'main'
@@ -22,7 +20,7 @@ permissions:
 jobs:
   run-unit-tests:
     name: 'Run Unit Tests'
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
@@ -83,7 +81,7 @@ jobs:
 
   run-ui-tests:
     name: 'Run UI Tests'
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     if: ${{ startsWith(github.head_ref, 'release/') }}
 
     steps:
