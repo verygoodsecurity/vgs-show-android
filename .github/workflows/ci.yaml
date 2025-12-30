@@ -41,13 +41,11 @@ jobs:
         run: ./gradlew vgsshow:testDebugUnitTest --continue
 
       - name: (Compass) Generate Code Coverage Report
-        if: github.ref == 'refs/heads/main'
-        run: ./gradlew vgsshow:koverHtmlReportDebug
-
-      - name: (Compass) Extract Code Coverage
         id: coverage
         if: github.ref == 'refs/heads/main'
         run: |
+          ./gradlew vgsshow:koverHtmlReportDebug
+          
           COVERAGE=$(sed -n '51p' vgsshow/build/reports/kover/htmlDebug/index.html)
           METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
           
