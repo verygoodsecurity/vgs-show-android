@@ -5,6 +5,10 @@ import java.net.URL
 
 private const val SLASH = "/"
 
+/**
+ * Concatenates two strings with a slash in between.
+ * @suppress Not for public use.
+ */
 internal infix fun String.concatWithSlash(suffix: String): String = when {
     suffix.isEmpty() -> this
     suffix.startsWith(SLASH) -> this + suffix
@@ -13,6 +17,10 @@ internal infix fun String.concatWithSlash(suffix: String): String = when {
 
 private const val DASH = "-"
 
+/**
+ * Concatenates two strings with a dash in between.
+ * @suppress Not for public use.
+ */
 internal infix fun String.concatWithDash(suffix: String): String = when {
     suffix.isEmpty() -> this
     suffix.startsWith(DASH) -> this + suffix
@@ -22,6 +30,10 @@ internal infix fun String.concatWithDash(suffix: String): String = when {
 private const val HTTP_PROTOCOL = "http://"
 private const val HTTPS_PROTOCOL = "https://"
 
+/**
+ * Prepends the HTTP protocol to a string if it's not already present.
+ * @suppress Not for public use.
+ */
 internal fun String.concatWithHttpProtocol(): String {
     return when {
         startsWith(HTTP_PROTOCOL) -> this
@@ -30,6 +42,12 @@ internal fun String.concatWithHttpProtocol(): String {
     }
 }
 
+/**
+ * Converts a string to a URL.
+ * @suppress Not for public use.
+ *
+ * @throws MalformedURLException if the string is not a valid URL.
+ */
 @Throws(Exception::class)
 fun String.toURL(): URL {
     try {
@@ -41,6 +59,10 @@ fun String.toURL(): URL {
     }
 }
 
+/**
+ * Extracts the host from a URL string.
+ * @suppress Not for public use.
+ */
 internal fun String.toHost(): String {
     return try {
         this.concatWithHttpProtocol().toURL().host
@@ -49,6 +71,10 @@ internal fun String.toHost(): String {
     }
 }
 
+/**
+ * Compares the hosts of two URL strings.
+ * @suppress Not for public use.
+ */
 internal infix fun String.equalsHosts(name: String?): Boolean {
     return toHost() == name?.toHost()
 }

@@ -3,6 +3,12 @@ package com.verygoodsecurity.vgsshow.core.network.headers
 import com.verygoodsecurity.vgsshow.BuildConfig
 import com.verygoodsecurity.vgsshow.core.Session
 
+/**
+ * A [StaticHeadersStore] that adds a `vgs-client` header to all requests.
+ * @suppress Not for public use.
+ *
+ * @property isAnalyticsEnabled Whether or not to include analytics data in the header.
+ */
 internal class ProxyStaticHeadersStore(var isAnalyticsEnabled: Boolean = true) : BaseHeadersStore() {
 
     override val defaultStaticHeaders: Map<String, String>

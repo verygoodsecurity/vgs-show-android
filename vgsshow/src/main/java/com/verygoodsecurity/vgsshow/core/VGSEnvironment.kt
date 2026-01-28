@@ -4,19 +4,20 @@ import com.verygoodsecurity.vgsshow.util.extension.concatWithDash
 
 /**
  *
- * Define type of Vault for VGSShow to communicate with.
+ * Defines the VGS environment to which `VGSShow` will connect. For more information, see the
+ * [documentation](https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live).
  *
- * @property value Unique identifier.
- *
- * @since 1.0.0
+ * @property value The unique identifier for the environment.
  */
 sealed class VGSEnvironment {
 
     abstract val value: String
 
     /**
-     *  Live Environment using Live Vault
-     *  @param suffix ex. "eu", "-eu-2", value will be "live-eu" or "live-eu-3" respectively
+     *  Connects to the live environment.
+     *  The live environment is used for production applications.
+     *
+     *  @param suffix The suffix for the environment, e.g., "eu-2" for "live-eu-2".
      */
     data class Live(val suffix: String = "") : VGSEnvironment() {
 
@@ -33,8 +34,10 @@ sealed class VGSEnvironment {
     }
 
     /**
-     *  Sandbox Environment using sandbox Test Vault
-     *  @param suffix ex. "eu", "-eu-2", value will be "sandbox-eu" or "sandbox-eu-3" respectively
+     *  Connects to the sandbox environment.
+     *  The sandbox environment is used for testing and development.
+     *
+     *  @param suffix The suffix for the environment, e.g., "eu-2" for "sandbox-eu-2".
      */
     data class Sandbox(val suffix: String = "") : VGSEnvironment() {
 
@@ -63,17 +66,17 @@ sealed class VGSEnvironment {
         private const val ENV_REGEX = "^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$"
 
         /**
-         * Extension function to check if VGSEnvironment is configured valid
+         * Returns `true` if this `VGSEnvironment` is valid, `false` otherwise.
          */
         fun VGSEnvironment.isValid() = ENV_REGEX.toPattern().matcher(this.value).matches()
 
         /**
-         * Extension function to check if string value is valid VGSEnvironment
+         * Returns `true` if this `String` is a valid environment name, `false` otherwise.
          */
         fun String.isValidEnvironment() = ENV_REGEX.toPattern().matcher(this).matches()
 
         /**
-         * Extension function to generate VGSEnvironment based on string, ex. "live-eu-3"
+         * Converts this `String` to a `VGSEnvironment`, e.g., "live-eu-3" becomes `VGSEnvironment.Live("-eu-3")`.
          */
         fun String.toVGSEnvironment(): VGSEnvironment = if (isValidEnvironment()) when {
             contains(Live.DEFAULT_VALUE, true) -> {

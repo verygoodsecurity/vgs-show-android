@@ -1,7 +1,14 @@
 package com.verygoodsecurity.vgsshow.core.network.headers
 
+/**
+ * An abstract base class for implementing [StaticHeadersStore].
+ * @suppress Not for public use.
+ */
 internal abstract class BaseHeadersStore : StaticHeadersStore {
 
+    /**
+     * The default static headers to be included in all requests.
+     */
     abstract val defaultStaticHeaders: Map<String, String>
 
     private val staticHeaders: MutableMap<String, String> = HashMap()

@@ -224,7 +224,9 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * Hint text to display when the text is empty.
+     * Sets the hint text to display when the text is empty.
+     *
+     * @param text The text to use for the hint.
      */
     fun setHint(text: CharSequence?) {
         view.hint = text
@@ -250,7 +252,9 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * @return true of view input type is password and false otherwise
+     * Returns `true` if the input type is a password type, `false` otherwise.
+     *
+     * @return `true` if the input type is a password type, `false` otherwise.
      */
     fun isPasswordInputType(): Boolean {
         return when (view.inputType) {
@@ -260,6 +264,12 @@ class VGSTextView @JvmOverloads constructor(
         }
     }
 
+
+    /**
+     * Sets the text appearance from a style resource.
+     *
+     * @param styleId The resource identifier of the style to apply.
+     */
     fun setTextAppearance(@StyleRes styleId: Int) {
         if (isMarshmallowOrGreater) {
             view.setTextAppearance(styleId)
@@ -318,10 +328,9 @@ class VGSTextView @JvmOverloads constructor(
     fun getTextColors() = view.textColors
 
     /**
-     * If true, sets the properties of this field
-     * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
+     * If set to `true`, the text will not be displayed on more than one line.
      *
-     * @param singleLine
+     * @param singleLine `true` to display the text on a single line, `false` otherwise.
      */
     fun setSingleLine(singleLine: Boolean) {
         view.isSingleLine = singleLine
@@ -404,11 +413,9 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the {@link android.text.method.MovementMethod} for handling arrow key movement
-     * for this VGSTextView. This can be null to disallow using the arrow keys to move the
-     * cursor or scroll the view.
+     * Sets a `MovementMethod` for handling arrow key movement for this `VGSTextView`.
      *
-     * @param movement method, for ex. ScrollingMovementMethod
+     * @param movement The `MovementMethod` to use.
      */
     fun setMovementMethod(movement: MovementMethod) {
         this.view.movementMethod = movement

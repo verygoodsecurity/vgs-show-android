@@ -1,12 +1,16 @@
 package com.verygoodsecurity.demoshow.ui.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
@@ -41,6 +45,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
         VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
     }
 
+    private val root: LinearLayout by lazy { findViewById(R.id.root) }
     private val tvCardNumber: VGSTextView by lazy { findViewById(R.id.tvCardNumber) }
     private val tvCardExpiration: VGSTextView by lazy { findViewById(R.id.tvCardExpiration) }
     private val etCardNumber: VGSCardNumberEditText by lazy { findViewById(R.id.etCardNumber) }
@@ -56,6 +61,13 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_and_show)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            ViewCompat.setOnApplyWindowInsetsListener(root) { v, windowInsets ->
+                val systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                windowInsets
+            }
+        }
         setupCollect()
         setupShow()
     }

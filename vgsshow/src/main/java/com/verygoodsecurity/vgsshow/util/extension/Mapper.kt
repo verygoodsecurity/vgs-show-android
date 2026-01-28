@@ -8,12 +8,20 @@ private const val ANALYTIC_TAG_TEXT = "text"
 private const val ANALYTIC_TAG_PDF = "pdf"
 private const val ANALYTIC_TAG_IMAGE = "image"
 
+/**
+ * Maps a [VGSFieldType] to an analytics tag.
+ * @suppress Not for public use.
+ */
 internal fun VGSFieldType.toAnalyticTag(): String = when (this) {
     VGSFieldType.INFO -> ANALYTIC_TAG_TEXT
     VGSFieldType.PDF -> ANALYTIC_TAG_PDF
     VGSFieldType.IMAGE -> ANALYTIC_TAG_IMAGE
 }
 
+/**
+ * Maps a `VGSTextView.CopyTextFormat` to a `VGSAnalyticsCopyFormat`.
+ * @suppress Not for public use.
+ */
 fun VGSTextView.CopyTextFormat.toAnalyticsFormat() = when(this) {
     VGSTextView.CopyTextFormat.RAW -> VGSAnalyticsCopyFormat.RAW
     VGSTextView.CopyTextFormat.FORMATTED -> VGSAnalyticsCopyFormat.FORMATTED

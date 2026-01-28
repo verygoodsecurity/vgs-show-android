@@ -4,14 +4,15 @@ import androidx.annotation.MainThread
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 
 /**
- * Interface definition for a receiving callback.
+ * A listener for tracking VGS Show responses.
  */
 interface VGSOnResponseListener {
 
     /**
-     * Callback that called after request execution complete with success of failure response.
+     * Called when a VGS Show request receives a response from the server.
+     * This callback is executed on the main thread.
      *
-     * @param response successful or failure response. @see [com.verygoodsecurity.vgsshow.core.network.model.VGSResponse]
+     * @param response The response from the VGS proxy. This can be either a [VGSResponse.Success] or a [VGSResponse.Error].
      */
     @MainThread
     fun onResponse(response: VGSResponse)

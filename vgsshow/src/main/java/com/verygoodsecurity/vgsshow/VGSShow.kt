@@ -35,10 +35,14 @@ private const val SOURCE_TAG = "show-androidSDK"
 private const val DEPENDENCY_MANAGER = "maven"
 
 /**
- * VGS Show - Android SDK that enables you to securely display sensitive data.
- * @see <a href="https://www.verygoodsecurity.com/docs/vgs-show">www.verygoodsecurity.com</a>
+ * Orchestrates the secure display of sensitive data from a VGS Vault.
  *
- * Allows reveal secure data into secure views. Entry-point into Show SDK.
+ * `VGSShow` is the primary entry point for the VGS Show SDK. It is responsible for:
+ * - Configuring the connection to your VGS Vault (using your vault ID and environment).
+ * - Making network requests to reveal sensitive data.
+ * - Subscribing secure UI views (`VGSTextView`, `VGSPDFView`) to display the revealed data.
+ *
+ * @see [VGSShow Documentation](https://www.verygoodsecurity.com/docs/vgs-show)
  */
 class VGSShow {
 
@@ -63,11 +67,14 @@ class VGSShow {
     private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener
 
     /**
-     * Constructor that allows specify environment as object.
+     * Creates a new `VGSShow` instance.
      *
-     * @param context lifecycle owner context.
-     * @param vaultId unique vault id.
-     * @param environment type of vault. @see [com.verygoodsecurity.vgsshow.core.VGSEnvironment]
+     * This constructor is the standard way to initialize `VGSShow`.
+     * It requires the Android `Context`, your unique `vaultId`, and the `VGSEnvironment`.
+     *
+     * @param context The Activity or Application context.
+     * @param vaultId Your unique vault identifier.
+     * @param environment The VGS environment (e.g., `VGSEnvironment.SANDBOX` or `VGSEnvironment.LIVE`).
      */
     constructor(
         context: Context,
@@ -76,11 +83,11 @@ class VGSShow {
     ) : this(context, vaultId, environment, null, null, null, null)
 
     /**
-     * Constructor that allows specify environment as string.
+     * Creates a new `VGSShow` instance using a string for the environment.
      *
-     * @param context lifecycle owner context.
-     * @param vaultId unique vault id.
-     * @param environment type of vault, ex. "sandbox-eu-1"
+     * @param context The Activity or Application context.
+     * @param vaultId Your unique vault identifier.
+     * @param environment The environment as a string (e.g., "sandbox-eu-1").
      */
     constructor(
         context: Context,
@@ -166,12 +173,17 @@ class VGSShow {
     }
 
     /**
-     * Synchronous request for reveal data. Note: This function should be executed in background thread.
-     * @throws android.os.NetworkOnMainThreadException if this function executes in main thread.
+     * Executes a synchronous request to reveal data.
      *
-     * @param path path for a request.
-     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload key-value data
+     * This method blocks the current thread until a response is received. It **must not** be called
+     * on the main thread; doing so will result in a [NetworkOnMainThreadException]. For main-thread-safe
+     * operations, use [requestAsync].
+     *
+     * @param path The endpoint path for the request (e.g., "/post").
+     * @param method The HTTP method to use. See [VGSHttpMethod].
+     * @param payload Optional key-value data to be sent in the request body.
+     * @return A [VGSResponse] object containing either the successful response data or an error.
+     * @throws NetworkOnMainThreadException if called on the main UI thread.
      */
     @JvmOverloads
     @WorkerThread
@@ -184,10 +196,14 @@ class VGSShow {
         request(VGSRequest.Builder(path, method).body(payload).build())
 
     /**
-     * Synchronous request for reveal data. Note: This function should be executed in background thread.
-     * @throws android.os.NetworkOnMainThreadException if this function executes in main thread.
+     * Executes a synchronous request to reveal data using a pre-built [VGSRequest].
      *
-     * @param request @see [com.verygoodsecurity.vgsshow.core.network.model.VGSRequest]
+     * This method blocks the current thread until a response is received. It **must not** be called
+     * on the main thread. For main-thread-safe operations, use [requestAsync].
+     *
+     * @param request A [VGSRequest] object defining the request parameters.
+     * @return A [VGSResponse] object containing either the successful response data or an error.
+     * @throws NetworkOnMainThreadException if called on the main UI thread.
      */
     @WorkerThread
     @Throws(NetworkOnMainThreadException::class)
@@ -213,11 +229,14 @@ class VGSShow {
     }
 
     /**
-     * Asynchronous request for reveal data.
+     * Executes an asynchronous request to reveal data.
      *
-     * @param path path for a request.
-     * @param method HTTP method of request. @see [com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod]
-     * @param payload key-value data
+     * This method is safe to call from any thread. The result will be delivered to any registered
+     * [VGSOnResponseListener] on the main thread.
+     *
+     * @param path The endpoint path for the request (e.g., "/post").
+     * @param method The HTTP method to use. See [VGSHttpMethod].
+     * @param payload Optional key-value data to be sent in the request body.
      */
     @JvmOverloads
     @AnyThread
@@ -226,9 +245,12 @@ class VGSShow {
     }
 
     /**
-     * Asynchronous request for reveal data
+     * Executes an asynchronous request to reveal data using a pre-built [VGSRequest].
      *
-     * @param request @see [com.verygoodsecurity.vgsshow.core.network.model.VGSRequest]
+     * This method is safe to call from any thread. The result will be delivered to any registered
+     * [VGSOnResponseListener] on the main thread.
+     *
+     * @param request A [VGSRequest] object defining the request parameters.
      */
     @AnyThread
     fun requestAsync(request: VGSRequest) {
@@ -247,7 +269,12 @@ class VGSShow {
     }
 
     /**
-     * Apply previously stored [VGSResponse.Success]. This function interact with UI and should bu called from main thread.
+     * Manually applies a successful response to all subscribed views.
+     *
+     * This is useful if you have a previously stored [VGSResponse.Success] and want to re-populate
+     * views without making a new network request. This method must be called from the main thread.
+     *
+     * @param response The successful response to apply.
      */
     @MainThread
     fun applyResponse(response: VGSResponse.Success) {
@@ -255,34 +282,38 @@ class VGSShow {
     }
 
     /**
-     * Adds a listener to the list of those whose methods are called whenever the VGSShow receive response from Server.
+     * Registers a listener to receive server responses.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
+     * The listener will be invoked on the main thread when a response is received from the VGS proxy.
+     *
+     * @param listener The listener to add. See [VGSOnResponseListener].
      */
     fun addOnResponseListener(listener: VGSOnResponseListener) {
         listeners.add(listener)
     }
 
     /**
-     * Clear specific listener attached before.
+     * Removes a previously registered response listener.
      *
-     * @param listener Interface definition for a receiving callback. @see[com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener]
+     * @param listener The listener to remove. See [VGSOnResponseListener].
      */
     fun removeOnResponseListener(listener: VGSOnResponseListener) {
         listeners.remove(listener)
     }
 
     /**
-     * Clear all response listeners.
+     * Removes all registered response listeners.
      */
     fun clearResponseListeners() {
         listeners.clear()
     }
 
     /**
-     * Allows [VGSShow] to interact with VGS secure views.
+     * Subscribes a [VGSView] to this `VGSShow` instance.
      *
-     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView], [com.verygoodsecurity.vgsshow.widget.VGSPDFView]
+     * Once subscribed, the view will be populated with data from network responses.
+     *
+     * @param view The secure view to subscribe (e.g., [VGSTextView], [VGSPDFView]).
      */
     fun subscribe(view: VGSView<*>) {
         if (viewsStore.add(view)) {
@@ -300,9 +331,11 @@ class VGSShow {
     }
 
     /**
-     * Remove previously added VGS secure view
+     * Unsubscribes a [VGSView] from this `VGSShow` instance.
      *
-     * @param view VGS secure view. @see [com.verygoodsecurity.vgsshow.widget.VGSTextView]
+     * The view will no longer receive data from network responses.
+     *
+     * @param view The secure view to unsubscribe.
      */
     fun unsubscribe(view: VGSView<*>) {
         if (viewsStore.remove(view)) {
@@ -315,30 +348,35 @@ class VGSShow {
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Sets a custom HTTP header to be sent with every request.
+     *
+     * @param header The name of the header (e.g., "Authorization").
+     * @param value The value of the header.
      */
     fun setCustomHeader(header: String, value: String) {
         headersStore.add(header, value)
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Removes a custom HTTP header.
+     *
+     * @param header The name of the header to remove.
      */
     fun removeCustomHeader(header: String) {
         headersStore.remove(header)
     }
 
     /**
-     * Used to edit static request headers that will be added to all requests of this VGSShow instance.
+     * Removes all custom HTTP headers.
      */
     fun clearCustomHeaders() {
         headersStore.clear()
     }
 
     /**
-     * Used to enable/disable analytics events.
+     * Toggles VGS Analytics event collection.
      *
-     * @param isEnabled true if VGSShow should send analytics events.
+     * @param isEnabled `true` to enable analytics, `false` to disable.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         analyticsManager.setIsEnabled(isEnabled)
@@ -346,15 +384,15 @@ class VGSShow {
     }
 
     /**
-     * Used to determine if analytics enabled/disabled.
+     * Checks if VGS Analytics event collection is enabled.
      *
-     * @return true if VGSShow analytics enabled, false otherwise.
+     * @return `true` if enabled, `false` otherwise.
      */
     fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
 
     /**
-     * Clear all information collected before by VGSShow, cancel all network requests.
-     * Preferably call it inside onDestroy system's callback.
+     * Cleans up resources used by this `VGSShow` instance.
+     * Call this in your `Activity` or `Fragment`'s `onDestroy` method to prevent memory leaks.
      */
     fun onDestroy() {
         proxyRequestManager.cancelAll()

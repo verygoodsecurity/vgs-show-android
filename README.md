@@ -1,5 +1,6 @@
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-show-android/blob/master/LICENSE)
+[![AI Agent Ready](https://img.shields.io/badge/AI%20Agent-Ready-blue)]()
 <img src="./ZeroDataLogo.png" width="55" hspace="8">
 
 VGS Show Android SDK allows you to securely reveal data for your users without having to have that data pass through your systems. It provides customizable UI elements for showing users' sensitive data securely on Android devices.
@@ -16,6 +17,7 @@ Table of contents
    * [License](#license)
 <!--te-->
 
+---
 
 ## Dependencies
 
@@ -27,10 +29,34 @@ Table of contents
 | androidx.appcompat:appcompat |  1.6.1  |
 | com.squareup.okhttp3:okhttp | 4.12.0  |
 
+---
+
 ## Structure
 * **VGSShow SDK** - provides an API for interacting with the VGS Vault
 * **app** - sample application to act as the host app for testing the SDK during development
+---
 
+## AI Agent Integration
+Use AGENTS.md as the single authoritative context for autonomous coding agents integrating or maintaining VGSShowSDK.
+
+### Minimal System Prompt Example:
+
+You are an autonomous engineering agent integrating the VGS Show Android SDK into an existing Kotlin app.
+Use the full contents of AGENTS.md as the authoritative policy.
+
+**Constraints:**
+- Only public, non-deprecated APIs.
+- No raw sensitive data in logs/tests.
+- Securely display sensitive data.
+
+**Goals:**
+1. Add a secure `VGSTextView` to display sensitive data and a `VGSImageView` to display a sensitive image.
+2. Add redacted logging for all revealed data.
+3. Provide unit tests for revealing and displaying data.
+
+**Return:** Modified Kotlin source files only, no secrets.
+
+---
 
 ## Integration
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
@@ -60,7 +86,7 @@ dependencies {
 
   <tr>
     <td colspan="2">
-    <b>Add input fields to <code>R.layout.activity_main</code> layout file </b>.
+    <b>Add secure views to <code>R.layout.activity_main</code> layout file </b>.
     </td>
   </tr>
   <tr>
@@ -83,9 +109,14 @@ dependencies {
         app:contentPath="<CONTENT_PATH>"
         app:gravity="center"
         app:textColor="@android:color/black"
-        app:textStyle="bold" 
+        app:textStyle="bold" >
+    </com.verygoodsecurity.vgsshow.widget.VGSTextView>
 
-//Other fields..
+    <com.verygoodsecurity.vgsshow.widget.VGSImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:contentPath="<CONTENT_PATH_TO_IMAGE>" />
 
 </LinearLayout>
 ```
@@ -97,7 +128,7 @@ dependencies {
       <b>
       To initialize VGSShow you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b>
       </br>
-      Use <code>subscribe(VGSView)</code> to attach view to <code>VGSShow</code>.
+      Use <code>subscribe(VGSView)</code> to attach secure views to <code>VGSShow</code>.
     </td>
 
   </tr>
@@ -105,13 +136,6 @@ dependencies {
     <td colspan="2">
 
 ```kotlin
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-
 class MainActivity : AppCompatActivity() {
     private lateinit var vgsShow: VGSShow
     
@@ -121,8 +145,11 @@ class MainActivity : AppCompatActivity() {
 
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
 
-        val view = findViewById<VGSTextView>(R.id.infoField)
-        vgsShow.subscribe(view)
+        val infoField = findViewById<VGSTextView>(R.id.infoField)
+        vgsShow.subscribe(infoField)
+
+        val imageView = findViewById<VGSImageView>(R.id.imageView)
+        vgsShow.subscribe(imageView)
     }
 }
 ```
@@ -140,13 +167,6 @@ class MainActivity : AppCompatActivity() {
     <td colspan="2">
 
 ```kotlin
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var vgsShow: VGSShow
@@ -156,7 +176,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
-        vgsShow.subscribe(findViewById(R.id.infoField))
+        vgsShow.subscribe(findViewById<VGSTextView>(R.id.infoField))
+        vgsShow.subscribe(findViewById<VGSImageView>(R.id.imageView))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
             vgsShow.requestAsync("/post",
@@ -183,15 +204,6 @@ class MainActivity : AppCompatActivity() {
     <td colspan="2">
 
 ```kotlin
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.VGSTextView
-import com.verygoodsecurity.vgsshow.core.VGSEnvironment
-import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var vgsShow: VGSShow
@@ -201,7 +213,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         vgsShow = VGSShow(this, "<VAULT_ID>", VGSEnvironment.Sandbox())
-        vgsShow.subscribe(findViewById(R.id.infoField))
+        vgsShow.subscribe(findViewById<VGSTextView>(R.id.infoField))
+        vgsShow.subscribe(findViewById<VGSImageView>(R.id.imageView))
 
         findViewById<Button>(R.id.revealButton)?.setOnClickListener {
             vgsShow.requestAsync("/post",
@@ -210,7 +223,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        showVgs.addOnResponseListeners(object : VGSOnResponseListener {
+        vgsShow.addOnResponseListener(object : VGSOnResponseListener {
             override fun onResponse(response: VGSResponse) {
                 when(response) {
                     is VGSResponse.Success -> {
