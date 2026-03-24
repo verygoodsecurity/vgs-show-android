@@ -1,5 +1,5 @@
 [versions]
-compose-ui-tooling = '1.7.3'
+compose-ui-tooling = '1.10.5'
 
 [libraries]
 compose-ui-tooling = { group = 'androidx.compose.ui', name = 'ui-tooling', version.ref = 'compose-ui-tooling' }

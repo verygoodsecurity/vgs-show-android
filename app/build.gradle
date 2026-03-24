@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,12 +10,12 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.demoshow'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoshow"
-        minSdk 21
-        targetSdk 35
+        minSdkVersion 23
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
 
@@ -23,10 +25,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     buildTypes {
@@ -42,10 +40,10 @@ android {
     }
 }
 
-detekt {
-    buildUponDefaultConfig = false
-    allRules = false
-    config = files("$project.rootDir/.detekt/config.yml")
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
 }
 
 dependencies {
@@ -82,4 +80,10 @@ dependencies {
         exclude module: 'recyclerview-v7'
         exclude module: 'appcompat-v7'
     }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
 }

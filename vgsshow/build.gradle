@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -13,11 +15,11 @@ apply from: "$rootDir/gradle/utils.gradle"
 
 android {
     namespace 'com.verygoodsecurity.vgsshow'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdk 21
-        targetSdk 35
+        minSdkVersion 21
+        targetSdkVersion 36
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -31,10 +33,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     testOptions {
@@ -55,10 +53,10 @@ android {
     }
 }
 
-detekt {
-    buildUponDefaultConfig = false
-    allRules = false
-    config = files("$project.rootDir/.detekt/config.yml")
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
 }
 
 dependencies {
@@ -85,6 +83,18 @@ dependencies {
     testImplementation libs.verygoodsecurity.pdf.viewer
 }
 
-tasks.named("dokkaHtml") {
-    outputDirectory.set(rootProject.file('docs'))
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
+}
+
+tasks.withType(Javadoc).configureEach {
+    enabled = false
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(rootProject.file('docs'))
+    }
 }
