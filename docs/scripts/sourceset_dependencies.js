@@ -1,1 +1,1 @@
-sourceset_dependencies='{":vgsshow:dokkaHtml/debug":[],":vgsshow:dokkaHtml/main":[],":vgsshow:dokkaHtml/release":[]}'
+sourceset_dependencies='{":vgsshow/debug":[],":vgsshow/main":[],":vgsshow/release":[]}'
