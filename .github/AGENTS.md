@@ -8,6 +8,8 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Show
 - Use this file for repository architecture, build/test workflow, and module-level conventions.
 - If guidance conflicts, follow `/AGENTS.md` for SDK behavior and this file for repo mechanics.
 - When changing SDK integration behavior, public API surface, or integration examples, update `/AGENTS.md` in the same change so downstream integration agents stay aligned.
+- When implementing new features or changing behavior, explicitly check whether `/AGENTS.md` and `/.github/AGENTS.md` need updates; include required doc updates in the same change.
+- When implementing features or behavior updates, explicitly assess whether unit tests (`vgsshow/src/test/`) and UI tests (`app/src/androidTest/`) need updates; include applicable test changes in the same change.
 - Use SKILLS/specialized agents when present and relevant; fall back to direct implementation only when no applicable SKILL is available.
 
 ## 1. Core Concepts (Mental Model)
