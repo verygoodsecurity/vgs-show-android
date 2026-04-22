@@ -2,13 +2,14 @@
 
 This file is a repository-specific addendum for AI coding agents working in this monorepo.
 Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Show integration behavior.
+The canonical durable source of that policy is `skills/vgs-show-android-guide/references/AGENTS.md` (root `/AGENTS.md` points there).
 
 ## Scope
-- Use `/AGENTS.md` for SDK integration rules and security policy.
+- Use `skills/vgs-show-android-guide/references/AGENTS.md` for SDK integration rules and security policy.
 - Use this file for repository architecture, build/test workflow, and module-level conventions.
-- If guidance conflicts, follow `/AGENTS.md` for SDK behavior and this file for repo mechanics.
-- When changing SDK integration behavior, public API surface, or integration examples, update `/AGENTS.md` in the same change so downstream integration agents stay aligned.
-- When implementing new features or changing behavior, explicitly check whether `/AGENTS.md` and `/.github/AGENTS.md` need updates; include required doc updates in the same change.
+- If guidance conflicts, follow `skills/vgs-show-android-guide/references/AGENTS.md` for SDK behavior and this file for repo mechanics.
+- When changing SDK integration behavior, public API surface, or integration examples, update `skills/vgs-show-android-guide/references/AGENTS.md` in the same change so downstream integration agents stay aligned.
+- When implementing new features or changing behavior, explicitly check whether `skills/vgs-show-android-guide/references/AGENTS.md` and `/.github/AGENTS.md` need updates; include required doc updates in the same change.
 - When implementing features or behavior updates, explicitly assess whether unit tests (`vgsshow/src/test/`) and UI tests (`app/src/androidTest/`) need updates; include applicable test changes in the same change.
 - Use SKILLS/specialized agents when present and relevant; fall back to direct implementation only when no applicable SKILL is available.
 
@@ -19,7 +20,7 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Show
 - Shared analytics implementation lives in `vgs-sdk-analytics/VGSClientSDKAnalytics` (KMP), consumed by build type in `vgsshow/build.gradle`.
 
 ### Project Mental Model
-- **Primary flow**: VGS Vault holds sensitive data → `VGSShow` makes a request to the VGS proxy → revealed data is rendered inside secure views (`VGSTextView`, `VGSPDFView`, `VGSImageView`) → app never receives raw sensitive values.
+- **Primary flow**: VGS Vault holds sensitive data → `VGSShow` makes a request to the VGS proxy → revealed data is rendered inside secure views (`VGSTextView`, `VGSPDFView`, `VGSImageView`) → app never receives raw sensitive values (per `skills/vgs-show-android-guide/references/AGENTS.md`).
 - **Change surface map**:
   - SDK orchestration, request/response logic, view subscription: `vgsshow/src/main/`.
   - Secure widget behavior (`VGSTextView`, `VGSPDFView`, `VGSImageView`): `vgsshow/src/main/java/com/verygoodsecurity/vgsshow/widget/`.
@@ -75,12 +76,12 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Show
   - Apply-response demo (multi-fragment): `ui/activity/apply_response_demo/`.
 
 ## 4. View Setup & Configuration Pattern
-- For real integration behavior and secure view usage patterns, use `/AGENTS.md` section 4 as source of truth.
+- For real integration behavior and secure view usage patterns, use `skills/vgs-show-android-guide/references/AGENTS.md` section 4 as source of truth.
 - In this repo, the sample wiring patterns are primarily under `app/src/main/` and should be used as runnable examples when validating behavior changes.
 - `VGSImageView` follows the same `subscribe`/`contentPath` pattern as `VGSTextView` and `VGSPDFView`.
 
 ## 6. Submission APIs
-- Keep submission API usage aligned with `/AGENTS.md`.
+- Keep submission API usage aligned with `skills/vgs-show-android-guide/references/AGENTS.md`.
 - For SDK changes, validate with unit tests in `vgsshow/src/test/` before checking sample app behavior.
 - Key test files:
   - `VGSShowTest.kt` – end-to-end SDK behavior.
@@ -94,7 +95,7 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Show
 - Preserve this split unless intentionally changing analytics integration strategy.
 
 ## 10. Logging & Redaction Policy
-- Follow `/AGENTS.md` redaction rules.
+- Follow `skills/vgs-show-android-guide/references/AGENTS.md` redaction rules.
 - CI runs include static analysis and test publishing; do not add logs that expose raw field values because reports/artifacts are uploaded.
 - `VGSShowLogger` must be set to `.NONE` (or equivalent minimal level) in production builds.
 

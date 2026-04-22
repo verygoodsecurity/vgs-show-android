@@ -37,24 +37,49 @@ Table of contents
 ---
 
 ## AI Agent Integration
-Use AGENTS.md as the single authoritative context for autonomous coding agents integrating or maintaining VGSShowSDK.
+This repository ships a public AI skill at [`skills/vgs-show-android-guide/SKILL.md`](./skills/vgs-show-android-guide/SKILL.md) for teams integrating `VGSShowSDK` into Android applications.
+
+Recommended: install the skill with `skills.sh`. This is the easiest way to give a compatible AI agent repository-specific guidance for `VGSShowSDK` integration work.
+
+The installed skill bundle includes `references/AGENTS.md`, which is the canonical durable integration guide for this SDK.
+
+What the skill is useful for:
+- matching guidance to the installed `vgsshow` version when that version can be detected
+- steering integrations toward correct secure view setup (`VGSTextView`, `VGSPDFView`, `VGSImageView`) and request/reveal flows
+- enforcing non-empty vault configuration and correct environment selection
+- preserving redaction-safe logging and analytics toggling guidance
+- following upgrade and testing rules in [`references/AGENTS.md`](./skills/vgs-show-android-guide/references/AGENTS.md)
+
+Install the skill with `skills.sh`:
+```bash
+npx skills add https://github.com/verygoodsecurity/vgs-show-android --skill vgs-show-android-guide
+```
+
+If your AI tool does not support skills yet, load [`skills/vgs-show-android-guide/references/AGENTS.md`](./skills/vgs-show-android-guide/references/AGENTS.md) directly.
 
 ### Minimal System Prompt Example:
 
+```
 You are an autonomous engineering agent integrating the VGS Show Android SDK into an existing Kotlin app.
-Use the full contents of AGENTS.md as the authoritative policy.
-
-**Constraints:**
+Use skills/vgs-show-android-guide/references/AGENTS.md as the authoritative policy.
+Constraints:
 - Only public, non-deprecated APIs.
 - No raw sensitive data in logs/tests.
 - Securely display sensitive data.
 
-**Goals:**
-1. Add a secure `VGSTextView` to display sensitive data and a `VGSImageView` to display a sensitive image.
+Goals:
+1. Add a secure VGSTextView to display sensitive data and a VGSImageView to display a sensitive image.
 2. Add redacted logging for all revealed data.
 3. Provide unit tests for revealing and displaying data.
 
-**Return:** Modified Kotlin source files only, no secrets.
+Return: Modified Kotlin source files only, no secrets.
+```
+
+```
+Task: Add a VGSTextView to display a credit card number with a custom redaction format.
+Follow skills/vgs-show-android-guide/references/AGENTS.md.
+Do not break existing secure views; add tests for redaction and display.
+```
 
 ---
 
