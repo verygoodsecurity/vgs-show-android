@@ -6,9 +6,6 @@ on:
       - '**'
     paths:
       - 'skills/**'
-      - 'README.md'
-      - 'AGENTS.md'
-      - '.github/AGENTS.md'
       - '.github/workflows/validate-skills.yml'
   push:
     branches:
