@@ -1,8 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.detekt)
 }
@@ -10,21 +7,16 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.demoshow'
-    compileSdkVersion 36
+    compileSdk = 37
 
     defaultConfig {
-        applicationId "com.verygoodsecurity.demoshow"
-        minSdkVersion 23
-        targetSdkVersion 36
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.verygoodsecurity.demoshow"
+        minSdk = 23
+        targetSdk = 37
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -41,9 +33,7 @@ android {
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
-    }
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -54,7 +44,9 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.androidx.constraintlayout
 
-    implementation libs.verygoodsecurity.collect
+    implementation(libs.verygoodsecurity.collect) {
+        exclude group: 'com.verygoodsecurity', module: 'vgs-sdk-analytics-android'
+    }
     implementation libs.verygoodsecurity.pdf.viewer
 
     implementation libs.activity.compose

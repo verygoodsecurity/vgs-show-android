@@ -2,7 +2,7 @@
 junit = '4.13.2'
 robolectric = '4.16.1'
 mockk = '1.14.9'
-json = '20240303'
+json = '20251224'
 
 [libraries]
 junit = { group = 'junit', name = 'junit', version.ref = 'junit' }
