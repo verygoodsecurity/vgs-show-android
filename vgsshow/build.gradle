@@ -1,8 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
@@ -15,24 +12,19 @@ apply from: "$rootDir/gradle/utils.gradle"
 
 android {
     namespace 'com.verygoodsecurity.vgsshow'
-    compileSdkVersion 36
+    compileSdk = 37
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 36
-        versionCode VERSION_CODE.toInteger()
-        versionName VERSION_NAME
+        minSdk = 23
+        targetSdk = 37
+        versionCode = VERSION_CODE.toInteger()
+        versionName = VERSION_NAME
 
         buildConfigField "String", "VERSION_NAME", "\"${VERSION_NAME}\""
         buildConfigField "String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     testOptions {
@@ -54,9 +46,7 @@ android {
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
-    }
+    jvmToolchain(17)
 }
 
 dependencies {
