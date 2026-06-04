@@ -100,3 +100,8 @@ dokka {
 tasks.withType<Javadoc>().configureEach {
     isEnabled = false
 }
+
+// Temporary workaround: AGP javadoc generation crashes on newer dependency bytecode metadata.
+tasks.matching { it.name == "javaDocReleaseGeneration" }.configureEach {
+    enabled = false
+}
