@@ -1,27 +1,27 @@
 [versions]
-agp = "8.13.1"
-kotlin = "2.2.21"
-mokkery = "2.10.2"
+agp = "9.1.1"
+kotlin = "2.3.21"
+mokkery = "3.3.0"
 mavenPublish = '0.35.0'
-dokka = '2.1.0'
+dokka = '2.2.0'
 detekt = '1.23.8'
-kover = '0.9.7'
+kover = '0.9.8'
 appcompat = '1.7.1'
-core-ktx = '1.17.0'
+core-ktx = '1.18.0'
 okhttp = '5.3.2'
 verygoodsecurity-collect = "1.10.3"
-verygoodsecurity-pdf-viewer = "1.0.0"
+verygoodsecurity-pdf-viewer = "1.0.1"
 activity-compose = '1.13.0'
-androidx-compose = '1.9.5'
+androidx-compose = '1.11.2'
 constraintlayout = '2.2.1'
-ktor = "3.4.1"
-kotlin-coroutines-test = "1.10.2"
-vgs-sdk-analytics-android = "1.0.3"
+ktor = "3.5.0"
+kotlin-coroutines-test = "1.11.0"
+vgs-sdk-analytics-android = "1.0.4"
 
 [plugins]
 android-application = { id = 'com.android.application', version.ref = 'agp' }
 android-library = { id = 'com.android.library', version.ref = 'agp' }
-kotlin-android = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
+android-kotlin-multiplatform-library = { id = 'com.android.kotlin.multiplatform.library', version.ref = 'agp' }
 kotlin-parcelize = { id = 'org.jetbrains.kotlin.plugin.parcelize', version.ref = 'kotlin' }
 maven-publish = { id = 'com.vanniktech.maven.publish', version.ref = 'mavenPublish' }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
