@@ -10,8 +10,8 @@ import kotlin.math.min
  *  @property end end of range (Inclusive).
  */
 data class VGSTextRange constructor(
-    @IntRange val start: Int = 0,
-    @IntRange val end: Int = Int.MAX_VALUE
+    @param:IntRange val start: Int = 0,
+    @param:IntRange val end: Int = Int.MAX_VALUE
 ) {
 
     /**
