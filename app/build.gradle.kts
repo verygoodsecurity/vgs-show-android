@@ -64,14 +64,7 @@ dependencies {
     androidTestImplementation(androidTestLibs.androidx.espresso.intents)
     androidTestImplementation(androidTestLibs.androidx.espresso.core)
     androidTestImplementation(androidTestLibs.hamcrest.integration)
-    androidTestImplementation(androidTestLibs.espresso.contrib) {
-        exclude(group = "com.android.support", module = "appcompat")
-        exclude(module = "support-annotations")
-        exclude(module = "support-v4")
-        exclude(module = "support-v13")
-        exclude(module = "recyclerview-v7")
-        exclude(module = "appcompat-v7")
-    }
+    androidTestImplementation(androidTestLibs.espresso.contrib)
 }
 
 kotlin {
