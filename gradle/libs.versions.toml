@@ -16,7 +16,7 @@ androidx-compose = '1.11.2'
 constraintlayout = '2.2.1'
 ktor = "3.5.0"
 kotlin-coroutines-test = "1.11.0"
-vgs-sdk-analytics-android = "1.0.4"
+vgs-sdk-analytics-android = "1.0.5"
 
 [plugins]
 android-application = { id = 'com.android.application', version.ref = 'agp' }
