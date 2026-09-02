@@ -1,7 +1,7 @@
 [versions]
 junit = '4.13.2'
 robolectric = '4.16.1'
-mockk = '1.14.9'
+mockk = '1.14.11'
 json = '20251224'
 
 [libraries]

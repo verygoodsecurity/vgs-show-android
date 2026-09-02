@@ -8,15 +8,15 @@ detekt = '1.23.8'
 kover = '0.9.8'
 appcompat = '1.7.1'
 core-ktx = '1.18.0'
-okhttp = '5.3.2'
-verygoodsecurity-collect = "1.10.3"
+okhttp = '5.5.0'
+verygoodsecurity-collect = "1.11.0"
 verygoodsecurity-pdf-viewer = "1.0.1"
 activity-compose = '1.13.0'
 androidx-compose = '1.11.2'
 constraintlayout = '2.2.1'
-ktor = "3.5.0"
+ktor = "3.5.2"
 kotlin-coroutines-test = "1.11.0"
-vgs-sdk-analytics-android = "1.0.4"
+vgs-sdk-analytics-android = "1.0.5"
 
 [plugins]
 android-application = { id = 'com.android.application', version.ref = 'agp' }
