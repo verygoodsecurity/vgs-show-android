@@ -8,7 +8,7 @@ runs:
         java-version: 17
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+      uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4
 
     - name: Cache Gradle
       uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3
