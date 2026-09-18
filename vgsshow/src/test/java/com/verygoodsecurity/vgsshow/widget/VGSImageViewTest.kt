@@ -156,6 +156,31 @@ class VGSImageViewTest {
         assertFalse(view.hasImage())
     }
 
+    @Test
+    fun onValueChangedListener_setImageByteArray_listenerCalledWithDecodedBitmap() {
+        // Arrange
+        val byteArray = mockByteArray()
+        var bitmap: Bitmap? = null
+        view.onValueChangedListener = { bitmap = it }
+        // Act
+        view.setImageByteArray(byteArray)
+        // Assert
+        assertNotNull(bitmap)
+    }
+
+    @Test
+    fun onValueChangedListener_clear_listenerCalledWithNull() {
+        // Arrange
+        val byteArray = mockByteArray()
+        view.setImageByteArray(byteArray)
+        var bitmap: Bitmap? = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+        view.onValueChangedListener = { bitmap = it }
+        // Act
+        view.clear()
+        // Assert
+        assertNull(bitmap)
+    }
+
     private fun mockByteArray(): ByteArray {
         val result = ByteArray(0)
         mockkStatic(ByteArray::decodeBitmap)
