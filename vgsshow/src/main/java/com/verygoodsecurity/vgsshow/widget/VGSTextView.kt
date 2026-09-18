@@ -75,6 +75,13 @@ class VGSTextView @JvmOverloads constructor(
     private var secureTextListenerCachedInvocationsCounter: Int = 0
     private lateinit var secureTextTransformMethod: SecureTransformationMethod
 
+    /**
+     * Notified with the raw and regex-transformed text whenever [setText] runs, so a
+     * headless instance of this view can hand its revealed value back to Compose state.
+     */
+    internal var onValueChangedListener: ((rawText: String?, formattedText: String) -> Unit)? =
+        null
+
     init {
 
         context.getStyledAttributes(attrs, R.styleable.VGSTextView) {
@@ -395,6 +402,14 @@ class VGSTextView @JvmOverloads constructor(
     }
 
     /**
+     * Removes every regex transformation added via [addTransformationRegex], so a headless
+     * instance can be re-synced with a caller-supplied transformation list.
+     */
+    internal fun clearTransformationRegex() {
+        transformations.clear()
+    }
+
+    /**
      * Used to determinate which part of text should be secured.
      *
      * @param range range of text that should be secured.
@@ -507,6 +522,7 @@ class VGSTextView @JvmOverloads constructor(
         this.rawText = text?.toString()
         val formattedText = transformations.applyTransformationTo(text.toString())
         view.setText(formattedText, type)
+        onValueChangedListener?.invoke(rawText, formattedText)
     }
 
     internal fun setOnSecureTextRangeSetListener(listener: OnSetSecureTextRangeSetListener?) {
