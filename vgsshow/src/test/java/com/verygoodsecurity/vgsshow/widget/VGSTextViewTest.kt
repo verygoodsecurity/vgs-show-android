@@ -285,6 +285,25 @@ class VGSTextViewTest {
 
 
     @Test
+    fun `onValueChangedListener - set text - listener called with raw and formatted text`() {
+        // Arrange
+        var raw: String? = null
+        var formatted: String? = null
+        view.onValueChangedListener = { rawText, formattedText ->
+            raw = rawText
+            formatted = formattedText
+        }
+        view.addTransformationRegex(Regex("\\d"), "*")
+
+        // Act
+        view.setText("test123")
+
+        // Assert
+        assertEquals("test123", raw)
+        assertEquals("test***", formatted)
+    }
+
+    @Test
     fun `setOnTextChangeListener - set non empty text - onTextChange called with  valid parameters`() {
         // Arrange
         val listener = mockk<VGSTextView.OnTextChangedListener>(relaxed = true)
@@ -322,6 +341,19 @@ class VGSTextViewTest {
 
         // Assert
         assertEquals(expected, view.getChildView().text.toString())
+    }
+
+    @Test
+    fun `clearTransformationRegex - previously added regex no longer applied`() {
+        // Arrange
+        view.addTransformationRegex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})".toRegex(), "\$1-\$2-\$3-\$4")
+
+        // Act
+        view.clearTransformationRegex()
+        view.setText("4111111111111111")
+
+        // Assert
+        assertEquals("4111111111111111", view.getChildView().text.toString())
     }
 
     @Test
@@ -420,6 +452,18 @@ class VGSTextViewTest {
     fun `isEmpty - not empty text - false returned`() {
         // Act
         view.setText("test")
+
+        // Assert
+        assertFalse(view.isEmpty())
+    }
+
+    @Test
+    fun `isEmpty - transformation redacts to empty string - false returned`() {
+        // Arrange
+        view.addTransformationRegex(".*".toRegex(), "")
+
+        // Act
+        view.setText("4111111111111111")
 
         // Assert
         assertFalse(view.isEmpty())
