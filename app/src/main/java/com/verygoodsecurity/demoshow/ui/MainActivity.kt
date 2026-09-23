@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        const val TENANT_ID = "<TENANT_ID>"
+        const val TENANT_ID = "tntgsbvmics"
         const val ENVIRONMENT = "sandbox"
     }
 }
