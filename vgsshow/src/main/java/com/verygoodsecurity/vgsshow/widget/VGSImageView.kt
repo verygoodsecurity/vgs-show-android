@@ -2,14 +2,11 @@ package com.verygoodsecurity.vgsshow.widget
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
-import android.os.Build
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.ImageView.ScaleType
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
@@ -36,12 +33,6 @@ class VGSImageView @JvmOverloads constructor(
      * @see OnLoadStateChangeListener
      */
     var onLoadStateChangeListener: OnLoadStateChangeListener? = null
-
-    /**
-     * Notified with the decoded bitmap whenever it changes, so a headless instance of this
-     * view can hand its revealed value back to Compose state.
-     */
-    internal var onValueChangedListener: ((bitmap: Bitmap?) -> Unit)? = null
 
     override fun getFieldType() = VGSFieldType.IMAGE
 
@@ -253,15 +244,12 @@ class VGSImageView @JvmOverloads constructor(
      */
     fun clear() {
         view.setImageBitmap(null)
-        onValueChangedListener?.invoke(null)
     }
 
     internal fun setImageByteArray(array: ByteArray) {
         onLoadStateChangeListener?.onStart(this)
         try {
-            val bitmap = array.decodeBitmap()
-            view.setImageBitmap(bitmap)
-            onValueChangedListener?.invoke(bitmap)
+            view.setImageBitmap(array.decodeBitmap())
             onLoadStateChangeListener?.onComplete(this)
         } catch (e: VGSException.ImageNotValid) {
             logException(e)

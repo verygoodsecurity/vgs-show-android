@@ -50,7 +50,7 @@ class ViewsStoreTest {
         // Act
         sut.add(testView)
         // Assert
-        assertThat(sut.getViews(), CoreMatchers.hasItem(testView))
+        assertThat(sut.getAll(), CoreMatchers.hasItem(testView))
     }
 
     @Test
@@ -59,7 +59,7 @@ class ViewsStoreTest {
         sut.add(testView)
         sut.add(testView)
         // Assert
-        assertEquals(sut.getViews().size, 1)
+        assertEquals(sut.getAll().size, 1)
     }
 
     @Test
@@ -68,7 +68,7 @@ class ViewsStoreTest {
         sut.add(testView)
         sut.remove(testView)
         // Assert
-        assertTrue(sut.getViews().isEmpty())
+        assertTrue(sut.getAll().isEmpty())
     }
 
     @Test
@@ -78,7 +78,7 @@ class ViewsStoreTest {
         sut.add(testView2)
         sut.remove(testView)
         // Assert
-        assertThat(sut.getViews(), CoreMatchers.hasItem(testView2))
+        assertThat(sut.getAll(), CoreMatchers.hasItem(testView2))
     }
 
     @Test
@@ -88,7 +88,7 @@ class ViewsStoreTest {
         sut.add(testView2)
         sut.clear()
         // Assert
-        assertTrue(sut.getViews().isEmpty())
+        assertTrue(sut.getAll().isEmpty())
     }
 
     @Test

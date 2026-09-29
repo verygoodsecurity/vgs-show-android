@@ -37,6 +37,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -78,9 +79,9 @@ import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.widget.compose.VgsShowText
-import com.verygoodsecurity.vgsshow.widget.compose.rememberVgsShowTextState
-import com.verygoodsecurity.vgsshow.widget.compose.state.VgsShowTextState
+import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.state.VgsTextState
+import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsTextState
 import org.json.JSONObject
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest as CollectVGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse as CollectVGSResponse
@@ -104,7 +105,7 @@ private val ErrorColor = Color(0xFFB00020)
 
 /**
  * One created-alias pair, rendered as its own card. Content paths and body keys are namespaced
- * by [id] so revealing one card never updates another card's [VgsShowTextState] — the demo's
+ * by [id] so revealing one card never updates another card's [VgsTextState] — the demo's
  * "/post" endpoint echoes back whatever keys were sent under "json".
  */
 private data class SubmittedCard(
@@ -144,7 +145,7 @@ class ComposeActivity : AppCompatActivity() {
 }
 
 @Composable
-private fun Content(show: VGSShow?, collect: VGSCollect) {
+private fun Content(show: VGSShow, collect: VGSCollect) {
     MaterialTheme {
         var isSubmitting by remember { mutableStateOf(false) }
         var collectError by remember { mutableStateOf<String?>(null) }
@@ -398,7 +399,7 @@ private fun CollectSection(
                 loadingText = "Creating alias…",
                 iconRes = R.drawable.ic_shield_check_24,
                 enabled = cardNumberState.isValid && expDateState.isValid && !isSubmitting,
-                loading = true,
+                loading = isSubmitting,
                 backgroundColor = Primary,
                 contentColor = Color.White,
                 onClick = { onSubmit(listOf(cardNumberState, expDateState)) },
@@ -409,7 +410,7 @@ private fun CollectSection(
 
 @Composable
 private fun ShowSection(
-    show: VGSShow?,
+    show: VGSShow,
     cards: List<SubmittedCard>,
     revealingCardId: Int?,
     revealedCardIds: Set<Int>,
@@ -462,16 +463,18 @@ private fun ShowSection(
 
 @Composable
 private fun ShowCard(
-    show: VGSShow?,
+    show: VGSShow,
     card: SubmittedCard,
     isRevealing: Boolean,
     isRevealed: Boolean,
     revealRequestAllowed: Boolean,
     onToggle: (alreadyFetched: Boolean) -> Unit,
 ) {
-    val numberState = rememberVgsShowTextState(show = show, contentPath = card.numberContentPath)
-    val expDateState = rememberVgsShowTextState(show = show, contentPath = card.expDateContentPath)
-    val alreadyFetched = !numberState.isEmpty && !expDateState.isEmpty
+    val numberState =
+        rememberVgsTextState(show = show, contentPath = card.numberContentPath, ignore = false)
+    val expDateState =
+        rememberVgsTextState(show = show, contentPath = card.expDateContentPath, ignore = false)
+    val alreadyFetched = !numberState.value.isEmpty && !expDateState.value.isEmpty
     // Hide / re-show of already fetched data is local; only a network reveal is gated
     // while another card's request is in flight.
     val isLocalToggle = isRevealed || alreadyFetched
@@ -507,7 +510,7 @@ private fun ShowCard(
 @Composable
 private fun ShowField(
     label: String,
-    state: VgsShowTextState,
+    state: MutableState<VgsTextState>,
     isRevealed: Boolean,
     masked: String,
     alias: String,
@@ -515,7 +518,7 @@ private fun ShowField(
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         FieldLabel(label)
         if (isRevealed) {
-            VgsShowText(state = state, style = ValueTextStyle)
+            VgsText(state = state.value, style = ValueTextStyle)
         } else {
             Text(text = masked, style = ValueTextStyle)
         }
@@ -727,7 +730,7 @@ private val ValueTextStyle = TextStyle(
 @Composable
 private fun Preview() {
     Content(
-        show = null,
+        show = VGSShow(LocalContext.current, "", ""),
         collect = VGSCollect(LocalContext.current, "", "")
     )
 }

@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgsshow.util.extension
 
 import com.verygoodsecurity.vgsshow.core.logs.VGSShowLogger
-import com.verygoodsecurity.vgsshow.widget.core.VGSView
 
 /**
  * Logs a debug message.
@@ -33,7 +32,10 @@ internal fun Any.logWaring(message: String, tag: String? = null) {
  * @param tag The tag to use for the log message.
  */
 internal fun Any.logException(e: Exception, tag: String? = null) {
-    VGSShowLogger.warning((tag ?: this::class.java.simpleName), "e: ${e::class.java}, message: ${e.message}")
+    VGSShowLogger.warning(
+        (tag ?: this::class.java.simpleName),
+        "e: ${e::class.java}, message: ${e.message}"
+    )
 }
 
 /**
@@ -102,16 +104,11 @@ internal fun Any.logResponse(
  * Logs the start of the views update.
  * @suppress Not for public use.
  *
- * @param views The set of views being updated.
+ * @param contentPaths The list of views being updated.
  */
-internal fun Any.logStartViewsUpdate(views: Set<VGSView<*>>) {
-    val contentPaths = views.map {
-        with(it.getContentPath()) {
-            if (isNullOrEmpty()) "CONTENT PATH NOT SET OR EMPTY" else this
-        }
-    }
+internal fun Any.logStartUIUpdate(contentPaths: List<String>) {
     logDebug("Start decoding revealed data for contentPaths: $contentPaths")
-    if (views.any { it.getContentPath().isEmpty() }) {
+    if (contentPaths.any { it.isEmpty() }) {
         logWaring("Some subscribed views seems to have empty content path. Verify `contentPath` property is set for each view.")
     }
 }
