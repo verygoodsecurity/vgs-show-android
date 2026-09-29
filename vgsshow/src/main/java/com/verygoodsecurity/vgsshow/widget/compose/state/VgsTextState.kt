@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgsshow.widget.compose.state
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
@@ -7,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.text.AnnotatedString
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.compose.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
@@ -14,6 +16,7 @@ import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsChainedVisu
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsSecureVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
+import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
 
 private const val EMPTY = ""
 
@@ -38,13 +41,35 @@ class VgsTextState internal constructor(
 ) : BaseState(contentPath, ignore, VGSFieldType.INFO) {
 
     /** The revealed text with this field's visual transformation applied, ready to render. */
-    internal val displayText: AnnotatedString = visualTransformation.filter(AnnotatedString(rawText)).text
+    internal val displayText: AnnotatedString =
+        visualTransformation.filter(AnnotatedString(rawText)).text
 
     /** `true` if this field's visual transformation masks a secure range. */
     internal val isSecure: Boolean = visualTransformation.containsSecureRange()
 
+    internal var copyToClipboardEvent: ((format: VGSAnalyticsCopyFormat) -> Unit)? = null
+
     val isEmpty: Boolean
         get() = rawText.isBlank()
+
+    fun copyRawToClipboard(
+        context: Context,
+        isSensitive: Boolean = false
+    ) {
+        if (rawText.isEmpty()) return
+        context.copyToClipboard(rawText, isSensitive)
+        copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.RAW)
+    }
+
+    fun copyFormattedToClipboard(
+        context: Context,
+        isSensitive: Boolean = false
+    ) {
+        val text = displayText.text
+        if (text.isEmpty()) return
+        context.copyToClipboard(text, isSensitive)
+        copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.FORMATTED)
+    }
 
     internal constructor(
         contentPath: String,
@@ -57,7 +82,7 @@ class VgsTextState internal constructor(
         ignore = ignore,
         rawText = text,
         visualTransformation = visualTransformation,
-    )
+    ).also { it.copyToClipboardEvent = copyToClipboardEvent }
 }
 
 /**

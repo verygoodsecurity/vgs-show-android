@@ -92,9 +92,22 @@ internal class CompositeStore(
     fun add(state: MutableState<BaseState>): Boolean {
         return widgetsStore.add(state).also { isAdded ->
             if (!isAdded) return@also
-            val value = state.value
-            if (value is VgsTextState && value.isSecure) {
-                onSecureTextRangeSet(value.fieldType.toAnalyticTag(), value.contentPath)
+            when (val s = state.value) {
+                is VgsTextState -> {
+                    s.copyToClipboardEvent = {
+                        onCopy(
+                            s.fieldType.toAnalyticTag(),
+                            s.contentPath,
+                            it
+                        )
+                    }
+                    if (s.isSecure) {
+                        onSecureTextRangeSet(
+                            s.fieldType.toAnalyticTag(),
+                            s.contentPath
+                        )
+                    }
+                }
             }
         }
     }
@@ -116,7 +129,16 @@ internal class CompositeStore(
         }
     }
 
-    fun remove(target: MutableState<BaseState>): Boolean = widgetsStore.remove(target)
+    fun remove(state: MutableState<BaseState>): Boolean {
+        return  widgetsStore.remove(state).also { isRemoved ->
+            if (!isRemoved) return@also
+            when (val s = state.value) {
+                is VgsTextState -> {
+                    s.copyToClipboardEvent = null
+                }
+            }
+        }
+    }
 
     @MainThread
     fun update(data: ResponseData?) {
