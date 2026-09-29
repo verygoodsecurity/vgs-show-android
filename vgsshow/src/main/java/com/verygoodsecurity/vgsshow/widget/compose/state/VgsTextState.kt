@@ -29,8 +29,8 @@ class VgsTextState internal constructor(
     private val visualTransformation: VgsVisualTransformation,
 ) : BaseState(contentPath, ignore, VGSFieldType.INFO) {
 
-    /** The revealed text with [visualTransformation] applied, ready to render. */
-    val displayText: AnnotatedString = visualTransformation.filter(AnnotatedString(rawText)).text
+    /** The revealed text with this field's visual transformation applied, ready to render. */
+    internal val displayText: AnnotatedString = visualTransformation.filter(AnnotatedString(rawText)).text
 
     val isEmpty: Boolean
         get() = rawText.isBlank()
