@@ -37,5 +37,7 @@
         <activity android:name=".ui.activity.ImageActivity" />
 
         <activity android:name=".ui.activity.ComposeActivity" />
+
+        <activity android:name=".ui.activity.ComposeImageActivity" />
     </application>
 </manifest>

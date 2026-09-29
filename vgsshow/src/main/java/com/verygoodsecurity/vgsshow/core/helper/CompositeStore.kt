@@ -158,9 +158,7 @@ internal class CompositeStore(
     }
 
     fun clear() {
-        viewsStore.getAll().forEach {
-            remove(it)
-        }
-        widgetsStore.clear()
+        viewsStore.getAll().toList().forEach { remove(it) }
+        widgetsStore.getAll().toList().forEach { remove(it) }
     }
 }

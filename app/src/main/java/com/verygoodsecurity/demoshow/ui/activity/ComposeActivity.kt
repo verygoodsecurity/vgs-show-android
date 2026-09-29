@@ -3,38 +3,22 @@ package com.verygoodsecurity.demoshow.ui.activity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
@@ -49,15 +33,12 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,6 +48,18 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
+import com.verygoodsecurity.demoshow.ui.components.ActionButton
+import com.verygoodsecurity.demoshow.ui.components.DemoCard
+import com.verygoodsecurity.demoshow.ui.components.DemoHeader
+import com.verygoodsecurity.demoshow.ui.components.ErrorText
+import com.verygoodsecurity.demoshow.ui.components.FieldIcon
+import com.verygoodsecurity.demoshow.ui.components.FieldLabel
+import com.verygoodsecurity.demoshow.ui.components.SectionTitle
+import com.verygoodsecurity.demoshow.ui.components.fieldColors
+import com.verygoodsecurity.demoshow.ui.theme.DemoColors
+import com.verygoodsecurity.demoshow.ui.theme.DemoShapes
+import com.verygoodsecurity.demoshow.ui.theme.DemoTextStyles
+import com.verygoodsecurity.demoshow.ui.theme.VgsDemoTheme
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlinedTextField
@@ -90,18 +83,6 @@ private const val NUMBER_FIELD_NAME = "cardNumber"
 private const val EXP_DATE_FIELD_NAME = "expDate"
 private const val MASKED_NUMBER = "•••• •••• •••• ••••"
 private const val MASKED_EXP_DATE = "••/••"
-
-private val Primary = Color(0xFF002270)
-private val Accent = Color(0xFF4CBDF2)
-private val Secondary = Color(0xFF8779D5)
-private val Background = Color(0xFFF3F6FC)
-private val TextMuted = Color(0xFF5B6784)
-private val CardBorder = Color(0xFFDCE3F0)
-private val InputBorder = Color(0xFFC9D3E6)
-private val PlaceholderColor = Color(0xFF9AA5BD)
-private val AliasChipBackground = Secondary.copy(alpha = 0.16f)
-private val AliasChipText = Color(0xFF444EA3)
-private val ErrorColor = Color(0xFFB00020)
 
 /**
  * One created-alias pair, rendered as its own card. Content paths and body keys are namespaced
@@ -133,7 +114,7 @@ class ComposeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Content(show = show, collect = collect)
+            Content(show = show, collect = collect, onBack = { finish() })
         }
     }
 
@@ -145,8 +126,8 @@ class ComposeActivity : AppCompatActivity() {
 }
 
 @Composable
-private fun Content(show: VGSShow, collect: VGSCollect) {
-    MaterialTheme {
+private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
+    VgsDemoTheme {
         var isSubmitting by remember { mutableStateOf(false) }
         var collectError by remember { mutableStateOf<String?>(null) }
         var cards by remember { mutableStateOf<List<SubmittedCard>>(emptyList()) }
@@ -215,9 +196,14 @@ private fun Content(show: VGSShow, collect: VGSCollect) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Background)
+                .background(DemoColors.Background)
         ) {
-            Header()
+            DemoHeader(
+                title = "VGS",
+                subtitle = "Collect + Show demo",
+                environment = MainActivity.ENVIRONMENT,
+                onBack = onBack,
+            )
 
             Column(
                 modifier = Modifier
@@ -275,70 +261,6 @@ private fun Content(show: VGSShow, collect: VGSCollect) {
 }
 
 @Composable
-private fun Header() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Primary)
-            .statusBarsPadding()
-            .padding(20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
-                modifier = Modifier
-                    .background(
-                        brush = Brush.linearGradient(listOf(Accent, Secondary)),
-                        shape = RoundedCornerShape(12.dp),
-                    )
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_lock_24),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp),
-                )
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                Text(
-                    text = "VGS",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = (-0.2).sp,
-                )
-                Text(
-                    text = "Collect + Show demo",
-                    color = Accent,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 0.2.sp,
-                )
-            }
-        }
-        Box(
-            modifier = Modifier
-                .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(999.dp))
-                .padding(horizontal = 10.dp, vertical = 5.dp)
-        ) {
-            Text(
-                text = MainActivity.ENVIRONMENT.uppercase(),
-                color = Color.White,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 0.7.sp,
-            )
-        }
-    }
-}
-
-@Composable
 private fun CollectSection(
     collect: VGSCollect,
     isSubmitting: Boolean,
@@ -366,10 +288,10 @@ private fun CollectSection(
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = isSubmitting,
                     isError = !cardNumberState.isEmpty && !cardNumberState.isValid,
-                    textStyle = FieldTextStyle,
+                    textStyle = DemoTextStyles.fieldText,
                     placeholder = { Text("1234 5678 9012 3456") },
                     leadingIcon = { FieldIcon(R.drawable.ic_credit_card_24) },
-                    shape = RoundedCornerShape(10.dp),
+                    shape = DemoShapes.field,
                     colors = fieldColors(),
                 )
             }
@@ -382,10 +304,10 @@ private fun CollectSection(
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = isSubmitting,
                     isError = !expDateState.isEmpty && !expDateState.isValid,
-                    textStyle = FieldTextStyle,
+                    textStyle = DemoTextStyles.fieldText,
                     placeholder = { Text("MM/YY") },
                     leadingIcon = { FieldIcon(R.drawable.ic_calendar_24) },
-                    shape = RoundedCornerShape(10.dp),
+                    shape = DemoShapes.field,
                     colors = fieldColors(),
                 )
             }
@@ -400,7 +322,7 @@ private fun CollectSection(
                 iconRes = R.drawable.ic_shield_check_24,
                 enabled = cardNumberState.isValid && expDateState.isValid && !isSubmitting,
                 loading = isSubmitting,
-                backgroundColor = Primary,
+                backgroundColor = DemoColors.Primary,
                 contentColor = Color.White,
                 onClick = { onSubmit(listOf(cardNumberState, expDateState)) },
             )
@@ -430,7 +352,7 @@ private fun ShowSection(
                     1 -> "1 card"
                     else -> "${cards.size} cards"
                 },
-                color = TextMuted,
+                color = DemoColors.TextMuted,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
             )
@@ -500,8 +422,8 @@ private fun ShowCard(
             iconRes = if (isRevealed) R.drawable.ic_eye_off_24 else R.drawable.ic_eye_24,
             enabled = !isRevealing && (isLocalToggle || revealRequestAllowed),
             loading = isRevealing,
-            backgroundColor = Accent,
-            contentColor = Primary,
+            backgroundColor = DemoColors.Accent,
+            contentColor = DemoColors.Primary,
             onClick = { onToggle(alreadyFetched) },
         )
     }
@@ -518,90 +440,21 @@ private fun ShowField(
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         FieldLabel(label)
         if (isRevealed) {
-            VgsText(state = state.value, style = ValueTextStyle)
+            VgsText(state = state.value, style = DemoTextStyles.valueText)
         } else {
-            Text(text = masked, style = ValueTextStyle)
+            Text(text = masked, style = DemoTextStyles.valueText)
         }
         Box(
             modifier = Modifier
-                .background(AliasChipBackground, RoundedCornerShape(8.dp))
+                .background(DemoColors.AliasChipBackground, DemoShapes.chip)
                 .padding(horizontal = 8.dp, vertical = 5.dp)
         ) {
             Text(
                 text = alias,
-                color = AliasChipText,
-                fontFamily = FontFamily.Monospace,
-                fontSize = 12.sp,
-                lineHeight = 17.sp,
+                color = DemoColors.AliasChipText,
+                style = DemoTextStyles.aliasChipText,
             )
         }
-    }
-}
-
-@Composable
-private fun DemoCard(content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.White,
-        border = BorderStroke(1.dp, CardBorder),
-        elevation = 1.dp,
-    ) {
-        Column(
-            modifier = Modifier.padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            content = content,
-        )
-    }
-}
-
-@Composable
-private fun ActionButton(
-    text: String,
-    loadingText: String,
-    @DrawableRes iconRes: Int,
-    enabled: Boolean,
-    loading: Boolean,
-    backgroundColor: Color,
-    contentColor: Color,
-    onClick: () -> Unit,
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        enabled = enabled,
-        shape = RoundedCornerShape(10.dp),
-        elevation = null,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = backgroundColor,
-            contentColor = contentColor,
-            disabledBackgroundColor = backgroundColor.copy(alpha = 0.45f),
-            disabledContentColor = contentColor.copy(alpha = 0.45f),
-        ),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(18.dp),
-                color = LocalContentColor.current,
-                strokeWidth = 2.5.dp,
-            )
-        } else {
-            Icon(
-                painter = painterResource(iconRes),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(18.dp)
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = if (loading) loadingText else text,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 0.2.sp,
-        )
     }
 }
 
@@ -611,11 +464,11 @@ private fun EmptyState() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White, RoundedCornerShape(16.dp))
+            .background(Color.White, DemoShapes.card)
             .drawBehind {
                 val inset = 0.5.dp.toPx()
                 drawRoundRect(
-                    color = InputBorder,
+                    color = DemoColors.InputBorder,
                     topLeft = Offset(inset, inset),
                     size = Size(size.width - inset * 2, size.height - inset * 2),
                     cornerRadius = CornerRadius(16.dp.toPx()),
@@ -632,8 +485,8 @@ private fun EmptyState() {
         Box(
             modifier = Modifier
                 .background(
-                    color = Accent.copy(alpha = 0.18f),
-                    shape = RoundedCornerShape(12.dp)
+                    color = DemoColors.AccentTint,
+                    shape = DemoShapes.icon,
                 )
                 .padding(8.dp),
             contentAlignment = Alignment.Center,
@@ -641,96 +494,30 @@ private fun EmptyState() {
             Icon(
                 painter = painterResource(R.drawable.ic_credit_card_24),
                 contentDescription = null,
-                tint = Primary,
+                tint = DemoColors.Primary,
                 modifier = Modifier.size(24.dp),
             )
         }
         Text(
             text = "No aliases yet",
-            color = Primary,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Bold,
+            color = DemoColors.Primary,
+            style = DemoTextStyles.emptyTitle,
         )
         Text(
             text = "Enter a card above and tap Create alias.",
-            color = TextMuted,
-            fontSize = 13.sp,
-            lineHeight = 19.5.sp,
+            color = DemoColors.TextMuted,
+            style = DemoTextStyles.emptyBody,
             textAlign = TextAlign.Center,
         )
     }
 }
-
-@Composable
-private fun SectionTitle(text: String) {
-    Text(
-        text = text,
-        color = Primary,
-        fontSize = 17.sp,
-        fontWeight = FontWeight.Bold,
-        letterSpacing = (-0.1).sp,
-    )
-}
-
-@Composable
-private fun FieldLabel(text: String) {
-    Text(
-        text = text,
-        color = TextMuted,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.SemiBold
-    )
-}
-
-@Composable
-private fun FieldIcon(@DrawableRes iconRes: Int) {
-    Icon(
-        painter = painterResource(iconRes),
-        contentDescription = null,
-        modifier = Modifier.size(18.dp)
-    )
-}
-
-@Composable
-private fun ErrorText(text: String) {
-    Text(
-        text = text,
-        color = ErrorColor,
-        fontSize = 12.sp
-    )
-}
-
-@Composable
-private fun fieldColors() = TextFieldDefaults.outlinedTextFieldColors(
-    textColor = Primary,
-    backgroundColor = Color.White,
-    cursorColor = Primary,
-    focusedBorderColor = Primary,
-    unfocusedBorderColor = InputBorder,
-    errorBorderColor = ErrorColor,
-    leadingIconColor = TextMuted,
-    errorLeadingIconColor = TextMuted,
-    placeholderColor = PlaceholderColor,
-)
-
-private val FieldTextStyle = TextStyle(
-    fontSize = 16.sp,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.5.sp,
-)
-
-private val ValueTextStyle = TextStyle(
-    color = Primary,
-    fontSize = 18.sp,
-    fontWeight = FontWeight.SemiBold,
-    letterSpacing = 1.5.sp,
-)
 
 @Preview(showBackground = true, backgroundColor = 0xFFF3F6FC)
 @Composable
 private fun Preview() {
     Content(
         show = VGSShow(LocalContext.current, "", ""),
-        collect = VGSCollect(LocalContext.current, "", "")
+        collect = VGSCollect(LocalContext.current, "", ""),
+        onBack = {},
     )
 }
