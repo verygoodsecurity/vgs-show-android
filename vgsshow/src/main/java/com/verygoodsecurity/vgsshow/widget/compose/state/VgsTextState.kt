@@ -10,10 +10,18 @@ import androidx.compose.ui.text.AnnotatedString
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.compose.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
+import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsChainedVisualTransformation
+import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsSecureVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 
 private const val EMPTY = ""
+
+private fun VgsVisualTransformation.containsSecureRange(): Boolean = when (this) {
+    is VgsSecureVisualTransformation -> true
+    is VgsChainedVisualTransformation -> transformations.any { it.containsSecureRange() }
+    else -> false
+}
 
 /**
  * Holds the reveal state of a [VgsText] field.
@@ -31,6 +39,9 @@ class VgsTextState internal constructor(
 
     /** The revealed text with this field's visual transformation applied, ready to render. */
     internal val displayText: AnnotatedString = visualTransformation.filter(AnnotatedString(rawText)).text
+
+    /** `true` if this field's visual transformation masks a secure range. */
+    internal val isSecure: Boolean = visualTransformation.containsSecureRange()
 
     val isEmpty: Boolean
         get() = rawText.isBlank()

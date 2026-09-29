@@ -89,7 +89,15 @@ internal class CompositeStore(
         }
     }
 
-    fun add(state: MutableState<BaseState>): Boolean = widgetsStore.add(state)
+    fun add(state: MutableState<BaseState>): Boolean {
+        return widgetsStore.add(state).also { isAdded ->
+            if (!isAdded) return@also
+            val value = state.value
+            if (value is VgsTextState && value.isSecure) {
+                onSecureTextRangeSet(value.fieldType.toAnalyticTag(), value.contentPath)
+            }
+        }
+    }
 
     fun remove(target: VGSView<*>): Boolean {
         return viewsStore.remove(target).also { isRemoved ->
