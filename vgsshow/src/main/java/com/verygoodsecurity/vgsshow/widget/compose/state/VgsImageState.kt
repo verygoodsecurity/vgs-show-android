@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.util.extension.decodeBitmap
 import com.verygoodsecurity.vgsshow.util.extension.logException
+import com.verygoodsecurity.vgsshow.widget.VGSImageView
 import com.verygoodsecurity.vgsshow.widget.compose.VgsImage
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
@@ -55,6 +56,16 @@ class VgsImageState internal constructor(
     override fun hashCode(): Int {
         return 31 * contentPath.hashCode() + image.contentHashCode()
     }
+}
+
+/**
+ * Clears the revealed image held by this state. Equivalent to [VGSImageView.clear] —
+ * [VgsImageState.hasImage] becomes `false` until the field is revealed again.
+ *
+ * Note: This action can't be reverted.
+ */
+fun MutableState<VgsImageState>.clearImage() {
+    value = value.copy(image = null)
 }
 
 /**

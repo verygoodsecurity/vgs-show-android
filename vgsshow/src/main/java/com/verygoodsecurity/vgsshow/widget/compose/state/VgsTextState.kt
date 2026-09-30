@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsSecureVisua
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 import com.verygoodsecurity.vgsshow.widget.extension.copyToClipboard
+import com.verygoodsecurity.vgsshow.widget.VGSTextView
 
 private const val EMPTY = ""
 
@@ -83,6 +84,16 @@ class VgsTextState internal constructor(
         rawText = text,
         visualTransformation = visualTransformation,
     ).also { it.copyToClipboardEvent = copyToClipboardEvent }
+}
+
+/**
+ * Clears the revealed text held by this state. Equivalent to [VGSTextView.clearText] —
+ * [VgsTextState.isEmpty] becomes `true` until the field is revealed again.
+ *
+ * Note: This action can't be reverted.
+ */
+fun MutableState<VgsTextState>.clearText() {
+    value = value.copy(text = EMPTY)
 }
 
 /**
