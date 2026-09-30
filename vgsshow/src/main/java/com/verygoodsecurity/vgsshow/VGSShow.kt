@@ -4,15 +4,19 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.NetworkOnMainThreadException
-import androidx.annotation.*
+import androidx.annotation.AnyThread
 import androidx.annotation.IntRange
+import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.WorkerThread
+import androidx.compose.runtime.MutableState
 import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsStatus
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment
 import com.verygoodsecurity.vgsshow.core.VGSEnvironment.Companion.toVGSEnvironment
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
-import com.verygoodsecurity.vgsshow.core.helper.ViewsStore
+import com.verygoodsecurity.vgsshow.core.helper.CompositeStore
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.HttpRequestManager
 import com.verygoodsecurity.vgsshow.core.network.IHttpRequestManager
@@ -23,11 +27,22 @@ import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
 import com.verygoodsecurity.vgsshow.util.connection.BaseNetworkConnectionHelper
 import com.verygoodsecurity.vgsshow.util.connection.NetworkConnectionHelper
-import com.verygoodsecurity.vgsshow.util.extension.*
+import com.verygoodsecurity.vgsshow.util.extension.PORT_MAX_VALUE
+import com.verygoodsecurity.vgsshow.util.extension.PORT_MIN_VALUE
+import com.verygoodsecurity.vgsshow.util.extension.isIpAllowed
+import com.verygoodsecurity.vgsshow.util.extension.isValidIp
+import com.verygoodsecurity.vgsshow.util.extension.isValidPort
+import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
+import com.verygoodsecurity.vgsshow.util.extension.logDebug
+import com.verygoodsecurity.vgsshow.util.extension.logWaring
+import com.verygoodsecurity.vgsshow.util.extension.toAnalyticTag
+import com.verygoodsecurity.vgsshow.util.extension.toAnalyticsUI
+import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
 import java.util.UUID
 
@@ -53,7 +68,46 @@ class VGSShow {
     private var url: String?
     private var port: Int?
     private val listeners: MutableSet<VGSOnResponseListener> by lazy { mutableSetOf() }
-    private val viewsStore = ViewsStore()
+    private val compositeStore = CompositeStore(
+        onCopy = { fieldType, contentPath, format ->
+            capture(
+                VGSAnalyticsEvent.CopyToClipboard(
+                    fieldType,
+                    contentPath,
+                    format
+                )
+            )
+        },
+        onSecureTextRangeSet = { fieldType, contentPath ->
+            capture(
+                VGSAnalyticsEvent.SecureTextRange(
+                    fieldType,
+                    contentPath
+                )
+            )
+        },
+        onRenderComplete = { fieldType, contentPath ->
+            capture(
+                VGSAnalyticsEvent.ContentRendering(
+                    VGSAnalyticsStatus.OK,
+                    fieldType,
+                    contentPath
+                )
+            )
+        },
+        onRenderError = { fieldType, contentPath ->
+            capture(
+                VGSAnalyticsEvent.ContentRendering(
+                    VGSAnalyticsStatus.FAILED,
+                    fieldType,
+                    contentPath
+                )
+            )
+        },
+        onDocumentShare = { contentPath ->
+            capture(VGSAnalyticsEvent.ContentSharing(contentPath))
+        }
+    )
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
     private val headersStore: ProxyStaticHeadersStore
     private val connectionHelper: NetworkConnectionHelper
@@ -61,10 +115,6 @@ class VGSShow {
     private var isSatelliteMode: Boolean = false
     private var hasCustomHostname: Boolean = false
     private val analyticsManager: VGSSharedAnalyticsManager
-    private val onTextCopyListener: VGSTextView.OnTextCopyListener
-    private val onSecureTextRangeListener: VGSTextView.OnSetSecureTextRangeSetListener
-    private val onRenderStateChangeListener: VGSPDFView.OnRenderStateChangeListener
-    private val onShareDocumentListener: VGSPDFView.OnShareDocumentListener
 
     /**
      * Creates a new `VGSShow` instance.
@@ -117,59 +167,6 @@ class VGSShow {
             dependencyManager = DEPENDENCY_MANAGER
         )
         this.proxyRequestManager = buildNetworkManager()
-        this.onTextCopyListener = object : VGSTextView.OnTextCopyListener {
-
-            override fun onTextCopied(view: VGSTextView, format: VGSTextView.CopyTextFormat) {
-                capture(
-                    VGSAnalyticsEvent.CopyToClipboard(
-                        view.getFieldType().toAnalyticTag(),
-                        view.getContentPath(),
-                        format.toAnalyticsFormat()
-                    )
-                )
-            }
-        }
-        this.onSecureTextRangeListener = object : VGSTextView.OnSetSecureTextRangeSetListener {
-
-            override fun onSecureTextRangeSet(view: VGSTextView) {
-                capture(
-                    VGSAnalyticsEvent.SecureTextRange(
-                        view.getFieldType().toAnalyticTag(),
-                        view.getContentPath()
-                    )
-                )
-            }
-        }
-        this.onRenderStateChangeListener = object : VGSPDFView.OnRenderStateChangeListener {
-
-            override fun onStart(view: VGSPDFView, pages: Int) {}
-
-            override fun onComplete(view: VGSPDFView, pages: Int) {
-                capture(
-                    VGSAnalyticsEvent.ContentRendering(
-                        VGSAnalyticsStatus.OK,
-                        view.getFieldType().toAnalyticTag(),
-                        view.getContentPath()
-                    )
-                )
-            }
-
-            override fun onError(view: VGSPDFView, t: Throwable) {
-                capture(
-                    VGSAnalyticsEvent.ContentRendering(
-                        VGSAnalyticsStatus.FAILED,
-                        view.getFieldType().toAnalyticTag(),
-                        view.getContentPath()
-                    )
-                )
-            }
-        }
-        this.onShareDocumentListener = object : VGSPDFView.OnShareDocumentListener {
-
-            override fun onShare(view: VGSPDFView) {
-                capture(VGSAnalyticsEvent.ContentSharing(view.getContentPath()))
-            }
-        }
     }
 
     /**
@@ -221,7 +218,7 @@ class VGSShow {
                 logRequestEvent(request)
                 with(proxyRequestManager.execute(request)) {
                     logResponseEvent(this)
-                    mainHandler.post { viewsStore.update((this as? VGSResponse.Success)?.data) }
+                    mainHandler.post { compositeStore.update((this as? VGSResponse.Success)?.data) }
                     this
                 }
             }
@@ -316,17 +313,27 @@ class VGSShow {
      * @param view The secure view to subscribe (e.g., [VGSTextView], [VGSPDFView]).
      */
     fun subscribe(view: VGSView<*>) {
-        if (viewsStore.add(view)) {
+        if (compositeStore.add(view)) {
             capture(
                 VGSAnalyticsEvent.FieldAttach(
-                    view.getFieldType().toAnalyticTag(),
-                    view.getContentPath()
+                    fieldType = view.getFieldType().toAnalyticTag(),
+                    contentPath = view.getContentPath(),
+                    ui = view.toAnalyticsUI(),
                 )
             )
-            when (view) {
-                is VGSTextView -> handleTextViewSubscription(view)
-                is VGSPDFView -> handlePDFViewSubscription(view)
-            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    internal fun subscribe(state: MutableState<out BaseState>) {
+        if (compositeStore.add(state as MutableState<BaseState>)) {
+            capture(
+                VGSAnalyticsEvent.FieldAttach(
+                    fieldType = state.value.fieldType.toAnalyticTag(),
+                    contentPath = state.value.contentPath,
+                    ui = state.value.toAnalyticsUI(),
+                )
+            )
         }
     }
 
@@ -338,12 +345,19 @@ class VGSShow {
      * @param view The secure view to unsubscribe.
      */
     fun unsubscribe(view: VGSView<*>) {
-        if (viewsStore.remove(view)) {
+        if (compositeStore.remove(view)) {
             capture(VGSAnalyticsEvent.FieldDetach(view.getFieldType().toAnalyticTag()))
-            if (view is VGSTextView) {
-                view.removeOnCopyTextListener(onTextCopyListener)
-                view.setOnSecureTextRangeSetListener(null)
-            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    internal fun unsubscribe(state: MutableState<out BaseState>) {
+        if (compositeStore.remove(state as MutableState<BaseState>)) {
+            capture(
+                VGSAnalyticsEvent.FieldDetach(
+                    state.value.fieldType.toAnalyticTag()
+                )
+            )
         }
     }
 
@@ -398,8 +412,7 @@ class VGSShow {
         proxyRequestManager.cancelAll()
         analyticsManager.cancelAll()
         listeners.clear()
-        clearViewsListeners()
-        viewsStore.clear()
+        compositeStore.clear()
         headersStore.clear()
     }
 
@@ -407,7 +420,7 @@ class VGSShow {
     internal fun getResponseListeners() = listeners
 
     @VisibleForTesting
-    internal fun getViewsStore() = viewsStore
+    internal fun getStore() = compositeStore
 
     private fun buildNetworkManager(): IHttpRequestManager {
 
@@ -460,17 +473,6 @@ class VGSShow {
         }
     }
 
-    private fun handleTextViewSubscription(view: VGSTextView) {
-        view.addOnCopyTextListener(onTextCopyListener)
-        view.setOnSecureTextRangeSetListener(onSecureTextRangeListener)
-        view.onViewSubscribed()
-    }
-
-    private fun handlePDFViewSubscription(view: VGSPDFView) {
-        view.addRenderingStateChangedListener(onRenderStateChangeListener)
-        view.onShareDocumentListener = onShareDocumentListener
-    }
-
     @MainThread
     private fun notifyResponseListeners(response: VGSResponse) {
         listeners.forEach {
@@ -486,26 +488,18 @@ class VGSShow {
     }
 
     private fun updateViews(response: VGSResponse) {
-        viewsStore.update((response as? VGSResponse.Success)?.data)
+        compositeStore.update((response as? VGSResponse.Success)?.data)
     }
 
     private fun logRequestEvent(request: VGSRequest) {
         val eventBuilder = VGSAnalyticsEvent.Request.Builder(VGSAnalyticsStatus.OK, code = 200)
-        if (viewsStore.getViews().any { it is VGSTextView }) {
-            eventBuilder.fields()
-        }
-        if (viewsStore.getViews().any { it is VGSPDFView }) {
-            eventBuilder.pdf()
-        }
-        if (request.payload != null) {
-            eventBuilder.customData()
-        }
-        if (!request.headers.isNullOrEmpty() || headersStore.getCustom().isNotEmpty()) {
-            eventBuilder.customHeader()
-        }
-        if (hasCustomHostname) {
-            eventBuilder.customHostname()
-        }
+        if (compositeStore.hasText()) eventBuilder.fields()
+        if (compositeStore.hasPdf()) eventBuilder.pdf()
+        if (request.payload != null) eventBuilder.customData()
+        if (!request.headers.isNullOrEmpty() || headersStore.getCustom()
+                .isNotEmpty()
+        ) eventBuilder.customHeader()
+        if (hasCustomHostname) eventBuilder.customHostname()
         capture(eventBuilder.build())
     }
 
@@ -517,15 +511,6 @@ class VGSShow {
                 errorMessage = (response as? VGSResponse.Error)?.message
             )
         )
-    }
-
-    private fun clearViewsListeners() {
-        viewsStore.getViews().forEach {
-            when (it) {
-                is VGSTextView -> it.removeOnCopyTextListener(onTextCopyListener)
-                is VGSPDFView -> it.removeRenderingStateChangedListener(onRenderStateChangeListener)
-            }
-        }
     }
 
     private fun capture(event: VGSAnalyticsEvent) {

@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgsshow.core.helper
 import android.util.Base64
 import androidx.annotation.MainThread
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
-import com.verygoodsecurity.vgsshow.util.extension.logStartViewsUpdate
+import com.verygoodsecurity.vgsshow.util.extension.logStartUIUpdate
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.widget.VGSImageView
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
@@ -14,30 +14,30 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  * A helper class for managing a collection of [VGSView]s.
  * @suppress Not for public use.
  */
-internal class ViewsStore {
+internal class ViewsStore: Store<VGSView<*>> {
 
     private val views: MutableSet<VGSView<*>> = mutableSetOf()
 
     /**
      * Adds a [VGSView] to the store.
      *
-     * @param view The view to add.
+     * @param target The view to add.
      * @return `true` if the view was added, `false` otherwise.
      */
-    fun add(view: VGSView<*>): Boolean = views.add(view)
+    override fun add(target: VGSView<*>): Boolean = views.add(target)
 
     /**
      * Removes a [VGSView] from the store.
      *
-     * @param view The view to remove.
+     * @param target The view to remove.
      * @return `true` if the view was removed, `false` otherwise.
      */
-    fun remove(view: VGSView<*>): Boolean = views.remove(view)
+    override fun remove(target: VGSView<*>): Boolean = views.remove(target)
 
     /**
      * Removes all [VGSView]s from the store.
      */
-    fun clear() {
+    override fun clear() {
         views.clear()
     }
 
@@ -48,12 +48,12 @@ internal class ViewsStore {
      * @param data The response data to update the views with.
      */
     @MainThread
-    fun update(data: ResponseData?) {
+    override fun update(data: ResponseData?) {
         if (views.isEmpty()) {
             logWaring("No subscribed views to reveal data.")
             return
         }
-        logStartViewsUpdate(views)
+        logStartUIUpdate(views.map { it.getContentPath() })
         val unrevealedContentPaths = mutableListOf<String>()
         for (view in views) {
             if (view.ignoreField) {
@@ -72,12 +72,12 @@ internal class ViewsStore {
     /**
      * Returns `true` if the store is empty, `false` otherwise.
      */
-    fun isEmpty() = views.isEmpty()
+    override fun isEmpty() = views.isEmpty()
 
     /**
      * Returns the set of [VGSView]s in the store.
      */
-    fun getViews() = views
+    override fun getAll() = views
 
     private fun update(view: VGSView<*>, data: String): Boolean {
         return try {
@@ -87,7 +87,7 @@ internal class ViewsStore {
                 is VGSImageView -> view.setImageByteArray(Base64.decode(data, Base64.NO_WRAP))
             }
             true
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             logWaring("Revealed data cannot be decoded.")
             false
         }

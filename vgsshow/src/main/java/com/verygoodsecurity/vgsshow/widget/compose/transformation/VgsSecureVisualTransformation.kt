@@ -3,13 +3,12 @@ package com.verygoodsecurity.vgsshow.widget.compose.transformation
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 /**
- * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.VgsShowText]
+ * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.VgsText]
  * with [secureSymbol] (e.g. `4111••••••••1111`).
  *
  * Delegates to [SecureTransformationMethod] — the same masking algorithm the legacy
@@ -20,10 +19,10 @@ import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
  * @param secureSymbol character that replaces every masked character. Defaults to
  *   [VGSTextView.SECURE_SYMBOL], matching the legacy widget's default.
  */
-class VgsShowSecureVisualTransformation(
+class VgsSecureVisualTransformation(
     private val ranges: Array<VGSTextRange>,
     private val secureSymbol: Char = VGSTextView.SECURE_SYMBOL,
-) : VisualTransformation {
+) : VgsVisualTransformation() {
 
     constructor(
         range: VGSTextRange,
@@ -39,7 +38,7 @@ class VgsShowSecureVisualTransformation(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is VgsShowSecureVisualTransformation) return false
+        if (other !is VgsSecureVisualTransformation) return false
         if (secureSymbol != other.secureSymbol) return false
         return ranges.contentEquals(other.ranges)
     }

@@ -11,7 +11,7 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `filter - single range - range masked`() {
         // Arrange
-        val transformation = VgsShowSecureVisualTransformation(VGSTextRange(0, 3), '*')
+        val transformation = VgsSecureVisualTransformation(VGSTextRange(0, 3), '*')
 
         // Act
         val result = transformation.filter(AnnotatedString("4111111111111111"))
@@ -23,7 +23,7 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `filter - multiple ranges - all ranges masked`() {
         // Arrange
-        val transformation = VgsShowSecureVisualTransformation(
+        val transformation = VgsSecureVisualTransformation(
             arrayOf(VGSTextRange(0, 3), VGSTextRange(12, 15)),
             '*',
         )
@@ -38,7 +38,7 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `filter - invalid range - range skipped`() {
         // Arrange
-        val transformation = VgsShowSecureVisualTransformation(VGSTextRange(10, 3), '*')
+        val transformation = VgsSecureVisualTransformation(VGSTextRange(10, 3), '*')
 
         // Act
         val result = transformation.filter(AnnotatedString("test"))
@@ -50,7 +50,7 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `filter - default symbol - bullet used`() {
         // Arrange
-        val transformation = VgsShowSecureVisualTransformation(VGSTextRange(0, 3))
+        val transformation = VgsSecureVisualTransformation(VGSTextRange(0, 3))
 
         // Act
         val result = transformation.filter(AnnotatedString("4111111111111111"))
@@ -62,8 +62,8 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `equals - same ranges and symbol - true returned`() {
         // Arrange
-        val a = VgsShowSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
-        val b = VgsShowSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
+        val a = VgsSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
+        val b = VgsSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
 
         // Assert
         assertEquals(a, b)
@@ -73,8 +73,8 @@ class VgsShowSecureVisualTransformationTest {
     @Test
     fun `equals - different ranges - false returned`() {
         // Arrange
-        val a = VgsShowSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
-        val b = VgsShowSecureVisualTransformation(arrayOf(VGSTextRange(0, 4)), '*')
+        val a = VgsSecureVisualTransformation(arrayOf(VGSTextRange(0, 3)), '*')
+        val b = VgsSecureVisualTransformation(arrayOf(VGSTextRange(0, 4)), '*')
 
         // Assert
         assertNotEquals(a, b)
