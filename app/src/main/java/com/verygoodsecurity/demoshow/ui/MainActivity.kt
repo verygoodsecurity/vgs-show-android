@@ -22,7 +22,7 @@ import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeImageActivity
-import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
+import com.verygoodsecurity.demoshow.ui.activity.ComposePdfActivity
 import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
 import com.verygoodsecurity.demoshow.ui.components.DemoHeader
 import com.verygoodsecurity.demoshow.ui.components.DemoListItem
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     onStartActivity = { startActivity(Intent(this, CollectAndShowActivity::class.java)) },
                     onStartFragment = { startActivity(Intent(this, CollectAndShowFragmentActivity::class.java)) },
                     onApplyResponseDemo = { startActivity(Intent(this, ApplyResponseDemoActivity::class.java)) },
-                    onPdfReveal = { startActivity(Intent(this, PDFActivity::class.java)) },
+                    onPdfReveal = { startActivity(Intent(this, ComposePdfActivity::class.java)) },
                     onImageReveal = { startActivity(Intent(this, ComposeImageActivity::class.java)) },
                     onCompose = { startActivity(Intent(this, ComposeActivity::class.java)) },
                 )

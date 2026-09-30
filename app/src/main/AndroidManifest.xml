@@ -39,5 +39,7 @@
         <activity android:name=".ui.activity.ComposeActivity" />
 
         <activity android:name=".ui.activity.ComposeImageActivity" />
+
+        <activity android:name=".ui.activity.ComposePdfActivity" />
     </application>
 </manifest>
