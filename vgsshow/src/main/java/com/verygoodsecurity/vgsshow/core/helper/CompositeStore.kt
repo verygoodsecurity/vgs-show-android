@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgsshow.util.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.util.extension.toAnalyticsFormat
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
+import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsTextState
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 import com.verygoodsecurity.vgsshow.widget.core.VGSView
@@ -108,6 +109,15 @@ internal class CompositeStore(
                         )
                     }
                 }
+
+                is VgsPdfState -> {
+                    s.onRenderCompleteEvent = {
+                        onRenderComplete(s.fieldType.toAnalyticTag(), s.contentPath)
+                    }
+                    s.onRenderErrorEvent = {
+                        onRenderError(s.fieldType.toAnalyticTag(), s.contentPath)
+                    }
+                }
             }
         }
     }
@@ -136,6 +146,11 @@ internal class CompositeStore(
                 is VgsTextState -> {
                     s.copyToClipboardEvent = null
                 }
+
+                is VgsPdfState -> {
+                    s.onRenderCompleteEvent = null
+                    s.onRenderErrorEvent = null
+                }
             }
         }
     }
@@ -153,8 +168,8 @@ internal class CompositeStore(
     }
 
     fun hasPdf(): Boolean {
-        return viewsStore.getAll()
-            .any { it is VGSPDFView } // TODO: Implement after composable pdf widget added
+        return viewsStore.getAll().any { it is VGSPDFView } || widgetsStore.getAll()
+            .any { it.value is VgsPdfState }
     }
 
     fun clear() {
