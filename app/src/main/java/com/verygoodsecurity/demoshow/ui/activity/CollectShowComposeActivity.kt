@@ -103,11 +103,11 @@ private data class SubmittedCard(
 class ComposeActivity : AppCompatActivity() {
 
     private val show: VGSShow by lazy {
-        VGSShow.Builder(this, MainActivity.TENANT_ID).build()
+        VGSShow.Builder(this, MainActivity.VAULT_ID).build()
     }
 
     private val collect: VGSCollect by lazy {
-        VGSCollect(this, MainActivity.TENANT_ID, MainActivity.ENVIRONMENT)
+        VGSCollect(this, MainActivity.VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
