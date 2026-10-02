@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 class SecondFragment : Fragment(R.layout.fragment_apply_response_demo_second) {
 
     private val show: VGSShow by lazy {
-        VGSShow(requireContext(), MainActivity.TENANT_ID, VGSEnvironment.Sandbox())
+        VGSShow(requireContext(), MainActivity.VAULT_ID, VGSEnvironment.Sandbox())
     }
 
     private lateinit var handler: StateHandler

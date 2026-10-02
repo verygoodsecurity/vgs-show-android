@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoshow.R
-import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowActivity
-import com.verygoodsecurity.demoshow.ui.activity.CollectAndShowFragmentActivity
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.ENVIRONMENT
+import com.verygoodsecurity.demoshow.ui.activity.CollectShowNativeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeImageActivity
-import com.verygoodsecurity.demoshow.ui.activity.PDFActivity
+import com.verygoodsecurity.demoshow.ui.activity.ComposePdfActivity
 import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
 import com.verygoodsecurity.demoshow.ui.components.DemoHeader
 import com.verygoodsecurity.demoshow.ui.components.DemoListItem
@@ -39,13 +39,11 @@ class MainActivity : AppCompatActivity() {
         setContent {
             VgsDemoTheme {
                 HomeScreen(
-                    environment = ENVIRONMENT,
-                    onStartActivity = { startActivity(Intent(this, CollectAndShowActivity::class.java)) },
-                    onStartFragment = { startActivity(Intent(this, CollectAndShowFragmentActivity::class.java)) },
-                    onApplyResponseDemo = { startActivity(Intent(this, ApplyResponseDemoActivity::class.java)) },
-                    onPdfReveal = { startActivity(Intent(this, PDFActivity::class.java)) },
+                    onPdfReveal = { startActivity(Intent(this, ComposePdfActivity::class.java)) },
                     onImageReveal = { startActivity(Intent(this, ComposeImageActivity::class.java)) },
-                    onCompose = { startActivity(Intent(this, ComposeActivity::class.java)) },
+                    onApplyResponseDemo = { startActivity(Intent(this, ApplyResponseDemoActivity::class.java)) },
+                    onStartCompose = { startActivity(Intent(this, ComposeActivity::class.java)) },
+                    onStartNativeViews = { startActivity(Intent(this, CollectShowNativeActivity::class.java)) },
                 )
             }
         }
@@ -53,20 +51,18 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        const val TENANT_ID = "tntgsbvmics"
+        const val VAULT_ID = "<VAULT_ID>"
         const val ENVIRONMENT = "sandbox"
     }
 }
 
 @Composable
 private fun HomeScreen(
-    environment: String,
-    onStartActivity: () -> Unit,
-    onStartFragment: () -> Unit,
-    onApplyResponseDemo: () -> Unit,
+    onStartCompose: () -> Unit,
     onPdfReveal: () -> Unit,
     onImageReveal: () -> Unit,
-    onCompose: () -> Unit,
+    onApplyResponseDemo: () -> Unit,
+    onStartNativeViews: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -76,7 +72,7 @@ private fun HomeScreen(
         DemoHeader(
             title = "VGS",
             subtitle = "Android SDK demos",
-            environment = environment,
+            environment = ENVIRONMENT,
         )
 
         Column(
@@ -92,22 +88,10 @@ private fun HomeScreen(
 
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 DemoListItem(
-                    icon = painterResource(R.drawable.ic_credit_card_24),
-                    title = "Start Activity",
-                    subtitle = "Collect + Show in an Activity",
-                    onClick = onStartActivity,
-                )
-                DemoListItem(
-                    icon = painterResource(R.drawable.ic_layout_24),
-                    title = "Start with Fragment",
-                    subtitle = "Collect + Show in a Fragment",
-                    onClick = onStartFragment,
-                )
-                DemoListItem(
-                    icon = painterResource(R.drawable.ic_swap_24),
-                    title = "Apply Response Demo",
-                    subtitle = "Apply a Collect response to Show views",
-                    onClick = onApplyResponseDemo,
+                    icon = painterResource(R.drawable.ic_layers_24),
+                    title = "Secure data",
+                    subtitle = "Collect and show compose",
+                    onClick = onStartCompose,
                 )
                 DemoListItem(
                     icon = painterResource(R.drawable.ic_document_24),
@@ -122,10 +106,16 @@ private fun HomeScreen(
                     onClick = onImageReveal,
                 )
                 DemoListItem(
-                    icon = painterResource(R.drawable.ic_layers_24),
-                    title = "Compose",
-                    subtitle = "Jetpack Compose sample",
-                    onClick = onCompose,
+                    icon = painterResource(R.drawable.ic_swap_24),
+                    title = "Apply Response Demo",
+                    subtitle = "Apply a Collect response to Show views",
+                    onClick = onApplyResponseDemo,
+                )
+                DemoListItem(
+                    icon = painterResource(R.drawable.ic_credit_card_24),
+                    title = "Secure data",
+                    subtitle = "Collect and show native views (deprecated).",
+                    onClick = onStartNativeViews,
                 )
             }
         }

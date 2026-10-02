@@ -34,13 +34,13 @@ class FirsFragment : Fragment(R.layout.fragment_apply_response_demo_first), VGSO
 
     // Each fragment uses it's own VGSShow instance
     private val show: VGSShow by lazy {
-        VGSShow(requireContext(), MainActivity.TENANT_ID, VGSEnvironment.Sandbox()).apply {
+        VGSShow(requireContext(), MainActivity.VAULT_ID, VGSEnvironment.Sandbox()).apply {
             addOnResponseListener(this@FirsFragment)
         }
     }
 
     private val collect: VGSCollect by lazy {
-        VGSCollect(requireContext(), MainActivity.TENANT_ID, MainActivity.ENVIRONMENT).apply {
+        VGSCollect(requireContext(), MainActivity.VAULT_ID, MainActivity.ENVIRONMENT).apply {
             addOnResponseListeners(this@FirsFragment)
         }
     }

@@ -16,7 +16,7 @@ import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
 import com.verygoodsecurity.demoshow.ui.MainActivity
-import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.TENANT_ID
+import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.VAULT_ID
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -33,16 +33,16 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import org.json.JSONException
 import org.json.JSONObject
 
-class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
+class CollectShowNativeActivity : AppCompatActivity(), VGSOnResponseListener {
 
     private val showVgs: VGSShow by lazy {
-        VGSShow.Builder(this, TENANT_ID)
+        VGSShow.Builder(this, VAULT_ID)
             .setEnvironment(VGSEnvironment.Sandbox())
             .build()
     }
 
     private val vgsForm: VGSCollect by lazy {
-        VGSCollect(this, TENANT_ID, MainActivity.ENVIRONMENT)
+        VGSCollect(this, VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     private val root: LinearLayout by lazy { findViewById(R.id.root) }
@@ -92,7 +92,7 @@ class CollectAndShowActivity : AppCompatActivity(), VGSOnResponseListener {
 
     override fun onResponse(response: VGSResponse) {
         pbReveal.visibility = View.GONE
-        Log.d(CollectAndShowActivity::class.simpleName, response.toString())
+        Log.d(CollectShowNativeActivity::class.simpleName, response.toString())
     }
 
     private var revealAlias: String = ""

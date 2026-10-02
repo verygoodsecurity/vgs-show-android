@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseDat
 import com.verygoodsecurity.vgsshow.util.extension.logStartUIUpdate
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsImageState
+import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsTextState
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 
@@ -82,6 +83,11 @@ internal class StatesStore : Store<MutableState<BaseState>> {
                 is VgsImageState -> {
                     val decoded = Base64.decode(data, Base64.NO_WRAP)
                     state.value = s.copy(image = decoded)
+                }
+
+                is VgsPdfState -> {
+                    val decoded = Base64.decode(data, Base64.NO_WRAP)
+                    state.value = s.copy(document = decoded)
                 }
             }
             true
