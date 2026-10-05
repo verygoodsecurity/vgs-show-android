@@ -32,8 +32,8 @@
 
         <activity android:name=".ui.activity.ComposePdfActivity" />
 
-        <activity android:name=".ui.activity.apply_response_demo.ApplyResponseDemoActivity" />
-
         <activity android:name=".ui.activity.CollectShowNativeActivity" />
+
+        <activity android:name=".ui.activity.ApplyResponseActivity" />
     </application>
 </manifest>

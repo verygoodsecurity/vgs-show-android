@@ -94,10 +94,11 @@ private data class SubmittedCard(
     val numberAlias: String,
     val expDateAlias: String,
 ) {
-    val numberContentPath: String get() = "json.card_${id}_number"
-    val expDateContentPath: String get() = "json.card_${id}_expDate"
-    val numberBodyKey: String get() = "card_${id}_number"
-    val expDateBodyKey: String get() = "card_${id}_expDate"
+
+    val numberContentPath: String get() = "payment_card_number"
+    val expDateContentPath: String get() = "payment_card_number"
+    val numberBodyKey: String get() = "card_number"
+    val expDateBodyKey: String get() = "card_expiration_date"
 }
 
 class ComposeActivity : AppCompatActivity() {
@@ -143,9 +144,7 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                     isSubmitting = false
                     when (response) {
                         is CollectSuccessResponse -> {
-                            val json = response?.rawResponse
-                                ?.let(::JSONObject)
-                                ?.optJSONObject("json")
+                            val json = response?.body?.let(::JSONObject)?.optJSONObject("json")
                             val numberAlias = json?.optString(NUMBER_FIELD_NAME)
                             val expDateAlias = json?.optString(EXP_DATE_FIELD_NAME)
                             if (numberAlias.isNullOrEmpty() || expDateAlias.isNullOrEmpty()) {
@@ -166,8 +165,6 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                             collectError = "Create alias failed: ${response.localizeMessage} " +
                                     "(code ${response.errorCode})"
                         }
-
-                        else -> collectError = "Create alias failed: unknown error"
                     }
                 }
             }
@@ -189,8 +186,8 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                     }
                 }
             }
-            show?.addOnResponseListener(listener)
-            onDispose { show?.removeOnResponseListener(listener) }
+            show.addOnResponseListener(listener)
+            onDispose { show.removeOnResponseListener(listener) }
         }
 
         Column(
@@ -240,7 +237,7 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                                 revealedCardIds - card.id
 
                             alreadyFetched -> revealedCardIds = revealedCardIds + card.id
-                            show != null -> {
+                            else -> {
                                 showError = null
                                 revealingCardId = card.id
                                 show.requestAsync(

@@ -19,11 +19,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.MainActivity.Companion.ENVIRONMENT
+import com.verygoodsecurity.demoshow.ui.activity.ApplyResponseActivity
 import com.verygoodsecurity.demoshow.ui.activity.CollectShowNativeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposeImageActivity
 import com.verygoodsecurity.demoshow.ui.activity.ComposePdfActivity
-import com.verygoodsecurity.demoshow.ui.activity.apply_response_demo.ApplyResponseDemoActivity
 import com.verygoodsecurity.demoshow.ui.components.DemoHeader
 import com.verygoodsecurity.demoshow.ui.components.DemoListItem
 import com.verygoodsecurity.demoshow.ui.components.SectionTitle
@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
                 HomeScreen(
                     onPdfReveal = { startActivity(Intent(this, ComposePdfActivity::class.java)) },
                     onImageReveal = { startActivity(Intent(this, ComposeImageActivity::class.java)) },
-                    onApplyResponseDemo = { startActivity(Intent(this, ApplyResponseDemoActivity::class.java)) },
                     onStartCompose = { startActivity(Intent(this, ComposeActivity::class.java)) },
+                    onApplyResponseDemo = { startActivity(Intent(this, ApplyResponseActivity::class.java)) },
                     onStartNativeViews = { startActivity(Intent(this, CollectShowNativeActivity::class.java)) },
                 )
             }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        const val VAULT_ID = "<VAULT_ID>"
+        const val VAULT_ID = "tntgsbvmics"
         const val ENVIRONMENT = "sandbox"
     }
 }
