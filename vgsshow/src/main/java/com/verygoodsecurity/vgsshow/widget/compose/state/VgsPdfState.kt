@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget.compose.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,15 +37,25 @@ class VgsPdfState internal constructor(
         it.onRenderErrorEvent = onRenderErrorEvent
     }
 
+    internal fun copy(ignore: Boolean) = VgsPdfState(contentPath, ignore, document).also {
+        it.onRenderCompleteEvent = onRenderCompleteEvent
+        it.onRenderErrorEvent = onRenderErrorEvent
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         other as VgsPdfState
-        return contentPath == other.contentPath && document.contentEquals(other.document)
+        return contentPath == other.contentPath &&
+                ignore == other.ignore &&
+                document.contentEquals(other.document)
     }
 
     override fun hashCode(): Int {
-        return 31 * contentPath.hashCode() + document.contentHashCode()
+        var result = contentPath.hashCode()
+        result = 31 * result + ignore.hashCode()
+        result = 31 * result + document.contentHashCode()
+        return result
     }
 }
 
@@ -85,6 +96,13 @@ fun rememberVgsPdfState(
         ),
     ) {
         mutableStateOf(VgsPdfState(contentPath = contentPath, ignore = ignore))
+    }
+
+    SideEffect {
+        val current = state.value
+        if (current.ignore != ignore) {
+            state.value = current.copy(ignore = ignore)
+        }
     }
 
     DisposableEffect(show, contentPath) {

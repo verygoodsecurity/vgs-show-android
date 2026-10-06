@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgsshow.widget.compose.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -46,15 +47,22 @@ class VgsImageState internal constructor(
 
     internal fun copy(image: ByteArray?) = VgsImageState(contentPath, ignore, image)
 
+    internal fun copy(ignore: Boolean) = VgsImageState(contentPath, ignore, image)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         other as VgsImageState
-        return contentPath == other.contentPath && image.contentEquals(other.image)
+        return contentPath == other.contentPath &&
+                ignore == other.ignore &&
+                image.contentEquals(other.image)
     }
 
     override fun hashCode(): Int {
-        return 31 * contentPath.hashCode() + image.contentHashCode()
+        var result = contentPath.hashCode()
+        result = 31 * result + ignore.hashCode()
+        result = 31 * result + image.contentHashCode()
+        return result
     }
 }
 
@@ -105,6 +113,13 @@ fun rememberVgsImageState(
         ),
     ) {
         mutableStateOf(VgsImageState(contentPath = contentPath, ignore = ignore))
+    }
+
+    SideEffect {
+        val current = state.value
+        if (current.ignore != ignore) {
+            state.value = current.copy(ignore = ignore)
+        }
     }
 
     DisposableEffect(show, contentPath) {

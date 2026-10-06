@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -84,6 +85,16 @@ class VgsTextState internal constructor(
         rawText = text,
         visualTransformation = visualTransformation,
     ).also { it.copyToClipboardEvent = copyToClipboardEvent }
+
+    internal fun copy(ignore: Boolean, visualTransformation: VgsVisualTransformation) = VgsTextState(
+        contentPath = contentPath,
+        ignore = ignore,
+        rawText = rawText,
+        visualTransformation = visualTransformation,
+    ).also { it.copyToClipboardEvent = copyToClipboardEvent }
+
+    internal fun hasConfig(ignore: Boolean, visualTransformation: VgsVisualTransformation): Boolean =
+        this.ignore == ignore && this.visualTransformation == visualTransformation
 }
 
 /**
@@ -130,6 +141,13 @@ fun rememberVgsTextState(
         ),
     ) {
         mutableStateOf(newState())
+    }
+
+    SideEffect {
+        val current = state.value
+        if (!current.hasConfig(ignore, visualTransformation)) {
+            state.value = current.copy(ignore = ignore, visualTransformation = visualTransformation)
+        }
     }
 
     DisposableEffect(show, contentPath) {
