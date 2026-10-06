@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -328,13 +329,15 @@ private fun ShowSection(
         if (card == null) {
             EmptyState()
         } else {
-            ShowCard(
-                show = show,
-                card = card,
-                isRevealing = isRevealing,
-                isRevealed = isRevealed,
-                onToggle = onToggle,
-            )
+               key(card.numberAlias) {
+                ShowCard(
+                    show = show,
+                    card = card,
+                    isRevealing = isRevealing,
+                    isRevealed = isRevealed,
+                    onToggle = onToggle,
+                )
+            }
         }
 
         if (error != null) {
