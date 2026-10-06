@@ -58,7 +58,7 @@ class VgsTextState internal constructor(
         context: Context,
         isSensitive: Boolean = false
     ) {
-        if (rawText.isEmpty()) return
+        if (isEmpty) return
         context.copyToClipboard(rawText, isSensitive)
         copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.RAW)
     }
@@ -68,7 +68,7 @@ class VgsTextState internal constructor(
         isSensitive: Boolean = false
     ) {
         val text = displayText.text
-        if (text.isEmpty()) return
+        if (isEmpty) return
         context.copyToClipboard(text, isSensitive)
         copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.FORMATTED)
     }
@@ -95,6 +95,24 @@ class VgsTextState internal constructor(
 
     internal fun hasConfig(ignore: Boolean, visualTransformation: VgsVisualTransformation): Boolean =
         this.ignore == ignore && this.visualTransformation == visualTransformation
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as VgsTextState
+        return contentPath == other.contentPath &&
+                ignore == other.ignore &&
+                rawText == other.rawText &&
+                visualTransformation == other.visualTransformation
+    }
+
+    override fun hashCode(): Int {
+        var result = contentPath.hashCode()
+        result = 31 * result + ignore.hashCode()
+        result = 31 * result + rawText.hashCode()
+        result = 31 * result + visualTransformation.hashCode()
+        return result
+    }
 }
 
 /**

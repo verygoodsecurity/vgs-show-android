@@ -100,7 +100,7 @@ private data class SubmittedCard(
 class ComposeActivity : AppCompatActivity() {
 
     private val show: VGSShow by lazy {
-        VGSShow.Builder(this, MainActivity.VAULT_ID).build()
+        VGSShow(this, MainActivity.VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     private val collect: VGSCollect by lazy {

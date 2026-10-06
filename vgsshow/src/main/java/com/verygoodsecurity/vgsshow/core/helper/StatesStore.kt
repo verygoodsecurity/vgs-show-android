@@ -35,8 +35,9 @@ internal class StatesStore : Store<MutableState<BaseState>> {
     override fun remove(target: MutableState<BaseState>): Boolean = states.remove(target)
 
     override fun update(data: ResponseData?) {
+        // Whether this is worth warning about is CompositeStore's call — it also has a
+        // ViewsStore, so this store alone being empty doesn't mean nothing is subscribed.
         if (states.isEmpty()) {
-            logWaring("No subscribed widgets to reveal data.")
             return
         }
         logStartUIUpdate(states.map { it.value.contentPath })

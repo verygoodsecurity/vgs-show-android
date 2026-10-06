@@ -49,8 +49,9 @@ internal class ViewsStore: Store<VGSView<*>> {
      */
     @MainThread
     override fun update(data: ResponseData?) {
+        // Whether this is worth warning about is CompositeStore's call — it also has a
+        // StatesStore, so this store alone being empty doesn't mean nothing is subscribed.
         if (views.isEmpty()) {
-            logWaring("No subscribed views to reveal data.")
             return
         }
         logStartUIUpdate(views.map { it.getContentPath() })
