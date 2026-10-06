@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgsshow.widget.compose.transformation
 
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
@@ -31,9 +29,9 @@ class VgsSecureVisualTransformation(
 
     private val method = SecureTransformationMethod(secureSymbol, ranges)
 
-    override fun filter(text: AnnotatedString): TransformedText {
+    override fun filter(text: AnnotatedString): AnnotatedString {
         val masked = method.getTransformation(text.text, null).toString()
-        return TransformedText(AnnotatedString(masked, text.spanStyles), OffsetMapping.Identity)
+        return AnnotatedString(masked, text.spanStyles)
     }
 
     override fun equals(other: Any?): Boolean {

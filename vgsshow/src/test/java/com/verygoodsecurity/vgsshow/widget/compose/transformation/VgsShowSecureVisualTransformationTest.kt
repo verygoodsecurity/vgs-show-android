@@ -17,7 +17,7 @@ class VgsShowSecureVisualTransformationTest {
         val result = transformation.filter(AnnotatedString("4111111111111111"))
 
         // Assert
-        assertEquals("****111111111111", result.text.text)
+        assertEquals("****111111111111", result.text)
     }
 
     @Test
@@ -32,7 +32,7 @@ class VgsShowSecureVisualTransformationTest {
         val result = transformation.filter(AnnotatedString("4111111111111111"))
 
         // Assert
-        assertEquals("****11111111****", result.text.text)
+        assertEquals("****11111111****", result.text)
     }
 
     @Test
@@ -44,7 +44,7 @@ class VgsShowSecureVisualTransformationTest {
         val result = transformation.filter(AnnotatedString("test"))
 
         // Assert
-        assertEquals("test", result.text.text)
+        assertEquals("test", result.text)
     }
 
     @Test
@@ -56,7 +56,7 @@ class VgsShowSecureVisualTransformationTest {
         val result = transformation.filter(AnnotatedString("4111111111111111"))
 
         // Assert
-        assertEquals("••••111111111111", result.text.text)
+        assertEquals("••••111111111111", result.text)
     }
 
     @Test

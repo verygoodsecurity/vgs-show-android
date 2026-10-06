@@ -44,7 +44,7 @@ class VgsTextState internal constructor(
 
     /** The revealed text with this field's visual transformation applied, ready to render. */
     internal val displayText: AnnotatedString =
-        visualTransformation.filter(AnnotatedString(rawText)).text
+        visualTransformation.filter(AnnotatedString(rawText))
 
     /** `true` if this field's visual transformation masks a secure range. */
     internal val isSecure: Boolean = visualTransformation.containsSecureRange()
@@ -58,7 +58,7 @@ class VgsTextState internal constructor(
         context: Context,
         isSensitive: Boolean = false
     ) {
-        if (isEmpty) return
+        if (rawText.isEmpty()) return
         context.copyToClipboard(rawText, isSensitive)
         copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.RAW)
     }
@@ -67,8 +67,10 @@ class VgsTextState internal constructor(
         context: Context,
         isSensitive: Boolean = false
     ) {
+        // Gated on the value actually being copied (displayText), not the public `isEmpty`
+        // (which reflects rawText) — see copyRawToClipboard.
         val text = displayText.text
-        if (isEmpty) return
+        if (text.isEmpty()) return
         context.copyToClipboard(text, isSensitive)
         copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.FORMATTED)
     }
