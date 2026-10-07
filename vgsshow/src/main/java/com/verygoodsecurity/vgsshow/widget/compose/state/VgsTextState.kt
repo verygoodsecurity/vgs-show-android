@@ -148,7 +148,7 @@ fun MutableState<VgsTextState>.clearText() {
 fun rememberVgsTextState(
     show: VGSShow,
     contentPath: String,
-    ignore: Boolean,
+    ignore: Boolean = false,
     visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
 ): MutableState<VgsTextState> {
     fun newState() = VgsTextState(contentPath, ignore, visualTransformation)

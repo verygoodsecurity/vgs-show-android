@@ -95,7 +95,7 @@ fun MutableState<VgsImageState>.clearImage() {
 fun rememberVgsImageState(
     show: VGSShow,
     contentPath: String,
-    ignore: Boolean,
+    ignore: Boolean = false,
 ): MutableState<VgsImageState> {
     val state = rememberSaveable(
         contentPath,

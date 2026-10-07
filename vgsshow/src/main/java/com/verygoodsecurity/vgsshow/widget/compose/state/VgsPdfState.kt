@@ -78,7 +78,7 @@ class VgsPdfState internal constructor(
 fun rememberVgsPdfState(
     show: VGSShow,
     contentPath: String,
-    ignore: Boolean,
+    ignore: Boolean = false,
 ): MutableState<VgsPdfState> {
     val state = rememberSaveable(
         contentPath,
