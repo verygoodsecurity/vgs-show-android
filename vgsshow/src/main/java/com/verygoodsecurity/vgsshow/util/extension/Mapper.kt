@@ -12,6 +12,7 @@ private const val ANALYTIC_TAG_IMAGE = "image"
 
 private const val ANALYTIC_UI_XML = "xml"
 private const val ANALYTIC_UI_COMPOSE = "compose"
+private const val ANALYTIC_UI_NATIVE_COMPOSE = "native-compose"
 
 /**
  * Maps a [VGSFieldType] to an analytics tag.
@@ -24,16 +25,18 @@ internal fun VGSFieldType.toAnalyticTag(): String = when (this) {
 }
 
 /**
- * Maps a [VGSView] to the analytics UI tag for legacy, `AndroidView`-based widgets.
+ * Maps a [VGSView] to the analytics UI tag: `compose` when it is hosted by an `AndroidView`
+ * wrapper, `xml` otherwise. Matches the tags used by VGS Collect.
  * @suppress Not for public use.
  */
-internal fun VGSView<*>.toAnalyticsUI(): String = ANALYTIC_UI_XML
+internal fun VGSView<*>.toAnalyticsUI(isCompose: Boolean): String =
+    if (isCompose) ANALYTIC_UI_COMPOSE else ANALYTIC_UI_XML
 
 /**
- * Maps a [BaseState] to the analytics UI tag for native Compose widgets.
+ * Maps a [BaseState] to the analytics UI tag for native Compose widgets, matching VGS Collect.
  * @suppress Not for public use.
  */
-internal fun BaseState.toAnalyticsUI(): String = ANALYTIC_UI_COMPOSE
+internal fun BaseState.toAnalyticsUI(): String = ANALYTIC_UI_NATIVE_COMPOSE
 
 /**
  * Maps a `VGSTextView.CopyTextFormat` to a `VGSAnalyticsCopyFormat`.

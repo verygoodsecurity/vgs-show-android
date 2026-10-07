@@ -313,12 +313,20 @@ class VGSShow {
      * @param view The secure view to subscribe (e.g., [VGSTextView], [VGSPDFView]).
      */
     fun subscribe(view: VGSView<*>) {
+        subscribe(view, isCompose = false)
+    }
+
+    /**
+     * Subscribes a [VGSView], reporting whether it is hosted by a Compose `AndroidView` wrapper.
+     * @suppress Not for public use.
+     */
+    internal fun subscribe(view: VGSView<*>, isCompose: Boolean) {
         if (compositeStore.add(view)) {
             capture(
                 VGSAnalyticsEvent.FieldAttach(
                     fieldType = view.getFieldType().toAnalyticTag(),
                     contentPath = view.getContentPath(),
-                    ui = view.toAnalyticsUI(),
+                    ui = view.toAnalyticsUI(isCompose),
                 )
             )
         }

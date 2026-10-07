@@ -132,7 +132,7 @@ internal fun <T : VGSView<*>> Root(
             val view = createView(it).also { view -> input = view }
             view.setContentPath(contentPath)
             onViewCreate?.invoke(view)
-            show?.subscribe(view)
+            show?.subscribe(view, isCompose = true)
             view
         },
         update = { view -> onViewUpdate?.invoke(view) }
