@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.verygoodsecurity.vgsshow.VGSShow
@@ -42,11 +43,27 @@ class VgsImageState internal constructor(
     /** `true` if the revealed image was decoded successfully and is ready to display. */
     val isImageValid: Boolean = bitmap != null
 
+    internal var onLoadCompleteEvent: (() -> Unit)? = null
+    internal var onLoadErrorEvent: ((VGSException) -> Unit)? = null
+
     internal constructor(contentPath: String, ignore: Boolean) : this(contentPath, ignore, null)
 
-    internal fun copy(image: ByteArray?) = VgsImageState(contentPath, ignore, image)
+    internal fun copy(image: ByteArray?) = VgsImageState(contentPath, ignore, image).withEvents()
 
-    internal fun copy(ignore: Boolean) = VgsImageState(contentPath, ignore, image)
+    internal fun copy(ignore: Boolean) = VgsImageState(contentPath, ignore, image).withEvents()
+
+    /** Reports whether the image held by this state decoded, if one has been revealed. */
+    internal fun notifyLoadResult() {
+        when {
+            isImageValid -> onLoadCompleteEvent?.invoke()
+            hasImage -> onLoadErrorEvent?.invoke(VGSException.ImageNotValid())
+        }
+    }
+
+    private fun VgsImageState.withEvents() = apply {
+        onLoadCompleteEvent = this@VgsImageState.onLoadCompleteEvent
+        onLoadErrorEvent = this@VgsImageState.onLoadErrorEvent
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -88,6 +105,9 @@ fun MutableState<VgsImageState>.clearImage() {
  * @param contentPath The path of the value to reveal in the response, e.g. `"json.my_image"`.
  * @param ignore Set to `true` to exclude this field from reveal requests (e.g. to temporarily
  * hide it) without unsubscribing it.
+ * @param onLoadComplete Called each time a revealed image has been decoded and is ready to
+ * display. Fires whether or not [VgsImage] is currently on screen.
+ * @param onLoadError Called each time revealed data could not be decoded as an image.
  * @return State to pass to [VgsImage] via `.value`.
  */
 @Composable
@@ -95,9 +115,21 @@ fun rememberVgsImageState(
     show: VGSShow,
     contentPath: String,
     ignore: Boolean = false,
+    onLoadComplete: (() -> Unit)? = null,
+    onLoadError: ((exception: VGSException) -> Unit)? = null,
 ): MutableState<VgsImageState> {
+    val currentOnLoadComplete = rememberUpdatedState(onLoadComplete)
+    val currentOnLoadError = rememberUpdatedState(onLoadError)
+
     val state = remember(contentPath) {
-        mutableStateOf(VgsImageState(contentPath = contentPath, ignore = ignore))
+        mutableStateOf(
+            VgsImageState(contentPath = contentPath, ignore = ignore).apply {
+                // Read through rememberUpdatedState so copies of this state, which carry these
+                // lambdas, always call the latest callbacks.
+                onLoadCompleteEvent = { currentOnLoadComplete.value?.invoke() }
+                onLoadErrorEvent = { currentOnLoadError.value?.invoke(it) }
+            }
+        )
     }
 
     SideEffect {

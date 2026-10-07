@@ -23,7 +23,10 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
  * ```
  *
  * Draws nothing until a document has been revealed. To show your own loading UI, branch on
- * [VgsPdfState.hasDocument].
+ * [VgsPdfState.hasDocument]. To react to rendering starting, completing or failing, pass
+ * `onRenderStart` / `onRenderComplete` / `onRenderError` / `onPageChanged` to
+ * [com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsPdfState]. Those events only
+ * occur while this widget is in composition, since rendering happens inside it.
  *
  * Usage:
  * ```
@@ -45,10 +48,6 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
  * @param isAntialiasingEnabled If `true`, anti-aliasing is used for rendering, which can improve
  * rendering on low-resolution screens.
  * @param spacing The spacing between pages in dp.
- * @param onRenderStart Called when the document has loaded and rendering begins, with its page count.
- * @param onPageChanged Called when the displayed page changes.
- * @param onRenderComplete Called once the document is rendered, with its page count.
- * @param onRenderError Called if the document fails to render.
  */
 @Composable
 fun VgsPdf(
@@ -60,10 +59,6 @@ fun VgsPdf(
     isDoubleTapEnabled: Boolean = false,
     isAntialiasingEnabled: Boolean = true,
     spacing: Int = 0,
-    onRenderStart: ((pages: Int) -> Unit)? = null,
-    onPageChanged: ((position: Int, pageCount: Int) -> Unit)? = null,
-    onRenderComplete: ((pages: Int) -> Unit)? = null,
-    onRenderError: ((error: Throwable) -> Unit)? = null,
 ) {
     val document = state.document ?: return
 
@@ -71,10 +66,6 @@ fun VgsPdf(
     // read through `rememberUpdatedState` so the listener created there always sees the latest
     // values instead of the ones captured on first composition.
     val currentState = rememberUpdatedState(state)
-    val currentOnRenderStart = rememberUpdatedState(onRenderStart)
-    val currentOnPageChanged = rememberUpdatedState(onPageChanged)
-    val currentOnRenderComplete = rememberUpdatedState(onRenderComplete)
-    val currentOnRenderError = rememberUpdatedState(onRenderError)
 
     // AndroidPdfViewer has no live setters for these — any change requires a full reload via
     // VGSPDFView.render(). `lastRenderedConfig` tracks what was last applied so `update` (which
@@ -90,22 +81,22 @@ fun VgsPdf(
                 addRenderingStateChangedListener(object : VGSPDFView.OnRenderStateChangeListener {
 
                     override fun onStart(view: VGSPDFView, pages: Int) {
-                        currentOnRenderStart.value?.invoke(pages)
+                        currentState.value.onRenderStartCallback?.invoke(pages)
                     }
 
                     override fun onComplete(view: VGSPDFView, pages: Int) {
                         currentState.value.onRenderCompleteEvent?.invoke()
-                        currentOnRenderComplete.value?.invoke(pages)
+                        currentState.value.onRenderCompleteCallback?.invoke(pages)
                     }
 
                     override fun onError(view: VGSPDFView, t: Throwable) {
                         currentState.value.onRenderErrorEvent?.invoke()
-                        currentOnRenderError.value?.invoke(t)
+                        currentState.value.onRenderErrorCallback?.invoke(t)
                     }
                 })
                 onPageChangeListener = object : VGSPDFView.OnPageChangeListener {
                     override fun onPageChanged(position: Int, pageCount: Int) {
-                        currentOnPageChanged.value?.invoke(position, pageCount)
+                        currentState.value.onPageChangedCallback?.invoke(position, pageCount)
                     }
                 }
             }

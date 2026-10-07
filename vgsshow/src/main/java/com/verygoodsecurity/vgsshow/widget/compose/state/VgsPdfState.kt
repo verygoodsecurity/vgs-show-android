@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.compose.VgsPdf
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
@@ -29,16 +30,27 @@ class VgsPdfState internal constructor(
     internal var onRenderCompleteEvent: (() -> Unit)? = null
     internal var onRenderErrorEvent: (() -> Unit)? = null
 
+    // Callbacks supplied by the app through rememberVgsPdfState. Kept apart from the analytics
+    // events above, which VGSShow sets and clears itself on subscribe / unsubscribe.
+    internal var onRenderStartCallback: ((pages: Int) -> Unit)? = null
+    internal var onRenderCompleteCallback: ((pages: Int) -> Unit)? = null
+    internal var onRenderErrorCallback: ((error: Throwable) -> Unit)? = null
+    internal var onPageChangedCallback: ((position: Int, pageCount: Int) -> Unit)? = null
+
     internal constructor(contentPath: String, ignore: Boolean) : this(contentPath, ignore, null)
 
-    internal fun copy(document: ByteArray?) = VgsPdfState(contentPath, ignore, document).also {
-        it.onRenderCompleteEvent = onRenderCompleteEvent
-        it.onRenderErrorEvent = onRenderErrorEvent
-    }
+    internal fun copy(document: ByteArray?) =
+        VgsPdfState(contentPath, ignore, document).withEvents()
 
-    internal fun copy(ignore: Boolean) = VgsPdfState(contentPath, ignore, document).also {
-        it.onRenderCompleteEvent = onRenderCompleteEvent
-        it.onRenderErrorEvent = onRenderErrorEvent
+    internal fun copy(ignore: Boolean) = VgsPdfState(contentPath, ignore, document).withEvents()
+
+    private fun VgsPdfState.withEvents() = apply {
+        onRenderCompleteEvent = this@VgsPdfState.onRenderCompleteEvent
+        onRenderErrorEvent = this@VgsPdfState.onRenderErrorEvent
+        onRenderStartCallback = this@VgsPdfState.onRenderStartCallback
+        onRenderCompleteCallback = this@VgsPdfState.onRenderCompleteCallback
+        onRenderErrorCallback = this@VgsPdfState.onRenderErrorCallback
+        onPageChangedCallback = this@VgsPdfState.onPageChangedCallback
     }
 
     override fun equals(other: Any?): Boolean {
@@ -71,6 +83,12 @@ class VgsPdfState internal constructor(
  * @param contentPath The path of the value to reveal in the response, e.g. `"json.my_pdf"`.
  * @param ignore Set to `true` to exclude this field from reveal requests (e.g. to temporarily
  * hide it) without unsubscribing it.
+ * @param onRenderStart Called when the document has loaded and rendering begins, with its page
+ * count. Only fires while [VgsPdf] is in composition, since rendering happens inside it.
+ * @param onRenderComplete Called once the document is rendered, with its page count.
+ * @param onRenderError Called if the document fails to render.
+ * @param onPageChanged Called when the displayed page changes, with the new position (indexed
+ * from 0) and the page count.
  * @return State to pass to [VgsPdf] via `.value`.
  */
 @Composable
@@ -78,9 +96,29 @@ fun rememberVgsPdfState(
     show: VGSShow,
     contentPath: String,
     ignore: Boolean = false,
+    onRenderStart: ((pages: Int) -> Unit)? = null,
+    onRenderComplete: ((pages: Int) -> Unit)? = null,
+    onRenderError: ((error: Throwable) -> Unit)? = null,
+    onPageChanged: ((position: Int, pageCount: Int) -> Unit)? = null,
 ): MutableState<VgsPdfState> {
+    val currentOnRenderStart = rememberUpdatedState(onRenderStart)
+    val currentOnRenderComplete = rememberUpdatedState(onRenderComplete)
+    val currentOnRenderError = rememberUpdatedState(onRenderError)
+    val currentOnPageChanged = rememberUpdatedState(onPageChanged)
+
     val state = remember(contentPath) {
-        mutableStateOf(VgsPdfState(contentPath = contentPath, ignore = ignore))
+        mutableStateOf(
+            VgsPdfState(contentPath = contentPath, ignore = ignore).apply {
+                // Read through rememberUpdatedState so copies of this state, which carry these
+                // lambdas, always call the latest callbacks.
+                onRenderStartCallback = { currentOnRenderStart.value?.invoke(it) }
+                onRenderCompleteCallback = { currentOnRenderComplete.value?.invoke(it) }
+                onRenderErrorCallback = { currentOnRenderError.value?.invoke(it) }
+                onPageChangedCallback = { position, pageCount ->
+                    currentOnPageChanged.value?.invoke(position, pageCount)
+                }
+            }
+        )
     }
 
     SideEffect {

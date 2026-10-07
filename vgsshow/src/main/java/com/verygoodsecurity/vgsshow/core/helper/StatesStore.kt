@@ -83,7 +83,9 @@ internal class StatesStore : Store<MutableState<BaseState>> {
 
                 is VgsImageState -> {
                     val decoded = Base64.decode(data, Base64.NO_WRAP)
-                    state.value = s.copy(image = decoded)
+                    val revealed = s.copy(image = decoded)
+                    state.value = revealed
+                    revealed.notifyLoadResult()
                 }
 
                 is VgsPdfState -> {
