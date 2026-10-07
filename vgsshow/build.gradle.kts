@@ -58,7 +58,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.compose.material)
+    compileOnly(libs.compose.material)
+    compileOnly(libs.compose.material3)
 
     // Http
     api(libs.okhttp)
@@ -67,6 +68,7 @@ dependencies {
     // NOTE: Used by VGSPDFView. Consumer should add this dependency by itself as it has big size.
     compileOnly(libs.verygoodsecurity.pdf.viewer)
 
+    testImplementation(libs.compose.material)
     testImplementation(testLibs.junit)
     testImplementation(testLibs.json)
     testImplementation(testLibs.robolectric)

@@ -51,7 +51,7 @@ import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.material.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsTextState
 import org.json.JSONObject
 

@@ -11,7 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.text.AnnotatedString
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.material.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsChainedVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsSecureVisualTransformation

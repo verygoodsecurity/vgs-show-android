@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgsshow.widget.compose.transformation
 
 import androidx.compose.ui.text.AnnotatedString
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.material.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsTextState
 
 /**

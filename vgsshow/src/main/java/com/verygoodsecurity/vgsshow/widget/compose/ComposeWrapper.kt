@@ -25,8 +25,8 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
 @Deprecated(
-    message = "This component is deprecated. Please use VgsText with rememberVgsTextState instead.",
-    replaceWith = ReplaceWith("VgsText(state = state)"),
+    message = "This component is deprecated. Please use VgsText (material or material3 package) with rememberVgsTextState instead.",
+    replaceWith = ReplaceWith("VgsText(state = state)", "com.verygoodsecurity.vgsshow.widget.compose.material.VgsText"),
 )
 @Composable
 fun VGSTextViewWrapper(

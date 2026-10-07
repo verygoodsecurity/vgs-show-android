@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransforma
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 /**
- * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.VgsText]
+ * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.material.VgsText]
  * with [secureSymbol] (e.g. `4111••••••••1111`).
  *
  * Delegates to [SecureTransformationMethod] — the same masking algorithm the legacy

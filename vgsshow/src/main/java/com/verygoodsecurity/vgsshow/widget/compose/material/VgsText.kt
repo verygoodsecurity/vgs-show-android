@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgsshow.widget.compose
+package com.verygoodsecurity.vgsshow.widget.compose.material
 
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -19,18 +19,18 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsTextState
 /**
  * Securely displays revealed text, obtained via [rememberVgsTextState].
  *
- * Renders [VgsTextState.displayText], which already has that state's visual transformation
- * applied — pass a transformation to [rememberVgsTextState] to change how the value is masked
- * or formatted, since plain Compose `Text` has no such concept to plug into here.
+ * Renders the state's display text, which already has its visual transformation applied — pass
+ * a transformation to [rememberVgsTextState] to change how the value is masked or formatted.
+ * Default color and text style come from the enclosing Material 2 theme.
  *
- * Accepts the same styling parameters as Compose Material's `Text`, with two deliberate
+ * Accepts the same styling parameters as Material 2 `Text`, with two deliberate
  * omissions: `inlineContent` and `onTextLayout`. Both are left out because either would hand the
  * currently displayed string back to your code — a real leak of the revealed value whenever no
  * transformation is applied — defeating the point of this widget.
  *
  * @param state The current text state.
  * @param modifier The modifier to apply to this layout.
- * @param color The color to apply to the text.
+ * @param color The color to apply to the text; falls back to the theme content color.
  * @param fontSize The size of glyphs to use when painting the text.
  * @param fontStyle The typeface variant to use when drawing the letters (e.g. italics).
  * @param fontWeight The typeface thickness to use when painting the text (e.g. bold).
