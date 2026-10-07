@@ -5,8 +5,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.verygoodsecurity.vgsshow.VGSShow
@@ -97,21 +96,7 @@ fun rememberVgsImageState(
     contentPath: String,
     ignore: Boolean = false,
 ): MutableState<VgsImageState> {
-    val state = rememberSaveable(
-        contentPath,
-        saver = Saver(
-            save = { it.value.image },
-            restore = { savedImage ->
-                mutableStateOf(
-                    VgsImageState(
-                        contentPath = contentPath,
-                        ignore = ignore,
-                        image = savedImage
-                    )
-                )
-            },
-        ),
-    ) {
+    val state = remember(contentPath) {
         mutableStateOf(VgsImageState(contentPath = contentPath, ignore = ignore))
     }
 

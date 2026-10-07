@@ -84,28 +84,23 @@ class VGSPDFView @JvmOverloads constructor(
         defStyleAttr: Int
     ) = PDFView(context, null)
 
-    override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
-        this.documentBytes = this@VGSPDFView.documentBytes
+  override fun saveState(state: Parcelable?) = VGSPDFViewState(state).apply {
         this.defaultPage = this@VGSPDFView.defaultPage
         this.isSwipeEnabled = this@VGSPDFView.isSwipeEnabled
         this.isSwipeHorizontalEnabled = this@VGSPDFView.isSwipeHorizontalEnabled
         this.isDoubleTapEnabled = this@VGSPDFView.isDoubleTapEnabled
-        this.isAntialiasingEnabled = this@VGSPDFView.isAntialiasingEnabled
         this.isAntialiasingEnabled = this@VGSPDFView.isAntialiasingEnabled
         this.spacing = this@VGSPDFView.spacing
     }
 
     override fun restoreState(state: BaseSavedState) {
         (state as? VGSPDFViewState)?.let {
-            this@VGSPDFView.documentBytes = it.documentBytes
             this@VGSPDFView.defaultPage = it.defaultPage
             this@VGSPDFView.isSwipeEnabled = it.isSwipeEnabled
             this@VGSPDFView.isSwipeHorizontalEnabled = it.isSwipeHorizontalEnabled
             this@VGSPDFView.isDoubleTapEnabled = it.isDoubleTapEnabled
             this@VGSPDFView.isAntialiasingEnabled = it.isAntialiasingEnabled
-            this@VGSPDFView.isAntialiasingEnabled = it.isAntialiasingEnabled
             this@VGSPDFView.spacing = it.spacing
-            refresh()
         }
     }
 

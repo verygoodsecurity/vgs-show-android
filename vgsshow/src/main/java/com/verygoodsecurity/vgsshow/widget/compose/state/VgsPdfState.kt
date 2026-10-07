@@ -5,8 +5,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.compose.VgsPdf
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
@@ -80,21 +79,7 @@ fun rememberVgsPdfState(
     contentPath: String,
     ignore: Boolean = false,
 ): MutableState<VgsPdfState> {
-    val state = rememberSaveable(
-        contentPath,
-        saver = Saver(
-            save = { it.value.document },
-            restore = { savedDocument ->
-                mutableStateOf(
-                    VgsPdfState(
-                        contentPath = contentPath,
-                        ignore = ignore,
-                        document = savedDocument
-                    )
-                )
-            },
-        ),
-    ) {
+    val state = remember(contentPath) {
         mutableStateOf(VgsPdfState(contentPath = contentPath, ignore = ignore))
     }
 
