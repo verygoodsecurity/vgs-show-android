@@ -2,31 +2,31 @@ package com.verygoodsecurity.vgsshow.widget.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
-import com.verygoodsecurity.vgsshow.VGSShow
+import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsImageState
 
 /**
  * Securely displays a revealed image.
  *
- * Before the image has been revealed — e.g. while waiting for [VGSShow.request] /
- * [VGSShow.requestAsync] to complete, or if decoding fails — [placeholder] is shown instead, if
- * you provide one. Check [state]'s [VgsImageState.hasImage] / [VgsImageState.isImageValid] if you
- * want to render your own loading or error UI instead of a static placeholder.
- *
- * Usage:
+ * Draws nothing until an image has been revealed and decoded. To show your own loading or error
+ * UI, branch on [state] — [VgsImageState.hasImage] is `true` once data has arrived, and
+ * [VgsImageState.isImageValid] is `true` only if it decoded successfully:
  * ```
- * val imageState = rememberVgsImageState(show = vgsShow, contentPath = "json.my_image", ignore = false)
- * VgsImage(
- *     state = imageState.value,
- *     contentDescription = "ID scan",
- *     placeholder = { CircularProgressIndicator() },
- * )
+ * val imageState = rememberVgsImageState(show = vgsShow, contentPath = "json.my_image")
+ * if (imageState.value.isImageValid) {
+ *     VgsImage(state = imageState.value, contentDescription = "ID scan")
+ * } else {
+ *     CircularProgressIndicator()
+ * }
  * ```
+ * Use [onLoadComplete] / [onLoadError] for side effects such as analytics.
  *
  * @param state The current image state, from [com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsImageState].
  * @param contentDescription Accessibility description for the image, or `null` if none.
@@ -35,7 +35,8 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.VgsImageState
  * @param contentScale How the image is scaled to fit its bounds.
  * @param alpha The opacity to apply when drawing the image.
  * @param colorFilter An optional color filter to apply to the image.
- * @param placeholder Optional content shown while there is no image to display yet.
+ * @param onLoadComplete Called when a revealed image has been decoded and is ready to display.
+ * @param onLoadError Called when revealed data could not be decoded as an image.
  */
 @Composable
 fun VgsImage(
@@ -46,8 +47,20 @@ fun VgsImage(
     contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = DefaultAlpha,
     colorFilter: ColorFilter? = null,
-    placeholder: (@Composable () -> Unit)? = null
+    onLoadComplete: (() -> Unit)? = null,
+    onLoadError: ((exception: VGSException) -> Unit)? = null,
 ) {
+    val currentOnLoadComplete = rememberUpdatedState(onLoadComplete)
+    val currentOnLoadError = rememberUpdatedState(onLoadError)
+
+    // Decoding happens when the state is created, so report its outcome once per state change.
+    LaunchedEffect(state) {
+        when {
+            state.isImageValid -> currentOnLoadComplete.value?.invoke()
+            state.hasImage -> currentOnLoadError.value?.invoke(VGSException.ImageNotValid())
+        }
+    }
+
     state.bitmap?.let { bitmap ->
         Image(
             bitmap = bitmap,
@@ -58,5 +71,5 @@ fun VgsImage(
             alpha = alpha,
             colorFilter = colorFilter
         )
-    } ?: placeholder?.invoke()
+    }
 }

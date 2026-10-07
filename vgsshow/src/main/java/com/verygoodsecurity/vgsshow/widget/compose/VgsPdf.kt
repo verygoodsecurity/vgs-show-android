@@ -5,7 +5,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
 
@@ -23,17 +22,17 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
  * implementation 'com.verygoodsecurity:android-pdf-viewer:<latest_version>'
  * ```
  *
- * Before the document has been revealed — e.g. while waiting for [VGSShow.request] /
- * [VGSShow.requestAsync] to complete — [placeholder] is shown instead, if you provide one.
+ * Draws nothing until a document has been revealed. To show your own loading UI, branch on
+ * [VgsPdfState.hasDocument].
  *
  * Usage:
  * ```
- * val pdfState = rememberVgsPdfState(show = vgsShow, contentPath = "json.my_pdf", ignore = false)
- * VgsPdf(
- *     state = pdfState.value,
- *     modifier = Modifier.fillMaxSize(),
- *     placeholder = { CircularProgressIndicator() },
- * )
+ * val pdfState = rememberVgsPdfState(show = vgsShow, contentPath = "json.my_pdf")
+ * if (pdfState.value.hasDocument) {
+ *     VgsPdf(state = pdfState.value, modifier = Modifier.fillMaxSize())
+ * } else {
+ *     CircularProgressIndicator()
+ * }
  * ```
  *
  * @param state The current PDF state, from
@@ -46,10 +45,10 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.VgsPdfState
  * @param isAntialiasingEnabled If `true`, anti-aliasing is used for rendering, which can improve
  * rendering on low-resolution screens.
  * @param spacing The spacing between pages in dp.
+ * @param onRenderStart Called when the document has loaded and rendering begins, with its page count.
  * @param onPageChanged Called when the displayed page changes.
  * @param onRenderComplete Called once the document is rendered, with its page count.
  * @param onRenderError Called if the document fails to render.
- * @param placeholder Optional content shown while there is no document to display yet.
  */
 @Composable
 fun VgsPdf(
@@ -61,21 +60,18 @@ fun VgsPdf(
     isDoubleTapEnabled: Boolean = false,
     isAntialiasingEnabled: Boolean = true,
     spacing: Int = 0,
+    onRenderStart: ((pages: Int) -> Unit)? = null,
     onPageChanged: ((position: Int, pageCount: Int) -> Unit)? = null,
     onRenderComplete: ((pages: Int) -> Unit)? = null,
     onRenderError: ((error: Throwable) -> Unit)? = null,
-    placeholder: (@Composable () -> Unit)? = null,
 ) {
-    val document = state.document
-    if (document == null) {
-        placeholder?.invoke()
-        return
-    }
+    val document = state.document ?: return
 
     // Callbacks referenced from the AndroidView `factory` lambda, which runs only once, must be
     // read through `rememberUpdatedState` so the listener created there always sees the latest
     // values instead of the ones captured on first composition.
     val currentState = rememberUpdatedState(state)
+    val currentOnRenderStart = rememberUpdatedState(onRenderStart)
     val currentOnPageChanged = rememberUpdatedState(onPageChanged)
     val currentOnRenderComplete = rememberUpdatedState(onRenderComplete)
     val currentOnRenderError = rememberUpdatedState(onRenderError)
@@ -93,7 +89,9 @@ fun VgsPdf(
             VGSPDFView(context).apply {
                 addRenderingStateChangedListener(object : VGSPDFView.OnRenderStateChangeListener {
 
-                    override fun onStart(view: VGSPDFView, pages: Int) {}
+                    override fun onStart(view: VGSPDFView, pages: Int) {
+                        currentOnRenderStart.value?.invoke(pages)
+                    }
 
                     override fun onComplete(view: VGSPDFView, pages: Int) {
                         currentState.value.onRenderCompleteEvent?.invoke()
