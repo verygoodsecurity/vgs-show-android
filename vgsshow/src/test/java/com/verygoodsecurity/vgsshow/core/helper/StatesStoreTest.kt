@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgsshow.core.helper
 
 import android.graphics.Bitmap
+import android.util.Base64
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
@@ -31,7 +32,7 @@ class StatesStoreTest {
 
     // "AAAA" is valid Base64 (3 zero bytes); the content itself is irrelevant, decodeBitmap is mocked.
     private val data = JsonResponseData(
-        """{"text": "1111", "image": "AAAA", "pdf": "AAAA", "broken": "!!!"}"""
+        """{"text": "1111", "image": "AAAA", "pdf": "AAAA"}"""
     )
 
     @Before
@@ -122,12 +123,19 @@ class StatesStoreTest {
 
     @Test
     fun update_undecodableData_stateUntouched() {
-        val state = pdf(path = "broken")
-        sut.addState(state)
+        // Forced, as Android's lenient Base64 decoder doesn't reliably reject a given string.
+        mockkStatic(Base64::class)
+        try {
+            every { Base64.decode(any<String>(), any()) } throws IllegalArgumentException("bad")
+            val state = pdf()
+            sut.addState(state)
 
-        sut.update(data)
+            sut.update(data)
 
-        assertFalse(state.value.hasDocument)
+            assertFalse(state.value.hasDocument)
+        } finally {
+            unmockkStatic(Base64::class)
+        }
     }
 
     @Test
