@@ -3,12 +3,12 @@ package com.verygoodsecurity.vgsshow.widget.compose.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import com.verygoodsecurity.sdk.analytics.utils.Logger
 import com.verygoodsecurity.vgsshow.VGSShow
 import com.verygoodsecurity.vgsshow.core.exception.VGSException
 import com.verygoodsecurity.vgsshow.util.extension.decodeBitmap
@@ -27,15 +27,9 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSFieldType
 class VgsImageState internal constructor(
     contentPath: String,
     ignore: Boolean,
-    internal val image: ByteArray?
+    internal val image: ByteArray?,
+    internal val bitmap: ImageBitmap? = decodeImage(image),
 ) : BaseState(contentPath, ignore, VGSFieldType.IMAGE) {
-
-    internal val bitmap: ImageBitmap? = try {
-        image?.decodeBitmap()?.asImageBitmap()
-    } catch (e: VGSException.ImageNotValid) {
-        logException(e)
-        null
-    }
 
     /** `true` once the image has been revealed for this field. */
     val hasImage: Boolean = image != null
@@ -43,26 +37,28 @@ class VgsImageState internal constructor(
     /** `true` if the revealed image was decoded successfully and is ready to display. */
     val isImageValid: Boolean = bitmap != null
 
-    internal var onLoadCompleteEvent: (() -> Unit)? = null
-    internal var onLoadErrorEvent: ((VGSException) -> Unit)? = null
+    internal var onLoadCompleteCallback: (() -> Unit)? = null
+
+    internal var onLoadErrorCallback: ((VGSException) -> Unit)? = null
 
     internal constructor(contentPath: String, ignore: Boolean) : this(contentPath, ignore, null)
 
     internal fun copy(image: ByteArray?) = VgsImageState(contentPath, ignore, image).withEvents()
 
-    internal fun copy(ignore: Boolean) = VgsImageState(contentPath, ignore, image).withEvents()
+    internal fun copy(ignore: Boolean) =
+        VgsImageState(contentPath, ignore, image, bitmap).withEvents()
 
     /** Reports whether the image held by this state decoded, if one has been revealed. */
     internal fun notifyLoadResult() {
         when {
-            isImageValid -> onLoadCompleteEvent?.invoke()
-            hasImage -> onLoadErrorEvent?.invoke(VGSException.ImageNotValid())
+            isImageValid -> onLoadCompleteCallback?.invoke()
+            hasImage -> onLoadErrorCallback?.invoke(VGSException.ImageNotValid())
         }
     }
 
     private fun VgsImageState.withEvents() = apply {
-        onLoadCompleteEvent = this@VgsImageState.onLoadCompleteEvent
-        onLoadErrorEvent = this@VgsImageState.onLoadErrorEvent
+        onLoadCompleteCallback = this@VgsImageState.onLoadCompleteCallback
+        onLoadErrorCallback = this@VgsImageState.onLoadErrorCallback
     }
 
     override fun equals(other: Any?): Boolean {
@@ -80,6 +76,13 @@ class VgsImageState internal constructor(
         result = 31 * result + image.contentHashCode()
         return result
     }
+}
+
+private fun decodeImage(image: ByteArray?): ImageBitmap? = try {
+    image?.decodeBitmap()?.asImageBitmap()
+} catch (e: VGSException.ImageNotValid) {
+    Logger.logException(e)
+    null
 }
 
 /**
@@ -124,19 +127,14 @@ fun rememberVgsImageState(
     val state = remember(contentPath) {
         mutableStateOf(
             VgsImageState(contentPath = contentPath, ignore = ignore).apply {
-                // Read through rememberUpdatedState so copies of this state, which carry these
-                // lambdas, always call the latest callbacks.
-                onLoadCompleteEvent = { currentOnLoadComplete.value?.invoke() }
-                onLoadErrorEvent = { currentOnLoadError.value?.invoke(it) }
+                onLoadCompleteCallback = { currentOnLoadComplete.value?.invoke() }
+                onLoadErrorCallback = { currentOnLoadError.value?.invoke(it) }
             }
         )
     }
 
-    SideEffect {
-        val current = state.value
-        if (current.ignore != ignore) {
-            state.value = current.copy(ignore = ignore)
-        }
+    if (state.value.ignore != ignore) {
+        state.value = state.value.copy(ignore = ignore)
     }
 
     DisposableEffect(show, contentPath) {

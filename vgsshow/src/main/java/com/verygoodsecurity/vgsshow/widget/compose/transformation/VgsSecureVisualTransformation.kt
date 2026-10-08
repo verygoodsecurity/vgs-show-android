@@ -34,6 +34,8 @@ class VgsSecureVisualTransformation(
         return AnnotatedString(masked, text.spanStyles)
     }
 
+    override fun filterUnmasked(text: AnnotatedString): AnnotatedString = text
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is VgsSecureVisualTransformation) return false

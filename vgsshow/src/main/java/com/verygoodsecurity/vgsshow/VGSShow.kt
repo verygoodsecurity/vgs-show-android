@@ -36,7 +36,8 @@ import com.verygoodsecurity.vgsshow.util.extension.isValidUrl
 import com.verygoodsecurity.vgsshow.util.extension.logDebug
 import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.util.extension.toAnalyticTag
-import com.verygoodsecurity.vgsshow.util.extension.toAnalyticsUI
+import com.verygoodsecurity.vgsshow.util.extension.analyticsUI
+import com.verygoodsecurity.vgsshow.util.extension.nativeComposeAnalyticsUI
 import com.verygoodsecurity.vgsshow.util.extension.toHost
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildLocalhostUrl
 import com.verygoodsecurity.vgsshow.util.url.UrlHelper.buildProxyUrl
@@ -326,7 +327,7 @@ class VGSShow {
                 VGSAnalyticsEvent.FieldAttach(
                     fieldType = view.getFieldType().toAnalyticTag(),
                     contentPath = view.getContentPath(),
-                    ui = view.toAnalyticsUI(isCompose),
+                    ui = analyticsUI(isCompose),
                 )
             )
         }
@@ -339,7 +340,7 @@ class VGSShow {
                 VGSAnalyticsEvent.FieldAttach(
                     fieldType = state.value.fieldType.toAnalyticTag(),
                     contentPath = state.value.contentPath,
-                    ui = state.value.toAnalyticsUI(),
+                    ui = nativeComposeAnalyticsUI(),
                 )
             )
         }

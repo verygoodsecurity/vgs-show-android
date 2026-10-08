@@ -18,6 +18,12 @@ abstract class VgsVisualTransformation internal constructor() {
     /** Returns [text] with this transformation applied, ready to render. */
     abstract fun filter(text: AnnotatedString): AnnotatedString
 
+    /**
+     * Same as [filter] but without masking, i.e. the formatted value as copied to the clipboard
+     * by the legacy widget's formatted copy. Masking is display-only.
+     */
+    internal open fun filterUnmasked(text: AnnotatedString): AnnotatedString = filter(text)
+
     companion object {
 
         /** No visual transformation; the value is displayed as revealed. */

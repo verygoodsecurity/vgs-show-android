@@ -19,6 +19,12 @@ class VgsChainedVisualTransformation(val transformations: List<VgsVisualTransfor
         return transformations.fold(text) { value, transformation -> transformation.filter(value) }
     }
 
+    override fun filterUnmasked(text: AnnotatedString): AnnotatedString {
+        return transformations.fold(text) { value, transformation ->
+            transformation.filterUnmasked(value)
+        }
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is VgsChainedVisualTransformation) return false

@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgsshow.widget.compose.state
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -28,13 +27,15 @@ class VgsPdfState internal constructor(
     val hasDocument: Boolean = document != null
 
     internal var onRenderCompleteEvent: (() -> Unit)? = null
+
     internal var onRenderErrorEvent: (() -> Unit)? = null
 
-    // Callbacks supplied by the app through rememberVgsPdfState. Kept apart from the analytics
-    // events above, which VGSShow sets and clears itself on subscribe / unsubscribe.
     internal var onRenderStartCallback: ((pages: Int) -> Unit)? = null
+
     internal var onRenderCompleteCallback: ((pages: Int) -> Unit)? = null
+
     internal var onRenderErrorCallback: ((error: Throwable) -> Unit)? = null
+
     internal var onPageChangedCallback: ((position: Int, pageCount: Int) -> Unit)? = null
 
     internal constructor(contentPath: String, ignore: Boolean) : this(contentPath, ignore, null)
@@ -68,6 +69,16 @@ class VgsPdfState internal constructor(
         result = 31 * result + document.contentHashCode()
         return result
     }
+}
+
+/**
+ * Clears the revealed document held by this state. [VgsPdfState.hasDocument] becomes `false`
+ * until the field is revealed again.
+ *
+ * Note: This action can't be reverted.
+ */
+fun MutableState<VgsPdfState>.clearDocument() {
+    value = value.copy(document = null)
 }
 
 /**
@@ -109,8 +120,6 @@ fun rememberVgsPdfState(
     val state = remember(contentPath) {
         mutableStateOf(
             VgsPdfState(contentPath = contentPath, ignore = ignore).apply {
-                // Read through rememberUpdatedState so copies of this state, which carry these
-                // lambdas, always call the latest callbacks.
                 onRenderStartCallback = { currentOnRenderStart.value?.invoke(it) }
                 onRenderCompleteCallback = { currentOnRenderComplete.value?.invoke(it) }
                 onRenderErrorCallback = { currentOnRenderError.value?.invoke(it) }
@@ -121,11 +130,8 @@ fun rememberVgsPdfState(
         )
     }
 
-    SideEffect {
-        val current = state.value
-        if (current.ignore != ignore) {
-            state.value = current.copy(ignore = ignore)
-        }
+    if (state.value.ignore != ignore) {
+        state.value = state.value.copy(ignore = ignore)
     }
 
     DisposableEffect(show, contentPath) {

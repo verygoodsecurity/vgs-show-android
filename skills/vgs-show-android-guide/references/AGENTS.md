@@ -130,7 +130,8 @@ Rules:
 - Masking and formatting are display-only: pass a `VgsVisualTransformation` (`VgsSecureVisualTransformation`, `VgsRegexVisualTransformation`, `VgsChainedVisualTransformation`) to `rememberVgsTextState`.
 - Branch on state flags for loading/empty UI: `VgsTextState.isEmpty`, `VgsImageState.hasImage` / `isImageValid`, `VgsPdfState.hasDocument`. There is no `placeholder` parameter.
 - Callbacks go on the `remember…` function: `onLoadComplete` / `onLoadError` (image), `onRenderStart` / `onRenderComplete` / `onRenderError` / `onPageChanged` (PDF). PDF callbacks only fire while `VgsPdf` is in composition.
-- Image and PDF state is not saved across configuration change or process death (large and sensitive); call `request` again to reveal after recreation. `clearText()` / `clearImage()` on the `MutableState` clear revealed content.
+- Revealed text, image and PDF are never saved across configuration change or process death (sensitive); call `request` again to reveal after recreation. `clearText()` / `clearImage()` / `clearDocument()` on the `MutableState` clear revealed content.
+- `VgsTextState.copyFormattedToClipboard` copies the formatted value without masking, same as the legacy `VGSTextView`.
 - `VgsText` needs Material (`androidx.compose.material`) or Material 3 on the app classpath; `VgsPdf` needs the `android-pdf-viewer` dependency.
 - Use `ignore = true` to exclude a field from reveal requests without unsubscribing.
 

@@ -28,6 +28,8 @@ Table of contents
 | org.jetbrains.kotlin:kotlin-gradle-plugin |  1.9.22 |
 | androidx.appcompat:appcompat |  1.6.1  |
 | com.squareup.okhttp3:okhttp | 4.12.0  |
+| androidx.compose.material or material3 (optional, for `VgsText`) | provided by your app |
+| com.verygoodsecurity:android-pdf-viewer (optional, for PDF) | provided by your app |
 
 ---
 
@@ -293,7 +295,7 @@ fun RevealScreen(vgsShow: VGSShow) {
 
 - Revealed values are never exposed to your code; they are only rendered or copied via `copyRawToClipboard` / `copyFormattedToClipboard`.
 - `VgsText` requires Compose Material or Material 3 in your app, and `VgsPdf` requires the `android-pdf-viewer` dependency.
-- Image and PDF content is not kept across configuration changes; call `requestAsync` again after the screen is recreated.
+- Revealed content (text, image and PDF) is not kept across configuration changes; call `requestAsync` again after the screen is recreated.
 - `VGSTextViewWrapper`, `VGSImageViewWrapper` and `VGSPDFViewWrapper` are deprecated in favor of these widgets.
 
 ## Releases

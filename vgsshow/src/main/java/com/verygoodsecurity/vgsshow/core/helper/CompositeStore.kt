@@ -103,11 +103,14 @@ internal class CompositeStore(
                             it
                         )
                     }
-                    if (s.isSecure) {
+                    s.secureTextRangeEvent = {
                         onSecureTextRangeSet(
                             s.fieldType.toAnalyticTag(),
                             s.contentPath
                         )
+                    }
+                    if (s.isSecure) {
+                        s.secureTextRangeEvent?.invoke()
                     }
                 }
 
@@ -146,6 +149,7 @@ internal class CompositeStore(
             when (val s = state.value) {
                 is VgsTextState -> {
                     s.copyToClipboardEvent = null
+                    s.secureTextRangeEvent = null
                 }
 
                 is VgsPdfState -> {

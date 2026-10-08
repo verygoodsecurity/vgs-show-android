@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -73,11 +72,11 @@ class ApplyResponseActivity : AppCompatActivity() {
     }
 
     private val revealShow: VGSShow by lazy {
-        VGSShow.Builder(this, MainActivity.VAULT_ID).build()
+        VGSShow(this, MainActivity.VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     private val appliedShow: VGSShow by lazy {
-        VGSShow.Builder(this, MainActivity.VAULT_ID).build()
+        VGSShow(this, MainActivity.VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,12 +159,12 @@ private fun CreateAndRevealStep(
     var isSubmitting by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    DisposableEffect(collect) {
+    DisposableEffect(collect, show) {
         val listener = object : VgsCollectResponseListener {
             override fun onResponse(response: CollectResponse) {
                 when (response) {
                     is CollectSuccessResponse -> {
-                        val alias = response?.rawResponse
+                        val alias = response?.body
                             ?.let(::JSONObject)
                             ?.optJSONObject("json")
                             ?.optString(FIELD_NAME)
