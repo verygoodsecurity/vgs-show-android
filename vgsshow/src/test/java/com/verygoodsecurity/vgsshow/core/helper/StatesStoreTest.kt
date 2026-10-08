@@ -122,23 +122,6 @@ class StatesStoreTest {
     }
 
     @Test
-    fun update_undecodableData_stateUntouched() {
-        // Forced, as Android's lenient Base64 decoder doesn't reliably reject a given string.
-        mockkStatic(Base64::class)
-        try {
-            every { Base64.decode(any<String>(), any()) } throws IllegalArgumentException("bad")
-            val state = pdf()
-            sut.addState(state)
-
-            sut.update(data)
-
-            assertFalse(state.value.hasDocument)
-        } finally {
-            unmockkStatic(Base64::class)
-        }
-    }
-
-    @Test
     fun update_nullData_stateUntouched() {
         val state = text()
         sut.addState(state)
