@@ -63,6 +63,7 @@ Security Note: Never derive environment from user input; it must be a static con
 - `VGSTextView`: securely displays revealed textual data; supports transformation/redaction.
 - `VGSPDFView`: securely displays revealed PDF files.
 - `VGSImageView`: securely displays revealed image data.
+- `VgsText`, `VgsImage`, `VgsPdf`: native Jetpack Compose equivalents of the views above, driven by `rememberVgsTextState` / `rememberVgsImageState` / `rememberVgsPdfState` (see section 4A). `VgsText` exists in `...widget.compose.material` and `...widget.compose.material3`.
 - `VGSOnResponseListener`: for handling responses from the VGS proxy.
 - `VGSRequest`: for configuring requests to the VGS proxy.
 - `VGSResponse`: for representing responses from the VGS proxy (`VGSResponse.Success`, `VGSResponse.Error`).
@@ -99,6 +100,39 @@ vgsShow.subscribe(findViewById(R.id.textView))
 vgsShow.subscribe(findViewById(R.id.pdfView))
 vgsShow.subscribe(findViewById(R.id.imageView))
 ```
+
+---
+## 4A. Jetpack Compose Widgets
+Use these instead of the XML views in Compose UI. Do NOT wrap the XML views in `AndroidView`; the `VGSTextViewWrapper` / `VGSImageViewWrapper` / `VGSPDFViewWrapper` helpers are deprecated.
+
+Pattern: create state with `rememberVgs…State`, pass `state.value` to the composable. The state subscribes to and unsubscribes from `VGSShow` automatically; never call `subscribe` / `unsubscribe` yourself for these.
+```kotlin
+val textState = rememberVgsTextState(
+    show = vgsShow,
+    contentPath = "json.card_number",
+    visualTransformation = VgsChainedVisualTransformation(
+        listOf(
+            VgsRegexVisualTransformation(Regex("(\\d{4})(?=\\d)"), "$1 "),
+            VgsSecureVisualTransformation(VGSTextRange(0, 11)),
+        )
+    ),
+)
+VgsText(state = textState.value) // com.verygoodsecurity.vgsshow.widget.compose.material (or .material3)
+
+val imageState = rememberVgsImageState(vgsShow, "json.my_image", onLoadError = { /* ... */ })
+if (imageState.value.hasImage) VgsImage(state = imageState.value, contentDescription = "ID scan")
+
+val pdfState = rememberVgsPdfState(vgsShow, "json.my_pdf", onRenderError = { /* ... */ })
+if (pdfState.value.hasDocument) VgsPdf(state = pdfState.value, modifier = Modifier.fillMaxSize())
+```
+Rules:
+- Revealed data is never exposed. States have no public getter for text, bitmap or PDF bytes. Do not try to read it back (`onTextLayout` and `inlineContent` are intentionally unavailable on `VgsText`). The only exit paths are `copyRawToClipboard` / `copyFormattedToClipboard` on `VgsTextState`.
+- Masking and formatting are display-only: pass a `VgsVisualTransformation` (`VgsSecureVisualTransformation`, `VgsRegexVisualTransformation`, `VgsChainedVisualTransformation`) to `rememberVgsTextState`.
+- Branch on state flags for loading/empty UI: `VgsTextState.isEmpty`, `VgsImageState.hasImage` / `isImageValid`, `VgsPdfState.hasDocument`. There is no `placeholder` parameter.
+- Callbacks go on the `remember…` function: `onLoadComplete` / `onLoadError` (image), `onRenderStart` / `onRenderComplete` / `onRenderError` / `onPageChanged` (PDF). PDF callbacks only fire while `VgsPdf` is in composition.
+- Image and PDF state is not saved across configuration change or process death (large and sensitive); call `request` again to reveal after recreation. `clearText()` / `clearImage()` on the `MutableState` clear revealed content.
+- `VgsText` needs Material (`androidx.compose.material`) or Material 3 on the app classpath; `VgsPdf` needs the `android-pdf-viewer` dependency.
+- Use `ignore = true` to exclude a field from reveal requests without unsubscribing.
 
 ---
 ## 5. Observing & Using View State
