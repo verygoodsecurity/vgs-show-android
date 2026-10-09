@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
 import com.verygoodsecurity.vgsshow.VGSShow
-import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.material.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.core.BaseState
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsChainedVisualTransformation
 import com.verygoodsecurity.vgsshow.widget.compose.transformation.VgsSecureVisualTransformation
@@ -43,15 +43,20 @@ class VgsTextState internal constructor(
 
     /** The revealed text with this field's visual transformation applied, ready to render. */
     internal val displayText: AnnotatedString =
-        visualTransformation.filter(AnnotatedString(rawText)).text
+        visualTransformation.filter(AnnotatedString(rawText))
+
+    private val copyText: String =
+        visualTransformation.filterUnmasked(AnnotatedString(rawText)).text
 
     /** `true` if this field's visual transformation masks a secure range. */
     internal val isSecure: Boolean = visualTransformation.containsSecureRange()
 
     internal var copyToClipboardEvent: ((format: VGSAnalyticsCopyFormat) -> Unit)? = null
 
+    internal var secureTextRangeEvent: (() -> Unit)? = null
+
     val isEmpty: Boolean
-        get() = rawText.isBlank()
+        get() = rawText.isEmpty()
 
     fun copyRawToClipboard(
         context: Context,
@@ -66,9 +71,8 @@ class VgsTextState internal constructor(
         context: Context,
         isSensitive: Boolean = false
     ) {
-        val text = displayText.text
-        if (text.isEmpty()) return
-        context.copyToClipboard(text, isSensitive)
+        if (copyText.isEmpty()) return
+        context.copyToClipboard(copyText, isSensitive)
         copyToClipboardEvent?.invoke(VGSAnalyticsCopyFormat.FORMATTED)
     }
 
@@ -83,7 +87,41 @@ class VgsTextState internal constructor(
         ignore = ignore,
         rawText = text,
         visualTransformation = visualTransformation,
-    ).also { it.copyToClipboardEvent = copyToClipboardEvent }
+    ).also {
+        it.copyToClipboardEvent = copyToClipboardEvent
+        it.secureTextRangeEvent = secureTextRangeEvent
+    }
+
+    internal fun copy(ignore: Boolean, visualTransformation: VgsVisualTransformation) = VgsTextState(
+        contentPath = contentPath,
+        ignore = ignore,
+        rawText = rawText,
+        visualTransformation = visualTransformation,
+    ).also {
+        it.copyToClipboardEvent = copyToClipboardEvent
+        it.secureTextRangeEvent = secureTextRangeEvent
+    }
+
+    internal fun hasConfig(ignore: Boolean, visualTransformation: VgsVisualTransformation): Boolean =
+        this.ignore == ignore && this.visualTransformation == visualTransformation
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as VgsTextState
+        return contentPath == other.contentPath &&
+                ignore == other.ignore &&
+                rawText == other.rawText &&
+                visualTransformation == other.visualTransformation
+    }
+
+    override fun hashCode(): Int {
+        var result = contentPath.hashCode()
+        result = 31 * result + ignore.hashCode()
+        result = 31 * result + rawText.hashCode()
+        result = 31 * result + visualTransformation.hashCode()
+        return result
+    }
 }
 
 /**
@@ -117,19 +155,23 @@ fun MutableState<VgsTextState>.clearText() {
 fun rememberVgsTextState(
     show: VGSShow,
     contentPath: String,
-    ignore: Boolean,
+    ignore: Boolean = false,
     visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
 ): MutableState<VgsTextState> {
-    fun newState() = VgsTextState(contentPath, ignore, visualTransformation)
+    val state = remember(contentPath) {
+        mutableStateOf(VgsTextState(contentPath, ignore, visualTransformation))
+    }
 
-    val state = rememberSaveable(
-        contentPath,
-        saver = Saver(
-            save = { it.value.rawText },
-            restore = { savedValue -> mutableStateOf(newState().copy(text = savedValue)) },
-        ),
-    ) {
-        mutableStateOf(newState())
+    val current = state.value
+    var becameSecure = false
+    if (!current.hasConfig(ignore, visualTransformation)) {
+        val updated = current.copy(ignore = ignore, visualTransformation = visualTransformation)
+        state.value = updated
+        becameSecure = updated.isSecure && !current.isSecure
+    }
+
+    SideEffect {
+        if (becameSecure) state.value.secureTextRangeEvent?.invoke()
     }
 
     DisposableEffect(show, contentPath) {

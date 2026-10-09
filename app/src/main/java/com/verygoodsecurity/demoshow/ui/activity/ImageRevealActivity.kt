@@ -65,8 +65,8 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsImageState
 import org.json.JSONObject
 
 private const val IMAGE_FIELD_NAME = "image"
-private const val REVEAL_CONTENT_PATH = "json.revealed_image"
-private const val REVEAL_BODY_KEY = "revealed_image"
+private const val REVEAL_CONTENT_PATH = "json.secure_image"
+private const val REVEAL_BODY_KEY = "secure_image"
 
 class ComposeImageActivity : AppCompatActivity() {
 
@@ -160,6 +160,7 @@ private fun Content(
                         is VGSResponse.Error -> showError =
                             "Reveal failed: ${response.message} (code ${response.code})"
                     }
+                    isRevealing = false
                 }
 
             }

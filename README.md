@@ -28,6 +28,8 @@ Table of contents
 | org.jetbrains.kotlin:kotlin-gradle-plugin |  1.9.22 |
 | androidx.appcompat:appcompat |  1.6.1  |
 | com.squareup.okhttp3:okhttp | 4.12.0  |
+| androidx.compose.material or material3 (optional, for `VgsText`) | provided by your app |
+| com.verygoodsecurity:android-pdf-viewer (optional, for PDF) | provided by your app |
 
 ---
 
@@ -269,6 +271,32 @@ class MainActivity : AppCompatActivity() {
 
 </table>
 
+
+## Jetpack Compose
+Compose apps can use native widgets instead of the XML views. Each widget is driven by a state created with a `rememberVgs…State` function, which subscribes to `VGSShow` automatically.
+
+```kotlin
+@Composable
+fun RevealScreen(vgsShow: VGSShow) {
+    val textState = rememberVgsTextState(
+        show = vgsShow,
+        contentPath = "<CONTENT_PATH>",
+        visualTransformation = VgsSecureVisualTransformation(VGSTextRange(0, 11)),
+    )
+    val imageState = rememberVgsImageState(vgsShow, "<CONTENT_PATH_TO_IMAGE>")
+    val pdfState = rememberVgsPdfState(vgsShow, "<CONTENT_PATH_TO_PDF>")
+
+    // import ...widget.compose.material.VgsText (or material3.VgsText)
+    VgsText(state = textState.value)
+    if (imageState.value.hasImage) VgsImage(imageState.value, contentDescription = "ID scan")
+    if (pdfState.value.hasDocument) VgsPdf(pdfState.value, Modifier.fillMaxSize())
+}
+```
+
+- Revealed values are never exposed to your code; they are only rendered or copied via `copyRawToClipboard` / `copyFormattedToClipboard`.
+- `VgsText` requires Compose Material or Material 3 in your app, and `VgsPdf` requires the `android-pdf-viewer` dependency.
+- Revealed content (text, image and PDF) is not kept across configuration changes; call `requestAsync` again after the screen is recreated.
+- `VGSTextViewWrapper`, `VGSImageViewWrapper` and `VGSPDFViewWrapper` are deprecated in favor of these widgets.
 
 ## Releases
 To follow **VGS Show SDK** updates and changes check the [releases](https://github.com/verygoodsecurity/vgs-show-android/releases) page.

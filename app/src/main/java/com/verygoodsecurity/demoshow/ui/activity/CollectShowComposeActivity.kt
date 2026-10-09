@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -39,11 +38,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.verygoodsecurity.demoshow.R
 import com.verygoodsecurity.demoshow.ui.CollectResponse
 import com.verygoodsecurity.demoshow.ui.CollectSuccessResponse
@@ -72,7 +69,7 @@ import com.verygoodsecurity.vgsshow.core.listener.VGSOnResponseListener
 import com.verygoodsecurity.vgsshow.core.network.client.VGSHttpMethod
 import com.verygoodsecurity.vgsshow.core.network.model.VGSRequest
 import com.verygoodsecurity.vgsshow.core.network.model.VGSResponse
-import com.verygoodsecurity.vgsshow.widget.compose.VgsText
+import com.verygoodsecurity.vgsshow.widget.compose.material.VgsText
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsTextState
 import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsTextState
 import org.json.JSONObject
@@ -85,25 +82,26 @@ private const val MASKED_NUMBER = "•••• •••• •••• ••
 private const val MASKED_EXP_DATE = "••/••"
 
 /**
- * One created-alias pair, rendered as its own card. Content paths and body keys are namespaced
- * by [id] so revealing one card never updates another card's [VgsTextState] — the demo's
- * "/post" endpoint echoes back whatever keys were sent under "json".
+ * One created-alias pair. Content paths and reveal body keys are fixed strings matching this
+ * vault's route (not namespaced per-submission like a generic "/post" echo would allow), so only
+ * one card's data can be live in these [VgsTextState]s at a time — submitting a new card replaces
+ * the previous one instead of adding to a list.
  */
 private data class SubmittedCard(
-    val id: Int,
     val numberAlias: String,
     val expDateAlias: String,
 ) {
-    val numberContentPath: String get() = "json.card_${id}_number"
-    val expDateContentPath: String get() = "json.card_${id}_expDate"
-    val numberBodyKey: String get() = "card_${id}_number"
-    val expDateBodyKey: String get() = "card_${id}_expDate"
+
+    val numberContentPath: String get() = "json.payment_card_number"
+    val expDateContentPath: String get() = "json.payment_card_expiration_date"
+    val numberBodyKey: String get() = "payment_card_number"
+    val expDateBodyKey: String get() = "payment_card_expiration_date"
 }
 
 class ComposeActivity : AppCompatActivity() {
 
     private val show: VGSShow by lazy {
-        VGSShow.Builder(this, MainActivity.VAULT_ID).build()
+        VGSShow(this, MainActivity.VAULT_ID, MainActivity.ENVIRONMENT)
     }
 
     private val collect: VGSCollect by lazy {
@@ -130,11 +128,9 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
     VgsDemoTheme {
         var isSubmitting by remember { mutableStateOf(false) }
         var collectError by remember { mutableStateOf<String?>(null) }
-        var cards by remember { mutableStateOf<List<SubmittedCard>>(emptyList()) }
-        // Only one reveal request is in flight at a time: VGSOnResponseListener can't tell which
-        // request a response belongs to, so concurrent reveals couldn't be attributed to a card.
-        var revealingCardId by remember { mutableStateOf<Int?>(null) }
-        var revealedCardIds by remember { mutableStateOf<Set<Int>>(emptySet()) }
+        var card by remember { mutableStateOf<SubmittedCard?>(null) }
+        var isRevealing by remember { mutableStateOf(false) }
+        var isRevealed by remember { mutableStateOf(false) }
         var showError by remember { mutableStateOf<String?>(null) }
 
         DisposableEffect(collect) {
@@ -143,22 +139,15 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                     isSubmitting = false
                     when (response) {
                         is CollectSuccessResponse -> {
-                            val json = response?.rawResponse
-                                ?.let(::JSONObject)
-                                ?.optJSONObject("json")
+                            val json = response?.body?.let(::JSONObject)?.optJSONObject("json")
                             val numberAlias = json?.optString(NUMBER_FIELD_NAME)
                             val expDateAlias = json?.optString(EXP_DATE_FIELD_NAME)
                             if (numberAlias.isNullOrEmpty() || expDateAlias.isNullOrEmpty()) {
                                 collectError = "Create alias failed: unexpected server response"
                             } else {
                                 collectError = null
-                                cards = listOf(
-                                    SubmittedCard(
-                                        cards.size,
-                                        numberAlias,
-                                        expDateAlias
-                                    )
-                                ) + cards
+                                card = SubmittedCard(numberAlias, expDateAlias)
+                                isRevealed = false
                             }
                         }
 
@@ -166,8 +155,6 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
                             collectError = "Create alias failed: ${response.localizeMessage} " +
                                     "(code ${response.errorCode})"
                         }
-
-                        else -> collectError = "Create alias failed: unknown error"
                     }
                 }
             }
@@ -178,19 +165,16 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
         DisposableEffect(show) {
             val listener = object : VGSOnResponseListener {
                 override fun onResponse(response: VGSResponse) {
-                    val cardId = revealingCardId
-                    revealingCardId = null
+                    isRevealing = false
                     when (response) {
-                        is VGSResponse.Success -> if (cardId != null) revealedCardIds =
-                            revealedCardIds + cardId
-
+                        is VGSResponse.Success -> isRevealed = true
                         is VGSResponse.Error -> showError =
                             "Reveal failed: ${response.message} (code ${response.code})"
                     }
                 }
             }
-            show?.addOnResponseListener(listener)
-            onDispose { show?.removeOnResponseListener(listener) }
+            show.addOnResponseListener(listener)
+            onDispose { show.removeOnResponseListener(listener) }
         }
 
         Column(
@@ -230,24 +214,24 @@ private fun Content(show: VGSShow, collect: VGSCollect, onBack: () -> Unit) {
 
                 ShowSection(
                     show = show,
-                    cards = cards,
-                    revealingCardId = revealingCardId,
-                    revealedCardIds = revealedCardIds,
+                    card = card,
+                    isRevealing = isRevealing,
+                    isRevealed = isRevealed,
                     error = showError,
-                    onToggle = { card, alreadyFetched ->
+                    onToggle = { alreadyFetched ->
+                        val currentCard = card
                         when {
-                            card.id in revealedCardIds -> revealedCardIds =
-                                revealedCardIds - card.id
-
-                            alreadyFetched -> revealedCardIds = revealedCardIds + card.id
-                            show != null -> {
+                            currentCard == null -> Unit
+                            isRevealed -> isRevealed = false
+                            alreadyFetched -> isRevealed = true
+                            else -> {
                                 showError = null
-                                revealingCardId = card.id
+                                isRevealing = true
                                 show.requestAsync(
                                     VGSRequest.Builder("post", VGSHttpMethod.POST).body(
                                         mapOf(
-                                            card.numberBodyKey to card.numberAlias,
-                                            card.expDateBodyKey to card.expDateAlias,
+                                            currentCard.numberBodyKey to currentCard.numberAlias,
+                                            currentCard.expDateBodyKey to currentCard.expDateAlias,
                                         )
                                     ).build()
                                 )
@@ -333,47 +317,26 @@ private fun CollectSection(
 @Composable
 private fun ShowSection(
     show: VGSShow,
-    cards: List<SubmittedCard>,
-    revealingCardId: Int?,
-    revealedCardIds: Set<Int>,
+    card: SubmittedCard?,
+    isRevealing: Boolean,
+    isRevealed: Boolean,
     error: String?,
-    onToggle: (card: SubmittedCard, alreadyFetched: Boolean) -> Unit,
+    onToggle: (alreadyFetched: Boolean) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            SectionTitle("Show")
-            Text(
-                text = when (cards.size) {
-                    0 -> ""
-                    1 -> "1 card"
-                    else -> "${cards.size} cards"
-                },
-                color = DemoColors.TextMuted,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
-            )
-        }
+        SectionTitle("Show")
 
-        if (cards.isEmpty()) {
+        if (card == null) {
             EmptyState()
-        }
-
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            cards.forEach { card ->
-                key(card.id) {
-                    ShowCard(
-                        show = show,
-                        card = card,
-                        isRevealing = revealingCardId == card.id,
-                        isRevealed = card.id in revealedCardIds,
-                        revealRequestAllowed = revealingCardId == null,
-                        onToggle = { alreadyFetched -> onToggle(card, alreadyFetched) },
-                    )
-                }
+        } else {
+               key(card.numberAlias) {
+                ShowCard(
+                    show = show,
+                    card = card,
+                    isRevealing = isRevealing,
+                    isRevealed = isRevealed,
+                    onToggle = onToggle,
+                )
             }
         }
 
@@ -389,7 +352,6 @@ private fun ShowCard(
     card: SubmittedCard,
     isRevealing: Boolean,
     isRevealed: Boolean,
-    revealRequestAllowed: Boolean,
     onToggle: (alreadyFetched: Boolean) -> Unit,
 ) {
     val numberState =
@@ -397,9 +359,6 @@ private fun ShowCard(
     val expDateState =
         rememberVgsTextState(show = show, contentPath = card.expDateContentPath, ignore = false)
     val alreadyFetched = !numberState.value.isEmpty && !expDateState.value.isEmpty
-    // Hide / re-show of already fetched data is local; only a network reveal is gated
-    // while another card's request is in flight.
-    val isLocalToggle = isRevealed || alreadyFetched
 
     DemoCard {
         ShowField(
@@ -420,7 +379,7 @@ private fun ShowCard(
             text = if (isRevealed) "Hide" else "Reveal",
             loadingText = "Revealing…",
             iconRes = if (isRevealed) R.drawable.ic_eye_off_24 else R.drawable.ic_eye_24,
-            enabled = !isRevealing && (isLocalToggle || revealRequestAllowed),
+            enabled = !isRevealing,
             loading = isRevealing,
             backgroundColor = DemoColors.Accent,
             contentColor = DemoColors.Primary,

@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgsshow.widget.compose.transformation
 
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.compose.state.VgsTextState
 
@@ -24,13 +22,13 @@ class VgsRegexVisualTransformation(
     private val replacement: String,
 ) : VgsVisualTransformation() {
 
-    override fun filter(text: AnnotatedString): TransformedText {
+    override fun filter(text: AnnotatedString): AnnotatedString {
         val transformed = try {
             regex.replace(text.text, replacement)
         } catch (_: Exception) {
             text.text
         }
-        return TransformedText(AnnotatedString(transformed), OffsetMapping.Identity)
+        return AnnotatedString(transformed)
     }
 
     override fun equals(other: Any?): Boolean {

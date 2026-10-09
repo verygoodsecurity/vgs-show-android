@@ -35,13 +35,14 @@ internal class StatesStore : Store<MutableState<BaseState>> {
     override fun remove(target: MutableState<BaseState>): Boolean = states.remove(target)
 
     override fun update(data: ResponseData?) {
+        // Whether this is worth warning about is CompositeStore's call — it also has a
+        // ViewsStore, so this store alone being empty doesn't mean nothing is subscribed.
         if (states.isEmpty()) {
-            logWaring("No subscribed widgets to reveal data.")
             return
         }
         logStartUIUpdate(states.map { it.value.contentPath })
         val unrevealedContentPaths = mutableListOf<String>()
-        for (state in states) {
+        for (state in states.toList()) {
             if (state.value.ignore) {
                 continue
             }
@@ -74,7 +75,8 @@ internal class StatesStore : Store<MutableState<BaseState>> {
     override fun getAll(): Set<MutableState<BaseState>> = states
 
     private fun update(state: MutableState<BaseState>, data: String): Boolean {
-        return try {
+        var revealedImage: VgsImageState? = null
+        try {
             when (val s = state.value) {
                 is VgsTextState -> {
                     state.value = s.copy(text = data)
@@ -82,7 +84,9 @@ internal class StatesStore : Store<MutableState<BaseState>> {
 
                 is VgsImageState -> {
                     val decoded = Base64.decode(data, Base64.NO_WRAP)
-                    state.value = s.copy(image = decoded)
+                    val revealed = s.copy(image = decoded)
+                    state.value = revealed
+                    revealedImage = revealed
                 }
 
                 is VgsPdfState -> {
@@ -90,10 +94,11 @@ internal class StatesStore : Store<MutableState<BaseState>> {
                     state.value = s.copy(document = decoded)
                 }
             }
-            true
         } catch (_: IllegalArgumentException) {
             logWaring("Revealed data cannot be decoded.")
-            false
+            return false
         }
+        revealedImage?.notifyLoadResult()
+        return true
     }
 }

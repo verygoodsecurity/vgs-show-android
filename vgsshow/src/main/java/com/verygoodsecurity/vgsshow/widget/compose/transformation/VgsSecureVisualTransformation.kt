@@ -1,14 +1,12 @@
 package com.verygoodsecurity.vgsshow.widget.compose.transformation
 
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import com.verygoodsecurity.vgsshow.widget.view.textview.method.SecureTransformationMethod
 import com.verygoodsecurity.vgsshow.widget.view.textview.model.VGSTextRange
 
 /**
- * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.VgsText]
+ * Masks [ranges] of the text displayed by [com.verygoodsecurity.vgsshow.widget.compose.material.VgsText]
  * with [secureSymbol] (e.g. `4111••••••••1111`).
  *
  * Delegates to [SecureTransformationMethod] — the same masking algorithm the legacy
@@ -31,10 +29,12 @@ class VgsSecureVisualTransformation(
 
     private val method = SecureTransformationMethod(secureSymbol, ranges)
 
-    override fun filter(text: AnnotatedString): TransformedText {
+    override fun filter(text: AnnotatedString): AnnotatedString {
         val masked = method.getTransformation(text.text, null).toString()
-        return TransformedText(AnnotatedString(masked, text.spanStyles), OffsetMapping.Identity)
+        return AnnotatedString(masked, text.spanStyles)
     }
+
+    override fun filterUnmasked(text: AnnotatedString): AnnotatedString = text
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

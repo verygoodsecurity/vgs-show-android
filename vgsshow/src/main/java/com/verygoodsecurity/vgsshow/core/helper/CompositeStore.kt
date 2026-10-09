@@ -4,6 +4,7 @@ import androidx.annotation.MainThread
 import androidx.compose.runtime.MutableState
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsCopyFormat
 import com.verygoodsecurity.vgsshow.core.network.model.data.response.ResponseData
+import com.verygoodsecurity.vgsshow.util.extension.logWaring
 import com.verygoodsecurity.vgsshow.util.extension.toAnalyticTag
 import com.verygoodsecurity.vgsshow.util.extension.toAnalyticsFormat
 import com.verygoodsecurity.vgsshow.widget.VGSPDFView
@@ -102,11 +103,14 @@ internal class CompositeStore(
                             it
                         )
                     }
-                    if (s.isSecure) {
+                    s.secureTextRangeEvent = {
                         onSecureTextRangeSet(
                             s.fieldType.toAnalyticTag(),
                             s.contentPath
                         )
+                    }
+                    if (s.isSecure) {
+                        s.secureTextRangeEvent?.invoke()
                     }
                 }
 
@@ -145,6 +149,7 @@ internal class CompositeStore(
             when (val s = state.value) {
                 is VgsTextState -> {
                     s.copyToClipboardEvent = null
+                    s.secureTextRangeEvent = null
                 }
 
                 is VgsPdfState -> {
@@ -157,6 +162,10 @@ internal class CompositeStore(
 
     @MainThread
     fun update(data: ResponseData?) {
+        if (viewsStore.isEmpty() && widgetsStore.isEmpty()) {
+            logWaring("No subscribed views or widgets to reveal data.")
+            return
+        }
         viewsStore.update(data)
         widgetsStore.update(data)
     }

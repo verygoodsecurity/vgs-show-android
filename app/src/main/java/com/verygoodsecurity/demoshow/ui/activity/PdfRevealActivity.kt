@@ -64,8 +64,8 @@ import com.verygoodsecurity.vgsshow.widget.compose.state.rememberVgsPdfState
 import org.json.JSONObject
 
 private const val PDF_FIELD_NAME = "pdf"
-private const val REVEAL_CONTENT_PATH = "json.revealed_pdf"
-private const val REVEAL_BODY_KEY = "revealed_pdf"
+private const val REVEAL_CONTENT_PATH = "json.secure_pdf"
+private const val REVEAL_BODY_KEY = "secure_pdf"
 
 class ComposePdfActivity : AppCompatActivity() {
 
@@ -159,6 +159,7 @@ private fun Content(
                         is VGSResponse.Error -> showError =
                             "Reveal failed: ${response.message} (code ${response.code})"
                     }
+                    isRevealing = false
                 }
 
             }
