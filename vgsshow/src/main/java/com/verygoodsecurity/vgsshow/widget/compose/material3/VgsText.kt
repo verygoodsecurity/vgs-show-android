@@ -74,7 +74,7 @@ fun VgsText(
         fontFamily = fontFamily,
         letterSpacing = letterSpacing,
         textDecoration = textDecoration,
-        textAlign = textAlign ?: TextAlign.Unspecified,
+        textAlign = textAlign,
         lineHeight = lineHeight,
         overflow = overflow,
         softWrap = softWrap,
