@@ -9,10 +9,11 @@ kover = '0.9.8'
 appcompat = '1.7.1'
 core-ktx = '1.18.0'
 okhttp = '5.5.0'
-verygoodsecurity-collect = "1.11.0"
+verygoodsecurity-collect = "2.1.0"
 verygoodsecurity-pdf-viewer = "1.0.1"
 activity-compose = '1.13.0'
 androidx-compose = '1.11.2'
+androidx-compose-material3 = '1.4.0'
 constraintlayout = '2.2.1'
 ktor = "3.5.2"
 kotlin-coroutines-test = "1.11.0"
@@ -42,6 +43,7 @@ androidx-constraintlayout = { group = 'androidx.constraintlayout', name = 'const
 okhttp = { group = 'com.squareup.okhttp3', name = 'okhttp', version.ref = 'okhttp' }
 activity-compose = { group = 'androidx.activity', name = 'activity-compose', version.ref = 'activity-compose' }
 compose-material = { group = 'androidx.compose.material', name = 'material', version.ref = 'androidx-compose' }
+compose-material3 = { group = 'androidx.compose.material3', name = 'material3', version.ref = 'androidx-compose-material3' }
 compose-ui-tooling-preview = { group = 'androidx.compose.ui', name = 'ui-tooling-preview', version.ref = 'androidx-compose' }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }

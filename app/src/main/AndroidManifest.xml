@@ -26,16 +26,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.CollectAndShowActivity" />
-
-        <activity android:name=".ui.activity.CollectAndShowFragmentActivity" />
-
-        <activity android:name=".ui.activity.apply_response_demo.ApplyResponseDemoActivity" />
-
-        <activity android:name=".ui.activity.PDFActivity" />
-
-        <activity android:name=".ui.activity.ImageActivity" />
-
         <activity android:name=".ui.activity.ComposeActivity" />
+
+        <activity android:name=".ui.activity.ComposeImageActivity" />
+
+        <activity android:name=".ui.activity.ComposePdfActivity" />
+
+        <activity android:name=".ui.activity.CollectShowNativeActivity" />
+
+        <activity android:name=".ui.activity.ApplyResponseActivity" />
     </application>
 </manifest>

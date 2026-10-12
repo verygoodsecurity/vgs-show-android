@@ -11,7 +11,9 @@ import com.verygoodsecurity.vgsshow.widget.VGSTextView
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -95,7 +97,7 @@ class VGSShowTest {
         // Act
         sut.subscribe(testView)
         // Assert
-        assertTrue(sut.getViewsStore().getViews().contains(testView))
+        assertTrue(sut.getStore().viewsStore.getAll().contains(testView))
     }
 
     @Test
@@ -104,7 +106,7 @@ class VGSShowTest {
         sut.subscribe(testView)
         sut.subscribe(testView)
         // Assert
-        assertEquals(sut.getViewsStore().getViews().size, 1)
+        assertEquals(sut.getStore().viewsStore.getAll().size, 1)
     }
 
     @Test
@@ -113,7 +115,7 @@ class VGSShowTest {
         sut.subscribe(testView)
         sut.unsubscribe(testView)
         // Assert
-        assertTrue(sut.getViewsStore().getViews().isEmpty())
+        assertTrue(sut.getStore().viewsStore.isEmpty())
     }
 
     @Test
@@ -126,7 +128,7 @@ class VGSShowTest {
         sut.onDestroy()
         // Assert
         assertTrue(sut.getResponseListeners().isEmpty())
-        assertTrue(sut.getViewsStore().isEmpty())
+        assertTrue(sut.getStore().viewsStore.isEmpty())
         assertFalse(headersStore.getCustom().isNotEmpty())
     }
 

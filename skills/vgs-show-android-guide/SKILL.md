@@ -13,7 +13,7 @@ Single public skill entrypoint for `VGSShowSDK` work in Android applications.
 ## When to use
 
 - First-time `vgsshow` integration
-- Feature work touching `VGSShow`, secure views (`VGSTextView`, `VGSPDFView`, `VGSImageView`), response handling, analytics, or logging
+- Feature work touching `VGSShow`, secure views (`VGSTextView`, `VGSPDFView`, `VGSImageView`) or their Jetpack Compose equivalents (`VgsText`, `VgsPdf`, `VgsImage`), response handling, analytics, or logging
 - Version migrations or replacement of deprecated usage
 - Troubleshooting integration bugs or version-specific regressions
 - Code review of Android app code that uses `VGSShowSDK`
@@ -61,6 +61,7 @@ Retrieval fills implementation detail. It does not override `AGENTS.md` invarian
 Ask only when missing info changes implementation:
 - installed `vgsshow` version or dependency snippet
 - task type (integration, feature change, migration, troubleshooting, review)
+- UI toolkit (XML views or Jetpack Compose; in Compose use the `VgsText` / `VgsImage` / `VgsPdf` section of `references/AGENTS.md`, not `AndroidView` wrappers)
 - sensitive views involved (`VGSTextView`, `VGSPDFView`, `VGSImageView`, or multiple)
 - relevant error, log, or code snippet for troubleshooting
 

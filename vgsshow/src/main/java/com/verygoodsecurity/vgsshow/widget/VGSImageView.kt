@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
-import android.os.Build
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.ImageView.ScaleType
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import com.verygoodsecurity.vgsshow.R
 import com.verygoodsecurity.vgsshow.core.exception.VGSException

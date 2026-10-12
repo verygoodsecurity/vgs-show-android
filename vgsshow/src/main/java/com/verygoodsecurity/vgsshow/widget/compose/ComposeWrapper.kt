@@ -24,6 +24,10 @@ import com.verygoodsecurity.vgsshow.widget.core.VGSView
  *  @param onViewCreate - A callback to be invoked when [VGSTextView] is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsText (material or material3 package) with rememberVgsTextState instead.",
+    replaceWith = ReplaceWith("VgsText(state = state)", "com.verygoodsecurity.vgsshow.widget.compose.material.VgsText"),
+)
 @Composable
 fun VGSTextViewWrapper(
     show: VGSShow?,
@@ -51,6 +55,10 @@ fun VGSTextViewWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSImageView] is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsImage with rememberVgsImageState instead.",
+    replaceWith = ReplaceWith("VgsImage(state = state, contentDescription = contentDescription)"),
+)
 @Composable
 fun VGSImageViewWrapper(
     show: VGSShow?,
@@ -78,6 +86,10 @@ fun VGSImageViewWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSPDFView] is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsPdf with rememberVgsPdfState instead.",
+    replaceWith = ReplaceWith("VgsPdf(state = state)"),
+)
 @Composable
 fun VGSPDFViewWrapper(
     show: VGSShow?,
@@ -120,7 +132,7 @@ internal fun <T : VGSView<*>> Root(
             val view = createView(it).also { view -> input = view }
             view.setContentPath(contentPath)
             onViewCreate?.invoke(view)
-            show?.subscribe(view)
+            show?.subscribe(view, isCompose = true)
             view
         },
         update = { view -> onViewUpdate?.invoke(view) }

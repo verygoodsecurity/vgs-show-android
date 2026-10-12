@@ -283,7 +283,6 @@ class VGSTextViewTest {
         assertEquals(expected, view.getChildView().letterSpacing)
     }
 
-
     @Test
     fun `setOnTextChangeListener - set non empty text - onTextChange called with  valid parameters`() {
         // Arrange
@@ -420,6 +419,18 @@ class VGSTextViewTest {
     fun `isEmpty - not empty text - false returned`() {
         // Act
         view.setText("test")
+
+        // Assert
+        assertFalse(view.isEmpty())
+    }
+
+    @Test
+    fun `isEmpty - transformation redacts to empty string - false returned`() {
+        // Arrange
+        view.addTransformationRegex(".*".toRegex(), "")
+
+        // Act
+        view.setText("4111111111111111")
 
         // Assert
         assertFalse(view.isEmpty())
